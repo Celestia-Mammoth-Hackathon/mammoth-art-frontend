@@ -68,6 +68,7 @@ class MyDocument extends Document {
                         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
                         rel="stylesheet"
                     />
+                    <link href="https://fonts.cdnfonts.com/css/ibm-plex-mono-3" rel="stylesheet"/>
                 </Head>
                 <body className="app">
                     <Main />

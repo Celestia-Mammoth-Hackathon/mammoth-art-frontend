@@ -19,10 +19,10 @@ const menu = [
         title: "Discover",
         url: "/discover",
     },
-    {
-        title: "Feed",
-        url: "/feed",
-    },
+    // {
+    //     title: "Feed",
+    //     url: "/feed",
+    // },
 ];
 
 type HeaderProps = {
@@ -80,15 +80,16 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 className={styles.logo}
                                 light={visibleProfile || light}
                             />
-                            <Search
-                                className={styles.search}
-                                result={resultSearch}
-                                light={visibleProfile || light}
-                            />
+                            
                         </div>
                         <div className={styles.col}>
                             <Discover
                                 className={styles.discover}
+                                light={visibleProfile || light}
+                            />
+                            <Search
+                                className={styles.search}
+                                result={resultSearch}
                                 light={visibleProfile || light}
                             />
                             <div className={styles.navigation}>
@@ -140,10 +141,10 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 onClose={() => setVisibleProfile(false)}
                                 visible={visibleProfile}
                             />
-                            <Menu
+                            {/* <Menu
                                 classBurger={styles.burger}
                                 resultSearch={resultSearch}
-                            />
+                            /> */}
                         </div>
                     </>
                 )}

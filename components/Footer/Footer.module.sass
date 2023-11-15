@@ -1,6 +1,7 @@
 @import @/styles/helpers
 
-.body
+.body   
+    background: $n9
     display: flex
     justify-content: space-between
     padding: rem(80) rem(80) rem(40)
@@ -22,7 +23,8 @@
 
 .info
     +body2Bold
-    color: $n5
+    color: $n0
+
 
 .group
     display: flex
@@ -57,6 +59,13 @@
 
 .category
     margin-bottom: rem(32)
+    font-size: 20px !important
+    font-weight: 700 !important
+    line-height: 32px !important
+    letter-spacing: 0em !important
+    text-align: left !important
+    text-transform: none !important
+    color: $n10
     +button
     +m
         margin-bottom: rem(16)
@@ -70,8 +79,13 @@
     align-items: center
     min-height: rem(24)
     +caption
-    color: $n5
+    color: $n0
     transition: color .2s
+    font-size: 14px
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
     svg
         margin-right: rem(8)
         fill: $n5
@@ -88,10 +102,12 @@
             margin-bottom: rem(14)
 
 .foot
+    background: $n9
     display: flex
     align-items: center
+    justify-content: center
     padding: rem(32) rem(80)
-    border-top: rem(1) solid $n3
+    border-top: rem(0.5) solid $n0
     +caption
     color: $n4
     +xl
@@ -104,7 +120,12 @@
         display: block
 
 .copyright
-    margin-right: auto
+    font-size: 20px
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
 
 .cookies
     margin-left: rem(24)

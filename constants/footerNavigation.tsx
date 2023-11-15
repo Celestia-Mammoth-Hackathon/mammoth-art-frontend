@@ -1,17 +1,17 @@
 export const footerNavigation = [
     {
-        title: "CRYPTER.",
+        title: "MRKT.art.",
         menu: [
             {
-                title: "Discover",
+                title: "Explorer",
                 url: "/discover",
             },
             {
-                title: "Create",
+                title: "Mint Collection",
                 url: "/create",
             },
             {
-                title: "How it work",
+                title: "Upload",
                 url: "/blog/detail",
             },
         ],
@@ -20,25 +20,25 @@ export const footerNavigation = [
         title: "INFO",
         menu: [
             {
-                title: "Feed",
+                title: "Docs",
                 url: "/feed",
             },
-            {
-                title: "Help center",
-                url: "/help-center",
-            },
-            {
-                title: "Blog",
-                url: "/blog",
-            },
+            // {
+            //     title: "Help center",
+            //     url: "/help-center",
+            // },
+            // {
+            //     title: "Blog",
+            //     url: "/blog",
+            // },
         ],
     },
     {
         title: "SOCIAL",
         menu: [
             {
-                title: "Instagram",
-                icon: "instagram",
+                title: "Discord",
+                icon: "discord",
                 external: true,
                 url: "https://www.instagram.com/ui8net/",
             },
@@ -48,12 +48,18 @@ export const footerNavigation = [
                 external: true,
                 url: "https://twitter.com/ui8",
             },
-            {
-                title: "Facebook",
-                icon: "facebook",
-                external: true,
-                url: "https://www.facebook.com/ui8.net/",
-            },
+            // {
+            //     title: "Instagram",
+            //     icon: "instagram",
+            //     external: true,
+            //     url: "https://www.instagram.com/ui8net/",
+            // },
+            // {
+            //     title: "Facebook",
+            //     icon: "facebook",
+            //     external: true,
+            //     url: "https://www.facebook.com/ui8.net/",
+            // },
         ],
     },
 ];

@@ -13,7 +13,7 @@ const Footer = ({}: FooterProps) => (
         <div className={styles.body}>
             <div className={styles.details}>
                 <Logo className={styles.logo} />
-                <div className={styles.info}>Empower your creativity.</div>
+                <div className={styles.info}>Create whatever.</div>
             </div>
             <div className={styles.group}>
                 {footerNavigation.map((item, index) => (
@@ -50,16 +50,16 @@ const Footer = ({}: FooterProps) => (
         </div>
         <div className={styles.foot}>
             <div className={styles.copyright}>
-                Copyright © 2022 UI8 LLC. All rights reserved
+            Copyright © 2023. All rights reserved
             </div>
-            <div className={styles.cookies}>
+            {/* <div className={styles.cookies}>
                 We use cookies for better service.
                 <button
                     className={cn("button-stroke button-small", styles.button)}
                 >
                     ACCEPT
                 </button>
-            </div>
+            </div> */}
         </div>
     </footer>
 );

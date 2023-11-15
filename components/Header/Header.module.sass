@@ -5,6 +5,7 @@
     display: flex
     padding: 0 rem(40)
     z-index: 10
+    background: $n9
     +d
         padding: 0 rem(24)
     +t
@@ -32,6 +33,7 @@
             border-color: $o3
         .button
             border-color: $n3
+            background-color: $n11
             color: $n1
             svg
                 fill: $n1
@@ -87,6 +89,7 @@
             &:nth-child(1)
                 display: block
         .connect
+            color: $n0
             display: inline-flex
             +t
                 display: none
@@ -116,7 +119,7 @@
     align-items: center
     flex: 0 0 50%
     height: rem(96)
-    border-bottom: rem(1) solid $n3
+    border-bottom: rem(3) solid $n0
     transition: border-color .2s
     +t
         flex: auto
@@ -130,7 +133,6 @@
     &:nth-child(2)
         justify-content: flex-end
         padding-left: rem(32)
-        border-left: rem(1) solid $n3
         +t
             padding-left: 0
             border: none
@@ -143,10 +145,10 @@
 .link
     margin-left: rem(48)
     +button
-    color: $n7
+    color: $n10
     transition: color .2s
     &:hover
-        color: $s2
+        color: $n0
     &:nth-child(1)
         display: none
     &:nth-child(n+1)
@@ -228,6 +230,15 @@ button.close
     +t
         svg
             fill: $n7
+.button
+    background-color: $n11
+    box-shadow: 4px 6px 0px 0px #FFFFFF
+    padding: 12px, 32px, 12px, 32px
+    &:hover
+        background: $n12
+.search
+    &:hover
+        fill: $n0
 
 .overlay
     position: fixed
