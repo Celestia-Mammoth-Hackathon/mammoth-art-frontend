@@ -10,7 +10,7 @@ const Collection = ({ item }: CollectionProps) => (
     <Link href={item.url}>
         <a className={styles.collection}>
             <div className={styles.images}>
-                {item.images.slice(0, 3).map((image: any, index: number) => (
+                {item.images.slice(0, 1).map((image: any, index: number) => (
                     <div className={styles.image} key={index}>
                         <Image
                             src={image}
@@ -20,14 +20,14 @@ const Collection = ({ item }: CollectionProps) => (
                         />
                     </div>
                 ))}
-                <div
+                {/* <div
                     className={styles.counter}
                     style={{
                         backgroundColor: item.color,
                     }}
                 >
                     +{item.images.length - 3}
-                </div>
+                </div> */}
             </div>
             <div className={styles.details}>
                 <div className={styles.box}>
@@ -45,7 +45,7 @@ const Collection = ({ item }: CollectionProps) => (
                     </div>
                 </div>
                 <div className={styles.box}>
-                    <div className={styles.text}>Floor price</div>
+                    <div className={styles.text}>FLOOR PRICE</div>
                     <div className={styles.price}>{item.price}</div>
                 </div>
             </div>

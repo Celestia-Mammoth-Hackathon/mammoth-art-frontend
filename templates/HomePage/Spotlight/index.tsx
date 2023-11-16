@@ -3,6 +3,7 @@ import cn from "classnames";
 import styles from "./Spotlight.module.sass";
 import Tabs from "@/components/Tabs";
 import Card from "./Card";
+import Icon from "@/components/Icon";
 
 import { tabs, spotlight } from "@/mocks/spotlight";
 
@@ -15,8 +16,10 @@ const Spotlight = ({}: SpotlightProps) => {
         <div className={styles.spotlight}>
             <div className={styles.head}>
                 <div className={styles.details}>
-                    <div className={cn("h1", styles.title)}>Spotlight.</div>
-                    <div className={styles.info}>Projects you&apos;ll love</div>
+                    <div className={cn("h1", styles.title)}>Recent
+                        <span className={styles.dot}>.</span>
+                    </div>
+                    {/* <div className={styles.info}>Projects you&apos;ll love</div> */}
                 </div>
                 <Tabs
                     className={styles.tabs}
@@ -35,8 +38,9 @@ const Spotlight = ({}: SpotlightProps) => {
                 <button
                     className={cn("button-white button-counter", styles.button)}
                 >
-                    explorer more
-                    <span>109</span>
+                    Explore Recent
+                    <Icon name="arrow-right" className={styles.rightArrow}/>
+                    {/* <span>109</span> */}
                 </button>
             </div>
         </div>

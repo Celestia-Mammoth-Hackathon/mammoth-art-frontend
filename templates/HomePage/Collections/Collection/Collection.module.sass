@@ -15,6 +15,7 @@
     flex-wrap: wrap
     margin: rem(-8) rem(-4) 0
 
+    
 .image,
 .counter
     flex: 0 0 calc(33.333% - rem(8))
@@ -26,12 +27,12 @@
 
 .image
     position: relative
+    box-shadow: 4px 6px 0px 0px $n10
+    border: 2px solid $n10
     &:before
         content: ""
         display: block
         padding-bottom: 100%
-    img
-        border-radius: rem(16)
 
 .counter
     display: flex
@@ -58,6 +59,12 @@
         +title
 
 .subtitle
+    color: $n0
+    font-size: 18px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: -0.1em
+    text-align: left
     margin-bottom: rem(4)
     +body1
     +d
@@ -65,10 +72,15 @@
         +body1M
 
 .author
+    font-size: 16px
+    font-weight: 600
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
     display: flex
     align-items: center
     +title
-    color: $n7
+    color: $n10
 
 .avatar
     position: relative
@@ -76,14 +88,22 @@
     width: rem(32)
     height: rem(32)
     margin-right: rem(12)
-    img
-        border-radius: 50%
 
 .text
+    color: $n10
+    font-size: 16px
+    font-weight: 600
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
     margin-bottom: rem(4)
-    color: $n5
     +d
         margin-bottom: 0
 
 .price
-    color: $n7
+    color: $n0
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: right

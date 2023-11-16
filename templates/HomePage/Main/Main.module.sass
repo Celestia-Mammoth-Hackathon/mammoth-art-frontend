@@ -1,8 +1,10 @@
 @import @/styles/helpers
 
 .row
+    background: $n9
     display: flex
     padding: rem(48) rem(40)
+    padding-bottom: rem(64)
     +xl
         padding: rem(24) 0
     +w
@@ -38,6 +40,8 @@
         justify-content: space-between
         align-items: flex-start
         padding: rem(24) 0 rem(8)
+        padding-top: 0 !important
+        padding-bottom: 0 !important
         +xl
             padding: rem(8) rem(64)
         +w
@@ -45,6 +49,13 @@
         +t
             margin-top: rem(32)
             padding: 0
+
+.curated
+    border: 2px solid #8C8D8F
+    box-shadow: 4px 6px 0px 0px #8C8D8F
+    height: 495px
+    width: 650px
+    position: relative
 
 .arrow
     margin: rem(18) 0 0 rem(18)
@@ -66,3 +77,53 @@
 .wrapper
     position: relative
     z-index: 2
+
+.details
+    position: relative
+    z-index: 2
+    top: 240px
+    
+.title
+    font-size: 60px
+    font-weight: 700
+    line-height: 104px
+    text-align: left
+    margin-bottom: 48.5px
+    margin-top: 48.5px
+    color: $n0
+    
+.detailsTitle
+    font-size: 60px
+    font-weight: 700
+    line-height: 80px
+    letter-spacing: -0.02em
+    text-align: left
+    color: #F7FBFA
+    margin-left:16px
+    margin-bottom: 40px
+
+.button
+    margin-left: 16px
+    padding: 20px, 32px, 20px, 32px
+    background: $n9
+    box-shadow: 4px 6px 0px 0px $n0
+    height: 64px
+    width: 277px
+    &:hover
+        background: $n13
+        color: $n0
+
+.rightArrow
+    fill: $n0 !important
+
+.dot
+    color: $n11
+
+.head
+    display: flex
+    align-items: flex-end
+    margin-bottom: rem(40)
+    +d
+        align-items: flex-start
+    +m
+        display: block

@@ -2,7 +2,7 @@ export const curatedCollections = [
     {
         title: "Cute Planet",
         login: "tranmautritam",
-        price: "1.0 ETH",
+        price: "1.0 TIA",
         avatar: "/images/artists/artist-1.jpg",
         images: [
             "/images/collection/image-1.jpg",
@@ -19,7 +19,7 @@ export const curatedCollections = [
     {
         title: "UI8 all-access",
         login: "randomdash",
-        price: "1.2 ETH",
+        price: "1.2 TIA",
         avatar: "/images/artists/artist-2.jpg",
         images: [
             "/images/collection/image-4.jpg",
@@ -40,7 +40,7 @@ export const curatedCollections = [
     {
         title: "Beyond the Dream",
         login: "randomdash",
-        price: "2.4 ETH",
+        price: "2.4 TIA",
         avatar: "/images/artists/artist-3.jpg",
         images: [
             "/images/collection/image-7.jpg",
@@ -65,7 +65,7 @@ export const curatedCollections = [
     {
         title: "Beyond the Dream",
         login: "randomdash",
-        price: "5.4 ETH",
+        price: "5.4 TIA",
         avatar: "/images/artists/artist-4.jpg",
         images: [
             "/images/collection/image-10.jpg",
@@ -83,7 +83,7 @@ export const curatedCollections = [
     {
         title: "Cute Planet",
         login: "tranmautritam",
-        price: "1.0 ETH",
+        price: "1.0 TIA",
         avatar: "/images/artists/artist-1.jpg",
         images: [
             "/images/collection/image-1.jpg",
@@ -100,7 +100,7 @@ export const curatedCollections = [
     {
         title: "UI8 all-access",
         login: "randomdash",
-        price: "1.2 ETH",
+        price: "1.2 TIA",
         avatar: "/images/artists/artist-2.jpg",
         images: [
             "/images/collection/image-4.jpg",
@@ -121,7 +121,7 @@ export const curatedCollections = [
     {
         title: "Beyond the Dream",
         login: "randomdash",
-        price: "2.4 ETH",
+        price: "2.4 TIA",
         avatar: "/images/artists/artist-3.jpg",
         images: [
             "/images/collection/image-7.jpg",
@@ -146,7 +146,7 @@ export const curatedCollections = [
     {
         title: "Beyond the Dream",
         login: "randomdash",
-        price: "5.4 ETH",
+        price: "5.4 TIA",
         avatar: "/images/artists/artist-4.jpg",
         images: [
             "/images/collection/image-10.jpg",
@@ -164,7 +164,7 @@ export const curatedCollections = [
     {
         title: "Cute Planet",
         login: "tranmautritam",
-        price: "1.0 ETH",
+        price: "1.0 TIA",
         avatar: "/images/artists/artist-1.jpg",
         images: [
             "/images/collection/image-1.jpg",
@@ -181,7 +181,7 @@ export const curatedCollections = [
     {
         title: "UI8 all-access",
         login: "randomdash",
-        price: "1.2 ETH",
+        price: "1.2 TIA",
         avatar: "/images/artists/artist-2.jpg",
         images: [
             "/images/collection/image-4.jpg",
@@ -202,7 +202,7 @@ export const curatedCollections = [
     {
         title: "Beyond the Dream",
         login: "randomdash",
-        price: "2.4 ETH",
+        price: "2.4 TIA",
         avatar: "/images/artists/artist-3.jpg",
         images: [
             "/images/collection/image-7.jpg",
@@ -227,7 +227,7 @@ export const curatedCollections = [
     {
         title: "Beyond the Dream",
         login: "randomdash",
-        price: "5.4 ETH",
+        price: "5.4 TIA",
         avatar: "/images/artists/artist-4.jpg",
         images: [
             "/images/collection/image-10.jpg",
@@ -245,7 +245,7 @@ export const curatedCollections = [
     {
         title: "Cute Planet",
         login: "tranmautritam",
-        price: "1.0 ETH",
+        price: "1.0 TIA",
         avatar: "/images/artists/artist-1.jpg",
         images: [
             "/images/collection/image-1.jpg",
@@ -266,7 +266,7 @@ export const profileCollections = [
         title: "Escape II",
         image: "/images/collection/collection-1.jpg",
         balance: 22.4,
-        floor: "1.00 ETH",
+        floor: "1.00 TIA",
         category: "ESCP",
         categoryImage: "/images/collection/collection-5.jpg",
         users: [
@@ -280,7 +280,7 @@ export const profileCollections = [
         title: "Escape II",
         image: "/images/collection/collection-2.jpg",
         balance: 45.2,
-        floor: "14.34 ETH",
+        floor: "14.34 TIA",
         category: "ESCP",
         categoryImage: "/images/collection/collection-4.jpg",
         users: ["/images/users/avatar-4.jpg", "/images/users/avatar-5.jpg"],
@@ -290,7 +290,7 @@ export const profileCollections = [
         title: "Escape II",
         image: "/images/collection/collection-3.jpg",
         balance: -9.4,
-        floor: "3.56 ETH",
+        floor: "3.56 TIA",
         category: "ESCP",
         categoryImage: "/images/collection/collection-2.jpg",
         users: [
@@ -304,7 +304,7 @@ export const profileCollections = [
         title: "Escape II",
         image: "/images/collection/collection-4.jpg",
         balance: 55.7,
-        floor: "23.02 ETH",
+        floor: "23.02 TIA",
         category: "ESCP",
         categoryImage: "/images/collection/collection-1.jpg",
         users: [
@@ -318,7 +318,7 @@ export const profileCollections = [
         title: "Escape II",
         image: "/images/collection/collection-5.jpg",
         balance: -6.8,
-        floor: "5.44 ETH",
+        floor: "5.44 TIA",
         category: "ESCP",
         categoryImage: "/images/collection/collection-1.jpg",
         users: [
@@ -334,7 +334,7 @@ export const activityCollections = [
     {
         title: "Cute Robot",
         login: "tranmautritam",
-        price: "1.0 ETH",
+        price: "1.0 TIA",
         avatar: "/images/artists/artist-1.jpg",
         images: [
             "/images/collection/photo-1.jpg",
@@ -351,7 +351,7 @@ export const activityCollections = [
     {
         title: "Cute Planet",
         login: "moyoshiro",
-        price: "2.8 ETH",
+        price: "2.8 TIA",
         avatar: "/images/artists/artist-2.jpg",
         images: [
             "/images/collection/photo-4.jpg",
@@ -372,7 +372,7 @@ export const activityCollections = [
     {
         title: "Cute Planet",
         login: "kohaku",
-        price: "4.9 ETH",
+        price: "4.9 TIA",
         avatar: "/images/artists/artist-3.jpg",
         images: [
             "/images/collection/photo-7.jpg",
@@ -398,7 +398,7 @@ export const activityCollections = [
     {
         title: "Cute Planet",
         login: "moyoshiro",
-        price: "0.3 ETH",
+        price: "0.3 TIA",
         avatar: "/images/artists/artist-4.jpg",
         images: [
             "/images/collection/photo-10.jpg",
@@ -414,7 +414,7 @@ export const activityCollections = [
     {
         title: "Cute Robot",
         login: "tranmautritam",
-        price: "1.0 ETH",
+        price: "1.0 TIA",
         avatar: "/images/artists/artist-5.jpg",
         images: [
             "/images/collection/photo-13.jpg",
@@ -435,7 +435,7 @@ export const activityCollections = [
     {
         title: "Cute Planet",
         login: "randomdash",
-        price: "14.5 ETH",
+        price: "14.5 TIA",
         avatar: "/images/artists/artist-6.jpg",
         images: [
             "/images/collection/photo-16.jpg",

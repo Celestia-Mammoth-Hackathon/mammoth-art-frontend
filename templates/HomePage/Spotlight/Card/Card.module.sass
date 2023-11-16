@@ -10,14 +10,14 @@
 .preview
     position: relative
     margin-bottom: rem(24)
-    border-radius: rem(20)
+    border: 2px solid $n10
+    box-shadow: 4px 6px 0px 0px $n10
     overflow: hidden
     &:before
         content: ""
         display: block
         padding-bottom: 100%
     img
-        border-radius: rem(20)
         transition: transform 1s
     &:hover
         img
@@ -33,6 +33,11 @@
         display: flex
 
 .title
+    font-size: 18px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
     margin-bottom: rem(8)
     +body1
     +w
@@ -43,8 +48,13 @@
         margin-bottom: rem(8)
 
 .price
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
     +base
-    color: $n1
+    color: $n10
     +m
         +baseS
     span

@@ -14,13 +14,13 @@ const HomePage = () => {
     return (
         <Layout layoutNoOverflow noRegistration>
             <Main />
-            <Hot />
-            <Dream />
+            {/* <Hot />
+            <Dream /> */}
             <Collections />
-            <Auctions items={auctions} />
+            {/* <Auctions items={auctions} /> */}
             <Spotlight />
-            <Creativity />
-            <Newsletter />
+            {/* <Creativity /> */}
+            {/* <Newsletter /> */}
         </Layout>
     );
 };

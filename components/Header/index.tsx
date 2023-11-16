@@ -83,15 +83,8 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             
                         </div>
                         <div className={styles.col}>
-                            <Discover
-                                className={styles.discover}
-                                light={visibleProfile || light}
-                            />
-                            <Search
-                                className={styles.search}
-                                result={resultSearch}
-                                light={visibleProfile || light}
-                            />
+
+                            
                             <div className={styles.navigation}>
                                 {menu.map((link, index) => (
                                     <Link href={link.url} key={index}>
@@ -101,6 +94,11 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     </Link>
                                 ))}
                             </div>
+                            <Search
+                                className={styles.search}
+                                result={resultSearch}
+                                light={visibleProfile || light}
+                            />
                             <Link href="/create">
                                 <a
                                     className={cn(

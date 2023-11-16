@@ -12,7 +12,9 @@ type CollectionsProps = {};
 
 const Collections = ({}: CollectionsProps) => (
     <div className={styles.collections}>
-        <div className={cn("h1", styles.title)}>Curated collections.</div>
+        <div className={cn("h1", styles.title)}>Explore
+        <span style={{ color: '#FF6B6B' }}>.</span>
+        </div>
         <div className={styles.wrapper}>
             <Swiper
                 navigation={true}

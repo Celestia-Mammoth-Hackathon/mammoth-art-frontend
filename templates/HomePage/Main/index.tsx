@@ -2,8 +2,9 @@ import cn from "classnames";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import styles from "./Main.module.sass";
-import Arrow from "@/components/Arrow";
-import Item from "./Item";
+import Image from "@/components/Image";
+import { curatedArtworks } from "@/mocks/artworks";
+import Icon from "@/components/Icon";
 
 const list = [
     {
@@ -41,10 +42,12 @@ const Main = ({}: MainProps) => (
     <>
         <div className={styles.row}>
             <div className={styles.col}>
-                <h1 className={cn("hero", styles.title)}>Curated Artwork.</h1>
-                <Arrow className={styles.arrow} />
+                <h1 className={cn("hero", styles.title)}>Curated Artwork
+                <span className={styles.dot}>.</span>
+                </h1>
+                {/* <Arrow className={styles.arrow} /> */}
             </div>
-            <div className={styles.col}>
+            {/* <div className={styles.col}>
                 <div className={styles.content}>
                     We are laying the groundwork for web3 — the next generation
                     of the internet full of limitless possibilities.
@@ -54,9 +57,41 @@ const Main = ({}: MainProps) => (
                         start your search
                     </a>
                 </Link>
-            </div>
+            </div> */}
         </div>
-        <div className={styles.wrapper}>
+        <div className={styles.row}>
+            
+            {curatedArtworks.map((item, index) => (
+                <div className={styles.col} key={index}>
+                    <div className={styles.curated}>
+                        <Image src={item.avatar} layout="fill" objectFit="cover" alt="Slide" />
+                        {/* <div className={styles.row}> */}
+                            <div className={styles.details}>
+                                <div className={styles.head}>
+                                    <div className={cn("h1", styles.detailsTitle)}>{item.title}</div>
+                                </div>
+                                <div className={styles.btns}>
+                                    <Link href="/nft">
+                                        <a className={cn("button-stroke-white", styles.button)}>
+                                            <span>View NFT</span>
+                                            <Icon name="arrow-right" className={styles.rightArrow}/>
+                                        </a>
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    {/* </div> */}
+                </div>
+                ))}
+                    {/* <Image
+                        src={item.nft}
+                        layout="fill"
+                        objectFit="cover"
+                        alt="NFT"
+                    /> */}
+            
+        </div>
+        {/* <div className={styles.wrapper}>
             <Swiper
                 navigation={true}
                 loop={false}
@@ -82,7 +117,7 @@ const Main = ({}: MainProps) => (
                     </SwiperSlide>
                 ))}
             </Swiper>
-        </div>
+        </div> */}
     </>
 );
 
