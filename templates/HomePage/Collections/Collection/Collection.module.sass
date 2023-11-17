@@ -8,7 +8,9 @@
     color: $n7
     transition: color .2s
     &:hover
-        color: $s2
+        .subtitle
+            color: $n11
+    
 
 .images
     display: flex
@@ -28,12 +30,16 @@
 .image
     position: relative
     box-shadow: 4px 6px 0px 0px $n10
-    border: 2px solid $n10
+    border: 2px solid $n0
     &:before
         content: ""
         display: block
         padding-bottom: 100%
-
+    img
+        transition: transform 1s
+    &:hover
+        img
+            transform: scale(1.05)
 .counter
     display: flex
     justify-content: center
@@ -70,6 +76,8 @@
     +d
         margin-top: rem(8)
         +body1M
+    &:hover
+        color: $n11
 
 .author
     font-size: 16px

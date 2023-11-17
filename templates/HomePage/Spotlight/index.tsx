@@ -21,13 +21,13 @@ const Spotlight = ({}: SpotlightProps) => {
                     </div>
                     {/* <div className={styles.info}>Projects you&apos;ll love</div> */}
                 </div>
-                <Tabs
+                {/* <Tabs
                     className={styles.tabs}
                     items={tabs}
                     value={sorting}
                     setValue={setSorting}
                     dark
-                />
+                /> */}
             </div>
             <div className={styles.list}>
                 {spotlight.map((card, index) => (

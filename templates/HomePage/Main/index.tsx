@@ -5,6 +5,7 @@ import styles from "./Main.module.sass";
 import Image from "@/components/Image";
 import { curatedArtworks } from "@/mocks/artworks";
 import Icon from "@/components/Icon";
+import TimeCounter from "@/components/TimeCounter";
 
 const list = [
     {
@@ -38,87 +39,57 @@ import "swiper/css/scrollbar";
 
 type MainProps = {};
 
+const item = curatedArtworks[0]
+
 const Main = ({}: MainProps) => (
-    <>
-        <div className={styles.row}>
-            <div className={styles.col}>
-                <h1 className={cn("hero", styles.title)}>Curated Artwork
-                <span className={styles.dot}>.</span>
-                </h1>
-                {/* <Arrow className={styles.arrow} /> */}
+    <div className={styles.slide}>
+    <Image src={item.image} layout="fill" objectFit="cover" alt="Slide" />
+    <div className={styles.row}>
+        <div className={styles.details}>
+            <div className={styles.head}>
+                <div className={cn("h1", styles.title)}>{item.title}</div>
+                
             </div>
-            {/* <div className={styles.col}>
-                <div className={styles.content}>
-                    We are laying the groundwork for web3 — the next generation
-                    of the internet full of limitless possibilities.
-                </div>
-                <Link href="/discover">
-                    <a className={cn("button-empty", styles.search)}>
-                        start your search
+            <div className={styles.btns}>
+                <Link href="/nft">
+                    <a className={cn("button-stroke-white", styles.viewButton)}>
+                        <span>View Collection</span>
+                        <Icon name="arrow-right"  className={styles.arrow}/>
                     </a>
                 </Link>
-            </div> */}
+                <Link href="/place-a-bid">
+                    <a className={cn("button-white", styles.generateButton)}>
+                        Generate
+                    </a>
+                </Link>
+            </div>
         </div>
-        <div className={styles.row}>
-            
-            {curatedArtworks.map((item, index) => (
-                <div className={styles.col} key={index}>
-                    <div className={styles.curated}>
-                        <Image src={item.avatar} layout="fill" objectFit="cover" alt="Slide" />
-                        {/* <div className={styles.row}> */}
-                            <div className={styles.details}>
-                                <div className={styles.head}>
-                                    <div className={cn("h1", styles.detailsTitle)}>{item.title}</div>
-                                </div>
-                                <div className={styles.btns}>
-                                    <Link href="/nft">
-                                        <a className={cn("button-stroke-white", styles.button)}>
-                                            <span>View NFT</span>
-                                            <Icon name="arrow-right" className={styles.rightArrow}/>
-                                        </a>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    {/* </div> */}
-                </div>
-                ))}
-                    {/* <Image
-                        src={item.nft}
+        <div className={styles.authorBox}>
+            <div className={styles.author}>
+                <div className={styles.avatar}>
+                    <Image
+                        src={item.avatar}
                         layout="fill"
                         objectFit="cover"
-                        alt="NFT"
-                    /> */}
-            
+                        alt="Avatar"
+                    />
+                </div>
+                @{item.login}
+            </div>
+            <div className={styles.box}>
+                <div className={styles.info}>Minting ends in</div>
+                <TimeCounter
+                    className={styles.timer}
+                    classTimerItem={styles.timerItem}
+                    classTimerValue={styles.timerValue}
+                    classTimerText={styles.timerText}
+                    time={item.time}
+                />
+            </div>
         </div>
-        {/* <div className={styles.wrapper}>
-            <Swiper
-                navigation={true}
-                loop={false}
-                modules={[Navigation, Scrollbar]}
-                className="vertical-swiper"
-                direction="vertical"
-                scrollbar={{
-                    hide: true,
-                }}
-                speed={700}
-                breakpoints={{
-                    320: {
-                        direction: "horizontal",
-                    },
-                    1024: {
-                        direction: "vertical",
-                    },
-                }}
-            >
-                {list.map((x, index) => (
-                    <SwiperSlide key={index}>
-                        <Item item={x} key={index} />
-                    </SwiperSlide>
-                ))}
-            </Swiper>
-        </div> */}
-    </>
+       
+    </div>
+</div>
 );
 
 export default Main;

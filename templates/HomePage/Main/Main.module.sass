@@ -1,123 +1,52 @@
 @import @/styles/helpers
 
-.row
-    background: $n9
-    display: flex
-    padding: rem(48) rem(40)
-    padding-bottom: rem(64)
-    +xl
-        padding: rem(24) 0
-    +w
-        padding: rem(32) rem(8)
-    +d
-        padding: rem(16) rem(8)
-    +t
-        display: block
-        padding: rem(48) rem(24)
-
-.col
-    flex: 0 0 calc(50% - rem(80))
-    width: calc(50% - rem(80))
-    margin: 0 rem(40)
-    +xl
-        flex: 0 0 50%
-        width: 50%
-        margin: 0
-        padding: 0 rem(64)
-    +w
-        padding: 0 rem(32)
-    +t
-        width: 100%
-        padding: 0
-    &:nth-child(1)
-        display: flex
-        justify-content: space-between
-        +m
-            display: block
-    &:nth-child(2)
-        display: flex
-        flex-direction: column
-        justify-content: space-between
-        align-items: flex-start
-        padding: rem(24) 0 rem(8)
-        padding-top: 0 !important
-        padding-bottom: 0 !important
-        +xl
-            padding: rem(8) rem(64)
-        +w
-            padding: rem(8) rem(32)
-        +t
-            margin-top: rem(32)
-            padding: 0
-
-.curated
-    border: 2px solid #8C8D8F
-    box-shadow: 4px 6px 0px 0px #8C8D8F
-    height: 495px
-    width: 650px
+.slide
     position: relative
-
-.arrow
-    margin: rem(18) 0 0 rem(18)
-    +w
-        margin-top: rem(12)
-    +m
-        margin: rem(20) 0 0
-
-.content
-    +body2
-    color: #686A6C
-    +w
-        +body2M
-
-.search
+    display: flex
+    align-items: flex-end
+    min-height: calc(100vh - rem(96))
+    background: $n1
+    box-sizing: border-box
     +t
-        margin-top: rem(24)
+        min-height: rem(600)
+    +m
+        min-height: calc(100vh - rem(88))
+    &:after
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 23.41%, rgba(0, 0, 0, 0.54) 100%)
 
-.wrapper
+.row
     position: relative
     z-index: 2
+    display: flex
+    align-items: flex-end
+    width: 100%
+    padding: rem(80)
+    +xl
+        padding: rem(64)
+    +w
+        padding: rem(40)
+    +t
+        padding: rem(40) rem(24)
+    +m
+        padding: rem(24)
 
 .details
-    position: relative
-    z-index: 2
-    top: 240px
-    
-.title
-    font-size: 60px
-    font-weight: 700
-    line-height: 104px
-    text-align: left
-    margin-bottom: 48.5px
-    margin-top: 48.5px
-    color: $n0
-    
-.detailsTitle
-    font-size: 60px
-    font-weight: 700
-    line-height: 80px
-    letter-spacing: -0.02em
-    text-align: left
-    color: #F7FBFA
-    margin-left:16px
-    margin-bottom: 40px
-
-.button
-    margin-left: 16px
-    padding: 20px, 32px, 20px, 32px
-    background: $n9
-    box-shadow: 4px 6px 0px 0px $n0
-    height: 64px
-    width: 277px
-    &:hover
-        background: $n13
-        color: $n0
-
-.rightArrow
-    fill: $n0 !important
-
-.dot
-    color: $n11
+    width: 100%
+    max-width: rem(664)
+    margin-right: auto
+    +d
+        flex-grow: 1
+        max-width: rem(600)
+        padding-right: rem(40)
+    +t
+        max-width: 100%
+        padding-right: 0
 
 .head
     display: flex
@@ -127,3 +56,101 @@
         align-items: flex-start
     +m
         display: block
+
+.title
+    margin-right: auto
+    color: $n1
+    +d
+        padding-top: rem(8)
+        +h1S
+    +m
+        padding-top: 0
+
+.author
+    margin-left: auto !important
+    border: 2px solid $n0
+    display: inline-flex
+    align-items: center
+    flex-shrink: 0
+    margin: 0 0 rem(8) rem(24)
+    margin-bottom: 250px !important
+    padding: rem(12)
+    background: $n8
+    width: 230px
+    height: 64px
+    +title
+    color: $n1
+    +m
+        margin: rem(12) 0 0
+
+.avatar
+    position: relative
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(16)
+    img
+        border-radius: rem(8)
+
+.btns
+    display: flex
+    margin: 0 rem(-12)
+
+.viewButton
+    background: $n9
+    border: 2px solid #F7FBFA
+    box-shadow: 4px 6px 0px 0px $n0
+    flex: 1 1 auto
+    margin: 0 rem(12)
+    +m
+        padding: 0 rem(8)
+    &:hover
+        background: $n13
+        color: $n0
+        .arrow
+            fill: $n0
+
+.generateButton
+    color: $n0
+    background: $n11
+    border: 2px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    flex: 1 1 auto
+    margin: 0 rem(12)
+    +m
+        padding: 0 rem(8)
+    &:hover
+        color: $n0
+        background: $n12
+.authorBox 
+    display: flex
+    flex-direction: column
+.box
+    flex-shrink: 0
+    width: 480px
+    height: 184px
+    padding: rem(28) rem(40)
+    border: 2px solid $n0
+    box-shadow: 0px 16px 40px -8px #0000001F
+    background: $n9
+    +w
+        width: rem(360)
+        padding: rem(20) rem(24)
+    +d
+        width: rem(320)
+    +t
+        display: none
+
+.info
+    margin-bottom: rem(12)
+    +base
+    color: $n10
+.timer
+    color: $n0
+    .timerItem
+        flex: 1 1 auto
+    .timerValue
+        +w
+            font-size: rem(48)
+            line-height: rem(48)
+    .timerText
+        color: $n10
