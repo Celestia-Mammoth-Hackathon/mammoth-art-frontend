@@ -2,6 +2,7 @@
 
 .details
     position: sticky
+    background: $n9
     top: 0
     display: flex
     flex-direction: column
@@ -47,6 +48,7 @@
         margin-bottom: rem(32)
 
 .user
+    color: $n0
     margin-bottom: rem(8)
     +m
         +h2M
@@ -57,7 +59,7 @@
 
 .login
     +body1
-    color: $n5
+    color: $n0
     +d
         +body1M
 
@@ -67,7 +69,7 @@
     margin-left: rem(20)
     padding: rem(8) rem(12)
     border-radius: rem(12)
-    background: $a2
+    background: $a6
     +base
     +d
         +baseM
@@ -92,13 +94,13 @@
     margin: 0 rem(20)
     cursor: pointer
     transition: color .2s
+    color: $n0
     +m
         flex: 0 0 auto
         width: auto
         margin: 0
-    &:hover,
-    &.active
-        color: $s2
+    &:hover
+        color: $n11 !important
 
 .counter
     +d

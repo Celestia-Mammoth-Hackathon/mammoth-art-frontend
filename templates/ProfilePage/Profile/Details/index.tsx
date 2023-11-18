@@ -48,7 +48,7 @@ const Details = ({
                             </div>
                         </div>
                     </div>
-                    <Follow className={styles.follow} value={false} dark />
+                    {/* <Follow className={styles.follow} value={false} dark /> */}
                 </div>
                 <div className={styles.actions}>
                     {actions.map((action, index) => (

@@ -40,7 +40,7 @@ const Layout = ({
     return (
         <>
             <Head>
-                <title>Crypter 2</title>
+                <title>MRKT</title>
             </Head>
             <div
                 className={cn(styles.layout, {

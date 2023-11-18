@@ -44,7 +44,7 @@ const Contacts = ({ links, socials }: ContactsProps) => (
                 </div>
             </div>
         </div>
-        <div className={styles.socials}>
+        {/* <div className={styles.socials}>
             {socials.map((social, index) => (
                 <a
                     className={styles.social}
@@ -56,7 +56,7 @@ const Contacts = ({ links, socials }: ContactsProps) => (
                     <Icon name={social.icon} />
                 </a>
             ))}
-        </div>
+        </div> */}
     </div>
 );
 

@@ -19,7 +19,7 @@ const Tokens = ({ items, titleUsers, users, theme, setTheme }: TokensProps) => {
 
     return (
         <>
-            <div className={styles.head}>
+            {/* <div className={styles.head}>
                 <Users
                     classUsersItem={styles.user}
                     classUsersCounter={styles.counter}
@@ -35,7 +35,7 @@ const Tokens = ({ items, titleUsers, users, theme, setTheme }: TokensProps) => {
                     setTheme={setTheme}
                     dark={theme}
                 />
-            </div>
+            </div> */}
             <div
                 className={cn(styles.tokens, {
                     [styles.list]: sorting === "list",

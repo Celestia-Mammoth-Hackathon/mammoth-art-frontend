@@ -57,31 +57,29 @@
         top: 0
         left: 0
         right: 0
-    &:before
-        bottom: rem(-1)
-        background: $grd
-        opacity: 0
-        transition: opacity .2s
+
     &:after
         bottom: 0
-        background: $n8
+        background: $a5
         transition: background .2s
     &:hover,
     &.active
         color: $n1
+        .counter
+            box-shadow: 2px 4px 0px 0px $n0 !important
     &.active
         color: $n1
         &:before
             opacity: 1
     &:nth-child(4n+1)
         .counter
-            background: $a4
+            background: $n9
     &:nth-child(4n+2)
         .counter
-            background: $a2
+            background: $n9
     &:nth-child(4n+3)
         .counter
-            background: $a3
+            background: $n9
     &:nth-child(4n+4)
         .counter
             background: $a1
@@ -94,5 +92,6 @@
 .counter
     margin-left: rem(8)
     padding: rem(2) rem(8)
-    border-radius: rem(8)
-    color: $n7
+    border: 1px solid $n0
+    box-shadow: 2px 4px 0px 0px $n10
+    color: $n0

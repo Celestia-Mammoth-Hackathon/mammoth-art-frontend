@@ -35,9 +35,9 @@ const Tabs = ({ className, items, value, setValue, dark }: TabsProps) => {
                     >
                         <span className={styles.title}>{item.title}</span>
                         {item.counter && (
-                            <span className={styles.counter}>
+                            <div className={styles.counter}>
                                 {item.counter}
-                            </span>
+                            </div>
                         )}
                     </button>
                 ))}

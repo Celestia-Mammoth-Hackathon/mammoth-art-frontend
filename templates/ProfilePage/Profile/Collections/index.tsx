@@ -14,10 +14,10 @@ type CollectionsProps = {
 const Collections = ({ items, users, theme, setTheme }: CollectionsProps) => {
     return (
         <>
-            <div className={styles.head}>
+            {/* <div className={styles.head}>
                 <Users title="Collected by" items={users} dark={theme} border />
                 <Actions theme={theme} setTheme={setTheme} dark={theme} />
-            </div>
+            </div> */}
             <div className={styles.collections}>
                 {items.map((token: any, index: number) => (
                     <Collection
