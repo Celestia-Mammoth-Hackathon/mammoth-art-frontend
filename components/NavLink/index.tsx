@@ -30,7 +30,7 @@ const NavLink = ({
                     {children}
                     <span className={styles.hover}>{children}</span>
                 </div>
-                <Icon name="arrow-right" />
+                <Icon name="arrow-right" className={styles.icon}/>
             </a>
         </Link>
     );

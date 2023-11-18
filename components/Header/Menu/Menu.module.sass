@@ -1,6 +1,8 @@
 @import @/styles/helpers
 
 .burger
+    background: #FFFFFF
+    filter: invert(1)
     position: relative
     display: flex
     flex-direction: column
@@ -73,11 +75,17 @@ div.modal
         padding: rem(56) rem(24) rem(24)
     &:nth-child(1)
         justify-content: flex-end
-        background: $a2
+        background: $a5
         +t
             display: none
 
 .title
+    font-size: 64px
+    font-weight: 700
+    line-height: 64px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0 
     margin-bottom: rem(40)
     +xl
         +h1M
@@ -98,17 +106,17 @@ div.modal
     flex: 1 1 auto
     height: rem(56)
     margin: 0 rem(12)
-    border-radius: rem(12)
-    background: $n1
+    border: 1px solid $n0
+    background: $n9
     transition: background .2s
     +d
         margin: 0 rem(6)
         border-radius: rem(8)
     svg
-        fill: $n8
+        fill: $n0
         transition: fill .2s
     &:hover
-        background: $n8
+        background: $n13
         svg
             fill: $n1
 
@@ -119,7 +127,7 @@ div.modal
     +w
         margin: auto rem(-40)
     +m
-        margin: auto rem(-24)
+        margin: 0 rem(-24)
 
 .link
     padding: 2vh rem(80)
@@ -137,6 +145,8 @@ div.modal
     +m
         padding: 2vh rem(24)
         +h4S
+    &:hover
+        background-image: $n11
 
 .info
     margin: rem(32) 0
@@ -151,18 +161,20 @@ div.modal
     display: flex
     +d
         margin: 0 rem(-10)
+        margin-top: auto
     +m
         display: block
         margin: 0
+        margin-top: auto
 
 .button
+    width: 100%
+    box-shadow: 4px 6px 0px 0px $n0
+    background: $n11
     +d
-        flex: 0 0 calc(50% - rem(20))
-        width: calc(50% - rem(20))
         margin: 0 rem(10)
         padding: 0 rem(16)
     +m
-        width: 100%
         margin: 0
     &:not(:last-child)
         margin-right: rem(20)
@@ -170,3 +182,8 @@ div.modal
             margin-right: rem(10)
         +m
             margin: 0 0 rem(20)
+    &:hover
+        background: $n12
+
+.text 
+    color: $n0

@@ -9,21 +9,21 @@ import Search from "../Search";
 
 const socials = [
     {
-        icon: "instagram-fat",
+        icon: "discord-fat",
         url: "https://www.instagram.com/ui8net/",
     },
     {
         icon: "twitter-fat",
         url: "https://twitter.com/ui8",
     },
-    {
-        icon: "facebook-fat",
-        url: "https://www.facebook.com/ui8.net/",
-    },
-    {
-        icon: "linkedin-fat",
-        url: "https://www.linkedin.com/company/ui8",
-    },
+    // {
+    //     icon: "facebook-fat",
+    //     url: "https://www.facebook.com/ui8.net/",
+    // },
+    // {
+    //     icon: "linkedin-fat",
+    //     url: "https://www.linkedin.com/company/ui8",
+    // },
 ];
 
 const menu = [
@@ -36,17 +36,21 @@ const menu = [
         url: "/create",
     },
     {
-        title: "Feed",
-        url: "/feed",
-    },
-    {
-        title: "Help center",
-        url: "/help",
-    },
-    {
-        title: "Blog",
+        title: "Docs",
         url: "/blog",
     },
+    // {
+    //     title: "Feed",
+    //     url: "/feed",
+    // },
+    // {
+    //     title: "Help center",
+    //     url: "/help",
+    // },
+    // {
+    //     title: "Blog",
+    //     url: "/blog",
+    // },
 ];
 
 type MenuProps = {
@@ -76,7 +80,7 @@ const Menu = ({ classBurger, resultSearch }: MenuProps) => {
                 <div className={styles.row}>
                     <div className={styles.col}>
                         <div className={cn("h1", styles.title)}>
-                            Join our community
+                            Create Anything.
                         </div>
                         <div className={styles.socials}>
                             {socials.map((social, index) => (
@@ -111,11 +115,19 @@ const Menu = ({ classBurger, resultSearch }: MenuProps) => {
                                 </NavLink>
                             ))}
                         </div>
-                        <div className={cn("h4", styles.info)}>
+                        {/* <div className={cn("h4", styles.info)}>
                             Download app
-                        </div>
+                        </div> */}
                         <div className={styles.btns}>
                             <a
+                                className={cn("button-white", styles.button)}
+                                href="https://ui8.net/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                            >
+                                <span className={styles.text}>CONNECT WALLET</span>
+                            </a>
+                            {/* <a
                                 className={cn("button", styles.button)}
                                 href="https://ui8.net/"
                                 target="_blank"
@@ -132,7 +144,7 @@ const Menu = ({ classBurger, resultSearch }: MenuProps) => {
                             >
                                 <span>google play</span>
                                 <Icon name="google-play" />
-                            </a>
+                            </a> */}
                         </div>
                     </div>
                 </div>

@@ -16,7 +16,7 @@ import { resultSearch } from "@/mocks/resultSearch";
 
 const menu = [
     {
-        title: "Discover",
+        title: "DISCOVER",
         url: "/discover",
     },
     // {
@@ -83,8 +83,32 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             
                         </div>
                         <div className={styles.col}>
-
-                            
+                            <Link href="/create">
+                                {/* <a
+                                    className={cn(
+                                        "button-stroke button-medium",
+                                        styles.button,
+                                        styles.create
+                                    )}
+                                > */}
+                                    <div className={styles.create}>
+                                        <span className={cn(styles.link, styles.createLink)}>CREATE</span>
+                                    </div>
+                                    
+                                    {/* <Icon name="plus" />
+                                </a> */}
+                            </Link>
+                            <Link href="/create">
+                                <a
+                                    className={cn(
+                                        "button-stroke button-medium",
+                                        styles.button,
+                                        styles.createButton
+                                    )}
+                                >
+                                    <Icon name="plus" />
+                                </a>
+                            </Link>
                             <div className={styles.navigation}>
                                 {menu.map((link, index) => (
                                     <Link href={link.url} key={index}>
@@ -99,18 +123,6 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 result={resultSearch}
                                 light={visibleProfile || light}
                             />
-                            <Link href="/create">
-                                <a
-                                    className={cn(
-                                        "button-stroke button-medium",
-                                        styles.button,
-                                        styles.create
-                                    )}
-                                >
-                                    <span>create</span>
-                                    <Icon name="plus" />
-                                </a>
-                            </Link>
                             <button
                                 className={cn(
                                     "button-stroke button-medium",
@@ -121,7 +133,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             >
                                 connect wallet
                             </button>
-                            <Link href="/notification">
+                            {/* <Link href="/notification">
                                 <a
                                     className={cn(
                                         styles.notification,
@@ -130,7 +142,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 >
                                     <Icon name="flash" />
                                 </a>
-                            </Link>
+                            </Link> */}
                             <Profile
                                 className={styles.profile}
                                 onOpen={() =>
@@ -139,10 +151,10 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 onClose={() => setVisibleProfile(false)}
                                 visible={visibleProfile}
                             />
-                            {/* <Menu
+                            <Menu
                                 classBurger={styles.burger}
                                 resultSearch={resultSearch}
-                            /> */}
+                            />
                         </div>
                     </>
                 )}

@@ -11,15 +11,6 @@
         padding: 0 rem(24)
     +t
         height: rem(96)
-        &:before
-            content: ""
-            position: absolute
-            left: rem(24)
-            right: rem(24)
-            bottom: 0
-            height: rem(1)
-            background: $n3
-            transition: background .2s
     +m
         height: rem(88)
     .logo
@@ -76,9 +67,11 @@
             display: none
         .profile,
         .notification,
-        .create
+        .create,
+        .createButton
             display: none
         .navigation
+            margin-right: rem(96)
             +xl
                 display: flex
             +t
@@ -140,21 +133,22 @@
 .navigation
     display: flex
     margin-right: rem(96)
-    +xl
+    +t
         display: none
 
+
 .link
-    margin-left: rem(48)
     +button
     color: $n10
     transition: color .2s
     &:hover
         color: $n0
-    &:nth-child(1)
-        display: none
-    &:nth-child(n+1)
-        +d
-            display: none
+
+.createLink
+    color: $n11
+    cursor: pointer
+    &:hover
+        color: $n12
 
 .create,
 .notification,
@@ -162,10 +156,13 @@
     margin-left: rem(48)
     +t
         margin-left: rem(32)
+        display: none
+
     +m
         margin-left: rem(24)
 
 .create
+    margin-right: rem(64)
     +d
         margin-left: 0
     +m
@@ -176,6 +173,31 @@
         font-size: 0
         svg
             margin: 0
+    +t
+        display: none
+
+.createButton
+
+    +m
+        display: none
+    +d
+        display: none
+    +xl 
+        display: none
+    +t  
+        display: flex
+        width: 32px
+        height: 32px
+        padding: 4px
+        border: 2px
+        gap: 8px
+        background: #E1E2E280
+        border: 2px solid #E1E2E280 !important
+        background: $n9 !important
+        box-shadow: none !important
+        svg
+            margin: 0
+            fill: $n0
 
 .connect
     display: none
@@ -265,4 +287,3 @@ button.close
 
 div.modal
     display: block
-        
