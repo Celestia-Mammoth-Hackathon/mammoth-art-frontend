@@ -50,7 +50,8 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                     styles.header,
                     {
                         [styles.profileOpen]: visibleProfile,
-                        [styles.light]: visibleProfile || light,
+                        // [styles.light]: visibleProfile || light,
+                        [styles.light]: visibleProfile,
                         [styles.empty]: empty,
                         [styles.noRegistration]:
                             noRegistration && !registration,
