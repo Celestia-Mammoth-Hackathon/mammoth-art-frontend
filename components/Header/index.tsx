@@ -36,6 +36,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [visibleProfile, setVisibleProfile] = useState<boolean>(false);
     const [connect, setConnect] = useState<boolean>(false);
     const [registration, setRegistration] = useState<boolean>(false);
+    const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
     useHotkeys("esc", () => setVisibleProfile(false));
 
     const handleClick = () => {
@@ -85,19 +86,14 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                         </div>
                         <div className={styles.col}>
                             <Link href="/create">
-                                {/* <a
-                                    className={cn(
-                                        "button-stroke button-medium",
-                                        styles.button,
-                                        styles.create
-                                    )}
-                                > */}
-                                    <div className={styles.create}>
+                                    <div className={cn(
+                                        styles.create,
+                                        {
+                                            [styles.visibleSearch]: visibleSearch,
+                                        },
+                                    )}>
                                         <span className={cn(styles.link, styles.createLink)}>CREATE</span>
                                     </div>
-                                    
-                                    {/* <Icon name="plus" />
-                                </a> */}
                             </Link>
                             <Link href="/create">
                                 <a
@@ -110,19 +106,29 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     <Icon name="plus" />
                                 </a>
                             </Link>
-                            <div className={styles.navigation}>
+
+                            <div 
+                                className={cn(
+                                    styles.navigation,
+                                    {
+                                        [styles.visibleSearch]: visibleSearch,
+                                    },
+                                )}>
                                 {menu.map((link, index) => (
-                                    <Link href={link.url} key={index}>
-                                        <a className={styles.link}>
-                                            {link.title}
-                                        </a>
-                                    </Link>
+                                <Link href={link.url} key={index}>
+                                    <a className={styles.link}>
+                                    {link.title}
+                                    </a>
+                                </Link>
                                 ))}
                             </div>
+
                             <Search
                                 className={styles.search}
                                 result={resultSearch}
                                 light={visibleProfile || light}
+                                visibleSearch={visibleSearch}
+                                setVisibleSearch={setVisibleSearch}
                             />
                             <button
                                 className={cn(

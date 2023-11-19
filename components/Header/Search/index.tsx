@@ -25,10 +25,11 @@ type SearchProps = {
     className?: string;
     light?: boolean;
     result: ResultType[];
+    visibleSearch: boolean;
+    setVisibleSearch: any;
 };
 
-const Search = ({ className, light, result }: SearchProps) => {
-    const [visible, setVisible] = useState<boolean>(false);
+const Search = ({ className, light, result, visibleSearch, setVisibleSearch }: SearchProps) => {
     const [resultVisible, setResultVisible] = useState<boolean>(false);
     const [search, setSearch] = useState<string>("");
 
@@ -42,13 +43,13 @@ const Search = ({ className, light, result }: SearchProps) => {
     };
 
     const handleToggle = () => {
-        setVisible(!visible);
+        setVisibleSearch(!visibleSearch);
         setSearch("");
         setResultVisible(false);
     };
 
     const handleClose = () => {
-        setVisible(false);
+        setVisibleSearch(false);
         setSearch("");
         setResultVisible(false);
     };
@@ -79,7 +80,7 @@ const Search = ({ className, light, result }: SearchProps) => {
                 className={cn(
                     styles.search,
                     {
-                        [styles.active]: visible,
+                        [styles.active]: visibleSearch,
                         [styles.visible]: resultVisible,
                         [styles.light]: light,
                     },
