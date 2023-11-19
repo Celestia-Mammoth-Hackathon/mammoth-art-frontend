@@ -24,20 +24,24 @@ const menu = [
 ];
 
 type ProfileProps = {
+    account?: any;
     className?: string;
     headClassName?: string;
     bodyClassName?: string;
     visible: any;
     onOpen: () => void;
     onClose: () => void;
+    onDisconnect: () => void;
 };
 
 const Profile = ({
+    account,
     className,
     headClassName,
     bodyClassName,
     onOpen,
     onClose,
+    onDisconnect,
     visible,
 }: ProfileProps) => {
     const initialRender = useRef(true);
@@ -94,7 +98,7 @@ const Profile = ({
                             <div className={styles.login}>@randomdash</div>
                         </div>
                     </div>
-                    <Wallet onDisconnect={onClose} />
+                    <Wallet onDisconnect={onDisconnect} account={account}/>
                     <div className={styles.menu}>
                         {menu.map((link, index) => (
                             <NavLink

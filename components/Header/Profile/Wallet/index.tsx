@@ -5,9 +5,10 @@ import Icon from "@/components/Icon";
 
 type WalletProps = {
     onDisconnect: () => void;
+    account?: any;
 };
 
-const Wallet = ({ onDisconnect }: WalletProps) => {
+const Wallet = ({ account, onDisconnect }: WalletProps) => {
     const actions = [
         {
             title: "Manage wallet",
@@ -48,9 +49,11 @@ const Wallet = ({ onDisconnect }: WalletProps) => {
                 </div>
             </div>
             <div className={styles.details}>
-                <div className={styles.code}>0x1e86...533B</div>
+                <div className={styles.code}>{account.displayName}</div>
                 <div className={cn("h3", styles.line)}>
-                    <div className={styles.crypto}>3.345 ETH</div>
+                    <div className={styles.crypto}>{account.displayBalance
+                      ? ` ${account.displayBalance}`
+                      : ''}</div>
                     <div className={styles.price}>$5,448</div>
                 </div>
             </div>

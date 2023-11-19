@@ -1,0 +1,39 @@
+@import @/styles/helpers
+
+.button
+    width: 182px
+    height: 48px
+    padding: 12px, 32px, 12px, 32px
+    gap: 8px
+    background-color: $n11
+    box-shadow: 4px 6px 0px 0px $n0
+    margin-left: rem(60)
+    &:hover
+        background: $n12
+    +w
+        margin-left: rem(48)
+
+.connect
+    font-family: IBM Plex Mono
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+
+.profile
+    margin-left: rem(48)
+    +t
+        margin-left: rem(32)
+        display: none
+
+    +m
+        margin-left: rem(24)
+
+.profileHead
+    +m
+        width: rem(48)
+        height: rem(48)
+.profileBody
+    right: 0

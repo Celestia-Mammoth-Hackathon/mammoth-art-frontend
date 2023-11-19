@@ -13,6 +13,7 @@ import Profile from "./Profile";
 import Menu from "./Menu";
 
 import { resultSearch } from "@/mocks/resultSearch";
+import { ConnectBtn } from "./ConnectBtn";
 
 const menu = [
     {
@@ -37,6 +38,8 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [connect, setConnect] = useState<boolean>(false);
     const [registration, setRegistration] = useState<boolean>(false);
     const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
+    const [account, setAccount] = useState<any>(undefined);
+
     useHotkeys("esc", () => setVisibleProfile(false));
 
     const handleClick = () => {
@@ -66,14 +69,14 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             className={styles.logo}
                             light={visibleProfile || light}
                         />
-                        <Profile
+                        {/* <Profile
                             className={styles.profile}
                             headClassName={styles.profileHead}
                             bodyClassName={styles.profileBody}
                             onOpen={() => setVisibleProfile(!visibleProfile)}
                             onClose={() => setVisibleProfile(false)}
                             visible={visibleProfile}
-                        />
+                        /> */}
                     </>
                 ) : (
                     <>
@@ -130,16 +133,15 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 visibleSearch={visibleSearch}
                                 setVisibleSearch={setVisibleSearch}
                             />
-                            <button
-                                className={cn(
-                                    "button-stroke button-medium",
-                                    styles.button,
-                                    styles.connect
-                                )}
-                                onClick={() => setConnect(true)}
-                            >
-                                connect wallet
-                            </button>
+                            <div>
+                                <ConnectBtn 
+                                    registration={registration}
+                                    setRegistration={setRegistration} 
+                                    visibleProfile={visibleProfile} 
+                                    setVisibleProfile={setVisibleProfile}
+                                />
+                            </div>
+
                             {/* <Link href="/notification">
                                 <a
                                     className={cn(
@@ -150,14 +152,14 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     <Icon name="flash" />
                                 </a>
                             </Link> */}
-                            <Profile
+                            {/* <Profile
                                 className={styles.profile}
                                 onOpen={() =>
                                     setVisibleProfile(!visibleProfile)
                                 }
                                 onClose={() => setVisibleProfile(false)}
                                 visible={visibleProfile}
-                            />
+                            /> */}
                             <Menu
                                 classBurger={styles.burger}
                                 resultSearch={resultSearch}
@@ -171,7 +173,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                     [styles.visible]: visibleProfile,
                 })}
             ></div>
-            <Modal
+            {/* <Modal
                 className={styles.modal}
                 closeClassName={styles.close}
                 visible={connect}
@@ -181,7 +183,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                     onClickLogo={() => setConnect(false)}
                     onContinue={handleClick}
                 />
-            </Modal>
+            </Modal> */}
         </>
     );
 };
