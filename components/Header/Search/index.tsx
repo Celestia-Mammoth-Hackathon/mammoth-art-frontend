@@ -25,8 +25,8 @@ type SearchProps = {
     className?: string;
     light?: boolean;
     result: ResultType[];
-    visibleSearch: boolean;
-    setVisibleSearch: any;
+    visibleSearch?: boolean;
+    setVisibleSearch?: any;
 };
 
 const Search = ({ className, light, result, visibleSearch, setVisibleSearch }: SearchProps) => {

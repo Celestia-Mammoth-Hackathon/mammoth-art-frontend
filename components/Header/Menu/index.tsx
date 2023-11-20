@@ -100,7 +100,7 @@ const Menu = ({ classBurger, resultSearch }: MenuProps) => {
                         {isTablet && (
                             <Search
                                 className={styles.search}
-                                result={resultSearch}
+                                result={resultSearch}    
                             />
                         )}
                         <div className={styles.menu}>
