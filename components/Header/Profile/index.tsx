@@ -10,18 +10,19 @@ import Wallet from "./Wallet";
 
 const menu = [
     {
-        title: "My profile",
+        title: "MY PROFILE",
         url: "/profile",
     },
     {
-        title: "Settings",
+        title: "SETTINGS",
         url: "/settings",
     },
     {
-        title: "Help",
+        title: "HELP",
         url: "/help",
     },
 ];
+
 
 type ProfileProps = {
     account?: any;
@@ -45,6 +46,12 @@ const Profile = ({
     visible,
 }: ProfileProps) => {
     const initialRender = useRef(true);
+
+    const action = {
+        title: "Disconnect",
+        icon: "close-square",
+        onClick: onDisconnect,
+    };
 
     useEffect(() => {
         if (initialRender.current) {
@@ -97,6 +104,17 @@ const Profile = ({
                             <div className={cn("h3", styles.man)}>Dash</div>
                             <div className={styles.login}>@randomdash</div>
                         </div>
+                        <div className={styles.connect}>
+                            <div className={styles.code}>{account.displayName}</div>
+                            <button
+                                className={styles.action}
+                                onClick={action.onClick}
+                            >
+                                <Icon name={action.icon} />
+                                {action.title}
+                            </button>
+                        </div>
+                        
                     </div>
                     <Wallet onDisconnect={onDisconnect} account={account}/>
                     <div className={styles.menu}>

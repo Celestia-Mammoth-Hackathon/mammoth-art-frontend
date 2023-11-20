@@ -2,6 +2,7 @@
 
 .head
     display: flex
+    flex-direction: column
     align-items: center
     margin-bottom: rem(24)
     +xl
@@ -15,34 +16,38 @@
         +base
 
 .actions
+    width: 100%
     display: flex
     flex-wrap: wrap
-    margin-top: rem(-8)
+    justify-content: space-around
+    margin-top: rem(16)
+    margin-bottom: rem(16)
 
 .action
-    display: flex
-    align-items: center
-    margin: rem(8) 0 0 rem(32)
-    +title
-    color: $n1
-    +w
-        +base
-    svg
-        margin-right: rem(12)
-        fill: $n5
-        transition: fill .2s
-    &:nth-child(1)
-        +d
-            display: none
+    width: 150px
+    height: 48px
+    padding: 12px, 32px, 12px, 32px
+    border: 2px
+    gap: 8px
+    color: $n0
+    border: 2px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    background: $n9
     &:hover
-        svg
-            fill: $n1
+        background: $n13
+
+.btnTitle
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+
 
 .details
     margin-bottom: rem(24)
     padding: rem(32) rem(40)
     border-radius: rem(24)
-    background: $o7-75
     +xl
         padding: rem(16)
 
@@ -83,3 +88,18 @@
 
 .price
     color: $n5
+
+.balances
+    width: 100%
+    display: flex
+    justify-content: space-between
+    color: $n0
+.balance
+    font-size: 20px
+    font-weight: 700
+    line-height: 40px
+    letter-spacing: 0em
+    text-align: left
+
+.chain
+    color: $n0

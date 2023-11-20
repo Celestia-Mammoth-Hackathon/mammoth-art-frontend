@@ -89,14 +89,14 @@
 .user
     display: flex
     align-items: center
-    margin-bottom: rem(32)
+    margin-bottom: rem(16)
     padding-bottom: rem(32)
     border-bottom: rem(1) solid $n7
     +rh(900)
-        margin-bottom: rem(24)
+        margin-bottom: rem(12)
         padding-bottom: rem(24)
     +xl
-        margin-bottom: rem(24)
+        margin-bottom: rem(12)
         padding-bottom: rem(24)
 
 .avatar
@@ -141,3 +141,33 @@
         padding: rem(12) rem(16)
     &:not(:last-child)
         border-bottom: rem(1) solid $n7
+
+.action
+    display: flex
+    align-items: center
+    margin: rem(8) 0 0 rem(32)
+    +title
+    color: $n1
+    +w
+        +base
+    svg
+        margin-right: rem(12)
+        fill: $n5
+        transition: fill .2s
+    &:nth-child(1)
+        +d
+            display: none
+    &:hover
+        svg
+            fill: $n1
+.code
+    display: flex
+    justify-content: center
+    align-items: center
+    padding: rem(8)
+    background: $a6
+    border-radius: rem(12)
+    +base
+    color: $n9
+    +xl
+        +baseS
