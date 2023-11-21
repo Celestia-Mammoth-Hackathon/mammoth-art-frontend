@@ -5,18 +5,17 @@
     +w
         margin-bottom: rem(40)
 
-.arrow
-    margin-bottom: auto
-
 .content
     max-width: rem(540)
     margin-top: rem(40)
     +body2
-    color: $n5
+    color: $n0
     +w
         +body2M
+        padding-right: 200px
     +t
         max-width: 100%
+        padding-right: 0
 
 .head
     display: flex
@@ -28,41 +27,35 @@
 
 .subtitle
     +body1
-    color: $n5
+    color: $n0
     +d
         +body1M
 
 .counter
     padding: rem(2) rem(12)
-    background: $n3
-    border-radius: rem(12)
+    background: $n9
+    border: 1px solid $n0
+    box-shadow: 2px 3px 0px 0px $n0
     +body2Bold
 
 .add
     display: flex
-    flex-direction: column
-    justify-content: center
     align-items: center
     margin-bottom: rem(24)
-    padding: rem(56) rem(32)
-    background: $n1
-    border-radius: rem(20)
+    padding: rem(20)
+    background: $n9
+    border: 1px solid $n0
     text-align: center
     +shadow1
     &:hover
-        .plus
-            background: $s2
-            &:before,
-            &:after
-                background: $n1
+        background: $n13
 
 .plus
     position: relative
     width: rem(96)
     height: rem(96)
-    margin: 0 auto rem(32)
-    border-radius: rem(16)
-    background: $o3
+    margin-left: 0
+    margin-right: rem(16)
     transition: background .2s
     &:before,
     &:after
@@ -71,7 +64,7 @@
         top: 50%
         left: 50%
         transform: translate(-50%,-50%)
-        background: $n7
+        background: $n0
         border-radius: rem(2)
         transition: background .2s
     &:before
@@ -84,8 +77,7 @@
 .info
     margin-bottom: rem(8)
     +body1
-    color: $n7
-
+    color: $n0
 .text
     +baseMedium
     color: $n5
@@ -94,10 +86,14 @@
     display: flex
     align-items: center
     padding: rem(20)
-    border-radius: rem(20)
-    background: $n1
+    border: 1px solid $n0
+    background: $n9
+    color: $n0
+    cursor: pointer
     &:not(:last-child)
         margin-bottom: rem(24)
+    &:hover
+        background: $n13
 
 .preview
     display: flex

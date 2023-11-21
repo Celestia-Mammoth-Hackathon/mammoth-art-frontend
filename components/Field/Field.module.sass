@@ -42,26 +42,27 @@
 .input,
 .textarea
     width: 100%
-    border-width: 0 0 rem(1)
-    border-style: solid
-    border-color: $n3
+    padding: 16px
+    border: 1.5px solid $n14
     background: transparent
     border-radius: 0
     +body2Bold
-    color: $n7
+    color: $n0
     transition: border-color .2s
+    box-shadow: 2px 4px 0px 0px $n14
     &::placeholder
         color: $n7
     &:focus
-        border-color: $s2
+        border-color: $n0
 
 .input
-    height: rem(64)
-    padding: 0
+    height: 48px
 
 .textarea
     height: rem(152)
-    padding: rem(16) 0
+    padding: 16px !important
+    border: 1.5px solid $n14
+    box-shadow: 2px 4px 0px 0px $n14
     resize: none
 
 .icon
@@ -76,3 +77,51 @@
     margin-top: rem(4)
     +captionBold
     color: $n4
+
+.upload
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    background: $n9
+    border: 1.5px solid $n14
+    box-shadow: 2px 4px 0px 0px $n14
+    padding: 16px
+    
+
+.action
+    width: 115px
+    height: 40px
+    padding: 8px, 32px, 8px, 32px
+    border: 1px
+    gap: 8px
+    background: $n9
+    border: 1px solid $n0
+    margin-bottom: 8px
+    &:hover
+        background: $n13
+
+.btnTitle
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+
+.detail
+    font-size: 16px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: center
+
+.type
+    font-size: 12px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: center
+    color: $n10
+
+
