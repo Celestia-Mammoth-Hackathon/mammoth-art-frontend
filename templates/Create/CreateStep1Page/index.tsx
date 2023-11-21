@@ -11,15 +11,17 @@ import Preview from "./Preview";
 const CreatPage = () => {
     const [name, setName] = useState<string>("");
     const [symbol, setSymbol] = useState<string>("");
+    const [description, setDescription] = useState<string>("");
+    const [image, setImage] = useState<any>("");
 
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <Layout layoutNoOverflow>
             <LayoutCreate
                 left={
                     <>
                         <div className={styles.head}>
                             <div className={cn("h1", styles.title)}>
-                                Create a <br></br>Collection.
+                                CREATE A COLLECTION
                             </div>
                             <Link href="/create">
                                 <a className={cn("button-circle", styles.back)}>
@@ -27,15 +29,16 @@ const CreatPage = () => {
                                 </a>
                             </Link>
                         </div>
-                        <div className={styles.info}>
+                        {/* <div className={styles.info}>
                             Deploy a smart contract to showcase a series of NFT
                             artworks.
-                        </div>
+                        </div> */}
                         <form
                             className={styles.form}
                             action=""
                             onSubmit={() => console.log("Submit")}
                         >
+                            <span className={styles.label}>Name</span>
                             <Field
                                 className={styles.field}
                                 placeholder="Collection name"
@@ -45,17 +48,33 @@ const CreatPage = () => {
                                 large
                                 required
                             />
+                            <span className={styles.label}>Description</span>
                             <Field
                                 className={styles.field}
-                                placeholder="Collection symbol"
+                                placeholder="Collection description"
                                 icon="email"
                                 type="email"
-                                value={symbol}
-                                onChange={(e: any) => setSymbol(e.target.value)}
+                                value={description}
+                                onChange={(e: any) => setDescription(e.target.value)}
                                 large
+                                textarea
                                 required
                             />
-                            <Link href="/create/step-2">
+                            <span className={styles.label}>Upload Collection Image</span>
+                            <Field
+                                className={styles.field}
+                                icon="email"
+                                type="email"
+                                value={description}
+                                onChange={(e: any) => {
+                                    setImage(e.target.files[0]);
+                                }}
+                                large
+                                upload
+                                required
+                                setImage={setImage}
+                            />
+                            {/* <Link href="/create/step-2">
                                 <a
                                     className={cn(
                                         "button-large",
@@ -65,12 +84,16 @@ const CreatPage = () => {
                                     <span>Continue</span>
                                     <Icon name="arrow-right" />
                                 </a>
-                            </Link>
+                            </Link> */}
                         </form>
                     </>
                 }
             >
-                <Preview />
+                <Preview 
+                    name={name}
+                    description={description}
+                    image={image}
+                />
             </LayoutCreate>
         </Layout>
     );

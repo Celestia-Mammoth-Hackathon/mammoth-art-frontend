@@ -159,6 +159,7 @@ div.modal
 
 .btns
     display: flex
+    flex-direction: column
     +d
         margin: 0 rem(-10)
         margin-top: auto
@@ -189,6 +190,7 @@ div.modal
     width: 100%
     box-shadow: 4px 6px 0px 0px $n0
     background: $n9
+    border: 1px solid $n0
     +d
         margin: 0 rem(10)
         padding: 0 rem(16)
@@ -208,12 +210,27 @@ div.modal
 
 .code
     display: flex
+    width: 166px
     justify-content: center
     align-items: center
+    margin-left: auto
+    margin-right: auto
     padding: rem(8)
     background: $a6
     border-radius: rem(12)
+    margin-bottom: 16px
     +base
     color: $n9
     +xl
         +baseS
+
+.copy
+    margin-left: rem(8)
+    font-size: 0
+    svg
+        width: rem(20)
+        height: rem(20)
+        transition: fill .2s
+    &:hover
+        svg
+            fill: $n8

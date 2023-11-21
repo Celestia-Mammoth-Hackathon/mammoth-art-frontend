@@ -39,6 +39,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [registration, setRegistration] = useState<boolean>(false);
     const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
     const [account, setAccount] = useState<any>(undefined);
+    const [address, setAddress] = useState<string>("");
 
     useHotkeys("esc", () => setVisibleProfile(false));
 
@@ -102,7 +103,6 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 <a
                                     className={cn(
                                         "button-stroke button-medium",
-                                        styles.button,
                                         styles.createButton
                                     )}
                                 >
@@ -139,6 +139,8 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     setRegistration={setRegistration} 
                                     visibleProfile={visibleProfile} 
                                     setVisibleProfile={setVisibleProfile}
+                                    address={address}
+                                    setAddress={setAddress}
                                 />
                             </div>
 
@@ -163,6 +165,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             <Menu
                                 classBurger={styles.burger}
                                 resultSearch={resultSearch}
+                                address={address}
                             />
                         </div>
                     </>

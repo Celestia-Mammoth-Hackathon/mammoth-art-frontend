@@ -65,7 +65,7 @@ const Wallet = ({ account, onDisconnect }: WalletProps) => {
                     {actions.map((action: any, index: number) =>
                         <button
                             className={styles.action}
-                            onClick={action.onClick}
+                            // onClick={action.onClick}
                             key={index}
                         >
                             <span className={styles.btnTitle}>

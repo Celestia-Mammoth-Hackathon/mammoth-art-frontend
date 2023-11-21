@@ -3,7 +3,7 @@
 .title
     margin-bottom: rem(48)
     +body1
-    color: $n5
+    color: $n0
     +m
         margin-bottom: rem(32)
         +body1S
@@ -16,17 +16,14 @@
     height: rem(360)
     margin-bottom: rem(32)
     padding: rem(24)
-    border-radius: rem(20)
     background: $o3
     overflow: hidden
-    & > span img
-        border-radius: rem(20)
+
 
 .image,
 .category
     position: relative
     z-index: 2
-    border-radius: rem(12)
 
 .image
     width: rem(96)
@@ -46,18 +43,60 @@
 
 .head
     display: flex
-    justify-content: space-between
-    align-items: center
+    flex-direction: column
+    justify-content: center
+    align-items: self-start
 
 .subtitle
-    &:empty
-        width: rem(200)
-        height: rem(12)
-        border-radius: rem(4)
-        background: $n3
+    font-size: 14px
+    font-weight: 400
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    margin-bottom: 4px
+
+.name
+    font-size: 20px
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+    margin-bottom: 16px
+
+.description
+    font-size: 16px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+    margin-bottom: 16px
+
 
 .price
     +title
     color: $n4
 
 
+.button
+    width: 100%
+    box-shadow: 4px 6px 0px 0px $n0
+    background: $n11
+    +d
+        margin: 0 rem(10)
+        padding: 0 rem(16)
+    +m
+        margin: 0
+    &:not(:last-child)
+        margin-right: rem(20)
+        +d
+            margin-right: rem(10)
+        +m
+            margin: 0 0 rem(20)
+    &:hover
+        background: $n12
+
+.text 
+    color: $n0

@@ -52,8 +52,12 @@
     box-shadow: 2px 4px 0px 0px $n14
     &::placeholder
         color: $n7
+    &:hover
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0px $n0
     &:focus
         border-color: $n0
+        box-shadow: 2px 4px 0px 0px $n0
 
 .input
     height: 48px
@@ -87,7 +91,9 @@
     border: 1.5px solid $n14
     box-shadow: 2px 4px 0px 0px $n14
     padding: 16px
-    
+    &:hover
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0px $n0
 
 .action
     width: 115px
@@ -125,3 +131,24 @@
     color: $n10
 
 
+.customFileUpload 
+  position: relative
+  overflow: hidden
+  display: inline-block
+  cursor: pointer
+  padding-top: 8px
+  padding-bottom: 8px
+  padding-right: 32px
+  padding-left: 32px
+  border: 1px solid $n0
+  cursor: pointer
+  gap: 8px
+  text-align: center
+  margin-bottom: 8px
+
+.file 
+  position: absolute
+  font-size: 100px
+  right: 0
+  top: 0
+  opacity: 0

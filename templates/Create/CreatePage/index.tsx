@@ -5,6 +5,7 @@ import Layout from "@/components/Layout";
 import LayoutCreate from "@/components/LayoutCreate";
 import Arrow from "@/components/Arrow";
 import Icon from "@/components/Icon";
+import Footer from "@/components/Footer";
 
 const CreatPage = () => {
     return (
@@ -13,28 +14,24 @@ const CreatPage = () => {
                 left={
                     <>
                         <div className={cn("h1", styles.title)}>
-                            Create on <br></br>Crypter.
+                            Create
                         </div>
                         <Arrow className={styles.arrow} />
                         <div className={styles.content}>
-                            We are laying the groundwork for web3 — the next
-                            generation of the internet full of limitless
-                            possibilities. Join the millions of creators,
-                            collectors, and curators who are on this journey
-                            with you.
+                            Create a collection or select a 
+                            collection to create a NFT under.
                         </div>
                     </>
                 }
             >
                 <div className={styles.head}>
-                    <div className={styles.subtitle}>Your collection</div>
+                    <div className={styles.subtitle}>Your collection(s)</div>
                     <div className={styles.counter}>0</div>
                 </div>
                 <Link href="/create/step-1">
                     <a className={styles.add}>
                         <div className={styles.plus}></div>
-                        <div className={styles.info}>Create new collection</div>
-                        <div className={styles.text}>a</div>
+                        <div className={styles.info}>Create a new collection</div>
                     </a>
                 </Link>
                 <div className={styles.list}>
@@ -47,14 +44,15 @@ const CreatPage = () => {
                         </div>
                     ))}
                 </div>
-                <div className={styles.foot}>
+                {/* <div className={styles.foot}>
                     <Link href="/article">
                         <a className={styles.link}>
                             Learn about Collection on Crypter
                         </a>
                     </Link>
-                </div>
+                </div> */}
             </LayoutCreate>
+            <Footer />
         </Layout>
     );
 };

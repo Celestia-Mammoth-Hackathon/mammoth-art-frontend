@@ -7,6 +7,8 @@ import NavLink from "@/components/NavLink";
 import Icon from "@/components/Icon";
 import Search from "../Search";
 
+import { useDisconnect } from 'wagmi'
+
 const socials = [
     {
         icon: "discord-fat",
@@ -56,10 +58,13 @@ const menu = [
 type MenuProps = {
     classBurger?: string;
     resultSearch?: any;
+    address?: any;
 };
 
-const Menu = ({ classBurger, resultSearch }: MenuProps) => {
+const Menu = ({ classBurger, resultSearch, address }: MenuProps) => {
     const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
+
+    const { disconnect } = useDisconnect()
 
     const isTablet = useMediaQuery({
         query: "(max-width: 1023px)",
@@ -118,34 +123,41 @@ const Menu = ({ classBurger, resultSearch }: MenuProps) => {
                         {/* <div className={cn("h4", styles.info)}>
                             Download app
                         </div> */}
-                        <div className={styles.btns}>
-                            <a
-                                className={cn("button-white", styles.button)}
-                                href="https://ui8.net/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <span className={styles.text}>CONNECT WALLET</span>
-                            </a>
-                            {/* <a
-                                className={cn("button", styles.button)}
-                                href="https://ui8.net/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <span>apple store</span>
-                                <Icon name="apple" />
-                            </a>
-                            <a
-                                className={cn("button-white", styles.button)}
-                                href="https://ui8.net/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                            >
-                                <span>google play</span>
-                                <Icon name="google-play" />
-                            </a> */}
-                        </div>
+                        {
+                            address 
+                            ? (
+                                <div className={styles.btns}>
+                                    <div className={styles.code}>
+                                        {address}
+                                        <button className={styles.copy}>
+                                            <Icon name="copy" />
+                                        </button>
+                                    </div>
+                                    <button
+                                        className={cn("button-white", styles.disconnect)}
+                                        onClick={() => {
+                                            setVisibleMenu(false)
+                                            disconnect()
+                                        }}
+                                    >
+                                        <span className={styles.text}>DISCONNECT WALLET</span>
+                                    </button>
+                                </div>
+                            )
+                            : (
+                                <div className={styles.btns}>
+                                    <button
+                                        className={cn("button-white", styles.button)}
+                                        
+                                        
+                                        
+                                    >
+                                        <span className={styles.text}>CONNECT WALLET</span>
+                                    </button>
+                                </div>
+                            )
+                        }
+                        
                     </div>
                 </div>
             </Modal>

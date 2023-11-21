@@ -9,9 +9,11 @@ type ConnectBtnProps = {
     registration: boolean;
     setVisibleProfile: (visibleProfile:boolean) => void;
     setRegistration: (registration:boolean) => void;
+    address: string;
+    setAddress: (address:string) => void;
 };
 
-export const ConnectBtn = ({ registration, setRegistration, visibleProfile, setVisibleProfile }: ConnectBtnProps) => {
+export const ConnectBtn = ({ registration, address, setAddress, setRegistration, visibleProfile, setVisibleProfile }: ConnectBtnProps) => {
   const { disconnect } = useDisconnect()
 
   return (
@@ -59,6 +61,7 @@ export const ConnectBtn = ({ registration, setRegistration, visibleProfile, setV
             //     );
             //   }
               setRegistration(true);
+              setAddress(account.displayName)
               return (
                 <Profile
                     className={styles.profile}
