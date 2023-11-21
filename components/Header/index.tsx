@@ -166,6 +166,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 classBurger={styles.burger}
                                 resultSearch={resultSearch}
                                 address={address}
+                                registration={registration}
                             />
                         </div>
                     </>

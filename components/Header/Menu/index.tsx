@@ -59,9 +59,10 @@ type MenuProps = {
     classBurger?: string;
     resultSearch?: any;
     address?: any;
+    registration?: boolean;
 };
 
-const Menu = ({ classBurger, resultSearch, address }: MenuProps) => {
+const Menu = ({ classBurger, resultSearch, address, registration }: MenuProps) => {
     const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
 
     const { disconnect } = useDisconnect()
@@ -124,7 +125,7 @@ const Menu = ({ classBurger, resultSearch, address }: MenuProps) => {
                             Download app
                         </div> */}
                         {
-                            address 
+                            registration 
                             ? (
                                 <div className={styles.btns}>
                                     <div className={styles.code}>
