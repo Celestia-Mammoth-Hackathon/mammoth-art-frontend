@@ -21,7 +21,7 @@
                 border-color: $n1
     &.fieldLarge
         .input
-            height: rem(96)
+            height: rem(64)
             +m
                 height: rem(72)
         .textarea
@@ -50,7 +50,17 @@
     color: $n0
     transition: border-color .2s
     box-shadow: 2px 4px 0px 0px $n14
+    font-size: 16px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
     &::placeholder
+        font-size: 16px
+        font-weight: 500
+        line-height: 19px
+        letter-spacing: 0em
+        text-align: left
         color: $n7
     &:hover
         border-color: $n0
@@ -145,7 +155,8 @@
   gap: 8px
   text-align: center
   margin-bottom: 8px
-
+  &:hover
+    background: $n13
 .file 
   position: absolute
   font-size: 100px

@@ -25,7 +25,7 @@ const CreatPage = () => {
                             </div>
                             <Link href="/create">
                                 <a className={cn("button-circle", styles.back)}>
-                                    <Icon name="arrow-left" />
+                                    <Icon name="arrow-left" className={styles.arrow}/>
                                 </a>
                             </Link>
                         </div>

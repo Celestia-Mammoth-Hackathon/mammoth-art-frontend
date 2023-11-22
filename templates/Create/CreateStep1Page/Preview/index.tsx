@@ -13,7 +13,6 @@ const Preview = ({name, description, image}: PreviewProps) => (
         <div className={styles.title}>Collection Preview</div>
         <div className={styles.preview}>
             {image && <Image src={image} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
-            <div className={styles.category}></div>
         </div>
         <div className={styles.head}>
             <div className={cn("h4", styles.subtitle)}>Collection Name</div>

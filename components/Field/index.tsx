@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from 'react';
 import cn from "classnames";
 import styles from "./Field.module.sass";
 import Icon from "@/components/Icon";
@@ -41,7 +41,7 @@ const Field = ({
 }: FieldProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    console.log(selectedFile)
+
     if (selectedFile) {
         const reader = new FileReader();
     
@@ -54,6 +54,27 @@ const Field = ({
       }
   };
 
+  const handleDrop = useCallback((event:any) => {
+    event.preventDefault();
+
+    // Access the dropped files
+    const droppedFiles = event.dataTransfer.files;
+    const selectedFile = droppedFiles[0];
+    if (selectedFile) {
+      const reader = new FileReader();
+  
+      reader.onload = () => {
+        // Set the data URL as the image source using setImage prop
+        setImage(reader.result);
+      };
+  
+      reader.readAsDataURL(selectedFile);
+    }
+  }, []);
+
+  const preventDefaultHandler = (event:any) => {
+    event.preventDefault();
+  };
   return (
     <div
       className={cn(
@@ -76,7 +97,11 @@ const Field = ({
             autoFocus={autoFocus}
           ></textarea>
         ) : upload ? (
-          <div className={styles.upload}>
+          <div className={styles.upload}
+            onDrop={handleDrop}
+            onDragOver={preventDefaultHandler}
+            onDragEnter={preventDefaultHandler}
+          >
             
                 <label className={styles.customFileUpload}>
                     <input
@@ -94,9 +119,8 @@ const Field = ({
             </div>
           </div>
         ) : (
-          <input
+          <textarea
             className={cn(styles.input, inputClassName)}
-            type={type || "text"}
             value={value}
             onChange={onChange}
             placeholder={placeholder}
