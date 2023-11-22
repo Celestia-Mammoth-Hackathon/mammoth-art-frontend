@@ -10,7 +10,7 @@
 .preview
     position: relative
     margin-bottom: rem(24)
-    border: 2px solid $n0
+    border: 2px solid $n10
     box-shadow: 4px 6px 0px 0px $n10
     overflow: hidden
     &:before
@@ -20,6 +20,8 @@
     img
         transition: transform 1s
     &:hover
+        border: 2px solid $n0
+        box-shadow: 4px 6px 0px 0px $n0
         img
             transform: scale(1.05)
 

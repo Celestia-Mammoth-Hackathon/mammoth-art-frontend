@@ -43,13 +43,17 @@ const Search = ({ className, light, result, visibleSearch, setVisibleSearch }: S
     };
 
     const handleToggle = () => {
-        setVisibleSearch(!visibleSearch);
+        if(setVisibleSearch) {
+            setVisibleSearch(!visibleSearch);
+        }
         setSearch("");
         setResultVisible(false);
     };
 
     const handleClose = () => {
-        setVisibleSearch(false);
+        if(setVisibleSearch) {
+            setVisibleSearch(false);
+        }
         setSearch("");
         setResultVisible(false);
     };

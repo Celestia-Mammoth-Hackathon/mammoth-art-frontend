@@ -8,6 +8,7 @@ import Icon from "@/components/Icon";
 import Search from "../Search";
 
 import { useDisconnect } from 'wagmi'
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const socials = [
     {
@@ -111,20 +112,83 @@ const Menu = ({ classBurger, resultSearch, address, registration }: MenuProps) =
                         )}
                         <div className={styles.menu}>
                             {menu.map((link, index) => (
-                                <NavLink
-                                    className={cn(styles.link)}
-                                    activeClassName={styles.active}
-                                    href={link.url}
-                                    key={index}
-                                >
-                                    {link.title}
-                                </NavLink>
+                                !(link.title === "Create" && !registration) && (
+                                    <NavLink
+                                        className={cn(styles.link)}
+                                        activeClassName={styles.active}
+                                        href={link.url}
+                                        key={index}
+                                    >
+                                        {link.title}
+                                    </NavLink>
+                                )
                             ))}
                         </div>
-                        {/* <div className={cn("h4", styles.info)}>
-                            Download app
-                        </div> */}
-                        {
+                        <ConnectButton.Custom>
+      {({
+        account,
+        chain,
+        openAccountModal,
+        openChainModal,
+        openConnectModal,
+        authenticationStatus,
+        mounted,
+      }) => {
+        const ready = mounted;
+        const connected =
+          ready &&
+          account &&
+          chain
+
+        return (
+            <div
+                {...(!ready && {
+                'aria-hidden': true,
+                'style': {
+                    opacity: 0,
+                    pointerEvents: 'none',
+                    userSelect: 'none',
+                },
+                })}
+            >
+                {(() => {
+                if (!connected) {
+                    return (
+                        <div className={styles.btns}>
+                            <button
+                                className={cn("button-white", styles.button)}
+                                onClick={openConnectModal}
+                            >
+                                <span className={styles.text}>CONNECT WALLET</span>
+                            </button>
+                        </div>
+                    );
+                }
+              return (
+                <div className={styles.btns}>
+                    <div className={styles.code}>
+                        {address}
+                        <button className={styles.copy}>
+                            <Icon name="copy" />
+                        </button>
+                    </div>
+                    <button
+                        className={cn("button-white", styles.disconnect)}
+                        onClick={() => {
+                            setVisibleMenu(false)
+                            disconnect()
+                        }}
+                    >
+                        <span className={styles.text}>DISCONNECT WALLET</span>
+                    </button>
+                </div>
+              );
+            })()}
+          </div>
+        );
+      }}
+    </ConnectButton.Custom>
+                        {/* {
                             registration 
                             ? (
                                 <div className={styles.btns}>
@@ -157,7 +221,7 @@ const Menu = ({ classBurger, resultSearch, address, registration }: MenuProps) =
                                     </button>
                                 </div>
                             )
-                        }
+                        } */}
                         
                     </div>
                 </div>

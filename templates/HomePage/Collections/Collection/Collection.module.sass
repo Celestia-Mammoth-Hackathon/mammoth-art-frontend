@@ -30,7 +30,7 @@
 .image
     position: relative
     box-shadow: 4px 6px 0px 0px $n10
-    border: 2px solid $n0
+    border: 1px solid $n10
     &:before
         content: ""
         display: block
@@ -38,8 +38,11 @@
     img
         transition: transform 1s
     &:hover
+        box-shadow: 4px 6px 0px 0px $n0
+        border: 1px solid $n0
         img
             transform: scale(1.05)
+            
 .counter
     display: flex
     justify-content: center
