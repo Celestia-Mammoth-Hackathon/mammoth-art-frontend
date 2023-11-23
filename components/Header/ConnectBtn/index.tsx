@@ -11,9 +11,11 @@ type ConnectBtnProps = {
     setRegistration: (registration:boolean) => void;
     address: string;
     setAddress: (address:string) => void;
+    balance: string | undefined;
+    setBalance: (balance:string|undefined) => void;
 };
 
-export const ConnectBtn = ({ registration, address, setAddress, setRegistration, visibleProfile, setVisibleProfile }: ConnectBtnProps) => {
+export const ConnectBtn = ({ registration, setBalance, balance, address, setAddress, setRegistration, visibleProfile, setVisibleProfile }: ConnectBtnProps) => {
   const { disconnect } = useDisconnect()
 
   return (
@@ -62,6 +64,7 @@ export const ConnectBtn = ({ registration, address, setAddress, setRegistration,
             //   }
               setRegistration(true);
               setAddress(account.displayName)
+              setBalance(account.balanceFormatted)
               return (
                 <Profile
                     className={styles.profile}

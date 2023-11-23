@@ -56,14 +56,26 @@ const menu = [
     // },
 ];
 
+const actions = [
+    {
+        title: "DEPOSIT",
+        onClick: "",
+    },
+    {
+        title: "WITHDRAW",
+        onClick: "",
+    },
+];
+
 type MenuProps = {
     classBurger?: string;
     resultSearch?: any;
-    address?: any;
+    address?: string;
+    balance?: string;
     registration?: boolean;
 };
 
-const Menu = ({ classBurger, resultSearch, address, registration }: MenuProps) => {
+const Menu = ({ classBurger, resultSearch, address, balance, registration }: MenuProps) => {
     const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
 
     const { disconnect } = useDisconnect()
@@ -105,10 +117,35 @@ const Menu = ({ classBurger, resultSearch, address, registration }: MenuProps) =
                     </div>
                     <div className={styles.col}>
                         {isTablet && (
-                            <Search
-                                className={styles.search}
-                                result={resultSearch}    
-                            />
+                            <>
+                                <div className={styles.head}>
+                                    <div className={styles.balanceTitle}>Balance</div>
+                                        <div className={styles.balances}>
+                                            <span className={styles.balance}>
+                                                {balance} 
+                                                <span className={styles.currency}>TIA</span>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div className={styles.actions}>
+                                    {actions.map((action: any, index: number) =>
+                                        <button
+                                            className={styles.action}
+                                            // onClick={action.onClick}
+                                            key={index}
+                                        >
+                                            <span className={styles.btnTitle}>
+                                                {action.title}
+                                            </span>
+                                        </button>
+                                    )}
+                                </div>
+                                <Search
+                                    className={styles.search}
+                                    result={resultSearch}    
+                                />
+                            </>
+                            
                         )}
                         <div className={styles.menu}>
                             {menu.map((link, index) => (
