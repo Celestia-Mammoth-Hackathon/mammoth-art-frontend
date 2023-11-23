@@ -12,7 +12,8 @@ const CreatPage = () => {
     const [name, setName] = useState<string>("");
     const [symbol, setSymbol] = useState<string>("");
     const [description, setDescription] = useState<string>("");
-    const [image, setImage] = useState<any>("");
+    const [bannerImage, setBannerImage] = useState<any>("");
+    const [collectionImage, setCollectionImage] = useState<any>("");
 
     return (
         <Layout layoutNoOverflow>
@@ -51,7 +52,7 @@ const CreatPage = () => {
                             <span className={styles.label}>Description</span>
                             <Field
                                 className={styles.field}
-                                placeholder="Collection description"
+                                placeholder="Enter in a description"
                                 icon="email"
                                 type="email"
                                 value={description}
@@ -60,19 +61,29 @@ const CreatPage = () => {
                                 textarea
                                 required
                             />
-                            <span className={styles.label}>Upload Collection Image</span>
+                            <span className={styles.label}>Upload Banner Image</span>
                             <Field
                                 className={styles.field}
-                                icon="email"
-                                type="email"
-                                value={description}
+                                value={bannerImage}
                                 onChange={(e: any) => {
-                                    setImage(e.target.files[0]);
+                                    setBannerImage(e.target.files[0]);
                                 }}
                                 large
                                 upload
                                 required
-                                setImage={setImage}
+                                setImage={setBannerImage}
+                            />
+                            <span className={styles.label}>Upload Collection Image</span>
+                            <Field
+                                className={styles.field}
+                                value={collectionImage}
+                                onChange={(e: any) => {
+                                    setCollectionImage(e.target.files[0]);
+                                }}
+                                large
+                                upload
+                                required
+                                setImage={setCollectionImage}
                             />
                             {/* <Link href="/create/step-2">
                                 <a
@@ -92,7 +103,8 @@ const CreatPage = () => {
                 <Preview 
                     name={name}
                     description={description}
-                    image={image}
+                    collectionImage={collectionImage}
+                    bannerImage={bannerImage}
                 />
             </LayoutCreate>
         </Layout>

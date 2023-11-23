@@ -5,14 +5,18 @@ import Image from "@/components/Image";
 type PreviewProps = {
     name: string;
     description: string;
-    image?: any;
+    collectionImage?: any;
+    bannerImage?: any;
 };
 
-const Preview = ({name, description, image}: PreviewProps) => (
+const Preview = ({name, description, collectionImage, bannerImage}: PreviewProps) => (
     <>
         <div className={styles.title}>Collection Preview</div>
         <div className={styles.preview}>
-            {image && <Image src={image} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
+            {collectionImage && <Image src={collectionImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
+            <div className={styles.category}>
+                {bannerImage && <Image src={bannerImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
+            </div>
         </div>
         <div className={styles.head}>
             <div className={cn("h4", styles.subtitle)}>Collection Name</div>
