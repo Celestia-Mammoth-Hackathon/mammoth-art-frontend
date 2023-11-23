@@ -40,6 +40,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
     const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
     const [account, setAccount] = useState<any>(undefined);
     const [address, setAddress] = useState<string>("");
+    const [balance, setBalance] = useState<string|undefined>("");
 
     useHotkeys("esc", () => setVisibleProfile(false));
 
@@ -141,6 +142,8 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     setVisibleProfile={setVisibleProfile}
                                     address={address}
                                     setAddress={setAddress}
+                                    balance={balance}
+                                    setBalance={setBalance}
                                 />
                             </div>
 
@@ -166,6 +169,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 classBurger={styles.burger}
                                 resultSearch={resultSearch}
                                 address={address}
+                                balance={balance}
                                 registration={registration}
                             />
                         </div>
