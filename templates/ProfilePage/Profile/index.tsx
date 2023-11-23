@@ -51,15 +51,15 @@ const Profile = ({}: ProfileProps) => {
             counter: "256",
         },
         {
+            title: "Owned",
+            value: "owned",
+            counter: "16",
+            onClick: () => setTheme(false),
+        },
+        {
             title: "Collections",
             value: "collections",
             counter: "4",
-        },
-        {
-            title: "Owners",
-            value: "owners",
-            counter: "16",
-            onClick: () => setTheme(false),
         },
     ];
 
@@ -122,8 +122,16 @@ const Profile = ({}: ProfileProps) => {
                                 setTheme={setTheme}
                             />
                         )}
-                        {sortingTokens === "owners" && (
-                            <Owners items={followers} />
+                        {sortingTokens === "owned" && (
+                            // <Owners items={followers} />
+                            <Tokens
+                                titleUsers="Collected by"
+                                items={nfts}
+                                users={usersToken}
+                                theme={theme}
+                                setTheme={setTheme}
+                                owned={true}
+                            />
                         )}
                     </List>
                 ) : (

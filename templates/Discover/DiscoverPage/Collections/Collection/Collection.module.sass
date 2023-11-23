@@ -3,24 +3,12 @@
 .item
     display: block
     padding: rem(8)
-    border: rem(1) solid $n3
-    background: $n1
-    border-radius: rem(32)
-    color: $n7
+    color: $n0
     transition: background .2s, border-color .2s, color .2s
     +d
         padding: 0
         border: none
         border-radius: 0
-    &:hover
-        +rmin(1260)
-            background: $n7
-            border-color: $n7
-            color: $n1
-            .price
-                -webkit-background-clip: text
-                -webkit-text-fill-color: transparent
-                background-image: $grd
 
 .images
     margin-top: rem(-8)
@@ -55,20 +43,15 @@
 .image
     position: relative
     overflow: hidden
-    border-radius: rem(20)
-    img
-        border-radius: rem(20)
     &:nth-child(1)
         float: left
         width: 72.435%
-        border-radius: rem(24)
         +d
             float: none
             width: calc(100% - rem(8))
         &:before
             padding-bottom: 100%
-        img
-            border-radius: rem(24)
+
     &:not(:nth-child(1))
         float: right
         width: calc(27.565% - rem(8))
@@ -95,6 +78,8 @@
     justify-content: space-between
     align-items: center
     padding: rem(32) rem(32) rem(24)
+    padding-left: 0
+    padding-right: 0
     +d
         padding: rem(32) 0 rem(24)
     +t
@@ -110,6 +95,11 @@
 
 .subtitle
     margin-bottom: rem(12)
+    font-size: 24px
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
     +t
         margin-bottom: rem(4)
         +body1
@@ -132,12 +122,22 @@
 
 .text
     margin-bottom: rem(12)
+    font-size: 18px
+    font-weight: 700
+    line-height: 36px
+    letter-spacing: 0em
+    text-align: right
     +body1
-    color: $n5
+    color: $n10
     +t
         +captionBold
 
 .price
-    color: $n7
+    color: $n0
+    font-size: 18px
+    font-weight: 700
+    line-height: 36px
+    letter-spacing: 0em
+    text-align: right
     +t
         +h4S

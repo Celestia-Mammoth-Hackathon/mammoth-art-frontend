@@ -7,6 +7,8 @@
     &:hover
         color: $n11
         .preview
+            border: 1px solid $n0
+            box-shadow: 4px 6px 0px 0px $n0
             img
                 transform: scale(1.05)
     &.large
@@ -24,14 +26,14 @@
 .preview
     position: relative
     margin-bottom: rem(20)
-    border-radius: rem(20)
     overflow: hidden
+    border: 1px solid $n10
+    box-shadow: 4px 6px 0px 0px $n10
     &:before
         content: ""
         display: block
         padding-bottom: 100%
     img
-        border-radius: rem(20)
         transition: transform 1s
 
 .title
@@ -46,11 +48,42 @@
     +captionBold
     color: $n5
 
-.line
+.edition
     display: flex
+    flex-direction: column
     justify-content: space-between
-    align-items: center
 
+.edition
+    +base
+    color: $n0
 .price
     +base
     color: $n0
+    display: flex
+    flex-direction: column
+    align-items: end
+    justify-content: space-between
+
+
+.detailBox 
+    margin-top: 16px
+    display: flex
+    justify-content: space-between
+
+.user
+    display: flex
+    align-items: center
+    padding: rem(8) rem(16) rem(8) rem(8)
+    padding-left: 0
+    padding-bottom: 16px
+    border-bottom: 1px solid $n0
+    +title
+    color: $n0
+
+.image
+    position: relative
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(16)
+    img
+        border-radius: rem(24)

@@ -9,9 +9,10 @@ type TokenProps = {
     item: any;
     large?: boolean;
     dark?: boolean;
+    owned?: boolean;
 };
 
-const Token = ({ className, item, large, dark }: TokenProps) => (
+const Token = ({ className, item, large, dark, owned }: TokenProps) => (
     <Link href={item.url}>
         <a
             className={cn(
@@ -29,12 +30,39 @@ const Token = ({ className, item, large, dark }: TokenProps) => (
                 />
             </div>
             <div className={styles.details}>
-                <div className={styles.title}>{item.title}</div>
-                <div className={styles.category}>Buy now</div>
-                <div className={styles.line}>
-                    <div className={styles.price}>{item.price}</div>
-                    <Users items={item.users} />
+                { owned ? 
+                    <div className={styles.user}>
+                        <div className={styles.image}>
+                            <Image
+                                src={item.users[0]}
+                                layout="fill"
+                                objectFit="cover"
+                                alt="Photo category"
+                            />
+                        </div>
+                        @randomdash
+                    </div>
+                    : 
+                    <div className={styles.title}>{item.title}</div>
+                }
+                <div className={styles.detailBox}>
+                    <div className={styles.edition}>
+                        <div className={styles.category}>Editions</div>
+                        <div className={styles.edition}>{item.edition}</div>
+                        
+                    </div>
+                    <Image
+                        src="/images/border.svg"
+                        width="1"
+                        height="24"
+                        alt="border"
+                    />
+                    <div className={styles.price}>
+                        <div className={styles.category}>Price</div>
+                        <div className={styles.price}>{item.price}</div>
+                    </div>
                 </div>
+                
             </div>
         </a>
     </Link>

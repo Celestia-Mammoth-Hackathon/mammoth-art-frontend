@@ -12,9 +12,10 @@ type TokensProps = {
     users: any;
     theme: any;
     setTheme: any;
+    owned?: boolean;
 };
 
-const Tokens = ({ items, titleUsers, users, theme, setTheme }: TokensProps) => {
+const Tokens = ({ items, titleUsers, users, theme, setTheme, owned = false }: TokensProps) => {
     const [sorting, setSorting] = useState<string>("grid");
 
     return (
@@ -48,6 +49,7 @@ const Tokens = ({ items, titleUsers, users, theme, setTheme }: TokensProps) => {
                         key={index}
                         large={sorting === "list"}
                         dark={theme}
+                        owned={owned}
                     />
                 ))}
             </div>
