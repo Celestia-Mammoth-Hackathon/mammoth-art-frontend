@@ -21,8 +21,6 @@ const Wallet = ({ account, onDisconnect }: WalletProps) => {
     ];
     const balances = [
         "96 TIA",
-        "1.12 wETH",
-        "1,920 wUSDC"
     ];
     const balanceHistory = [
         {
@@ -51,7 +49,7 @@ const Wallet = ({ account, onDisconnect }: WalletProps) => {
     return (
         <div className={styles.wallet}>
             <div className={styles.head}>
-                <div className={styles.title}>Balances</div>
+                <div className={styles.title}>Balance</div>
                 <div className={styles.balances}>
                     {balances.map((balance: any, index: number) =>
                         <div key={index}>
