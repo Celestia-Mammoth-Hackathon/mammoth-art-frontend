@@ -56,11 +56,11 @@ const Card = ({ className, item, dark }: CardProps) => (
             </div>
             <div className={styles.foot}>
                 <div className={styles.box}>
-                    <div className={styles.text}>Current bid</div>
-                    <div className={styles.price}>{item.bid}</div>
+                    <div className={styles.text}>Editions</div>
+                    <div className={styles.price}>{item.edition}</div>
                 </div>
                 <div className={styles.box}>
-                    <div className={styles.text}>Buy now</div>
+                    <div className={styles.text}>Price</div>
                     <div className={styles.price}>{item.price}</div>
                 </div>
             </div>

@@ -14,17 +14,18 @@ type TabsProps = {
     value: number | string;
     setValue: any;
     dark?: boolean;
+    discover?: boolean;
 };
 
-const Tabs = ({ className, items, value, setValue, dark }: TabsProps) => {
+const Tabs = ({ className, items, value, setValue, dark, discover = false }: TabsProps) => {
     const handleClick = (value: string, onClick: any) => {
         setValue(value);
         onClick && onClick();
     };
 
     return (
-        <div className={cn(styles.box, { [styles.dark]: dark }, className)}>
-            <div className={styles.tabs}>
+        <div className={cn(styles.box, { [styles.dark]: dark }, { [styles.discover]: discover }, className)}>
+            <div className={styles.tab}>
                 {items.map((item, index) => (
                     <button
                         className={cn(styles.button, {

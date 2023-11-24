@@ -1,11 +1,14 @@
 @import @/styles/helpers
 
 .sorting
+    background: $n9
     display: flex
     align-items: center
+    justify-content: center
     padding: 0 rem(80)
-    border-bottom: rem(1) solid $n3
+    border-bottom: 1px solid #E1E2E2
     transition: border-color .2s
+    color: $n0
     +xl
         padding: 0 rem(64)
     +w
@@ -24,7 +27,7 @@
             color: $n4
             &:hover,
             &.active
-                color: $n1
+                color: $n0
             &.active
                 border-color: $n1
         .counter
@@ -35,7 +38,6 @@
                 background: $n8
 
 .select
-    margin-right: auto
     +t
         position: relative
         margin-left: rem(-24)
@@ -112,12 +114,15 @@
         padding: 0 rem(24)
         border: none
     &:hover
-        color: $s2
+        color: $n0
+        border-bottom: 4px solid $n0
         +t
             color: $n7
     &.active
-        border-color: $n7
+        border-bottom: 4px solid $n0
         color: $n7
+        .subtitle
+            color: $n0
         +t
             color: $s2
 

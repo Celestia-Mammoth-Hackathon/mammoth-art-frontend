@@ -79,13 +79,13 @@ const Sorting = ({
                     ))}
                 </div>
             </div>
-            <button
+            {/* <button
                 className={cn(styles.theme, { [styles.active]: theme })}
                 onClick={() => setTheme(!theme)}
             >
                 <Icon className={styles.sun} name="sun" />
                 <Icon className={styles.moon} name="moon" />
-            </button>
+            </button> */}
         </div>
     );
 };

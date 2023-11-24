@@ -12,17 +12,18 @@
 
 .button
     padding: rem(8) rem(24)
-    border-radius: rem(20)
+    border: 1px solid $n10
+    box-shadow: 4px 6px 0px 0px $n10
     +base
     color: $n5
     transition: all .2s
     -webkit-tap-highlight-color: rgba(0,0,0,0)
     +m
         +baseS
-    &:hover
-        color: $n7
+    &:hover,
     &.active
-        background: $n7
-        color: $n1
+        color: $n0
+        border: 1px solid $n0
+        box-shadow: 4px 6px 0px 0px $n0
     &:not(:last-child)
         margin-right: rem(12)

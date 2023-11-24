@@ -22,11 +22,11 @@ const Main = ({ scrollToRef }: MainProps) => {
                 modules={[EffectFade, Navigation]}
                 className="discover-swiper"
             >
-                {discover.map((x, index) => (
+                {/* {discover.map((x, index) => (
                     <SwiperSlide key={index}>
                         <Slide item={x} />
                     </SwiperSlide>
-                ))}
+                ))} */}
             </Swiper>
         </div>
     );

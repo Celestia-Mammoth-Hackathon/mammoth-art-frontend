@@ -2,6 +2,7 @@
 
 .catalog
     transition: background .2s
+    background: $n9
     &.dark
         background: $n8
         .title
@@ -51,16 +52,6 @@
 .close
     display: none
 
-.wrapper
-    padding: rem(128) rem(80)
-    +xl
-        padding: rem(64)
-    +w
-        padding: rem(64) rem(40)
-    +d
-        padding: rem(40)
-    +t
-        padding: rem(40) rem(24)
 
 .top
     display: flex
@@ -80,7 +71,12 @@
         margin: rem(24) 0 0
 
 .title
-    margin-right: rem(40)
+    font-size: 60px
+    font-weight: 700
+    line-height: 80px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
     transition: color .2s
     +t
         flex: 0 0 calc(100% - rem(48))
@@ -117,3 +113,28 @@
 .btns
     margin-top: rem(40)
     text-align: center
+
+.button
+    background: $n9
+    color: $n0
+    border: 2px solid #FFFFFF
+    box-shadow: 4px 6px 0px 0px $n0
+    &:hover
+        background: $n13
+        border: 2px solid #FFFFFF
+        box-shadow: 4px 6px 0px 0px $n0
+
+.dot
+    color: $n11
+    font-size: 60px
+    font-weight: 700
+    line-height: 80px
+    letter-spacing: 0em
+    text-align: left
+
+.formWrapper
+    display: flex
+    justify-content: end
+
+.form  
+    width: 50% !important

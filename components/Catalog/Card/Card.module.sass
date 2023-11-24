@@ -9,19 +9,6 @@
     +d
         padding: 0
         border-radius: 0
-    &:hover
-        +rmin(1260)
-            background: $n7
-            color: $n1
-            .preview:after,
-            .title,
-            .category
-                opacity: 1
-            .user
-                border-color: $n6
-            .foot
-                &:before
-                    background: $n6
     &.dark
         color: $n1
         .user
@@ -29,11 +16,16 @@
         .foot
             &:before
                 background: $n6
-
+    &:hover
+        .preview
+            border: 1px solid $n0
+            box-shadow: 4px 6px 0px 0px $n0
+            transform: scale(1.05)
 .preview
     position: relative
     margin-bottom: rem(24)
-    border-radius: rem(20)
+    border: 1px solid $n10
+    box-shadow: 4px 6px 0px 0px $n10
     overflow: hidden
     &:before
         content: ""
@@ -49,9 +41,6 @@
         background: linear-gradient(180deg, rgba(0, 0, 0, 0) 43.33%, rgba(0, 0, 0, 0.5) 100%)
         opacity: 0
         transition: opacity .2s
-
-.photo
-    border-radius: rem(20)
 
 .category
     position: absolute
@@ -73,8 +62,8 @@
     width: rem(40)
     height: rem(40)
     margin-right: rem(16)
-    img
-        border-radius: rem(8)
+    border: 1px solid $n10
+    box-shadow: 4px 6px 0px 0px $n10
 
 .title
     position: absolute
@@ -109,6 +98,7 @@
     overflow: hidden
     text-overflow: ellipsis
     white-space: nowrap
+    color: $n0
     +body2Bold
 
 .verified
@@ -136,17 +126,7 @@
     &:nth-child(1)
         .text
             position: relative
-            padding-left: rem(16)
-            &:before
-                content: ""
-                position: absolute
-                top: 50%
-                left: 0
-                width: rem(8)
-                height: rem(8)
-                transform: translateY(-50%)
-                border-radius: 50%
-                background: #FD5D47
+
     &:nth-child(2)
         text-align: right
 
@@ -156,6 +136,11 @@
 
 .price
     +body1
+    color: $n0
+    font-size: 20px
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: -0.02em
     +xl
         +body2Bold
     

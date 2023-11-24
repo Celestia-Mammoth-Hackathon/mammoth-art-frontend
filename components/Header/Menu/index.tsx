@@ -116,7 +116,7 @@ const Menu = ({ classBurger, resultSearch, address, balance, registration }: Men
                         </div>
                     </div>
                     <div className={styles.col}>
-                        {isTablet && (
+                        {isTablet && registration && (
                             <>
                                 <div className={styles.head}>
                                     <div className={styles.balanceTitle}>Balance</div>
@@ -140,13 +140,18 @@ const Menu = ({ classBurger, resultSearch, address, balance, registration }: Men
                                         </button>
                                     )}
                                 </div>
+                                
+                            </>
+                            
+                        )}
+                        {
+                            isTablet && (
                                 <Search
                                     className={styles.search}
                                     result={resultSearch}    
                                 />
-                            </>
-                            
-                        )}
+                            )
+                        }
                         <div className={styles.menu}>
                             {menu.map((link, index) => (
                                 !(link.title === "Create" && !registration) && (
@@ -162,69 +167,70 @@ const Menu = ({ classBurger, resultSearch, address, balance, registration }: Men
                             ))}
                         </div>
                         <ConnectButton.Custom>
-      {({
-        account,
-        chain,
-        openAccountModal,
-        openChainModal,
-        openConnectModal,
-        authenticationStatus,
-        mounted,
-      }) => {
-        const ready = mounted;
-        const connected =
-          ready &&
-          account &&
-          chain
+                            {({
+                                account,
+                                chain,
+                                openAccountModal,
+                                openChainModal,
+                                openConnectModal,
+                                authenticationStatus,
+                                mounted,
+                            }) => {
+                                const ready = mounted;
+                                const connected =
+                                ready &&
+                                account &&
+                                chain
 
-        return (
-            <div
-                {...(!ready && {
-                'aria-hidden': true,
-                'style': {
-                    opacity: 0,
-                    pointerEvents: 'none',
-                    userSelect: 'none',
-                },
-                })}
-            >
-                {(() => {
-                if (!connected) {
-                    return (
-                        <div className={styles.btns}>
-                            <button
-                                className={cn("button-white", styles.button)}
-                                onClick={openConnectModal}
-                            >
-                                <span className={styles.text}>CONNECT WALLET</span>
-                            </button>
-                        </div>
-                    );
-                }
-              return (
-                <div className={styles.btns}>
-                    <div className={styles.code}>
-                        {address}
-                        <button className={styles.copy}>
-                            <Icon name="copy" />
-                        </button>
-                    </div>
-                    <button
-                        className={cn("button-white", styles.disconnect)}
-                        onClick={() => {
-                            setVisibleMenu(false)
-                            disconnect()
-                        }}
-                    >
-                        <span className={styles.text}>DISCONNECT WALLET</span>
-                    </button>
-                </div>
-              );
-            })()}
-          </div>
-        );
-      }}
-    </ConnectButton.Custom>
+                                return (
+                                    <div
+                                        className={styles.btnsWrapper}
+                                        {...(!ready && {
+                                        'aria-hidden': true,
+                                        'style': {
+                                            opacity: 0,
+                                            pointerEvents: 'none',
+                                            userSelect: 'none',
+                                        },
+                                        })}
+                                    >
+                                        {(() => {
+                                        if (!connected) {
+                                            return (
+                                                <div className={styles.btns}>
+                                                    <button
+                                                        className={cn("button-white", styles.button)}
+                                                        onClick={openConnectModal}
+                                                    >
+                                                        <span className={styles.text}>CONNECT WALLET</span>
+                                                    </button>
+                                                </div>
+                                            );
+                                        }
+                                    return (
+                                        <div className={styles.btns}>
+                                            <div className={styles.code}>
+                                                {address}
+                                                <button className={styles.copy}>
+                                                    <Icon name="copy" />
+                                                </button>
+                                            </div>
+                                            <button
+                                                className={cn("button-white", styles.disconnect)}
+                                                onClick={() => {
+                                                    setVisibleMenu(false)
+                                                    disconnect()
+                                                }}
+                                            >
+                                                <span className={styles.text}>DISCONNECT WALLET</span>
+                                            </button>
+                                        </div>
+                                    );
+                                    })()}
+                                </div>
+                                );
+                            }}
+                            </ConnectButton.Custom>
                         {/* {
                             registration 
                             ? (

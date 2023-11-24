@@ -6,7 +6,7 @@ import Tabs from "@/components/Tabs";
 import Filters from "@/components/Filters";
 import Sorting from "./Sorting";
 import Card from "./Card";
-
+import Form from "@/components/Form";
 type TabsType = {
     title: string;
     value: string;
@@ -36,22 +36,14 @@ const Catalog = ({
     const [time, setTime] = useState<string>("1-days");
     const [theme, setTheme] = useState<any>(false);
     const [filter, setFilter] = useState<any>(false);
-
+    const [email, setEmail] = useState<string>("");
     return (
         <div className={cn(styles.catalog, { [styles.dark]: dark || theme })}>
-            {tabsSorting && (
-                <Sorting
-                    tabs={tabsSorting}
-                    sorting={sorting}
-                    setSorting={setSorting}
-                    theme={theme}
-                    setTheme={setTheme}
-                    dark={theme}
-                />
-            )}
+            
             <div className={styles.wrapper} ref={scrollToRef}>
                 <div className={styles.top}>
                     <div className={cn("h1", styles.title)}>{title}</div>
+                    <span className={styles.dot}>.</span>
                     <Tabs
                         className={styles.tabs}
                         items={tabsTime}
@@ -59,17 +51,19 @@ const Catalog = ({
                         setValue={setTime}
                         dark={dark || theme}
                     />
-                    <button
-                        className={cn(styles.toggle, {
-                            [styles.active]: filter,
-                        })}
-                        onClick={() => setFilter(!filter)}
-                    >
-                        <Icon className={styles.filter} name="filter-1" />
-                        <Icon className={styles.close} name="close" />
-                    </button>
                 </div>
-                {filter && <Filters statuses={filters} dark={dark || theme} />}
+                <div className={styles.formWrapper}>
+                    <Form
+                        className={styles.form}
+                        inputClassName={styles.formInput}
+                        placeholder="Search by Collection Name"
+                        value={email}
+                        setValue={setEmail}
+                        onSubmit={() => console.log("Submit")}
+                        dark={dark}
+                    />
+                </div>
+                
                 <div className={styles.list}>
                     {items.map((card: any, index: number) => (
                         <Card
