@@ -22,6 +22,7 @@ type FieldProps = {
   setImage?: any;
   collectionImage?:boolean;
   bannerImage?:boolean;
+  search?: boolean;
 };
 
 const Field = ({
@@ -41,7 +42,8 @@ const Field = ({
   upload,
   setImage,
   bannerImage,
-  collectionImage
+  collectionImage,
+  search = false
 }: FieldProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -123,8 +125,8 @@ const Field = ({
             </div>
           </div>
         ) : (
-          <textarea
-            className={cn(styles.input, inputClassName)}
+          <input
+            className={cn(styles.input, {[styles.search] : search}, inputClassName)}
             value={value}
             onChange={onChange}
             placeholder={placeholder}

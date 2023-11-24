@@ -43,7 +43,7 @@ const Card = ({ className, item, dark }: CardProps) => (
                     />
                 </div>
                 <div className={styles.login}>@{item.login}</div>
-                {item.verified && (
+                {/* {item.verified && (
                     <div className={styles.verified}>
                         <Image
                             src="/images/verified.png"
@@ -52,7 +52,7 @@ const Card = ({ className, item, dark }: CardProps) => (
                             alt="Verified"
                         />
                     </div>
-                )}
+                )} */}
             </div>
             <div className={styles.foot}>
                 <div className={styles.box}>

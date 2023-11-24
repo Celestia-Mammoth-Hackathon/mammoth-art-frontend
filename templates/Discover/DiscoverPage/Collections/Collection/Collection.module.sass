@@ -9,9 +9,13 @@
         padding: 0
         border: none
         border-radius: 0
+    &:hover
+        .subtitle
+            color: $n11
 
 .images
     margin-top: rem(-8)
+
     +d
         display: flex
         flex-wrap: wrap
@@ -39,23 +43,25 @@
         padding-bottom: 88.5%
         +d
             padding-bottom: 100%
+    &:hover
+        transform: scale(1.05)
 
 .image
     position: relative
     overflow: hidden
     &:nth-child(1)
-        float: left
-        width: 72.435%
         +d
             float: none
+            flex: 0 0 calc(100% - rem(8))
             width: calc(100% - rem(8))
         &:before
             padding-bottom: 100%
 
     &:not(:nth-child(1))
-        float: right
-        width: calc(27.565% - rem(8))
-        margin-left: rem(8)
+        float: left
+        flex: 0 0 calc(33.333% - rem(8))
+        width: calc(33.333% - rem(8))
+        margin: rem(8) rem(4) 0
         +d
             float: none
             width: calc(33.333% - rem(8))
@@ -88,18 +94,17 @@
 .box
     &:nth-child(2)
         flex-shrink: 0
-        margin-left: rem(20)
         text-align: right
         +t
             padding-top: rem(6)
 
 .subtitle
     margin-bottom: rem(12)
-    font-size: 24px
-    font-weight: 700
-    line-height: 32px
-    letter-spacing: 0em
-    text-align: left
+    font-size: 24px !important
+    font-weight: 700 !important
+    line-height: 32px !important
+    letter-spacing: 0em !important
+    text-align: left !important
     +t
         margin-bottom: rem(4)
         +body1
@@ -122,11 +127,11 @@
 
 .text
     margin-bottom: rem(12)
-    font-size: 18px
-    font-weight: 700
-    line-height: 36px
-    letter-spacing: 0em
-    text-align: right
+    font-size: 18px !important
+    font-weight: 700 !important
+    line-height: 36px !important
+    letter-spacing: 0em !important
+    text-align: right !important
     +body1
     color: $n10
     +t

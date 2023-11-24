@@ -12,6 +12,7 @@ type FormProps = {
     placeholder: string;
     dark?: boolean;
     buttonRight?: boolean;
+    search?: boolean;
 };
 
 const Form = ({
@@ -23,6 +24,7 @@ const Form = ({
     placeholder,
     dark,
     buttonRight,
+    search = false
 }: FormProps) => {
     return (
         <form
@@ -42,6 +44,7 @@ const Form = ({
                 value={value}
                 onChange={(e: any) => setValue(e.target.value)}
                 required
+                search={search}
             />
             <button className={styles.button} type="submit">
                 <Icon name="search" />

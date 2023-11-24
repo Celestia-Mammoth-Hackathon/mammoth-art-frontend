@@ -70,7 +70,7 @@
         box-shadow: 2px 4px 0px 0px $n0
 
 .input
-    height: 48px
+    height: 48px !important
 
 .textarea
     height: rem(152)
@@ -163,3 +163,19 @@
   right: 0
   top: 0
   opacity: 0
+
+.search
+    box-shadow: none
+    padding-left: 60px !important
+    font-size: 18px !important
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    &:hover 
+        box-shadow: none
+    &:focus
+        box-shadow: none
+    +t
+        padding-left: 45px !important

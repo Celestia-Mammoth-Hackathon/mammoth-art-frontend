@@ -24,7 +24,7 @@ const Collection = ({ className, item }: CollectionProps) => {
                                     alt="Collection item"
                                 />
                             </div>
-                        ))}
+                    ))}
                     <div className={styles.image}>
                         <div
                             className={styles.counter}

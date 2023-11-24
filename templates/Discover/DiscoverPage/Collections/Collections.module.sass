@@ -1,20 +1,14 @@
 @import @/styles/helpers
 
 .collections
-    padding: rem(128) rem(80)
     overflow: hidden
-    +xl
-        padding: rem(64)
-    +w
-        padding: rem(64) rem(40)
-    +t
-        padding: rem(48) rem(24)
+
 
 .head
     display: flex
     justify-content: space-between
-    align-items: flex-start
-    margin-bottom: rem(60)
+    align-items: center
+    margin-bottom: rem(44)
     +t
         display: block
     .tabs
@@ -25,6 +19,11 @@
 
 .title
     max-width: rem(600)
+    font-size: 60px
+    font-weight: 700
+    line-height: 80px
+    letter-spacing: 0em
+    text-align: left
     color: $n0
     +t
         max-width: 100%
@@ -43,8 +42,8 @@
         margin: 0
 
 .collection
-    flex: 0 0 calc(50% - rem(40))
-    width: calc(50% - rem(40))
+    flex: 0 0 calc(33% - rem(40))
+    width: calc(33% - rem(40))
     margin: rem(40) rem(20) 0
     +d
         flex: 0 0 calc(50% - rem(24))
@@ -53,3 +52,26 @@
     +m
         width: 100%
         margin: rem(48) 0 0
+
+.formWrapper
+    display: flex
+    justify-content: end
+
+.form  
+    width: 50% !important
+
+.btns
+    margin-top: rem(40)
+    margin-bottom: rem(10)
+    text-align: center
+
+.button
+    background: $n9
+    color: $n0
+    border: 2px solid $n0
+    box-shadow: 4px 6px 0px 0px #FFFFFF
+
+    &:hover
+        background: $n13
+        border: 2px solid $n0
+        box-shadow: 4px 6px 0px 0px #FFFFFF

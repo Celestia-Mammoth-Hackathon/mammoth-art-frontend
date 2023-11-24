@@ -38,11 +38,13 @@
 
 .tab
     display: flex
+
 .button
     position: relative
     display: flex
     justify-content: center
     align-items: center
+    width: 50%
     flex: 1 0 auto
     height: rem(84)
     padding: 0 rem(24)
@@ -108,3 +110,6 @@
     .button
             &:after
                 background: $n9
+    +t
+        .tab
+            padding: 0

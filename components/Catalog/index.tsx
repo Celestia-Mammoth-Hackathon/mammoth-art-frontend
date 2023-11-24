@@ -61,6 +61,7 @@ const Catalog = ({
                         setValue={setEmail}
                         onSubmit={() => console.log("Submit")}
                         dark={dark}
+                        search={true}
                     />
                 </div>
                 

@@ -54,7 +54,7 @@ const Collections = ({ scrollToRef }: CollectionsProps) => {
                         value={email}
                         setValue={setEmail}
                         onSubmit={() => console.log("Submit")}
-
+                        search={true}
                     />
                 </div>
             <div className={styles.list}>
@@ -66,6 +66,18 @@ const Collections = ({ scrollToRef }: CollectionsProps) => {
                     />
                 ))}
             </div>
+            <div className={styles.btns}>
+                    <button
+                        className={cn(
+                            {
+                                "button-stroke button-medium": true,
+                            },
+                            styles.button
+                        )}
+                    >
+                        load more
+                    </button>
+                </div>
         </div>
     );
 };
