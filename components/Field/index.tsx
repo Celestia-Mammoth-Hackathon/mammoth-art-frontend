@@ -20,6 +20,8 @@ type FieldProps = {
   large?: boolean;
   label?: string;
   setImage?: any;
+  collectionImage?:boolean;
+  bannerImage?:boolean;
 };
 
 const Field = ({
@@ -38,6 +40,8 @@ const Field = ({
   label,
   upload,
   setImage,
+  bannerImage,
+  collectionImage
 }: FieldProps) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -113,7 +117,7 @@ const Field = ({
                 </label>
             
             <div className={styles.details}>
-              <div className={styles.detail}>Drag and Drop to Collection Image</div>
+              <div className={styles.detail}>Drag and Drop to {bannerImage? "Banner" : "Collection"} Image</div>
               <div className={styles.type}>Types supported: gif, jpeg, png, or svg</div>
               <div className={styles.type}>Max file size is 100MB</div>
             </div>

@@ -72,6 +72,7 @@ const CreatPage = () => {
                                 upload
                                 required
                                 setImage={setBannerImage}
+                                bannerImage={true}
                             />
                             <span className={styles.label}>Upload Collection Image</span>
                             <Field
@@ -84,6 +85,7 @@ const CreatPage = () => {
                                 upload
                                 required
                                 setImage={setCollectionImage}
+                                collectionImage={true}
                             />
                             {/* <Link href="/create/step-2">
                                 <a
