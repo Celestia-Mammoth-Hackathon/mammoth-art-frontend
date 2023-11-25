@@ -44,7 +44,6 @@
     display: flex
     justify-content: center
     align-items: center
-    width: 50%
     flex: 1 0 auto
     height: rem(84)
     padding: 0 rem(24)
@@ -109,8 +108,9 @@
         padding: 0 rem(400)
         background: $n9
     .button
-            &:after
-                background: $n9
+        width: 50%
+        &:after
+            background: $n9
     +t
         .tab
             padding: 0

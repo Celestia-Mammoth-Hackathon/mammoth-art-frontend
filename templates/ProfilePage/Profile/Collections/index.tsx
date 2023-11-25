@@ -1,6 +1,6 @@
 import styles from "./Collections.module.sass";
 import Users from "@/components/Users";
-import Collection from "../../../../templates/Discover/DiscoverPage/Collections/Collection";
+import Collection from "./Collection";
 import Actions from "@/components/Actions";
 import Spinner from "@/components/Spinner";
 
