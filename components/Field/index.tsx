@@ -121,7 +121,8 @@ const Field = ({
             <div className={styles.details}>
               <div className={styles.detail}>Drag and Drop to {bannerImage? "Banner" : "Collection"} Image</div>
               <div className={styles.type}>Types supported: gif, jpeg, png, or svg</div>
-              <div className={styles.type}>Max file size is 100MB</div>
+              <div className={styles.type}>Max file size is 24MB</div>
+              <div className={styles.type}>Recommended size: {bannerImage? "1600px by 400px" : "400px by 400px"}</div>
             </div>
           </div>
         ) : (

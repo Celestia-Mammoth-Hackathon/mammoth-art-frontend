@@ -13,9 +13,9 @@ const Preview = ({name, description, collectionImage, bannerImage}: PreviewProps
     <>
         <div className={styles.title}>Collection Preview</div>
         <div className={styles.preview}>
-            {collectionImage && <Image src={bannerImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
+            {bannerImage && <Image src={bannerImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
             <div className={styles.category}>
-                {bannerImage && <Image src={collectionImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
+                {collectionImage && <Image src={collectionImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
             </div>
         </div>
         <div className={styles.head}>
