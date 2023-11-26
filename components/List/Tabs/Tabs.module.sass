@@ -65,10 +65,14 @@
         bottom: 0
         background: $a5
         transition: background .2s
-    &:hover,
     &.active
         color: $n1
         border-bottom: 4px solid $n0
+        .counter
+            color: $n0
+            box-shadow: 2px 4px 0px 0px $n0 !important
+    &:hover
+        color: $n1
         .counter
             color: $n0
             box-shadow: 2px 4px 0px 0px $n0 !important
