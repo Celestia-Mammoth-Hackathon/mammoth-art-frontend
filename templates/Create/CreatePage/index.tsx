@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 
 const CreatPage = () => {
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <Layout layoutNoOverflow footerHide>
             <LayoutCreate
                 left={
                     <>
