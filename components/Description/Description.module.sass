@@ -32,10 +32,11 @@
 .col
     flex: 0 0 50%
     width: 50%
+    background: $n9
     +t
         width: 100%
     &:nth-child(2)
-        background: $n2
+        background: $a5
 
 .box
     padding: rem(80)
@@ -54,6 +55,7 @@
 
 .stage
     margin-bottom: rem(48)
+    color: $n0
     +w
         margin-bottom: rem(32)
     +d
@@ -63,10 +65,12 @@
         +body1M
 
 .content
-    +body2
-    color: $n5
-    +d
-        +body2M
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
     p
         &:not(:last-child)
             margin-bottom: rem(16)

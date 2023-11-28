@@ -9,6 +9,7 @@ type ListProps = {
     children: React.ReactNode;
     light?: boolean;
     discover?: boolean;
+    nft?: boolean;
 };
 
 const List = ({
@@ -17,7 +18,9 @@ const List = ({
     setTabsValue,
     children,
     light,
-    discover=false
+    discover=false,
+    nft=false,
+    
 }: ListProps) => {
     return (
         <div className={cn(styles.list, { [styles.light]: light }, { [styles.discover]: discover })}>
@@ -27,8 +30,11 @@ const List = ({
                 setValue={setTabsValue}
                 dark={light}
                 discover={discover}
+                nft={nft}
             />
-            <div className={styles.wrapper}>{children}</div>
+            <div className={cn(styles.wrapper, { [styles.nft]: nft })}>
+                {children}
+            </div>
         </div>
     );
 };

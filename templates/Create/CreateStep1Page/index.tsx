@@ -16,7 +16,7 @@ const CreatPage = () => {
     const [collectionImage, setCollectionImage] = useState<any>("");
 
     return (
-        <Layout layoutNoOverflow>
+        <Layout layoutNoOverflow emptyHeader>
             <LayoutCreate
                 left={
                     <>

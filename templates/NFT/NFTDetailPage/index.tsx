@@ -20,7 +20,7 @@ const statistics = [
 
 const links = [
     {
-        title: "View on Etherscane",
+        title: "View on TIAscan",
         icon: "country",
         url: "https://ui8.net/",
     },
@@ -45,7 +45,7 @@ const provenance = [
                 Bid placed by <span>0x56C1...8eCC</span>
             </>
         ),
-        price: "5.00 ETH",
+        price: "5.00 TIA",
         date: "Aug 18, 2022 at 18:80",
         url: "https://ui8.net/",
     },
@@ -57,7 +57,7 @@ const provenance = [
                 Listed by <span>@randomdash</span>
             </>
         ),
-        price: "5.00 ETH",
+        price: "5.00 TIA",
         date: "Aug 18, 2022 at 18:80",
         url: "https://ui8.net/",
     },
@@ -69,7 +69,7 @@ const provenance = [
                 Minted by <span>@randomdash</span>
             </>
         ),
-        price: "5.00 ETH",
+        price: "5.00 TIA",
         date: "Aug 18, 2022 at 18:80",
         url: "https://ui8.net/",
     },
@@ -108,7 +108,7 @@ const MintNFTPage = () => {
                     ),
                     title: (
                         <>
-                            Sold for <span>6.05 ETH</span> $9,256.58
+                            Sold for <span>6.05 TIA</span> $9,256.58
                         </>
                     ),
                     date: "Aug 18, 2022 at 18:80",

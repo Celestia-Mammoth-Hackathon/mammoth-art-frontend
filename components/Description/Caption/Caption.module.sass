@@ -12,6 +12,12 @@
         margin-bottom: rem(16)
 
 .title
+    font-size: 60px
+    font-weight: 700
+    line-height: 64px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
     +m
         padding-top: rem(4)
         font-size: rem(32)
@@ -24,19 +30,30 @@
         margin-top: 0
 
 .button
+    border: 2px solid $n0
+    &:hover
+        border: 2px solid $n0
     &:not(:last-child)
         margin-right: rem(24)
         +m
             margin-right: rem(12)
 
+.dot
+    fill: $n10 !important
+
 .date
     display: flex
     align-items: center
     +captionBold
-    color: $n5
+    color: $n10
+    font-size: 14px
+    font-weight: 700
+    line-height: 20px
+    letter-spacing: 0em
+    text-align: left
     svg
         flex-shrink: 0
         width: rem(16)
         height: rem(16)
         margin-right: rem(12)
-        fill: $n5
+        fill: $n10

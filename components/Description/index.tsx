@@ -74,12 +74,12 @@ const Description = ({
                                 <Icon name="plus" />
                             </button>
                         )}
-                        {tags && <Tags tags={tags} />}
+                        {/* {tags && <Tags tags={tags} />} */}
                     </div>
                     {provenance && (
                         <div className={styles.box}>
                             <div className={cn("h4", styles.stage)}>
-                                Provenance
+                                History
                             </div>
                             <Provenance
                                 action={provenanceAction}

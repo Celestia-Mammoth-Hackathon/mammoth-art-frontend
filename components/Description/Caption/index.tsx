@@ -15,16 +15,16 @@ const Caption = ({ title, date }: CaptionProps) => (
                 <button
                     className={cn("button-circle button-medium", styles.button)}
                 >
-                    <Icon name="dots" />
+                    <Icon name="dots" className={styles.dot}/>
                 </button>
-                <a
+                {/* <a
                     className={cn("button-circle button-medium", styles.button)}
                     href="https://ui8.net/"
                     target="_blank"
                     rel="noopener noreferrer"
                 >
                     <Icon name="share" />
-                </a>
+                </a> */}
             </div>
         </div>
         <div className={styles.date}>

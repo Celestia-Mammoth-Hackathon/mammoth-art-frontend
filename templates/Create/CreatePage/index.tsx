@@ -6,10 +6,10 @@ import LayoutCreate from "@/components/LayoutCreate";
 import Arrow from "@/components/Arrow";
 import Icon from "@/components/Icon";
 import Footer from "@/components/Footer";
-
+import Header from "@/components/Header";
 const CreatPage = () => {
     return (
-        <Layout layoutNoOverflow footerHide>
+        <Layout layoutNoOverflow footerHide emptyHeader>
             <LayoutCreate
                 left={
                     <>

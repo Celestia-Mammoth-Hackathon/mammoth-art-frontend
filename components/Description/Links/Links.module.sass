@@ -3,12 +3,9 @@
 .links
     position: relative
     display: flex
-    flex-wrap: wrap
     justify-content: space-between
     margin: rem(48) rem(-16) 0
     padding-top: rem(32)
-    +w
-        flex-direction: column
     +d
         margin-top: rem(40)
     +m
@@ -26,15 +23,20 @@
 .link
     display: flex
     align-items: center
-    margin: rem(16) rem(16) 0
-    +base
-    color: $n7
+    margin-right: rem(16)
+    margin-left: rem(16)
+    color: $n0
     transition: color .2s
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
     svg
         margin-right: rem(16)
-        fill: $n7
+        fill: $n0
         transition: fill .2s
     &:hover
-        color: $s2
+        color: $n11
         svg
-            fill: $s2
+            fill: $n11

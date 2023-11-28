@@ -35,11 +35,11 @@ const Statistics = ({ className, items }: StatisticsProps) => (
                                     @{item.login}
                                 </div>
                             )}
-                            {item.category && (
+                            {/* {item.category && (
                                 <div className={styles.category}>
                                     {item.category}
                                 </div>
-                            )}
+                            )} */}
                         </div>
                     </div>
                 </div>
