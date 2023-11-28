@@ -7,10 +7,10 @@ const CollectionPage = () => {
     const [image, setImage] = useState<string>("");
 
     return (
-        <Layout layoutNoOverflow lightHeader={image} footerHide>
+        <>
             <AddCollectionCover image={image} setImage={setImage} />
             <Collection />
-        </Layout>
+        </>
     );
 };
 

@@ -9,7 +9,7 @@ const MintNFTPage = () => {
     const [description, setDescription] = useState<string>("");
 
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <>
             <LayoutCreate
                 left={
                     <Form
@@ -22,7 +22,7 @@ const MintNFTPage = () => {
             >
                 <Upload title={title} />
             </LayoutCreate>
-        </Layout>
+        </>
     );
 };
 

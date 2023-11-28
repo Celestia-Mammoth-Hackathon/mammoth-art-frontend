@@ -12,16 +12,16 @@ import { auctions } from "@/mocks/auctions";
 
 const HomePage = () => {
     return (
-        <Layout layoutNoOverflow noRegistration>
-            <Main />
-            {/* <Hot />
-            <Dream /> */}
-            <Collections />
-            {/* <Auctions items={auctions} /> */}
-            <Spotlight />
-            {/* <Creativity /> */}
-            {/* <Newsletter /> */}
-        </Layout>
+            <>
+                <Main />
+                {/* <Hot />
+                <Dream /> */}
+                <Collections />
+                {/* <Auctions items={auctions} /> */}
+                <Spotlight />
+                {/* <Creativity /> */}
+                {/* <Newsletter /> */}
+            </>
     );
 };
 

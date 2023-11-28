@@ -61,7 +61,7 @@ const MintNFTPage = () => {
     const [reserveValue, setReserveValue] = useState<string>("");
 
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <Description
                 image="/images/main-pic-1.jpg"
                 captionHide={buy || reserve}
@@ -168,7 +168,7 @@ const MintNFTPage = () => {
                     </div>
                 )}
             </Description>
-        </Layout>
+        </>
     );
 };
 

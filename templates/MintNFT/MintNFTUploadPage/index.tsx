@@ -11,7 +11,7 @@ const MintNFTPage = () => {
     );
 
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <>
             <LayoutCreate
                 left={
                     <Form
@@ -24,7 +24,7 @@ const MintNFTPage = () => {
             >
                 <Upload title={title} />
             </LayoutCreate>
-        </Layout>
+        </>
     );
 };
 

@@ -50,7 +50,7 @@ const HomePage = () => {
         // },
     ];
     return (
-        <Layout layoutNoOverflow noRegistration>
+        <>
             <Main scrollToRef={scrollToAll} />
             <List
                         tabs={tabsSorting}
@@ -84,7 +84,7 @@ const HomePage = () => {
             />
             <Collections scrollToRef={scrollToCollections} /> */}
 
-        </Layout>
+        </>
     );
 };
 

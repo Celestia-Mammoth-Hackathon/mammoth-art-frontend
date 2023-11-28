@@ -5,11 +5,10 @@ import Footer from "@/components/Footer";
 
 const PrfilePage = () => {
     return (
-        <Layout layoutNoOverflow lightHeader footerHide>
+        <>
             <Background image="/images/background-1.jpg" />
             <Profile />
-            <Footer />
-        </Layout>
+        </>
     );
 };
 

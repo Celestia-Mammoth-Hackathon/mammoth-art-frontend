@@ -53,7 +53,7 @@ const provenance = [
 
 const BuyNowPage = () => {
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <Description
                 image="/images/main-pic-1.jpg"
                 captionHide
@@ -85,7 +85,7 @@ const BuyNowPage = () => {
                     />
                 </>
             </Description>
-        </Layout>
+        </>
     );
 };
 

@@ -20,7 +20,7 @@ const statistics = [
 
 const MintNFTPage = () => {
     return (
-        <Layout layoutNoOverflow headerHide footerHide>
+        <>
             <Description
                 exit
                 image="/images/main-pic-1.jpg"
@@ -41,7 +41,7 @@ const MintNFTPage = () => {
             >
                 <Details />
             </Description>
-        </Layout>
+        </>
     );
 };
 

@@ -7,7 +7,7 @@ import { blog } from "@/mocks/blog";
 
 const HelpDetailPage = () => {
     return (
-        <Layout layoutNoOverflow>
+        <>
             <Main
                 classTitle="hero"
                 image="/images/blog.jpg"
@@ -16,7 +16,7 @@ const HelpDetailPage = () => {
             />
             <Articles items={blog} />
             <Newsletter />
-        </Layout>
+        </>
     );
 };
 

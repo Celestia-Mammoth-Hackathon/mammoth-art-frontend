@@ -17,7 +17,7 @@ const breadcrumbs = [
 
 const HelpDetailPage = () => {
     return (
-        <Layout layoutNoOverflow>
+        <>
             <Main
                 classTitle="h1"
                 image="/images/help-detail.jpg"
@@ -26,7 +26,7 @@ const HelpDetailPage = () => {
             />
             <Detail detail={detail} />
             <Articles />
-        </Layout>
+        </>
     );
 };
 

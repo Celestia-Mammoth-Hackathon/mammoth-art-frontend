@@ -3,9 +3,9 @@ import Artists from "./Artists";
 
 const HomePage = () => {
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <Artists />
-        </Layout>
+        </>
     );
 };
 

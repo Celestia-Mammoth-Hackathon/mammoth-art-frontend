@@ -55,7 +55,7 @@ const provenance = [
 const PlaceBidPage = () => {
     const [bid, setBid] = useState<string>("");
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <Description
                 image="/images/main-pic-1.jpg"
                 captionHide
@@ -101,7 +101,7 @@ const PlaceBidPage = () => {
                     />
                 </>
             </Description>
-        </Layout>
+        </>
     );
 };
 

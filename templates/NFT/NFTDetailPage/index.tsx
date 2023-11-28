@@ -90,7 +90,7 @@ const tags = [
 
 const MintNFTPage = () => {
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <Description
                 image="/images/cute-planet-large.jpg"
                 title="The Explorer"
@@ -125,7 +125,7 @@ const MintNFTPage = () => {
             >
                 <Details />
             </Description>
-        </Layout>
+        </>
     );
 };
 

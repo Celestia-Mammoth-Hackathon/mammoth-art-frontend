@@ -9,7 +9,7 @@ import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 const CreatPage = () => {
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <>
             <LayoutCreate
                 left={
                     <>
@@ -52,8 +52,7 @@ const CreatPage = () => {
                     </Link>
                 </div> */}
             </LayoutCreate>
-            <Footer />
-        </Layout>
+        </>
     );
 };
 

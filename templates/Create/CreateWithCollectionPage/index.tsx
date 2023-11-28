@@ -23,7 +23,7 @@ const list = [
 
 const CreatPage = () => {
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <>
             <LayoutCreate
                 left={
                     <>
@@ -83,7 +83,7 @@ const CreatPage = () => {
                     </Link>
                 </div>
             </LayoutCreate>
-        </Layout>
+        </>
     );
 };
 

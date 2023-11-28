@@ -14,7 +14,7 @@ const HelpCategoryPage = () => {
     const [search, setSearch] = useState<string>("");
 
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <div className={styles.row}>
                 <div className={styles.col}>
                     <div className={styles.wrap}>
@@ -52,7 +52,7 @@ const HelpCategoryPage = () => {
                     ))}
                 </div>
             </div>
-        </Layout>
+        </>
     );
 };
 

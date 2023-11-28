@@ -9,7 +9,7 @@ import { tabsTime, nfts, statuses } from "@/mocks/nfts";
 
 const FeedPage = () => {
     return (
-        <Layout layoutNoOverflow>
+        <>
             <Main />
             <Stories />
             <CollectionCreators />
@@ -21,7 +21,7 @@ const FeedPage = () => {
                 dark
             />
             <Newsletter />
-        </Layout>
+        </>
     );
 };
 

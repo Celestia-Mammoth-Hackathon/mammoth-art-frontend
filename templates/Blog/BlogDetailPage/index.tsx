@@ -8,7 +8,7 @@ import { blogSlider } from "@/mocks/blog";
 
 const BlogDetailPage = () => {
     return (
-        <Layout layoutNoOverflow>
+        <>
             <Main
                 classTitle="h1"
                 image="/images/blog-detail.jpg"
@@ -18,7 +18,7 @@ const BlogDetailPage = () => {
             <Article />
             <BlogList items={blogSlider} />
             <Newsletter />
-        </Layout>
+        </>
     );
 };
 

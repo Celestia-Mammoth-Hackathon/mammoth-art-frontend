@@ -10,7 +10,7 @@ import Upload from "./Upload";
 const MintNFTPage = () => {
     const router = useRouter();
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <>
             <LayoutCreate
                 left={
                     <>
@@ -47,7 +47,7 @@ const MintNFTPage = () => {
             >
                 <Upload />
             </LayoutCreate>
-        </Layout>
+        </>
     );
 };
 

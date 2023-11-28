@@ -55,7 +55,7 @@ const provenance = [
 const MakeOfferPage = () => {
     const [bid, setBid] = useState<string>("");
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <Description
                 image="/images/main-pic-1.jpg"
                 captionHide
@@ -94,7 +94,7 @@ const MakeOfferPage = () => {
                     />
                 </>
             </Description>
-        </Layout>
+        </>
     );
 };
 

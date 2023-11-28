@@ -4,13 +4,7 @@ import Congrats from "@/components/Congrats";
 
 const CreatPage = () => {
     return (
-        <Layout
-            classHeader={styles.header}
-            background="#F1F4F4"
-            layoutNoOverflow
-            footerHide
-            emptyHeader
-        >
+        <>
             <Congrats
                 title="Congrats"
                 content={
@@ -22,7 +16,7 @@ const CreatPage = () => {
                     </>
                 }
             />
-        </Layout>
+        </>
     );
 };
 

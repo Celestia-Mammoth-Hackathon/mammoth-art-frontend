@@ -37,7 +37,7 @@ const SettingsPage = () => {
     };
 
     return (
-        <Layout layoutNoOverflow footerHide>
+        <>
             <div className={styles.row}>
                 <div className={styles.col}>
                     <div className={styles.wrap}>
@@ -96,7 +96,7 @@ const SettingsPage = () => {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </>
     );
 };
 

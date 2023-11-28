@@ -13,7 +13,7 @@ const CreatPage = () => {
     const [symbol, setSymbol] = useState<string>("");
 
     return (
-        <Layout layoutNoOverflow footerHide emptyHeader>
+        <>
             <LayoutCreate
                 left={
                     <>
@@ -48,7 +48,7 @@ const CreatPage = () => {
             >
                 <Preview />
             </LayoutCreate>
-        </Layout>
+        </>
     );
 };
 
