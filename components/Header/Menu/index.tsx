@@ -31,6 +31,10 @@ const socials = [
 
 const menu = [
     {
+        title: "My Profile",
+        url: "/profile",
+    },
+    {
         title: "Discover",
         url: "/discover",
     },
@@ -154,7 +158,11 @@ const Menu = ({ classBurger, resultSearch, address, balance, registration }: Men
                         }
                         <div className={styles.menu}>
                             {menu.map((link, index) => (
-                                !(link.title === "Create" && !registration) && (
+                                // Show NavLink based on specified conditions
+                                !(
+                                    (!registration && (link.title.toLowerCase() === "create" || link.title.toLowerCase() === "my profile")) ||
+                                    (registration && !isTablet && link.title.toLowerCase() === "my profile")
+                                ) && (
                                     <NavLink
                                         className={cn(styles.link)}
                                         activeClassName={styles.active}
