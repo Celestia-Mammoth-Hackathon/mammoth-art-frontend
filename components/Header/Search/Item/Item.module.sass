@@ -12,6 +12,8 @@
         color: $n1
     &:hover
         color: $s2
+        .title
+            color: $n11
 
 .preview
     position: relative
@@ -23,7 +25,21 @@
         border-radius: rem(12)
 
 .title
-    +body2Bold
+    font-size: 20px
+    font-weight: 700
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+
+.detail
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0 !important
+
 
 .content
     +base
