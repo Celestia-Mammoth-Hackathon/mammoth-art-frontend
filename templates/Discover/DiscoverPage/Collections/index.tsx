@@ -50,7 +50,7 @@ const Collections = ({ scrollToRef }: CollectionsProps) => {
                     <Form
                         className={styles.form}
                         inputClassName={styles.formInput}
-                        placeholder="Search by Collection Name"
+                        placeholder="Search by NFT, Collection or Artist"
                         value={email}
                         setValue={setEmail}
                         onSubmit={() => console.log("Submit")}
