@@ -17,19 +17,17 @@ class MyDocument extends Document {
             <Html>
                 <Head>
                     <meta
-                        content="Epic NFT Marketplace"
+                        content="Create Anything"
                         name="MRKT- NFT Marketplace. Create Anything.
-                            MRKT- NFT Marketplace. Create Anything.
                             Powered by Celestia"
                     />
                     <meta
                         content="MRKT- NFT Marketplace. Create Anything.
-                                MRKT- NFT Marketplace. Create Anything.
                                 Powered by Celestia"
                         property="og:title"
                     />
                     <meta
-                        content="Epic NFT Marketplace"
+                        content="Create Anything"
                         property="og:description"
                     />
                     <meta
@@ -43,17 +41,15 @@ class MyDocument extends Document {
                     <meta
                         property="og:site_name"
                         content="MRKT- NFT Marketplace. Create Anything.
-                            MRKT- NFT Marketplace. Create Anything.
                             Powered by Celestia"
                     />
                     <meta
                         content="MRKT- NFT Marketplace. Create Anything.
-                            MRKT- NFT Marketplace. Create Anything.
                             Powered by Celestia"
                         property="twitter:title"
                     />
                     <meta
-                        content="Epic NFT Marketplace"
+                        content="Create Anything"
                         property="twitter:description"
                     />
                     <meta
