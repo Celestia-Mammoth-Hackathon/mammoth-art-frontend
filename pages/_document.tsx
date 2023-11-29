@@ -17,15 +17,19 @@ class MyDocument extends Document {
             <Html>
                 <Head>
                     <meta
-                        content="Epic NFT Marketplace UI Design Kit"
-                        name="Crypter v.2 - NFT Marketplace UI Kit"
+                        content="Epic NFT Marketplace"
+                        name="MRKT- NFT Marketplace. Create Anything.
+                            MRKT- NFT Marketplace. Create Anything.
+                            Powered by Celestia"
                     />
                     <meta
-                        content="Crypter v.2 - NFT Marketplace UI Kit"
+                        content="MRKT- NFT Marketplace. Create Anything.
+                                MRKT- NFT Marketplace. Create Anything.
+                                Powered by Celestia"
                         property="og:title"
                     />
                     <meta
-                        content="Epic NFT Marketplace UI Design Kit"
+                        content="Epic NFT Marketplace"
                         property="og:description"
                     />
                     <meta
@@ -38,14 +42,18 @@ class MyDocument extends Document {
                     />
                     <meta
                         property="og:site_name"
-                        content="Crypter v.2 - NFT Marketplace UI Kit"
+                        content="MRKT- NFT Marketplace. Create Anything.
+                            MRKT- NFT Marketplace. Create Anything.
+                            Powered by Celestia"
                     />
                     <meta
-                        content="Crypter v.2 - NFT Marketplace UI Kit"
+                        content="MRKT- NFT Marketplace. Create Anything.
+                            MRKT- NFT Marketplace. Create Anything.
+                            Powered by Celestia"
                         property="twitter:title"
                     />
                     <meta
-                        content="Epic NFT Marketplace UI Design Kit"
+                        content="Epic NFT Marketplace"
                         property="twitter:description"
                     />
                     <meta
