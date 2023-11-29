@@ -24,11 +24,11 @@ const CreatPage = () => {
                             <div className={cn("h1", styles.title)}>
                                 CREATE A COLLECTION
                             </div>
-                            <Link href="/create">
+                            {/* <Link href="/create">
                                 <a className={cn("button-circle", styles.back)}>
                                     <Icon name="arrow-left" className={styles.arrow}/>
                                 </a>
-                            </Link>
+                            </Link> */}
                         </div>
                         {/* <div className={styles.info}>
                             Deploy a smart contract to showcase a series of NFT

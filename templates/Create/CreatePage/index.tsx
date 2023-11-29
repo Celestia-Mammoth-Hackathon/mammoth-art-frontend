@@ -1,12 +1,10 @@
 import Link from "next/link";
 import cn from "classnames";
 import styles from "./CreatePage.module.sass";
-import Layout from "@/components/Layout";
 import LayoutCreate from "@/components/LayoutCreate";
 import Arrow from "@/components/Arrow";
 import Icon from "@/components/Icon";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+
 const CreatPage = () => {
     return (
         <>

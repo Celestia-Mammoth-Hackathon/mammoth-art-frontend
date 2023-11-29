@@ -10,6 +10,7 @@ type ListProps = {
     light?: boolean;
     discover?: boolean;
     nft?: boolean;
+    create?: boolean;
 };
 
 const List = ({
@@ -20,10 +21,10 @@ const List = ({
     light,
     discover=false,
     nft=false,
-    
+    create=false,
 }: ListProps) => {
     return (
-        <div className={cn(styles.list, { [styles.light]: light }, { [styles.discover]: discover })}>
+        <div className={cn(styles.list, { [styles.light]: light }, { [styles.discover]: discover }, { [styles.nft]: nft }, { [styles.create]: create })}>
             <Tabs
                 items={tabs}
                 value={tabsValue}
@@ -31,8 +32,9 @@ const List = ({
                 dark={light}
                 discover={discover}
                 nft={nft}
+                create={create}
             />
-            <div className={cn(styles.wrapper, { [styles.nft]: nft })}>
+            <div className={styles.wrapper}>
                 {children}
             </div>
         </div>

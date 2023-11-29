@@ -22,7 +22,12 @@ type FieldProps = {
   setImage?: any;
   collectionImage?:boolean;
   bannerImage?:boolean;
+  nftImage?:boolean;
   search?: boolean;
+  number?: boolean;
+  select?: boolean;
+  min?: string;
+  max?: string;
 };
 
 const Field = ({
@@ -43,8 +48,34 @@ const Field = ({
   setImage,
   bannerImage,
   collectionImage,
+  nftImage,
+  number,
+  select,
+  min,
+  max,
   search = false
 }: FieldProps) => {
+  let fileName = null;
+  let fileType = null;
+  let fileSize = null;
+  let fileDimension = null;
+
+  if (bannerImage) {
+    fileName = "Banner Image";
+    fileType = "gif, jpeg, png, or svg ";
+    fileSize = "24MB";
+    fileDimension = "1600px by 400px";
+  } else if (collectionImage) {
+    fileName = "Collection Image";
+    fileType = "gif, jpeg, png, or svg ";
+    fileSize = "24MB";
+    fileDimension = "400px by 400px";
+  } else if (nftImage) {
+    fileName = "to Upload NFT File";
+    fileType = "gif, jpeg, png, svg, mp4, webm, glb, mp3, wav, flac, pdf, zip (interactive)";
+    fileSize = "100MB";
+  }
+  
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
 
@@ -119,14 +150,36 @@ const Field = ({
                 </label>
             
             <div className={styles.details}>
-              <div className={styles.detail}>Drag and Drop to {bannerImage? "Banner" : "Collection"} Image</div>
-              <div className={styles.type}>Types supported: gif, jpeg, png, or svg</div>
-              <div className={styles.type}>Max file size is 24MB</div>
-              <div className={styles.type}>Recommended size: {bannerImage? "1600px by 400px" : "400px by 400px"}</div>
+              <div className={styles.detail}>Drag and Drop {fileName}</div>
+              <div className={styles.type}>Types supported: {fileType}</div>
+              <div className={styles.type}>Max file size is {fileSize}</div>
+              <div className={styles.type}>{fileDimension ? `Recommended size: ${fileDimension}` : ""}</div>
             </div>
           </div>
-        ) : (
-          <input
+        ) : number ? (
+          <input 
+            className={cn(styles.input, styles.number, {[styles.search] : search}, inputClassName)}
+            value={value}
+            type="number"
+            onChange={onChange}
+            placeholder={placeholder}
+            required={required}
+            autoFocus={autoFocus}
+            min={min}
+            max={max}
+          />
+        ) : select ? (
+            <select
+              className={cn(styles.input, styles.select, inputClassName)}
+              value={value}
+              onChange={onChange}
+            >
+              <option value="option1">Option 1</option>
+              <option value="option2">Option 2</option>
+              <option value="option3">Option 3</option>
+            </select>
+          ) : (
+          <input 
             className={cn(styles.input, {[styles.search] : search}, inputClassName)}
             value={value}
             onChange={onChange}

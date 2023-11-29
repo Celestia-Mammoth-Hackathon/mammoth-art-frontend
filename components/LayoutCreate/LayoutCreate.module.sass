@@ -43,3 +43,95 @@
     +t
         min-height: auto
         padding: rem(40) rem(24)
+
+.head
+    display: flex
+    justify-content: space-between
+    align-items: flex-start
+    margin-bottom: rem(32)
+
+.back
+    margin-left: rem(32)
+    border: 1px solid #F1F4F4
+    &:hover
+        background: $n13
+        border: 1px solid #F1F4F4
+        svg
+            fill: $n0 !important
+
+.arrow
+    fill: $n10 !important
+
+.info
+    max-width: rem(475)
+    margin-bottom: rem(64)
+    +body1
+    color: $n5
+    +w
+        margin-bottom: rem(32)
+    +m
+        +body1S
+
+.form
+    display: flex
+    flex-direction: column
+    flex-grow: 1
+
+.field
+    margin-bottom: rem(40)
+    +w
+        margin-bottom: rem(24)
+
+.button
+    margin-top: auto
+    +m
+        margin-top: rem(16)
+
+.label
+    font-size: 14px
+    font-weight: 400
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    margin-bottom: 8px
+
+.title
+    font-size: 32px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+
+.title
+    margin-bottom: rem(64)
+    +w
+        margin-bottom: rem(40)
+
+.content
+    font-size: 14px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    +w
+        +body2M
+    +t
+        max-width: 100%
+        padding-right: 0
+
+.noColButton
+    margin-top: 16px
+    max-width: 187px
+    height: 48px
+    padding: 12px, 0px, 12px, 32px
+    border: 1px
+    gap: 8px
+    border: 1px solid #E1E2E2
+    color: $n0
+    font-size: 12px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0.17em
+
