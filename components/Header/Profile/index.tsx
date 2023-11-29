@@ -124,6 +124,7 @@ const Profile = ({
                                 activeClassName={styles.active}
                                 href={link.url}
                                 key={index}
+                                onClose={onClose}
                             >
                                 {link.title}
                             </NavLink>
