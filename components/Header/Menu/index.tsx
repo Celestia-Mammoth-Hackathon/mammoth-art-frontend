@@ -168,6 +168,7 @@ const Menu = ({ classBurger, resultSearch, address, balance, registration }: Men
                                         activeClassName={styles.active}
                                         href={link.url}
                                         key={index}
+                                        onClose={() => setVisibleMenu(false)}
                                     >
                                         {link.title}
                                     </NavLink>

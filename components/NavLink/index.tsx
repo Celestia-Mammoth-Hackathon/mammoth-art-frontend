@@ -9,6 +9,7 @@ type NavLinkProps = {
     activeClassName?: any;
     href: string;
     children: React.ReactNode;
+    onClose?: () => void;
 };
 
 const NavLink = ({
@@ -16,8 +17,15 @@ const NavLink = ({
     activeClassName,
     href,
     children,
+    onClose
 }: NavLinkProps) => {
     const router = useRouter();
+
+    const handleOnClick = () => {
+        if (onClose) {
+            onClose();
+        }
+    };
 
     return (
         <Link href={href}>
@@ -25,6 +33,7 @@ const NavLink = ({
                 className={cn("h3", styles.link, className, {
                     [styles.active]: router.pathname === href,
                 })}
+                onClick={onClose ? handleOnClick : undefined}
             >
                 <div className={styles.title}>
                     {children}
