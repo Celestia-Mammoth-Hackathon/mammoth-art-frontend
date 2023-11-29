@@ -56,7 +56,7 @@ const Catalog = ({
                     <Form
                         className={styles.form}
                         inputClassName={styles.formInput}
-                        placeholder="Search by Collection Name"
+                        placeholder="Search by Title or Artists"
                         value={email}
                         setValue={setEmail}
                         onSubmit={() => console.log("Submit")}
