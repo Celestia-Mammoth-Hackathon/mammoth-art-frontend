@@ -20,7 +20,7 @@ const Tokens = ({ items, titleUsers, users, theme, setTheme, owned = false }: To
 
     return (
         <>
-            {/* <div className={styles.head}>
+            <div className={styles.head}>
                 <Users
                     classUsersItem={styles.user}
                     classUsersCounter={styles.counter}
@@ -36,24 +36,34 @@ const Tokens = ({ items, titleUsers, users, theme, setTheme, owned = false }: To
                     setTheme={setTheme}
                     dark={theme}
                 />
-            </div> */}
+            </div>
             <div
                 className={cn(styles.tokens, {
                     [styles.list]: sorting === "list",
                 })}
             >
-                {items.map((token: any, index: number) => (
-                    <Token
-                        className={styles.token}
-                        item={token}
-                        key={index}
-                        large={sorting === "list"}
-                        dark={theme}
-                        owned={owned}
-                    />
-                ))}
+                {
+                    items.length ? (
+                        items.map((token: any, index: number) => (
+                            <Token
+                                className={styles.token}
+                                item={token}
+                                key={index}
+                                large={sorting === "list"}
+                                dark={theme}
+                                owned={owned}
+                            />
+                        ))
+                    ) : (
+                        <div className={styles.wrap}>
+                            <div className={styles.box}>No NFTs minted in collection </div>
+                        </div>
+                    )
+                }
             </div>
-            <Spinner dark={theme} />
+            {
+                items.length ? <Spinner dark={theme} /> : <></>
+            }
         </>
     );
 };

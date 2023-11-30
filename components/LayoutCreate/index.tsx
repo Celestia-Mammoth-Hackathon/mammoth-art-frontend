@@ -14,6 +14,17 @@ type LayoutCreateProps = {
     children: React.ReactNode;
 };
 
+const collectionOptions = [
+    {
+        label: "Da Best NFTs",
+        value: "Da Best NFTs",
+    },
+    {
+        label: "Da Great NFTs",
+        value: "Da Great NFTs",
+    },
+];
+
 const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
     const [theme, setTheme] = useState<any>(false);
     const [sortingTokens, setSortingTokens] = useState<string>("");
@@ -41,17 +52,6 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
         {
             title: "Create Collection",
             value: "collection",
-        },
-    ];
-
-    const collectionOptions = [
-        {
-            label: "Da Best NFTs",
-            value: "Da Best NFTs",
-        },
-        {
-            label: "Da Great NFTs",
-            value: "Da Great NFTs",
         },
     ];
 
@@ -126,7 +126,9 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                 <></>
             )
         }
-    }, [bannerImage, collection, collectionImage, collectionOptions, description, edition, name, nftDesc, nftImage, nftName, royalty, sortingTokens]);
+    }, [sortingTokens, 
+        collection, edition, royalty, nftImage, nftName, nftDesc,
+        collectionImage, bannerImage, name, description]);
 
     return (
         <div className={styles.row}>

@@ -5,6 +5,8 @@
     top: 0
     display: flex
     flex-direction: column
+    background: $n9
+    color: $n0
     min-height: rem(800)
     padding: rem(100) rem(80) rem(80)
     +xl
@@ -46,8 +48,10 @@
     display: flex
     align-items: center
     margin-left: rem(8)
+    padding: 8px 12px 8px 12px
     +base
-    color: $n5
+    background: $a6
+    color: $n9
 
 .copy
     margin-left: rem(8)
@@ -55,7 +59,7 @@
     svg
         width: rem(20)
         height: rem(20)
-        fill: $n5
+        fill: $n9
         transition: fill .2s
     &:hover
         svg
@@ -63,6 +67,8 @@
 
 .button
     margin: rem(8) 0 0 rem(24)
+    border: 1px solid $n0
+    color: $n0
     +d
         width: rem(48)
         margin-top: 0
@@ -70,11 +76,17 @@
         font-size: 0
         svg
             margin: 0
+    &:hover
+        background: $n13
+        color: $n0
+        border: 1px solid $n0
+
+.edit
+    fill: $n0 !important
 
 .list
     display: flex
     flex-wrap: wrap
-    margin: rem(-40) rem(-12) auto
     
 .item
     flex: 0 0 calc(25% - rem(24))

@@ -18,7 +18,6 @@ const Details = ({ details }: DetailsProps) => {
                 <div className={styles.box}>
                     <div className={cn("h2", styles.user)}>Cute Planet</div>
                     <div className={styles.line}>
-                        <div className={styles.category}>CUTE</div>
                         <div className={styles.code}>
                             0xE5A1....D0306
                             <button className={styles.copy}>
@@ -34,7 +33,7 @@ const Details = ({ details }: DetailsProps) => {
                     )}
                 >
                     <span>edit</span>
-                    <Icon name="edit" />
+                    <Icon name="edit" className={styles.edit}/>
                 </button>
             </div>
             <div className={styles.list}>

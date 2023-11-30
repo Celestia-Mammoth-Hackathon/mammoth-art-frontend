@@ -50,12 +50,12 @@ const Profile = ({}: ProfileProps) => {
             counter: "5",
             onClick: () => setTheme(false),
         },
-        {
-            title: "Owners",
-            value: "owners",
-            counter: "16",
-            onClick: () => setTheme(false),
-        },
+        // {
+        //     title: "Owners",
+        //     value: "owners",
+        //     counter: "16",
+        //     onClick: () => setTheme(false),
+        // },
     ];
 
     return (
