@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import cn from "classnames";
 import styles from "./Field.module.sass";
 import Icon from "@/components/Icon";
+import Dropdown from '../Dropdown';
 
 type FieldProps = {
   className?: string;
@@ -19,6 +20,7 @@ type FieldProps = {
   light?: boolean;
   large?: boolean;
   label?: string;
+  options?: any;
   setImage?: any;
   collectionImage?:boolean;
   bannerImage?:boolean;
@@ -45,6 +47,7 @@ const Field = ({
   large,
   label,
   upload,
+  options,
   setImage,
   bannerImage,
   collectionImage,
@@ -169,15 +172,11 @@ const Field = ({
             max={max}
           />
         ) : select ? (
-            <select
-              className={cn(styles.input, styles.select, inputClassName)}
+            <Dropdown
               value={value}
-              onChange={onChange}
-            >
-              <option value="option1">Option 1</option>
-              <option value="option2">Option 2</option>
-              <option value="option3">Option 3</option>
-            </select>
+              setValue={onChange}
+              options={options}
+            />
           ) : (
           <input 
             className={cn(styles.input, {[styles.search] : search}, inputClassName)}

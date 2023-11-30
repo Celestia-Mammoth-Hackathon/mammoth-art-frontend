@@ -1,0 +1,76 @@
+@import ../../styles/helpers
+
+.dropdown
+    position: relative
+    border: 1.5px solid $n10
+    box-shadow: 2px 4px 0px 0px $n10
+    &.active
+        z-index: 10
+        .head
+            .arrow
+                svg
+                    transform: rotate(180deg)
+        .body
+            visibility: visible
+            opacity: 1
+            transform: translateY(0)
+    &:hover
+        border: 1.5px solid $n0
+        box-shadow: 2px 4px 0px 0px $n0
+
+.head
+    position: relative
+    height: 48px
+    padding: 0 48px 0 16px
+    font-size: 14px
+    font-weight: 500
+    line-height: 48px
+    cursor: pointer
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    transition: box-shadow .2s
+
+.selection
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+
+.arrow
+    position: absolute
+    fill: white
+    top: 50%
+    right: 8px
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 32px
+    height: 32px
+    border-radius: 50%
+    transform: translateY(-50%)
+    svg
+        fill: $n10
+        transition: transform .2s
+.body
+    top: calc(100% + 2px)
+    border: 1px solid $n0
+    position: absolute
+    left: 0
+    right: 0
+    background: $n9
+    visibility: hidden
+    opacity: 0
+    transform: translateY(3px)
+    transition: all .2s
+
+
+.option
+    padding: 8px 16px
+    font-size: 14px
+    font-weight: 500
+    transition: color .2s
+    cursor: pointer
+    -webkit-tap-highlight-color: rgba(0,0,0,0)
+    &:not(:last-child) 
+        border-bottom: 1px solid $n0
+    &:hover
+        background: $n10
+    
