@@ -25,7 +25,7 @@ const Details = ({sorting, setSorting}: DetailsProps) => {
                             <div className={styles.col}>
                                 <div className={styles.label}>Buy now</div>
                                 <div className={cn("h4", styles.value)}>
-                                    {owned ? "-" : "10.00 TIA"}
+                                    {owned ? "-" : `${value} TIA`}
                                 </div>
                                 <div>
                                     <a
@@ -142,7 +142,10 @@ const Details = ({sorting, setSorting}: DetailsProps) => {
                                             "button-medium button-wide",
                                             styles.button
                                         )}
-                                        onClick={() => setSorting("set")}
+                                        onClick={() => {
+                                            setSorting("details")
+                                            setOwned(false)
+                                        }}
                                     >
                                         buy now
                                     </a>
