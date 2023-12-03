@@ -5,8 +5,7 @@
 .details
     background: $n9
     border: 1px solid $n0
-    border-top: none
-
+    
 .row
     display: flex
     +m
@@ -167,9 +166,114 @@
     background: $n11
     box-shadow: 4px 6px 0px 0px $n0
     padding: 0 rem(22)
+    cursor: pointer
     +m
         order: 3
         width: 100%
     &:hover
         background: $n12
         border: 1px solid $n0
+
+.fee
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    margin-left: 16px
+
+.percent
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+
+.set
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: rem(32)
+    border-top: rem(1) solid $n3
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.setButton
+    padding: 32px
+
+.btnWrap
+    display: flex
+    align-items: center
+    border: 1.5px solid $n10
+    box-shadow: 2px 4px 0px 0px $n10
+    height: 60px
+    max-width: 100%
+    &:hover
+        border: 1.5px solid $n0
+        box-shadow: 2px 4px 0px 0px $n0
+    &:focus-within 
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0 $n0
+    
+
+.buyNowInput
+    display: flex
+    background: $n9
+    text-align: left
+    font-size: 40px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    padding-left: 16px
+    border-right: 1px solid $n10
+    color: $n0
+    max-width: 80%
+    height: 100%
+    +d
+        max-width: 60%
+
+
+    
+
+.logo
+    display: flex
+    justify-content: left
+    align-items: center
+    background: $n9
+    text-align: left
+    font-size: 40px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    color: $n10
+    padding-left: 16px
+
+.logoTitle
+    font-size: 20px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    margin-left: 8px
+
+.cancelButon
+    padding: 12px 32px 12px 32px
+    border: 1px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    color: $n0
+    cursor: pointer
+    width: 150px
+    text-align: center
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    &:hover
+        background: $n13

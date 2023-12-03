@@ -1,6 +1,7 @@
 import Layout from "@/components/Layout";
 import Description from "@/components/Description";
 import Details from "./Details";
+import { useState } from "react";
 
 const statistics = [
     {
@@ -89,12 +90,16 @@ const tags = [
 ];
 
 const MintNFTPage = () => {
+    const [sorting, setSorting] = useState<string>("details");
+    const title = sorting === "set" ? "Set a Buy Now price" : "The Explorer"
+    const date = sorting === "set" ? "Buyers will be able to instantly buy the NFT. You may edit this price at any time."
+        : "Minted on Aug 18, 2022"
     return (
         <>
             <Description
                 image="/images/cute-planet-large.jpg"
-                title="The Explorer"
-                date="Minted on Aug 18, 2022"
+                title={title}
+                date={date}
                 statistics={statistics}
                 links={links}
                 tags={tags}
@@ -123,7 +128,10 @@ const MintNFTPage = () => {
                 provenance={provenance}
                 content="We are laying the groundwork for web3 — the next generation of the internet full of limitless possibilities. Join the millions of creators, collectors, and curators who are on this journey with you."
             >
-                <Details />
+                <Details 
+                    sorting={sorting}
+                    setSorting={setSorting}
+                />
             </Description>
         </>
     );

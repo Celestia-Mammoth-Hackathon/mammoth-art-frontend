@@ -28,7 +28,7 @@ const Caption = ({ title, date }: CaptionProps) => (
             </div>
         </div>
         <div className={styles.date}>
-            <Icon name="external-link" />
+            {/* <Icon name="external-link" /> */}
             {date}
         </div>
     </div>
