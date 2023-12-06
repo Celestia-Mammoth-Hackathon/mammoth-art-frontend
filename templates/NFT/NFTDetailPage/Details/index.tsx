@@ -92,23 +92,25 @@ const Details = ({sorting, setSorting}: DetailsProps) => {
                                     </button>
                                 </div>
                             </div>
-                            <div className={styles.foot}>
-                                <div className={styles.label}>Our fee</div>
-                                <div className={cn("h4", styles.value)}>
-                                    <div className={styles.percent}>2.5%</div>
-                                    <div className={styles.fee}>{value * 2.5 / 100} TIA</div>
+                            <div className={styles.footBox}>
+                                <div className={styles.foot}>
+                                    <div className={styles.label}>Our fee</div>
+                                    <div className={cn("h4", styles.value)}>
+                                        <div className={styles.percent}>2.5%</div>
+                                        <div className={styles.fee}>{value * 2.5 / 100} TIA</div>
+                                    </div>
+                                </div>
+                                <div className={styles.foot}>
+                                    <div className={styles.label}>You will receive</div>
+                                    <div className={cn("h4", styles.value)}>
+                                        <div className={styles.percent}>97.5%</div>
+                                        <div className={styles.fee}>{value * 97.5 / 100} TIA</div>
+                                    </div>
                                 </div>
                                 
                             </div>
                             <div> 
-                            <div className={styles.foot}>
-                                <div className={styles.label}>You will receive</div>
-                                <div className={cn("h4", styles.value)}>
-                                    <div className={styles.percent}>97.5%</div>
-                                    <div className={styles.fee}>{value * 97.5 / 100} TIA</div>
-                                </div>
-                                
-                            </div>
+
                             <div className={styles.setButton}>
                                         <a
                                             className={cn(
