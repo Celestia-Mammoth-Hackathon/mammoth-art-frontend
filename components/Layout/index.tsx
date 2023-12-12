@@ -86,7 +86,7 @@ const Layout = ({
                 })}>
                 <>
                     <Head>
-                        <title>MRKT</title>
+                        <title>Ubiquity.art</title>
                     </Head>
                     <div
                         className={cn(styles.layout, {
