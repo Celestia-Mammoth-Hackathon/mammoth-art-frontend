@@ -10,29 +10,29 @@ export const footerNavigation = [
                 title: "Mint Collection",
                 url: "/create",
             },
-            {
-                title: "Upload",
-                url: "/blog/detail",
-            },
-        ],
-    },
-    {
-        title: "INFO",
-        menu: [
-            {
-                title: "Docs",
-                url: "/feed",
-            },
             // {
-            //     title: "Help center",
-            //     url: "/help-center",
-            // },
-            // {
-            //     title: "Blog",
-            //     url: "/blog",
+            //     title: "Upload",
+            //     url: "/blog/detail",
             // },
         ],
     },
+    // {
+    //     title: "INFO",
+    //     menu: [
+    //         {
+    //             title: "Docs",
+    //             url: "/feed",
+    //         },
+    //         // {
+    //         //     title: "Help center",
+    //         //     url: "/help-center",
+    //         // },
+    //         // {
+    //         //     title: "Blog",
+    //         //     url: "/blog",
+    //         // },
+    //     ],
+    // },
     {
         title: "SOCIAL",
         menu: [

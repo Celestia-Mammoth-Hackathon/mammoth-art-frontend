@@ -42,10 +42,10 @@ const menu = [
         title: "Create",
         url: "/create",
     },
-    {
-        title: "Docs",
-        url: "/blog",
-    },
+    // {
+    //     title: "Docs",
+    //     url: "/blog",
+    // },
     // {
     //     title: "Feed",
     //     url: "/feed",

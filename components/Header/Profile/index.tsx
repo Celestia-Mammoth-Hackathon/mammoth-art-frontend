@@ -13,14 +13,14 @@ const menu = [
         title: "MY PROFILE",
         url: "/profile",
     },
-    {
-        title: "SETTINGS",
-        url: "/settings",
-    },
-    {
-        title: "HELP",
-        url: "/help",
-    },
+    // {
+    //     title: "SETTINGS",
+    //     url: "/settings",
+    // },
+    // {
+    //     title: "HELP",
+    //     url: "/help",
+    // },
 ];
 
 
