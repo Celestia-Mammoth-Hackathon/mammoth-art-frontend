@@ -11,6 +11,7 @@ type PreviewProps = {
     royalty?: string;
     collection?: string;
     nft?: boolean;
+    setIsSubmitted?: any;
 };
 
 const Preview = ({
@@ -21,8 +22,10 @@ const Preview = ({
     edition,
     royalty,
     collection,
-    nft }: PreviewProps) => (
-    <>
+    setIsSubmitted,
+    nft }: PreviewProps) => {
+        return (
+        <>
         <div className={styles.title}>{nft ? "NFT Creation Preview" : "Collection Preview"}</div>
         <div className={styles.preview}>
             {bannerImage && <Image src={bannerImage} alt={name} layout="fill" objectFit="cover" className={styles.image} />}
@@ -49,6 +52,7 @@ const Preview = ({
                     <div className={cn("h4", styles.detail)}>{royalty} </div>
                     <button
                         className={cn("button-white", styles.button)}
+                        onClick={() => setIsSubmitted(true)}
                     >
                         <span className={styles.text}>CREATE NFT</span>
                     </button>
@@ -60,13 +64,16 @@ const Preview = ({
                     <div className={cn("h4", styles.description)}>{description} </div>
                     <button
                         className={cn("button-white", styles.button)}
+                        onClick={() => {
+                            setIsSubmitted(true)
+                        }}
                     >
                         <span className={styles.text}>CREATE COLLECTION</span>
                     </button>
                 </div>
         }
-        
-    </>
-);
+        </>
+    )
+    };
 
 export default Preview;

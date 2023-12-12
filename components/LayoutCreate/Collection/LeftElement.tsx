@@ -13,6 +13,7 @@ type LeftElementProps = {
     setDescription: any;
     setBannerImage: any;
     setCollectionImage: any;
+    isCollectionSubmitted: boolean;
 };
 
 const LeftElementCollection = ({
@@ -24,6 +25,7 @@ const LeftElementCollection = ({
   setDescription,
   setBannerImage,
   setCollectionImage,
+  isCollectionSubmitted,
 }: LeftElementProps) => {
   return (
     <>
@@ -33,11 +35,7 @@ const LeftElementCollection = ({
                             </div>
                         </div>
 
-                        <form
-                            className={styles.form}
-                            action=""
-                            onSubmit={() => console.log("Submit")}
-                        >
+                        <div>
                             <span className={styles.label}>Name</span>
                             <Field
                                 className={styles.field}
@@ -47,6 +45,8 @@ const LeftElementCollection = ({
                                 onChange={(e: any) => setName(e.target.value)}
                                 large
                                 required
+                                label="Enter a Collection name"
+                                isSubmitted={isCollectionSubmitted}
                             />
                             <span className={styles.label}>Description</span>
                             <Field
@@ -59,6 +59,8 @@ const LeftElementCollection = ({
                                 large
                                 textarea
                                 required
+                                label="Enter a description"
+                                isSubmitted={isCollectionSubmitted}
                             />
                             <span className={styles.label}>Upload Banner Image</span>
                             <Field
@@ -72,6 +74,8 @@ const LeftElementCollection = ({
                                 required
                                 setImage={setBannerImage}
                                 bannerImage={true}
+                                label="Upload a banner image"
+                                isSubmitted={isCollectionSubmitted}
                             />
                             <span className={styles.label}>Upload Collection Image</span>
                             <Field
@@ -85,8 +89,10 @@ const LeftElementCollection = ({
                                 required
                                 setImage={setCollectionImage}
                                 collectionImage={true}
+                                label="Upload a collection image"
+                                isSubmitted={isCollectionSubmitted}
                             />
-                        </form>
+                        </div>
                     </>
   );
 };

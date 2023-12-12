@@ -18,6 +18,7 @@ type LeftElementProps = {
     setEdition: any;
     setRoyalty: any;
     setNftImage: any;
+    isNftSubmitted: boolean;
 };
 
 const LeftElementNft= ({
@@ -34,6 +35,7 @@ const LeftElementNft= ({
     setEdition,
     setRoyalty,
     setNftImage,
+    isNftSubmitted,
 }: LeftElementProps) => {
   return (
     <>
@@ -42,11 +44,7 @@ const LeftElementNft= ({
                                 CREATE AN NFT
                             </div>
                         </div>
-                        <form
-                            className={styles.form}
-                            action=""
-                            onSubmit={() => console.log("Submit")}
-                        >
+                        <div>
                             <span className={styles.label}>Select the collection your token will be part of.</span>
                             <Field
                                 className={styles.field}
@@ -58,6 +56,8 @@ const LeftElementNft= ({
                                 large
                                 select
                                 required
+                                label="Select a collection"
+                                isSubmitted={isNftSubmitted}
                             />
                             <span className={styles.label}> NFT Name</span>
                             <Field
@@ -68,6 +68,8 @@ const LeftElementNft= ({
                                 onChange={(e: any) => setNftName(e.target.value)}
                                 large
                                 required
+                                label="Enter a NFT name"
+                                isSubmitted={isNftSubmitted}
                             />
                             <span className={styles.label}>Description</span>
                             <Field
@@ -80,6 +82,8 @@ const LeftElementNft= ({
                                 large
                                 textarea
                                 required
+                                label="Enter a description"
+                                isSubmitted={isNftSubmitted}
                             />
                             <span className={styles.label}>Edition(s)</span>
                             <Field
@@ -90,6 +94,8 @@ const LeftElementNft= ({
                                 large
                                 number
                                 required
+                                label="Enter number of editions"
+                                isSubmitted={isNftSubmitted}
                             />
                             <span className={styles.label}>Set a royalty percentage fee between 0% and 25%</span>
                             <Field
@@ -102,6 +108,8 @@ const LeftElementNft= ({
                                 min="0"
                                 max="25"
                                 required
+                                label="Set royalty percentage"
+                                isSubmitted={isNftSubmitted}
                             />
                             <span className={styles.label}>Upload NFT File</span>
                             <Field
@@ -115,8 +123,10 @@ const LeftElementNft= ({
                                 required
                                 setImage={setNftImage}
                                 nftImage={true}
+                                label="Upload a NFT file"
+                                isSubmitted={isNftSubmitted}
                             />
-                        </form>
+                        </div>
                     </>
   );
 };

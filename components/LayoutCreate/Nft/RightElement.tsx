@@ -8,6 +8,7 @@ type RightElementProps = {
     nftName: string;
     nftDesc: string;
     nftImage: any;
+    setIsNftSubmitted: any;
 };
 
 const RightElementCollection = ({ 
@@ -16,7 +17,8 @@ const RightElementCollection = ({
     royalty,
     nftName,
     nftDesc,
-    nftImage ,
+    nftImage,
+    setIsNftSubmitted,
 }: RightElementProps) => {
   return (
     <Preview 
@@ -27,6 +29,7 @@ const RightElementCollection = ({
         description={nftDesc}
         bannerImage={nftImage}
         nft={true}
+        setIsSubmitted={setIsNftSubmitted}
     />
   );
 };

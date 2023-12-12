@@ -6,15 +6,17 @@ type RightElementProps = {
     description: string;
     bannerImage: any;
     collectionImage: any;
+    setIsCollectionSubmitted: any;
 };
 
-const RightElementCollection = ({ name, description, collectionImage, bannerImage }: RightElementProps) => {
+const RightElementCollection = ({ name, description, collectionImage, bannerImage, setIsCollectionSubmitted }: RightElementProps) => {
   return (
     <Preview
       name={name}
       description={description}
       collectionImage={collectionImage}
       bannerImage={bannerImage}
+      setIsSubmitted={setIsCollectionSubmitted}
     />
   );
 };

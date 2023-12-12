@@ -35,6 +35,13 @@
                 top: rem(34)
                 +m
                     top: rem(18)
+    &.fieldInvalid
+        .textarea,
+        .input,
+        .upload,
+        .dropdown
+            box-shadow: 2px 4px 0px 0px $n11
+            border: 1.5px solid $n11
 
 .wrap
     position: relative
@@ -93,7 +100,7 @@
 .label
     margin-top: rem(4)
     +captionBold
-    color: $n4
+    color: $n11
 
 .upload
     display: flex

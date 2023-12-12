@@ -44,6 +44,8 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
     const [royalty, setRoyalty] = useState<string>("");
     const [nftImage, setNftImage] = useState<any>(""); 
 
+    const [isNftSubmitted, setIsNftSubmitted] = useState<boolean>(false);
+    const [isCollectionSubmitted, setIsCollectionSubmitted] = useState<boolean>(false);
     const tabsSorting = [
         {
             title: "Create NFT",
@@ -68,6 +70,7 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                     setDescription={setDescription}
                     setBannerImage={setBannerImage}
                     setCollectionImage={setCollectionImage}
+                    isCollectionSubmitted={isCollectionSubmitted}
                 />
             );
             setRightElement(
@@ -76,6 +79,7 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                     description={description}
                     collectionImage={collectionImage}
                     bannerImage={bannerImage}
+                    setIsCollectionSubmitted={setIsCollectionSubmitted}
                 />
             );
         } else if(sortingTokens === "nft") {
@@ -94,6 +98,7 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                     setEdition={setEdition}
                     setRoyalty={setRoyalty}
                     setNftImage={setNftImage}
+                    isNftSubmitted={isNftSubmitted}
                 />
             );
             setRightElement(
@@ -104,6 +109,7 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                     nftName={nftName}
                     nftDesc={nftDesc}
                     nftImage={nftImage}
+                    setIsNftSubmitted={setIsNftSubmitted}
                 />
             );
         } else {
@@ -126,9 +132,7 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                 <></>
             )
         }
-    }, [sortingTokens, 
-        collection, edition, royalty, nftImage, nftName, nftDesc,
-        collectionImage, bannerImage, name, description]);
+    }, [sortingTokens, collection, edition, royalty, nftImage, nftName, nftDesc, collectionImage, bannerImage, name, description, isNftSubmitted, isCollectionSubmitted]);
 
     return (
         <div className={styles.row}>
@@ -139,12 +143,20 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
             light={theme}
             create={true}
         >
-            <div className={styles.col}>
+            <form
+                className={styles.form}
+                action=""
+                onSubmit={() => console.log("Submit")}
+            >
+                <div className={styles.col}>
                 <div className={styles.wrap}>{leftElement}</div>
             </div>
             <div className={styles.col}>
                 {rightElement}
             </div>
+
+            </form>
+            
         </List>
         
     </div>

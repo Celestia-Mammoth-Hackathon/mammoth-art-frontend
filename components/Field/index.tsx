@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import cn from "classnames";
 import styles from "./Field.module.sass";
 import Icon from "@/components/Icon";
@@ -30,6 +30,7 @@ type FieldProps = {
   select?: boolean;
   min?: string;
   max?: string;
+  isSubmitted?: boolean;
 };
 
 const Field = ({
@@ -56,13 +57,16 @@ const Field = ({
   select,
   min,
   max,
-  search = false
+  search = false,
+  isSubmitted,
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
   let fileSize = null;
   let fileDimension = null;
 
+  const [isValid, setIsValid] = useState(true);
+  
   if (bannerImage) {
     fileName = "Banner Image";
     fileType = "gif, jpeg, png, or svg ";
@@ -81,7 +85,7 @@ const Field = ({
   
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-
+    
     if (selectedFile) {
         const reader = new FileReader();
     
@@ -92,6 +96,7 @@ const Field = ({
     
         reader.readAsDataURL(selectedFile);
       }
+    setIsValid(!!selectedFile);
   };
 
   const handleDrop = useCallback((event:any) => {
@@ -110,7 +115,28 @@ const Field = ({
   
       reader.readAsDataURL(selectedFile);
     }
+    setIsValid(droppedFiles.length > 0);
   }, []);
+
+  const validateField = () => {
+    if (upload) {
+      setIsValid(!!value);
+    } else if (number) {
+      // Add validation logic for number field if needed
+      setIsValid(!!value);
+    } else if(textarea) {
+      // For other fields, consider them valid if the trimmed value is not empty
+      setIsValid(!!value.trim());
+    } else {
+      setIsValid(!!value);
+    }
+  };
+
+  useEffect(() => {
+    if(isSubmitted) {
+      validateField();
+    }
+  }, [value, upload, number, isSubmitted]);
 
   const preventDefaultHandler = (event:any) => {
     event.preventDefault();
@@ -123,6 +149,7 @@ const Field = ({
         { [styles.fieldTextarea]: textarea },
         { [styles.fieldLight]: light },
         { [styles.fieldLarge]: large },
+        { [styles.fieldInvalid]: required && !isValid },
         className
       )}
     >
@@ -148,6 +175,7 @@ const Field = ({
                     className={styles.file}
                     type="file"
                     onChange={handleFileChange}
+                    required
                     />
                     UPLOAD
                 </label>
@@ -188,7 +216,7 @@ const Field = ({
           />
         )}
       </div>
-      {label && <div className={styles.label}>{label}</div>}
+      {label && !isValid && required && <div className={styles.label}>{label}</div>}
     </div>
   );
 };

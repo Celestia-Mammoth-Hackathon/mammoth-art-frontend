@@ -15,7 +15,7 @@ const Dropdown = ({ className, value, setValue, options }:DropdownProps ) => {
   const [visible, setVisible] = useState(false);
 
   const handleClick = (newValue:any) => {
-    console.log(newValue, value)
+    setValue(newValue)
     setVisible(false);
   };
 
