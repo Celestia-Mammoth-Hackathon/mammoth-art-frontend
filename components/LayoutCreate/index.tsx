@@ -149,16 +149,13 @@ const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
                 onSubmit={() => console.log("Submit")}
             >
                 <div className={styles.col}>
-                <div className={styles.wrap}>{leftElement}</div>
-            </div>
-            <div className={styles.col}>
-                {rightElement}
-            </div>
-
+                    <div className={styles.wrap}>{leftElement}</div>
+                </div>
+                <div className={styles.col}>
+                    {rightElement}
+                </div>
             </form>
-            
         </List>
-        
     </div>
     )
     
