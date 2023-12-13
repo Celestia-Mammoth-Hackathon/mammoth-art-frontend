@@ -3,7 +3,7 @@ export const curatedArtworks = [
         title: "Cute Planet",
         login: "tranmautritam",
         price: "1.0 TIA",
-        image: "/images/nfts/image-2.jpg",
+        image: "/images/projects/image-2.jpg",
         avatar: "/images/artists/artist-1.jpg",
         color: "#BCE6EC",
         url: "/discover",
