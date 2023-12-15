@@ -50,26 +50,26 @@ const Preview = ({
                     <div className={cn("h4", styles.detail)}>{edition} </div>
                     <div className={cn("h4", styles.subtitle)}>Royalty</div>
                     <div className={cn("h4", styles.detail)}>{royalty} </div>
-                    <button
+                    <div
                         className={cn("button-white", styles.button)}
                         onClick={() => setIsSubmitted(true)}
                     >
                         <span className={styles.text}>CREATE NFT</span>
-                    </button>
+                    </div>
                 </div>
             :   <div className={styles.head}>
                     <div className={cn("h4", styles.subtitle)}>Collection Name</div>
                     <div className={cn("h4", styles.name)}>{name}</div>
                     <div className={cn("h4", styles.subtitle)}>Description</div>
                     <div className={cn("h4", styles.description)}>{description} </div>
-                    <button
+                    <div
                         className={cn("button-white", styles.button)}
                         onClick={() => {
                             setIsSubmitted(true)
                         }}
                     >
                         <span className={styles.text}>CREATE COLLECTION</span>
-                    </button>
+                    </div>
                 </div>
         }
         </>

@@ -122,6 +122,12 @@ const Field = ({
     if (upload) {
       setIsValid(!!value);
     } else if (number) {
+      if (min !== undefined && max !== undefined) {
+        if (value <= min || value >= max) {
+          setIsValid(false);
+          return;
+        }
+      }
       // Add validation logic for number field if needed
       setIsValid(!!value);
     } else if(textarea) {

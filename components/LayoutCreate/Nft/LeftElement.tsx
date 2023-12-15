@@ -108,7 +108,7 @@ const LeftElementNft= ({
                                 min="0"
                                 max="25"
                                 required
-                                label="Set royalty percentage"
+                                label="Set royalty percentage between 0 and 25"
                                 isSubmitted={isNftSubmitted}
                             />
                             <span className={styles.label}>Upload NFT File</span>
