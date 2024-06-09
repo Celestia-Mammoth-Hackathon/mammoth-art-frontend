@@ -16,6 +16,7 @@
         "incremental": true,
         "baseUrl": ".",
         "paths": {
+            "@/config/*": ["config/*"],
             "@/components/*": ["components/*"],
             "@/templates/*": ["templates/*"],
             "@/styles/*": ["styles/*"],
@@ -23,6 +24,8 @@
             "@/hooks/*": ["hooks/*"],
             "@/types/*": ["types/*"],
             "@/constants/*": ["constants/*"],
+            "@/abi/*": ["abi/*"],
+            "@/store/*": ["store/*"],
             "@/mocks/*": ["mocks/*"]
         }
     },
