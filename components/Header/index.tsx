@@ -16,17 +16,6 @@ import { UserContext } from "context/user";
 import { resultSearch } from "@/mocks/resultSearch";
 import { ConnectBtn } from "./ConnectBtn";
 
-const menu = [
-    {
-        title: "DISCOVER",
-        url: "/discover",
-    },
-    // {
-    //     title: "Feed",
-    //     url: "/feed",
-    // },
-];
-
 type HeaderProps = {
     className?: string;
     noRegistration?: boolean;
@@ -89,17 +78,20 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             
                         </div>
                         <div className={styles.col}>
-                            <Link href="/create">
-                                    <div className={cn(
-                                        styles.create,
-                                        {
-                                            [styles.visibleSearch]: visibleSearch,
-                                            [styles.active]: router.pathname === "/create", 
-                                        },
-                                    )}>
-                                        <span className={cn(styles.link)} style={{ color: router.pathname === "/create" ? '#FFFFFF' : '#8C8D8F' }}>CREATE</span>
-                                    </div>
-                            </Link>
+                            {
+                                address && 
+                                    <Link href="/create">
+                                        <div className={cn(
+                                            styles.create,
+                                            {
+                                                [styles.visibleSearch]: visibleSearch,
+                                                [styles.active]: router.pathname === "/create", 
+                                            },
+                                        )}>
+                                            <span className={cn(styles.link)} style={{ color: router.pathname === "/create" ? '#FFFFFF' : '#8C8D8F' }}>CREATE</span>
+                                        </div>
+                                    </Link>
+                            }
                             <Link href="/discover">
                                     <div className={cn(
                                         styles.create,
