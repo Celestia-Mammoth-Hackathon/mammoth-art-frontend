@@ -3,36 +3,15 @@ export const footerNavigation = [
         title: "Ubiquity.art",
         menu: [
             {
-                title: "Explorer",
-                url: "/discover",
-            },
-            {
-                title: "Mint Collection",
+                title: "Create",
                 url: "/create",
             },
-            // {
-            //     title: "Upload",
-            //     url: "/blog/detail",
-            // },
+            {
+                title: "Discover",
+                url: "/discover",
+            },
         ],
     },
-    // {
-    //     title: "INFO",
-    //     menu: [
-    //         {
-    //             title: "Docs",
-    //             url: "/feed",
-    //         },
-    //         // {
-    //         //     title: "Help center",
-    //         //     url: "/help-center",
-    //         // },
-    //         // {
-    //         //     title: "Blog",
-    //         //     url: "/blog",
-    //         // },
-    //     ],
-    // },
     {
         title: "SOCIAL",
         menu: [
@@ -40,26 +19,14 @@ export const footerNavigation = [
                 title: "Discord",
                 icon: "discord",
                 external: true,
-                url: "https://www.instagram.com/ui8net/",
+                url: "https://discord.gg/P6tEY8d7De",
             },
             {
-                title: "Twitter",
-                icon: "twitter",
+                title: "X",
+                icon: "x",
                 external: true,
-                url: "https://twitter.com/ui8",
+                url: "https://twitter.com/Formachain",
             },
-            // {
-            //     title: "Instagram",
-            //     icon: "instagram",
-            //     external: true,
-            //     url: "https://www.instagram.com/ui8net/",
-            // },
-            // {
-            //     title: "Facebook",
-            //     icon: "facebook",
-            //     external: true,
-            //     url: "https://www.facebook.com/ui8.net/",
-            // },
         ],
     },
 ];

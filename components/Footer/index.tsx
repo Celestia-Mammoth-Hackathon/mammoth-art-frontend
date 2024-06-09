@@ -13,13 +13,12 @@ const Footer = ({}: FooterProps) => (
         <div className={styles.body}>
             <div className={styles.details}>
                 <Logo className={styles.logo} />
-                <div className={styles.info}>Create whatever.</div>
             </div>
             <div className={styles.group}>
                 {footerNavigation.map((item, index) => (
                     <div className={styles.item} key={index}>
                         <div className={styles.category}>{item.title}</div>
-                        <div className={styles.menu}>
+                        <div className={item.title === "Ubiquity.art" ? styles.menu : styles.menuIcon}>
                             {item.menu.map((link: any, index: number) =>
                                 link.external ? (
                                     <a
@@ -30,7 +29,6 @@ const Footer = ({}: FooterProps) => (
                                         key={index}
                                     >
                                         {link.icon && <Icon name={link.icon} />}
-                                        {link.title}
                                     </a>
                                 ) : (
                                     <Link href={link.url} key={index}>
