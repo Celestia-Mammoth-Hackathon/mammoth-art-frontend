@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { useRouter } from "next/router";
 import { useHotkeys } from "react-hotkeys-hook";
 import Link from "next/link";
 import cn from "classnames";
@@ -6,12 +7,12 @@ import styles from "./Header.module.sass";
 import Logo from "@/components/Logo";
 import Icon from "@/components/Icon";
 import Modal from "@/components/Modal";
-import ConnectWallet from "@/components/ConnectWallet";
 import Search from "./Search";
 import Discover from "./Discover";
 import Profile from "./Profile";
 import Menu from "./Menu";
-
+import { useWalletContext } from "context/wallet";
+import { UserContext } from "context/user";
 import { resultSearch } from "@/mocks/resultSearch";
 import { ConnectBtn } from "./ConnectBtn";
 
@@ -34,14 +35,20 @@ type HeaderProps = {
 };
 
 const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
-    const [visibleProfile, setVisibleProfile] = useState<boolean>(false);
-    const [connect, setConnect] = useState<boolean>(false);
-    const [registration, setRegistration] = useState<boolean>(false);
-    const [visibleSearch, setVisibleSearch] = useState<boolean>(false);
-    const [account, setAccount] = useState<any>(undefined);
-    const [address, setAddress] = useState<string>("");
-    const [balance, setBalance] = useState<string|undefined>("");
+    const { 
+        visibleProfile, 
+        setVisibleProfile, 
+        connect, 
+        setConnect, 
+        registration, 
+        setRegistration, 
+        visibleSearch, 
+        setVisibleSearch,
+    } = useWalletContext();
 
+    const { address, balance } = useContext(UserContext);
+
+    const router = useRouter();
     useHotkeys("esc", () => setVisibleProfile(false));
 
     const handleClick = () => {
@@ -71,14 +78,6 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                             className={styles.logo}
                             light={visibleProfile || light}
                         />
-                        {/* <Profile
-                            className={styles.profile}
-                            headClassName={styles.profileHead}
-                            bodyClassName={styles.profileBody}
-                            onOpen={() => setVisibleProfile(!visibleProfile)}
-                            onClose={() => setVisibleProfile(false)}
-                            visible={visibleProfile}
-                        /> */}
                     </>
                 ) : (
                     <>
@@ -95,9 +94,21 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                         styles.create,
                                         {
                                             [styles.visibleSearch]: visibleSearch,
+                                            [styles.active]: router.pathname === "/create", 
                                         },
                                     )}>
-                                        <span className={cn(styles.link, styles.createLink)}>CREATE</span>
+                                        <span className={cn(styles.link)} style={{ color: router.pathname === "/create" ? '#FFFFFF' : '#8C8D8F' }}>CREATE</span>
+                                    </div>
+                            </Link>
+                            <Link href="/discover">
+                                    <div className={cn(
+                                        styles.create,
+                                        {
+                                            [styles.visibleSearch]: visibleSearch,
+                                            [styles.active]: router.pathname === "/discover", 
+                                        },
+                                    )}>
+                                        <span className={cn(styles.link)} style={{ color: router.pathname === "/discover" ? '#FFFFFF' : '#8C8D8F' }}>DISCOVER</span>
                                     </div>
                             </Link>
                             <Link href="/create">
@@ -110,22 +121,6 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     <Icon name="plus" />
                                 </a>
                             </Link>
-
-                            <div 
-                                className={cn(
-                                    styles.navigation,
-                                    {
-                                        [styles.visibleSearch]: visibleSearch,
-                                    },
-                                )}>
-                                {menu.map((link, index) => (
-                                <Link href={link.url} key={index}>
-                                    <a className={styles.link}>
-                                    {link.title}
-                                    </a>
-                                </Link>
-                                ))}
-                            </div>
 
                             <Search
                                 className={styles.search}
@@ -140,38 +135,8 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     setRegistration={setRegistration} 
                                     visibleProfile={visibleProfile} 
                                     setVisibleProfile={setVisibleProfile}
-                                    address={address}
-                                    setAddress={setAddress}
-                                    balance={balance}
-                                    setBalance={setBalance}
                                 />
                             </div>
-
-                            {/* <Link href="/notification">
-                                <a
-                                    className={cn(
-                                        styles.notification,
-                                        styles.active
-                                    )}
-                                >
-                                    <Icon name="flash" />
-                                </a>
-                            </Link> */}
-                            {/* <Profile
-                                className={styles.profile}
-                                onOpen={() =>
-                                    setVisibleProfile(!visibleProfile)
-                                }
-                                onClose={() => setVisibleProfile(false)}
-                                visible={visibleProfile}
-                            /> */}
-                            <Menu
-                                classBurger={styles.burger}
-                                resultSearch={resultSearch}
-                                address={address}
-                                balance={balance}
-                                registration={registration}
-                            />
                         </div>
                     </>
                 )}
@@ -181,17 +146,6 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                     [styles.visible]: visibleProfile,
                 })}
             ></div>
-            {/* <Modal
-                className={styles.modal}
-                closeClassName={styles.close}
-                visible={connect}
-                onClose={() => setConnect(false)}
-            >
-                <ConnectWallet
-                    onClickLogo={() => setConnect(false)}
-                    onContinue={handleClick}
-                />
-            </Modal> */}
         </>
     );
 };

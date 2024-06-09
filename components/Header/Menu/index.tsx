@@ -19,14 +19,6 @@ const socials = [
         icon: "twitter-fat",
         url: "https://twitter.com/ui8",
     },
-    // {
-    //     icon: "facebook-fat",
-    //     url: "https://www.facebook.com/ui8.net/",
-    // },
-    // {
-    //     icon: "linkedin-fat",
-    //     url: "https://www.linkedin.com/company/ui8",
-    // },
 ];
 
 const menu = [
@@ -42,22 +34,6 @@ const menu = [
         title: "Create",
         url: "/create",
     },
-    // {
-    //     title: "Docs",
-    //     url: "/blog",
-    // },
-    // {
-    //     title: "Feed",
-    //     url: "/feed",
-    // },
-    // {
-    //     title: "Help center",
-    //     url: "/help",
-    // },
-    // {
-    //     title: "Blog",
-    //     url: "/blog",
-    // },
 ];
 
 const actions = [

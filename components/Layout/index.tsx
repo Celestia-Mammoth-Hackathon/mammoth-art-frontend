@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, {  ReactElement, useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import { enablePageScroll, clearQueueScrollLocks } from "scroll-lock";
 import Head from "next/head";
@@ -7,43 +7,9 @@ import styles from "./Layout.module.sass";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import '@rainbow-me/rainbowkit/styles.css';
-
-import {
-  getDefaultWallets,
-  RainbowKitProvider,
-  darkTheme
-} from '@rainbow-me/rainbowkit';
-import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import {
-  mainnet,
-  polygon,
-  optimism,
-  arbitrum,
-  base,
-  zora,
-} from 'wagmi/chains';
-import { alchemyProvider } from 'wagmi/providers/alchemy';
-import { publicProvider } from 'wagmi/providers/public';
-
-const { chains, publicClient } = configureChains(
-    [mainnet, polygon, optimism, arbitrum, base, zora],
-    [
-      alchemyProvider({ apiKey: "RBNALLRs6gTRtUEysoiVIlBOApoVg2FP" ?? "" }),
-      publicProvider()
-    ]
-  );
-  
-  const { connectors } = getDefaultWallets({
-    appName: 'My RainbowKit App',
-    projectId: '4eb381bbc93fbca3ed9f372e8c934c8a',
-    chains
-  });
-  
-  const wagmiConfig = createConfig({
-    autoConnect: true,
-    connectors,
-    publicClient
-  })
+import { useContext } from 'react';
+import { UserContext } from "context/user";
+import Script from 'next/script';
 
 type LayoutProps = {
     layoutNoOverflow?: boolean;
@@ -69,46 +35,36 @@ const Layout = ({
     children,
 }: LayoutProps) => {
     const { pathname } = useRouter();
-
+    const { address, setAddress, balance, setBalance } = useContext(UserContext);
+    
     useEffect(() => {
         clearQueueScrollLocks();
         enablePageScroll();
     }, [pathname]);
-
+    
     return (
-        <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider 
-                chains={chains}
-                theme={darkTheme({
-                    accentColor: '#FF6B6B',
-                    borderRadius: 'small',
-                    fontStack: 'system',
-                })}>
-                <>
-                    <Head>
-                        <title>Ubiquity.art</title>
-                    </Head>
-                    <div
-                        className={cn(styles.layout, {
-                            [styles.noOverflow]: layoutNoOverflow,
-                        })}
-                        style={{ backgroundColor: background }}
-                    >
-                        {!headerHide && (
-                            <Header
-                                className={classHeader}
-                                noRegistration={noRegistration}
-                                light={lightHeader}
-                                empty={emptyHeader}
-                            />
-                        )}
-                        <div className={styles.inner}>{children}</div>
-                        {!footerHide && <Footer />}
-                    </div>
-                </>
-            </RainbowKitProvider>
-        </WagmiConfig>
-        
+            <>
+                <Head>
+                    <title>Ubiquity.art</title>
+                </Head>
+                <div
+                    className={cn(styles.layout, {
+                        [styles.noOverflow]: layoutNoOverflow,
+                    })}
+                    style={{ backgroundColor: background }}
+                >
+                    {!headerHide && (
+                        <Header
+                            className={classHeader}
+                            noRegistration={noRegistration}
+                            light={lightHeader}
+                            empty={emptyHeader}
+                        />
+                    )}
+                    <div className={styles.inner}>{children}</div>
+                    {!footerHide && <Footer />}
+                </div>
+            </>
     );
 };
 
