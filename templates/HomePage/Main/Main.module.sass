@@ -59,14 +59,29 @@
     +m
         display: block
 
+.titleWrap
+    display: flex
+    flex-direction: column
+    gap: 2rem 
+    
 .title
     margin-right: auto
-    color: $n1
+    color: $n0
+    font-size: 32px
+    font-weight: 500
+    letter-spacing: -0.02em
+    text-align: left
     +d
         padding-top: rem(8)
-        +h1S
     +m
         padding-top: 0
+
+.subtitle
+    font-size: 24px
+    color: $n0
+    font-weight: 500
+    letter-spacing: -0.02em
+    text-align: left
 
 .author
     margin-left: auto !important
@@ -152,3 +167,19 @@
             line-height: rem(48)
     .timerText
         color: $n10
+
+.wrap
+    padding: 1rem 4rem 2rem 4rem
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.button
+    padding: 20px 32px 20px 32px
+    border: 1px solid $n9
+    background: $n0
+    color: $n9
+    width: 214px
+    height: 64px
+    &:hover
+        background: $n3

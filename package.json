@@ -24,6 +24,7 @@
     "@types/scroll-lock": "^2.1.0",
     "@wagmi/core": "^2.6.15",
     "classnames": "^2.3.1",
+    "colorthief": "^2.4.0",
     "d": "^1.0.1",
     "ethers": "^5.7.2",
     "next": "12.3.0",

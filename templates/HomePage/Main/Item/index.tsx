@@ -17,26 +17,9 @@ const Main = ({ item }: MainProps) => (
                 layout="fill"
                 objectFit="cover"
                 alt="Main"
+                width={400}
+                height={400}
             />
-        </div>
-        <div className={styles.wrap} style={{ backgroundColor: item.color }}>
-            <Details
-                collection={item.collection}
-                price={item.price}
-                reserve={item.reserve}
-            />
-            <div className={cn("h1", styles.subtitle)}>{item.title}</div>
-            <div className={styles.btns}>
-                <Link href="/nft">
-                    <a className={cn("button-stroke", styles.button)}>
-                        <span>View NFT</span>
-                        <Icon name="arrow-right" />
-                    </a>
-                </Link>
-                <Link href="/place-a-bid">
-                    <a className={cn("button", styles.button)}>place a bid</a>
-                </Link>
-            </div>
         </div>
     </div>
 );

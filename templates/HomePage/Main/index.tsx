@@ -1,4 +1,5 @@
 import cn from "classnames";
+import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import styles from "./Main.module.sass";
@@ -6,90 +7,121 @@ import Image from "@/components/Image";
 import { curatedArtworks } from "@/mocks/artworks";
 import Icon from "@/components/Icon";
 import TimeCounter from "@/components/TimeCounter";
+import Item from "./Item";
 
 const list = [
     {
         title: "The creator network.",
         collection: "Escape II",
-        price: "10.00 ETH",
-        reserve: "2.38 ETH",
+        price: "10.00 TIA",
+        reserve: "2.38 TIA",
         image: "/images/main-pic-1.jpg",
     },
     {
         title: "The creator network.",
         collection: "Escape I",
-        price: "24.33 ETH",
-        reserve: "5.64 ETH",
+        price: "24.33 TIA",
+        reserve: "5.64 TIA",
         image: "/images/main-pic-2.jpg",
         color: "#BCE6EC",
     },
     {
         title: "The creator network.",
         collection: "Escape III",
-        price: "5.4 ETH",
-        reserve: "1.45 ETH",
+        price: "5.4 TIA",
+        reserve: "1.45 TIA",
         image: "/images/auction-pic-2.jpg",
         color: "#B9A9FB",
     },
 ];
 
-import { Navigation, Scrollbar } from "swiper";
+import SwiperCore from 'swiper'
+import { Navigation, Scrollbar, Autoplay, EffectFade } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
-
+import "swiper/css/autoplay";
+import 'swiper/css/effect-fade';
+SwiperCore.use([Autoplay]);
 type MainProps = {};
 
-const item = curatedArtworks[0]
+const Main = ({}: MainProps) => {
+    const [bgColor, setBgColor] = useState(list[0].image);
+    const [item, setItem] = useState<any>(list[0]);
 
-const Main = ({}: MainProps) => (
-    <div className={styles.slide}>
-    <Image src={item.image} layout="fill" objectFit="cover" alt="Slide" />
-    <div className={styles.row}>
-        <div className={styles.details}>
-            <div className={styles.head}>
-                <div className={cn("h1", styles.title)}>{item.title}</div>
-                
-            </div>
-            <div className={styles.btns}>
-                <Link href="/nft">
-                    <a className={cn("button-stroke-white", styles.viewButton)}>
-                        <span>View Collection</span>
-                        <Icon name="arrow-right"  className={styles.arrow}/>
-                    </a>
-                </Link>
-                <Link href="/place-a-bid">
-                    <a className={cn("button-white", styles.generateButton)}>
-                        Generate
-                    </a>
-                </Link>
-            </div>
-        </div>
-        <div className={styles.authorBox}>
-            <div className={styles.author}>
-                <div className={styles.avatar}>
-                    <Image
-                        src={item.avatar}
-                        layout="fill"
-                        objectFit="cover"
-                        alt="Avatar"
-                    />
+    const updateBackgroundColor = (imageSrc: string) => {
+        const colorThief = new (require("colorthief")).default();
+        const img = document.createElement("img") as HTMLImageElement;
+        img.src = imageSrc;
+        img.crossOrigin = "Anonymous";
+        img.onload = () => {
+          const color = colorThief.getColor(img);
+          setBgColor(`rgb(${color[0]}, ${color[1]}, ${color[2]})`);
+        };
+      };
+
+    useEffect(() => {
+        updateBackgroundColor(list[0].image); // Initial color
+    }, []);
+
+
+    return (
+    <>
+        <div className={styles.wrapper}
+            style={{
+                background: `radial-gradient(circle, ${bgColor} 0%, ${bgColor} 30%, #000 100%)`,
+            }}
+        >
+            <Swiper
+                navigation={true}
+                loop={true}
+                modules={[Navigation, Scrollbar, Autoplay, EffectFade]}
+                effect="fade" 
+                fadeEffect={{ crossFade: true }}
+                className="horizontal-swiper"
+                direction="horizontal"
+                scrollbar={{
+                    hide: true,
+                }}
+                autoplay={{
+                    delay: 5000,
+                    disableOnInteraction: true,
+                }}
+                speed={1500}
+                breakpoints={{
+                    320: {
+                        direction: "horizontal",
+                    },
+                    1024: {
+                        direction: "horizontal",
+                    },
+                }}
+                onSlideChange={(swiper) => {
+                    const currentSlide = swiper.realIndex;
+                    updateBackgroundColor(list[currentSlide].image);
+                    setItem(list[currentSlide])
+                }}
+            >
+                {list.map((x, index) => (
+                    <SwiperSlide key={index}>
+                        <Item item={x} key={index} />
+                    </SwiperSlide>
+                ))}
+            </Swiper>
+            <div className={styles.wrap} style={{ backgroundColor: "black" }}>
+                <div className={styles.titleWrap}>
+                    <div className={cn("h1", styles.title)}>{item.title}</div>
+                    <div className={cn("h1", styles.subtitle)}>By {item.collection}</div>
                 </div>
-                @{item.login}
+                
+                <div className={styles.btns}>
+                    <Link href="/buy-now">
+                        <a className={cn("button", styles.button)}>MINT</a>
+                    </Link>
+                </div>
             </div>
-            <div className={styles.box}>
-                <div className={styles.info}>Minting ends in</div>
-                <TimeCounter
-                    className={styles.timer}
-                    classTimerItem={styles.timerItem}
-                    classTimerValue={styles.timerValue}
-                    classTimerText={styles.timerText}
-                    time={item.time}
-                />
-            </div>
-        </div>
-       
-    </div>
-</div>
-);
+        </div> 
+    </>
+
+)};
 
 export default Main;
