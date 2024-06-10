@@ -13,6 +13,7 @@ const Main = ({ item }: MainProps) => (
     <div className={styles.item}>
         <div className={styles.preview}>
             <Image
+                className={styles.image}
                 src={item.image}
                 layout="fill"
                 objectFit="cover"
