@@ -46,21 +46,21 @@ const connectors = connectorsForWallets([
       groupName: 'Recommended',
       wallets: [
         metaMaskWallet(connectorConfig),
-        injectedWallet(connectorConfig),
-        walletConnectWallet(connectorConfig),
-        ledgerWallet(connectorConfig),
+        // injectedWallet(connectorConfig),
+        // walletConnectWallet(connectorConfig),
+        // ledgerWallet(connectorConfig),
       ],
     },
-    {
-      groupName: 'More',
-      wallets: [
-        coinbaseWallet(connectorConfig),
-        omniWallet(connectorConfig),
-        rainbowWallet(connectorConfig),
-        trustWallet(connectorConfig),
-        argentWallet(connectorConfig),
-      ],
-    },
+    // {
+    //   groupName: 'More',
+    //   wallets: [
+    //     coinbaseWallet(connectorConfig),
+    //     omniWallet(connectorConfig),
+    //     rainbowWallet(connectorConfig),
+    //     trustWallet(connectorConfig),
+    //     argentWallet(connectorConfig),
+    //   ],
+    // },
   ]);
 
 const wagmiConfig = createConfig({
