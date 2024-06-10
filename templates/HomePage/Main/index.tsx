@@ -11,23 +11,23 @@ import Item from "./Item";
 
 const list = [
     {
-        title: "The creator network.",
-        collection: "Escape II",
+        title: "Infinite",
+        collection: "Evermore",
         price: "10.00 TIA",
         reserve: "2.38 TIA",
         image: "/images/main-pic-1.jpg",
     },
     {
-        title: "The creator network.",
-        collection: "Escape I",
+        title: "Robot Dog",
+        collection: "Evermore",
         price: "24.33 TIA",
         reserve: "5.64 TIA",
         image: "/images/main-pic-2.jpg",
         color: "#BCE6EC",
     },
     {
-        title: "The creator network.",
-        collection: "Escape III",
+        title: "Pyramid",
+        collection: "Evermore",
         price: "5.4 TIA",
         reserve: "1.45 TIA",
         image: "/images/auction-pic-2.jpg",
