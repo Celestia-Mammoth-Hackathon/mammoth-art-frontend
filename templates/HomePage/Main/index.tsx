@@ -77,7 +77,7 @@ const Main = ({}: MainProps) => {
                 modules={[Navigation, Scrollbar, Autoplay, EffectFade]}
                 effect="fade" 
                 fadeEffect={{ crossFade: true }}
-                className="horizontal-swiper"
+                className={cn("horizontal-swiper", styles.featuredSwiper)}
                 direction="horizontal"
                 scrollbar={{
                     hide: true,
