@@ -33,19 +33,19 @@ const Collection = ({ item }: CollectionProps) => (
                 <div className={styles.box}>
                     <div className={styles.subtitle}>{item.title}</div>
                     <div className={styles.author}>
-                        <div className={styles.avatar}>
+                        {/* <div className={styles.avatar}>
                             <Image
                                 src={item.avatar}
                                 layout="fill"
                                 objectFit="cover"
                                 alt="Avatar"
                             />
-                        </div>
-                        @{item.login}
+                        </div> */}
+                        {item.login}
                     </div>
                 </div>
                 <div className={styles.box}>
-                    <div className={styles.text}>FLOOR PRICE</div>
+                    <div className={styles.text}>{item.edition}x</div>
                     <div className={styles.price}>{item.price}</div>
                 </div>
             </div>

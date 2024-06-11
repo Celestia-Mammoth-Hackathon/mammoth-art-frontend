@@ -18,7 +18,7 @@ const HomePage = () => {
                 <Dream /> */}
                 <Collections />
                 {/* <Auctions items={auctions} /> */}
-                <Spotlight />
+                {/* <Spotlight /> */}
                 {/* <Creativity /> */}
                 {/* <Newsletter /> */}
             </>

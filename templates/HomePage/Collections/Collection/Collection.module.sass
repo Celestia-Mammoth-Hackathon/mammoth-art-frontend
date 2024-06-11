@@ -2,9 +2,7 @@
 
 .collection
     display: block
-    // flex-shrink: 0
-    // width: rem(400)
-    // margin: 0 rem(20)
+    border: 1px solid $n10
     color: $n7
     transition: color .2s
     &:hover
@@ -29,7 +27,6 @@
 
 .image
     position: relative
-    box-shadow: 4px 6px 0px 0px $n10
     border: 1px solid $n10
     &:before
         content: ""
@@ -38,7 +35,6 @@
     img
         transition: transform 1s
     &:hover
-        box-shadow: 4px 6px 0px 0px $n0
         border: 1px solid $n0
         img
             transform: scale(1.05)
@@ -58,12 +54,17 @@
     display: flex
     justify-content: space-between
     align-items: center
-    margin-top: rem(24)
+    padding: 8px
 
 .box
+    &:nth-child(1)
+        flex-shrink: 0
+        width: 50%
+        text-align: left
+        +title
     &:nth-child(2)
         flex-shrink: 0
-        margin-left: rem(20)
+        width: 50%
         text-align: right
         +title
 
@@ -75,7 +76,9 @@
     letter-spacing: -0.1em
     text-align: left
     margin-bottom: rem(4)
-    +body1
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
     +d
         margin-top: rem(8)
         +body1M
@@ -88,10 +91,10 @@
     line-height: 24px
     letter-spacing: 0em
     text-align: left
-    display: flex
-    align-items: center
-    +title
-    color: $n10
+    white-space: nowrap
+    overflow: hidden
+    text-overflow: ellipsis
+    color: $n0
 
 .avatar
     position: relative
@@ -101,12 +104,12 @@
     margin-right: rem(12)
 
 .text
-    color: $n10
+    color: $n0
     font-size: 16px
-    font-weight: 600
+    font-weight: 500
     line-height: 24px
     letter-spacing: 0em
-    text-align: left
+    text-align: right
     margin-bottom: rem(4)
     +d
         margin-bottom: 0
@@ -114,7 +117,7 @@
 .price
     color: $n0
     font-size: 16px
-    font-weight: 700
+    font-weight: 600
     line-height: 24px
     letter-spacing: 0em
     text-align: right

@@ -2,28 +2,31 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
 import styles from "./Collections.module.sass";
 import Collection from "./Collection";
-
+import React from 'react';
 import { curatedCollections } from "@/mocks/collections";
-import { Navigation, Scrollbar } from "swiper";
+import { Navigation, Scrollbar, Pagination } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 
 type CollectionsProps = {};
 
-const Collections = ({}: CollectionsProps) => (
+const Collections = ({}: CollectionsProps) => {
+    return (
     <div className={styles.collections}>
-        <div className={cn("h1", styles.title)}>Explore
+        <div className={cn("h1", styles.title)}>CURATED
         <span style={{ color: '#FF6B6B' }}>.</span>
         </div>
         <div className={styles.wrapper}>
             <Swiper
                 navigation={true}
-                slidesPerView="auto"
-                effect={"fade"}
+                slidesPerView={3}
+                slidesPerGroup={3}
+                loop={false}
+                spaceBetween={16}
                 scrollbar={{
                     hide: true,
                 }}
-                modules={[Navigation, Scrollbar]}
+                modules={[Navigation, Pagination, Scrollbar]}
                 className="collections-swiper"
             >
                 {curatedCollections.map((collection, index) => (
@@ -34,6 +37,6 @@ const Collections = ({}: CollectionsProps) => (
             </Swiper>
         </div>
     </div>
-);
+)};
 
 export default Collections;

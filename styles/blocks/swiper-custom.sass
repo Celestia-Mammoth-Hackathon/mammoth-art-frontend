@@ -42,38 +42,20 @@
 
 .collections-swiper
     position: static
-    overflow: visible
-    .swiper-slide
-        width: rem(360)
-        padding: 0 rem(16)
-        +m
-            width: calc(100% - rem(40))
+    overflow: hidden
+    max-width: 80vw
+    width: 80vw
+    margin-left: 6rem
+    margin-right: 6rem
     .swiper-button-prev,
     .swiper-button-next
-        top: rem(80)
-        left: auto
+        top: 45% !important
         margin-top: 0
         border-color: $n3
         background: transparent
-        +xl
-            top: rem(64)
-        +d
-            top: rem(40)
-        +t
-            top: rem(48)
-        +m
-            top: 0
     .swiper-button-prev
-        right: rem(152)
-        +xl
-            right: rem(136)
-        +w
-            right: rem(112)
-        +t
-            right: rem(96)
-        +m
-            right: auto
-            left: rem(24)
+        right: auto
+        left: 4%
     .swiper-button-next
         right: rem(80)
         +xl
@@ -85,6 +67,8 @@
         +m
             right: auto
             left: rem(96)
+    .hidden-slide 
+        opacity: 0
     .swiper-scrollbar
         opacity: 1 !important
         border-radius: rem(4)
