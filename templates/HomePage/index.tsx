@@ -1,26 +1,17 @@
-import Layout from "@/components/Layout";
 import Main from "./Main";
-import Hot from "./Hot";
-import Dream from "./Dream";
-import Collections from "./Collections";
-import Auctions from "@/components/Auctions";
-import Spotlight from "./Spotlight";
-import Creativity from "./Creativity";
-import Newsletter from "@/components/Newsletter";
-
-import { auctions } from "@/mocks/auctions";
+import CuratedCollections from "./CuratedCollections";
+import OpenCollections from "./OpenCollections";
+import LatestCollections from "./LatestCollections";
+import RandomCollections from "./RandomCollections";
 
 const HomePage = () => {
     return (
             <>
                 <Main />
-                {/* <Hot />
-                <Dream /> */}
-                <Collections />
-                {/* <Auctions items={auctions} /> */}
-                {/* <Spotlight /> */}
-                {/* <Creativity /> */}
-                {/* <Newsletter /> */}
+                <CuratedCollections />
+                <OpenCollections />
+                <LatestCollections />
+                <RandomCollections />
             </>
     );
 };
