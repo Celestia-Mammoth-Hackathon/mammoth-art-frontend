@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
-import styles from "./Collections.module.sass";
+import styles from "./CuratedCollections.module.sass";
 import Collection from "./Collection";
 import React from 'react';
 import { curatedCollections } from "@/mocks/collections";
@@ -8,9 +8,9 @@ import { Navigation, Scrollbar, Pagination } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 
-type CollectionsProps = {};
+type CuratedCollectionsProps = {};
 
-const Collections = ({}: CollectionsProps) => {
+const CuratedCollections = ({}: CuratedCollectionsProps) => {
     return (
     <div className={styles.collections}>
         <div className={cn("h1", styles.title)}>CURATED
@@ -39,4 +39,4 @@ const Collections = ({}: CollectionsProps) => {
     </div>
 )};
 
-export default Collections;
+export default CuratedCollections;
