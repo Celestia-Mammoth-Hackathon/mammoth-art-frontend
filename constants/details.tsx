@@ -13,6 +13,7 @@ export const chainNetwork: string = process.env.NEXT_PUBLIC_CHAIN_NETWORK!;
 export const chainExplorerName: string = process.env.NEXT_PUBLIC_CHAIN_EXPLORER_NAME!;
 export const chainExplorerURL: string = process.env.NEXT_PUBLIC_CHAIN_EXPLORER_URL!;
 export const chainBridgeURL: string = process.env.NEXT_PUBLIC_BRIDGE_URL!;
+
 export const isMainnet = chainMoniker === 'forma';
 
 if (!appName || !walletConnectProjectId || !tokenAddress || tokenId === "" || !tokenType || !dropAddress || !marketplaceAddress || !chainName || !chainMoniker || !chainRPC || isNaN(chainId) || !chainNetwork || !chainExplorerName || !chainExplorerURL || !chainBridgeURL) {
@@ -88,6 +89,33 @@ export const artistAddresses = [
         tokenAddress: isMainnet ? "0x1Ac85C299aB35E3dd768F39cA76Ba1bAC56d28f5" : "0xb6617f457b33e02e6bdd973c29376a192a5b0908",
         tokenId: "1",
         type: "ERC1155",
+      },
+    ],
+  },
+  {
+    slug: "fini",
+    artistAddress: "0x40e46E07B71502D2D8d8285E2Ed1355CE966Ab9D",
+    name: "Fini",
+    bio: "Finis are digital beings that embody the emotional ties between people and the world around them.",
+    profilePic: "/images/artists/fini.png",
+    bannerPic: "/images/artists/fini-banner.png",
+    links: [
+      {
+          title: "",
+          icon: "x",
+          url: "https://x.com/finidotworld",
+      },
+      {
+        title: "Fini World",
+        icon: "link",
+        url: "https://fini.world",
+    },
+    ],
+    collections: [
+      {
+        tokenAddress: isMainnet ? "0xc1A9c67117127c859789c20c4042c0CD87325861" : "0x2487a76723F010CDE2504f793205B4930e33fb0F",
+        tokenId: "0",
+        type: "ERC721",
       },
     ],
   },
