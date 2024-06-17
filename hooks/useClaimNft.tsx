@@ -135,7 +135,9 @@ const useClaimNFT = ({
             setCanMerkleMint(false);
         },
         onSuccess() {
-            setCanMerkleMint(true)
+            if (merkleDrop && proof.length > 0) {
+                setCanMerkleMint(true);
+            }
         },
     });
     const { data: merkleData, status: merkleStatus, write: merkleWrite, isLoading: isMerklePrepareLoading } = useContractWrite(merkleConfig);

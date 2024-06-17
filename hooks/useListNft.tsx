@@ -6,8 +6,8 @@ import useApproveNFT from "@/hooks/useApproveNft";
 import { ethers } from "ethers";
 import { isValidAmount, isValidPrice } from "../utils";
 type useListNFTProps = {
-    item: any,
     tokenAddress: string,
+    tokenId: string;
     address: string,
     listAmount: string,
     listPrice: string,
@@ -19,8 +19,8 @@ type useListNFTProps = {
 };
 
 const useListNFT = ({
-    item,
     tokenAddress,
+    tokenId,
     address,
     listAmount,
     listPrice,
@@ -39,7 +39,6 @@ const useListNFT = ({
         : null;
 
     const { isApprovingLoading, approveNft, isApproved, isApprovingSuccess } = useApproveNFT({
-        item,
         tokenAddress,
         address,
         operator: marketplaceAddress
@@ -48,8 +47,8 @@ const useListNFT = ({
     const sellConfig = {
         _params: {
             token: {
-                tokenAddress: item.tokenAddress,
-                tokenId: item.tokenId,
+                tokenAddress: tokenAddress,
+                tokenId: tokenId,
             },
             qty: formattedQty,
             price: formattedPrice,

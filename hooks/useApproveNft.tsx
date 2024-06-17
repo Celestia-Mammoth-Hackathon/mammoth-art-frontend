@@ -3,14 +3,12 @@ import { useContractRead, usePrepareContractWrite, useContractWrite, useWaitForT
 import { simpleERC1155UpgradeableABI } from '@/abi/SimpleERC1155Upgradeable.abi';
 
 type useApproveNFTProps = {
-    item: any,
     tokenAddress: any,
     address: any,
     operator: string
 };
 
 const useApproveNFT = ({
-    item, 
     tokenAddress,
     address,
     operator
