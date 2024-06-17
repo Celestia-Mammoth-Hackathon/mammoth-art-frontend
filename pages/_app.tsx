@@ -4,6 +4,7 @@ import type { AppProps } from "next/app";
 import '@rainbow-me/rainbowkit/styles.css';
 import { UserProvider } from "context/user";
 import { WalletProvider } from "context/wallet";
+import { ModalProvider } from "context/modal";
 import { RainbowKitProvider, DisclaimerComponent } from '@rainbow-me/rainbowkit';
 import { WagmiConfig } from 'wagmi'
 import React from 'react'
@@ -29,9 +30,11 @@ function MyApp({ Component, pageProps }: AppProps) {
                 modalSize="compact">
                   <WalletProvider>
                     <UserProvider>
-                      <Layout layoutNoOverflow footerHide={false}>
-                        <Component {...pageProps}/>
-                      </Layout>
+                      <ModalProvider>
+                        <Layout layoutNoOverflow footerHide={false}>
+                          <Component {...pageProps}/>
+                        </Layout>
+                      </ModalProvider>
                     </UserProvider>
                   </WalletProvider>
             </RainbowKitProvider>
