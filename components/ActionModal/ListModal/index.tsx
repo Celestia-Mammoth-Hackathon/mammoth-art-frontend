@@ -1,7 +1,7 @@
 import cn from "classnames";
 import styles from "./ListModal.module.sass";
 import Modal from "@/components/Modal";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import Spinner from "@/components/Spinner";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Image from "@/components/Image";
@@ -13,49 +13,48 @@ import { nativeCurrency } from "@/constants/details";
 import { isValidAmount, isValidPrice } from "@/utils/index";
 
 type ListModalProps = {
-    item: any;
+    tokenAddress: string;
+    tokenId: string;
+    tokenType: string;
     visible: boolean;
     onClose: () => void;
-    tokenAddress: any;
     property: any;
     setResponse: any;
-    tokenId: any;
     response: any;
     fetchListingTrigger: boolean;
     setFetchListingTrigger: any;
-    listings: any;
     claimNftTrigger?: any;
     setClaimNftTrigger?: any;
 };
 
 const ListModal: React.FC<ListModalProps> = ({
-    item,
     visible,
     onClose,
     tokenAddress,
     property,
     setResponse,
     tokenId,
+    tokenType,
     response,
     fetchListingTrigger,
     setFetchListingTrigger,
-    listings,
     claimNftTrigger,
     setClaimNftTrigger,
 }) => {
     const { address } = useContext(UserContext);
     const { checkNetwork } = useWalletContext();
-    const [chain, setChain] = useState<string>("");
     const [listAmount, setListAmount] = useState<string>("");
     const [listPrice, setListPrice] = useState<string>("");
+
+    useEffect(() => {
+        if (tokenType === "ERC721") {
+            setListAmount("1");
+        }
+    }, [tokenType]);
 
     // State variables to track if user has changed the inputs
     const [amountChanged, setAmountChanged] = useState<boolean>(false);
     const [priceChanged, setPriceChanged] = useState<boolean>(false);
-
-    const handleChange = (event: SelectChangeEvent) => {
-        setChain(event.target.value);
-    };
 
     const onListAmountChange = (event: SelectChangeEvent) => {
         setListAmount(event.target.value);
@@ -68,8 +67,8 @@ const ListModal: React.FC<ListModalProps> = ({
     }
 
     const { isApprovingLoading, isListingLoading, listNft, writeListing, isListingError } = useListNFT({
-        item,
         tokenAddress,
+        tokenId,
         address,
         listAmount,
         listPrice,
@@ -107,6 +106,7 @@ const ListModal: React.FC<ListModalProps> = ({
                 <div className={styles.label}>LIST YOUR NFT</div>
                 <div className={styles.desc}>List your NFT on the secondary marketplace.</div>
                 <div className={styles.btnsGroup}>
+                    {tokenType === "ERC1155" && (
                     <div className={styles.btns}>
                         <div className={styles.listQty}>
                             <div className={styles.btnLabel}>Qty (Avail: {property.availableSupply})</div>
@@ -117,11 +117,12 @@ const ListModal: React.FC<ListModalProps> = ({
                                     onChange={onListAmountChange}
                                     placeholder="1"
                                 />
-                            </button>                     
+                            </button>
                         </div>
                         <span className={styles.errorText}>{amountChanged && !isValidAmount(listAmount) ? "Invalid Amount" : ""}</span>
                     </div>
-                    <div className={styles.btns}>
+                    )}
+                    <div className={cn(styles.btns, {[styles.full]: tokenType === "ERC721"})}>
                         <div className={styles.listSelect}>
                             <div className={styles.btnLabel}>List Price</div>
                             <button className={styles.listPriceQtyBtnWrap}>

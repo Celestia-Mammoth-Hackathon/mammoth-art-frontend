@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import cn from "classnames";
 import styles from "./TransferModal.module.sass";
 import Modal from "@/components/Modal";
@@ -5,33 +6,84 @@ import { chainExplorerURL } from "@/constants/details";
 import Spinner from "@/components/Spinner";
 import { useWalletContext } from "context/wallet";
 import { STATUS } from "../status";
+import { resolveName } from '@/utils/provider';
+import { debounce } from 'lodash';
+import useTransferNFT from "@/hooks/useTransferNft";
+
+// Define the delay time in milliseconds for debouncing
+const DEBOUNCE_DELAY = 500;
 
 type TransferModalProps = {
+    tokenAddress: string;
+    tokenId: string;
+    tokenType: string;
+    address: string;
+    owned: any;
     visible: boolean;
     onClose: () => void;
-    isLoading: boolean;
-    isError: boolean;
-    onTransferNFT: () => Promise<void>;
-    onToAddressChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    onTransferAmountChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-    property: any;
-    response: any;
-    transferHash: any;
+    setVisibleTransferMenu: any;
+    claimNftTrigger?: boolean,
+    setClaimNftTrigger?: any,
 };
 
 const TransferModal: React.FC<TransferModalProps> = ({
+    tokenAddress,
+    tokenId,
+    tokenType,
+    address,
+    owned,
     visible,
     onClose,
-    isLoading,
-    isError,
-    onTransferNFT,
-    onToAddressChange,
-    onTransferAmountChange,
-    property,
-    response,
-    transferHash
+    setVisibleTransferMenu,
+    claimNftTrigger,
+    setClaimNftTrigger,
 }) => {
     const { checkNetwork } = useWalletContext();
+    const [transferAmount, setTransferAmount] = useState<any>(0);
+    const [toAddress, setToAddress] = useState<string>("");
+    const [resolvedAddress, setResolvedAddress] = useState<string>("");
+    const [response, setResponse] = useState<any>(null);
+
+    useEffect(() => {
+        // Define the debounced version of resolveAddress
+        const debouncedResolveAddress = debounce(async () => {
+            if (toAddress && !toAddress.startsWith("0x")) {
+                const resolved = await resolveName(toAddress);
+                setResolvedAddress(resolved);
+            } else {
+                setResolvedAddress(toAddress);
+            }
+        }, DEBOUNCE_DELAY);
+
+        // Call the debounced function when toAddress changes
+        debouncedResolveAddress();
+
+        // Cleanup function to cancel any pending debounce call
+        return () => {
+            debouncedResolveAddress.cancel();
+        };
+    }, [toAddress]);
+
+    const { isTransferLoading, transferNft, transferHash, isTransferError } = useTransferNFT({
+        tokenAddress,
+        tokenId: tokenId || "0",
+        tokenType,
+        address,
+        toAddress: resolvedAddress,
+        transferAmount: transferAmount || 0,
+        setVisibleTransferMenu,
+        setResponse,
+        claimNftTrigger,
+        setClaimNftTrigger,
+    });
+
+    const onTransferAmountChange = (e:any) => {
+        setTransferAmount(e.target.value)
+    }
+
+    const onToAddressChange = (e:any) => {
+        setToAddress(e.target.value)
+    }
 
     const renderContent = () => {
         if (!response) {
@@ -42,8 +94,9 @@ const TransferModal: React.FC<TransferModalProps> = ({
                         You can transfer your NFTs to another Forma address.
                     </div>
                     <div className={styles.btns}>
+                        {tokenType === "ERC1155" && (
                         <div className={styles.qty}>
-                            <div className={styles.btnLabel}>Qty (Owned: {property.owned})</div>
+                            <div className={styles.btnLabel}>Qty (Owned: {owned})</div>
                             <button className={styles.qtyBtnWrap}>
                                 <input
                                     className={styles.qtyInput}
@@ -53,7 +106,8 @@ const TransferModal: React.FC<TransferModalProps> = ({
                                 />
                             </button>
                         </div>
-                        <div className={styles.recipient}>
+                        )}
+                        <div className={cn(styles.recipient, {[styles.full]: tokenType === "ERC721"})}>
                             <div className={styles.btnLabel}>Recipient</div>
                             <button className={styles.btnWrap}>
                                 <input
@@ -86,10 +140,10 @@ const TransferModal: React.FC<TransferModalProps> = ({
                                 )}
                                 onClick={async() => {
                                     await checkNetwork();
-                                    onTransferNFT();
+                                    transferNft();
                                 }}
                             >
-                                {(isLoading && !isError) ? <Spinner className={styles.spinner}/> : "Transfer"}
+                                {(isTransferLoading && !isTransferError) ? <Spinner className={styles.spinner}/> : "Transfer"}
                             </a>
                         </div>
                     </div>
