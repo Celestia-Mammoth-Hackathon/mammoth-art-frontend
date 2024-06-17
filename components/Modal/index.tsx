@@ -15,6 +15,7 @@ type ModalProps = {
     visible: boolean;
     onClose?: any;
     children: React.ReactNode;
+    showClose?: boolean;
 };
 
 const Modal = ({
@@ -24,6 +25,7 @@ const Modal = ({
     visible,
     onClose,
     children,
+    showClose=true,
 }: ModalProps) => {
     const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -36,6 +38,9 @@ const Modal = ({
         } else {
             visible ? disablePageScroll() : enablePageScroll();
         }
+        return () => {
+            enablePageScroll();
+        };
     }, [visible]);
 
     useEffect(() => setLoaded(true), []);
@@ -71,7 +76,7 @@ const Modal = ({
                       >
                           {children}
                       </div>
-                      {onClose && (
+                      {(onClose && showClose) && (
                           <button
                               className={cn(
                                   "button-circle",
