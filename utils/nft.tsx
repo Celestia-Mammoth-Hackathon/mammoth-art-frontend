@@ -1,11 +1,34 @@
 import { nfts } from "@/constants/nfts";
 import { DropState } from "../store";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import indexer from "@/utils/indexer";
 
-export const getTokenStaticMetadata = (contractAddress: string, tokenId: string) => {
+export const getTokenStaticMetadata = async (contractAddress: string, tokenId: string) => {
   const nft = nfts.find((nftItem) => {
       return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokenId === tokenId;
   });
+
+  if (nft?.slug === 'finis-milo') {
+    const oracleUpdate = await indexer.getLastestPriceOracleUpdate();
+    if (oracleUpdate) {
+      if (nft.states?.neutral.metadata) {
+        nft.metadata = nft.states?.neutral.metadata;
+      }
+      nft.cloudflareCdnId = nft.states?.neutral.cloudflareCdnId;
+      if (oracleUpdate.usd24HourChange < -1) {
+        if (nft.states?.sad.metadata) {
+          nft.metadata = nft.states?.sad.metadata;
+        }
+        nft.cloudflareCdnId = nft.states?.sad.cloudflareCdnId;
+      }
+      if (oracleUpdate.usd24HourChange > 1) {
+        if (nft.states?.happy.metadata) {
+          nft.metadata = nft.states?.happy.metadata;
+        }
+        nft.cloudflareCdnId = nft.states?.happy.cloudflareCdnId;
+      }
+    }
+  }
 
   return nft ? { ...nft } : null;
 }
