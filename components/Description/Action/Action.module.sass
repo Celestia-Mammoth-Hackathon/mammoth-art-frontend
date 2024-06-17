@@ -1,0 +1,101 @@
+@import @/styles/helpers
+
+.action
+    margin-top: 1rem
+    margin-bottom: 1rem
+    padding-right: 4rem
+    padding-left: 4rem
+
+.line
+    display: flex
+    justify-content: space-between
+    margin-bottom: 1rem
+
+.infor
+    display: flex
+    gap: 32px
+    justify-content: space-between
+    align-items: center
+
+.own
+    display: flex
+    gap: 16px
+    justify-content: space-between
+    align-items: center
+
+.title
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n0
+
+.value
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    text-align: left
+    color: $n0
+    margin-left: 0.5rem
+    
+.actions
+    display: flex
+    margin: rem(8) 0 0 rem(16)
+    +d
+        margin-top: 0
+
+.button
+    border: 1px solid $n0
+    padding: 12px 32px 12px 32px
+    background: $n9
+    font-size: 14px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    &:hover
+        border: 1px solid $n0
+        background: $n13
+        cursor: pointer
+
+.listButton
+    height: 48px
+    width: auto
+
+.offerBtn
+    height: 48px
+    width: auto
+
+.buyBtn
+    height: 48px
+    width: auto
+    background: $n11
+    box-shadow: 2px 4px 0px 0px $n0
+    &:hover
+        border: 1px solid $n0
+        background: $n12
+
+.btns
+    display: flex
+    gap: 16px
+    justify-content: space-between
+    align-items: center
+
+.dot
+    fill: $n10 !important
+
+.date
+    display: flex
+    align-items: center
+    +captionBold
+    color: $n10
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
+    svg
+        flex-shrink: 0
+        width: rem(16)
+        height: rem(16)
+        margin-right: rem(12)
+        fill: $n10

@@ -5,43 +5,39 @@ import Icon from "@/components/Icon";
 import Preview from "./Preview";
 import Statistics from "./Statistics";
 import Caption from "./Caption";
+import Action from "./Action";
 import Links from "./Links";
 import Tags from "./Tags";
 import Provenance from "./Provenance";
+import { formatUserAddress } from "@/utils/index";
 
 type DescriptionProps = {
     exit?: boolean;
-    image: string;
-    statistics: any;
-    content: any;
     links?: any;
     addTags?: boolean;
     tags?: any;
     provenanceAction?: any;
     provenance?: any;
     captionHide?: boolean;
-    title: string;
-    date: string;
     children: React.ReactNode;
+    collection: any;
+    userToken: any;
+    loading: boolean;
 };
 
 const Description = ({
     exit,
-    image,
-    statistics,
-    content,
-    links,
-    addTags,
     tags,
-    provenanceAction,
-    provenance,
     captionHide,
-    title,
-    date,
     children,
+    collection,
+    userToken,
+    loading
 }: DescriptionProps) => {
     const router = useRouter();
-
+    if(loading || !collection) {
+        return <></>
+    }
     return (
         <>
             {exit && (
@@ -55,42 +51,28 @@ const Description = ({
                     </button>
                 </div>
             )}
-            <div className={styles.row}>
-                <div className={styles.col}>
-                    <Preview image={image} alt={title} />
-                    <Statistics className={styles.box} items={statistics} />
+            <div className={styles.col}>
+                <div className={styles.row}>
+                    <Preview 
+                        image={collection.token.metadata.image} 
+                        animation={collection?.token?.cloudflareCdnId || collection?.token?.metadata.animation_url} 
+                        alt={collection.token.metadata.name} 
+                    />
+                    <Action collection={collection} userToken={userToken}/>
                     <div className={styles.box}>
-                        <div className={cn("h4", styles.stage)}>Details</div>
-                        <div className={styles.content}>{content}</div>
-                        {links && <Links items={links} />}
-                        {addTags && (
-                            <button
-                                className={cn(
-                                    "button-stroke-grey button-medium",
-                                    styles.button
-                                )}
-                            >
-                                <span>Add tags</span>
-                                <Icon name="plus" />
-                            </button>
-                        )}
-                        {/* {tags && <Tags tags={tags} />} */}
-                    </div>
-                    {provenance && (
-                        <div className={styles.box}>
-                            <div className={cn("h4", styles.stage)}>
-                                History
-                            </div>
-                            <Provenance
-                                action={provenanceAction}
-                                items={provenance}
-                            />
+                        <div className={styles.boxHeader}>
+                            <div className={styles.title}>{collection.token.metadata.name}</div>
+                            <div className={styles.creator}>{formatUserAddress(collection.token.contractCreator)}</div>
                         </div>
-                    )}
+                        <div className={styles.boxBody}>
+                            <div className={styles.stage}>Details</div>
+                            <div className={styles.content}>{collection.token.metadata.description}</div>
+                        </div>
+                        {tags && <Tags tags={collection.token.metadata.tags} />}
+                    </div>
                 </div>
-                <div className={styles.col}>
+                <div className={styles.row}>
                     <div className={styles.wrap}>
-                        {!captionHide && <Caption title={title} date={date} />}
                         {children}
                     </div>
                 </div>

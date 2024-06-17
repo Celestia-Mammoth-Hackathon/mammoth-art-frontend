@@ -1,136 +1,156 @@
-import Layout from "@/components/Layout";
 import Description from "@/components/Description";
 import Details from "./Details";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
+import useCollectionStore, { DropState } from '@/store/index';
+import { UserContext } from "context/user";
 
-const statistics = [
-    {
-        label: "Created by",
-        avatar: "/images/avatar.jpg",
-        history: true,
-        title: "Dash",
-        login: "randomdash",
-    },
-    {
-        label: "Collection",
-        image: "/images/robot.jpg",
-        title: "Cute Planet",
-        category: "cute",
-    },
-];
+type MintNFTPageProps = {
+    tokenAddress?: any;
+    tokenId?: any;
+    tab?: any;
+};
 
-const links = [
-    {
-        title: "View on TIAscan",
-        icon: "country",
-        url: "https://ui8.net/",
-    },
-    {
-        title: "View metadata",
-        icon: "link",
-        url: "https://ui8.net/",
-    },
-    {
-        title: "View on IPFS",
-        icon: "link",
-        url: "https://ui8.net/",
-    },
-];
+const MintNFTPage = ({ tokenAddress, tokenId, tab } : MintNFTPageProps) => {
+    const { address } = useContext(UserContext);
+    
+    const {
+        users,
+        collections,
+        fetchCollection,
+        setSecondaryListings,
+        fetchOwnNfts,
+    } = useCollectionStore();
 
-const provenance = [
-    {
-        avatar: "/images/avatar.jpg",
-        history: true,
-        content: (
-            <>
-                Bid placed by <span>0x56C1...8eCC</span>
-            </>
-        ),
-        price: "5.00 TIA",
-        date: "Aug 18, 2022 at 18:80",
-        url: "https://ui8.net/",
-    },
-    {
-        avatar: "/images/avatar.jpg",
-        history: true,
-        content: (
-            <>
-                Listed by <span>@randomdash</span>
-            </>
-        ),
-        price: "5.00 TIA",
-        date: "Aug 18, 2022 at 18:80",
-        url: "https://ui8.net/",
-    },
-    {
-        avatar: "/images/avatar.jpg",
-        history: true,
-        content: (
-            <>
-                Minted by <span>@randomdash</span>
-            </>
-        ),
-        price: "5.00 TIA",
-        date: "Aug 18, 2022 at 18:80",
-        url: "https://ui8.net/",
-    },
-];
+    const [collection, setCollection] = useState<any>(null);
+    const [userToken, setUserToken] = useState<any>(null);
+    const [supplyLoading, setSupplyLoading] = useState(false);
+    const [collectionLoading, setCollectionLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
+    const [claimNftTrigger, setClaimNftTrigger] = useState(false);
+    const [fetchListingTrigger, setFetchListingTrigger] = useState(false);
 
-const tags = [
-    "Cute",
-    "Robot",
-    "Cute Planet",
-    "Suitcase",
-    "Spaceship",
-    "Animation",
-    "Redshift Render",
-    "3D",
-    "Character",
-    "Cinema 4D",
-];
+    const [mintStatus, setMintStatus] = useState<string>('Minting ends');
+    const [mintTime, setMintTime] = useState<number>(0);
+    const [showTimeCounter, setShowTimeCounter] = useState<boolean>(true);
 
-const MintNFTPage = () => {
-    const [sorting, setSorting] = useState<string>("details");
-    const title = sorting === "set" ? "Set a Buy Now price" : "The Explorer"
-    const date = sorting === "set" ? "Buyers will be able to instantly buy the NFT. You may edit this price at any time."
-        : "Minted on Aug 18, 2022"
+    const collectionId = `${tokenAddress.toLowerCase()}_${tokenId}`;
+
+    const loadingToken  = {
+        contractType: "",
+        metadata: {
+            name: "",
+            description: "",
+            image: "",
+            animation_url: "",
+        },
+        drop: {
+            startDate: 0,
+            endDate: 0,
+            maxAllowed: 0,
+        },
+        contractCreator: "",
+        mintedSupply: 0,
+        price: "0",
+        royalty: 0,
+        tokenAddress: "",
+        tokenId: "",
+        type: "",
+        cloudflareCdnId: "",
+        loading: true,
+    };
+    
+
+    const [listings, setListings] = useState({
+        all: [],
+        mine: [],
+        cheapest: {},
+        loading: true,
+    });
+
+    useEffect(() => {
+        const collection = collections[collectionId];
+        const collectionDrop = collection?.token?.drop;
+        if (collection && collectionDrop) {
+            const dropState = collection.dropState;
+            const startDateInMillisecond = collectionDrop.startDate * 1000;
+            const endDateInMillisecond = collectionDrop.endDate * 1000;
+            const currentDate = new Date().getTime();
+
+            switch (dropState) {
+                case DropState.NotStarted:
+                    setMintStatus('Starts in');
+                    setMintTime(startDateInMillisecond - currentDate);
+                    setShowTimeCounter(true);
+                    break;
+                case DropState.InProgress:
+                    setMintStatus('Minting Ends');
+                    setMintTime(endDateInMillisecond - currentDate);
+                    setShowTimeCounter(true);
+                    break;
+                case DropState.SecondaryListingsActive:
+                case DropState.SecondaryListingsNone:
+                case DropState.SoldOut:
+                    setMintStatus('Minting Ends');
+                    setMintTime(0);
+                    setShowTimeCounter(false);
+                    break;
+                default:
+                    break;
+            }
+        } 
+    }, [collections])
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setCollectionLoading(true);
+                await fetchCollection(tokenAddress, tokenId);
+            } catch (error) {
+                console.error("Error fetching collections:", error);
+            } finally {
+                setCollectionLoading(false);
+            }
+        };
+        fetchData();
+    }, [claimNftTrigger]);
+
+    useEffect(() => {
+        const fetchSupply = async () => {
+            if(address) {
+                try {
+                    setSupplyLoading(true);
+                    await fetchOwnNfts(tokenAddress, tokenId, address);
+                } catch(error) {
+                    console.log(error);
+                } finally {
+                    setSupplyLoading(false);
+                }
+            }
+        };
+        fetchSupply();
+    }, [address, claimNftTrigger, tokenAddress, tokenId]);
+
+    useEffect(() => {
+        // Check if all fetch operations are completed
+        if (!collectionLoading && !supplyLoading && collections) {
+            // If all fetch operations are completed, set loading to false
+            setLoading(false);
+            setCollection(collections[collectionId])
+            setUserToken(users[address]?.collections[collectionId])
+        }
+    }, [collectionLoading, supplyLoading, collections]);
+    
     return (
         <>
             <Description
-                image="/images/cute-planet-large.jpg"
-                title={title}
-                date={date}
-                statistics={statistics}
-                links={links}
-                tags={tags}
-                provenanceAction={{
-                    avatar: "/images/avatar.jpg",
-                    history: true,
-                    content: (
-                        <>
-                            Auction won by <span>0x56C1...8eCC</span>
-                        </>
-                    ),
-                    title: (
-                        <>
-                            Sold for <span>6.05 TIA</span> $9,256.58
-                        </>
-                    ),
-                    date: "Aug 18, 2022 at 18:80",
-
-                    linkTitle: (
-                        <>
-                            Auction settled by <span>@Kohaku</span>
-                        </>
-                    ),
-                    linkUrl: "https://ui8.net/",
-                }}
-                provenance={provenance}
-                content="We are laying the groundwork for web3 — the next generation of the internet full of limitless possibilities. Join the millions of creators, collectors, and curators who are on this journey with you."
+                collection={collection}
+                userToken={userToken}
+                loading={loading}
             >
                 <Details 
-                    sorting={sorting}
-                    setSorting={setSorting}
+                    collection={collection}
+                    userToken={userToken}
+                    loading={loading}
                 />
             </Description>
         </>

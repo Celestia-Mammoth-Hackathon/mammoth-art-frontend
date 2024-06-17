@@ -8,6 +8,10 @@ const Home: NextPage = () => {
                 <a>Home page</a>
             </Link>
             <br></br>
+            <Link href="/drop/hello-world">
+                <a>NFT detail page</a>
+            </Link>
+            <br></br>
             <Link href="/profile">
                 <a>Profile page</a>
             </Link>

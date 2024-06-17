@@ -11,6 +11,7 @@ type ListProps = {
     discover?: boolean;
     nft?: boolean;
     create?: boolean;
+    nftDetail?: boolean;
 };
 
 const List = ({
@@ -22,6 +23,7 @@ const List = ({
     discover=false,
     nft=false,
     create=false,
+    nftDetail=false,
 }: ListProps) => {
     return (
         <div className={cn(styles.list, { [styles.light]: light }, { [styles.discover]: discover }, { [styles.nft]: nft }, { [styles.create]: create })}>
@@ -34,7 +36,7 @@ const List = ({
                 nft={nft}
                 create={create}
             />
-            <div className={styles.wrapper}>
+            <div className={nftDetail ? styles.nftWrapper : styles.wrapper}>
                 {children}
             </div>
         </div>
