@@ -1,14 +1,10 @@
 import { useRouter } from "next/router";
-import cn from "classnames";
 import styles from "./Description.module.sass";
 import Icon from "@/components/Icon";
 import Preview from "./Preview";
-import Statistics from "./Statistics";
-import Caption from "./Caption";
 import Action from "./Action";
-import Links from "./Links";
 import Tags from "./Tags";
-import Provenance from "./Provenance";
+import { artistAddresses } from '@/constants/details';
 import { formatUserAddress } from "@/utils/index";
 
 type DescriptionProps = {
@@ -27,9 +23,13 @@ const Description = ({
     loading
 }: DescriptionProps) => {
     const router = useRouter();
+    
     if(loading || !collection) {
         return <></>
     }
+
+    const artistInfor:any = artistAddresses.find((element) => element.artistAddress === collection.token.contractCreator) || {};
+
     return (
         <>
             {exit && (
@@ -54,7 +54,7 @@ const Description = ({
                     <div className={styles.box}>
                         <div className={styles.boxHeader}>
                             <div className={styles.title}>{collection.token.metadata.name}</div>
-                            <div className={styles.creator}>{formatUserAddress(collection.token.contractCreator)}</div>
+                            <div className={styles.creator}>{artistInfor?.name || formatUserAddress(collection.token.contractCreator)}</div>
                         </div>
                         <div className={styles.boxBody}>
                             <div className={styles.stage}>Details</div>
