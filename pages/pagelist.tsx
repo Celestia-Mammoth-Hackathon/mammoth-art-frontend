@@ -84,24 +84,8 @@ const Home: NextPage = () => {
                 <a>Share NFT page</a>
             </Link>
             <br></br>
-            <Link href="/set-price">
-                <a>Set price page</a>
-            </Link>
-            <br></br>
             <Link href="/settings">
                 <a>Settings page</a>
-            </Link>
-            <br></br>
-            <Link href="/buy-now">
-                <a>Buy now page</a>
-            </Link>
-            <br></br>
-            <Link href="/place-a-bid">
-                <a>Place a bid page</a>
-            </Link>
-            <br></br>
-            <Link href="/make-offer">
-                <a>Make offer page</a>
             </Link>
             <br></br>
             <Link href="/congrats">
