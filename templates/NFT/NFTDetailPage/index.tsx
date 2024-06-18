@@ -33,7 +33,7 @@ const MintNFTPage = ({ tokenAddress, tokenId, tab } : MintNFTPageProps) => {
     const [mintTime, setMintTime] = useState<number>(0);
     const [showTimeCounter, setShowTimeCounter] = useState<boolean>(true);
 
-    const collectionId = `${tokenAddress.toLowerCase()}_${tokenId}`;
+    const collectionId = `${tokenAddress?.toLowerCase()}_${tokenId}`;
 
     const loadingToken  = {
         contractType: "",
