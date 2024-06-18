@@ -13,12 +13,6 @@ import { formatUserAddress } from "@/utils/index";
 
 type DescriptionProps = {
     exit?: boolean;
-    links?: any;
-    addTags?: boolean;
-    tags?: any;
-    provenanceAction?: any;
-    provenance?: any;
-    captionHide?: boolean;
     children: React.ReactNode;
     collection: any;
     userToken: any;
@@ -27,8 +21,6 @@ type DescriptionProps = {
 
 const Description = ({
     exit,
-    tags,
-    captionHide,
     children,
     collection,
     userToken,
@@ -68,7 +60,7 @@ const Description = ({
                             <div className={styles.stage}>Details</div>
                             <div className={styles.content}>{collection.token.metadata.description}</div>
                         </div>
-                        {tags && <Tags tags={collection.token.metadata.tags} />}
+                        <Tags tags={collection.token.metadata.tags}/>
                     </div>
                 </div>
                 <div className={styles.row}>
