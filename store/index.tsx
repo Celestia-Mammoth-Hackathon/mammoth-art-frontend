@@ -88,11 +88,11 @@ const useCollectionStore = create<State>((set , get) => ({
             drops.forEach(async (item: any) => {
                 const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
 
-                const allListings = await indexer.getAllOrders({
+                const allListings = token?.tokenAddress && token?.tokenId ? await indexer.getAllOrders({
                     tokenAddress: token.tokenAddress,
                     tokenId: token.type === 'ERC1155' ? token.tokenId : undefined,
                     maxPages: 1,
-                });
+                }) : [];
 
                 if (!token) return;
                 const foundToken = tokens.find((token:any) =>
