@@ -119,6 +119,28 @@ export const artistAddresses = [
       },
     ],
   },
+  {
+    slug: "maelstrom",
+    artistAddress: "0xc955f47333802c9064d655af97552cd49a87d777",
+    name: "Maelstrom",
+    bio: "With a cryptic history incorporating nearly two decades of aliases and side projects born out of free parties in warehouses, fields and basements, Maelstrom has delivered EPs for imprints such as CPU and Cultivated Electronics in the UK, or Private Persons in Moscow, while playing an all electro live set in clubs and raves, from Paris to London or Tokyo.",
+    profilePic: "/images/artists/maelstrom.jpg",
+    bannerPic: "/images/artists/maelstrom-banner.jpg",
+    links: [
+      {
+        title: "SoundCloud",
+        icon: "link",
+        url: "https://soundcloud.com/maelstrom",
+    },
+    ],
+    collections: [
+      {
+        tokenAddress: isMainnet ? "0x330491d0a7F74E9592CC6c5b2CE2a25e20206784" : "0xbc738cc95d2d35e29d4b999d3e5036f37edc7e55",
+        tokenId: "0",
+        type: "ERC1155",
+      },
+    ],
+  },
 ];
 
 export const nativeCurrency = {
