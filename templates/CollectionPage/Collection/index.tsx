@@ -78,7 +78,7 @@ const Profile = ({}: ProfileProps) => {
                     setTabsValue={setSorting}
                     light={theme}
                 >
-                    {sorting === "nfts" && (
+                    {/* {sorting === "nfts" && (
                         <Tokens
                             titleUsers="Owned by"
                             items={nfts}
@@ -86,7 +86,7 @@ const Profile = ({}: ProfileProps) => {
                             theme={theme}
                             setTheme={setTheme}
                         />
-                    )}
+                    )} */}
                     {sorting === "activity" && <Activity items={activity} />}
                     {sorting === "owners" && <Owners items={followers} />}
                     <div className={styles.foot}>
