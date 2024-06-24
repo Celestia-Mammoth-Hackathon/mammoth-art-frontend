@@ -6,16 +6,27 @@ import { artistAddresses } from "@/constants/details";
 
 const Profile: NextPage = () => {
     const router = useRouter();
-    const address = router.query.slug;
     const slug = Array.isArray(router.query.slug) ? router.query.slug[0] : router.query.slug;
 
     if (!slug) {
         return <></>
     }
 
+    
     const artist = artistAddresses.find(a => a.slug === slug?.toLowerCase());
+
     if (!artist) {
-        return <Error404Page />
+        const user = {
+            address: slug,
+            bannerPic: "/images/gloverinterface_header_1800x500_.jpg",
+            bio: "",
+            collections: [],
+            links: [],
+            name: "Dash",
+            profilePic: "/images/users/avatar-3.jpg",
+            slug: ""
+        }
+        return <ProfilePage artist={user} />
     }
 
     return (

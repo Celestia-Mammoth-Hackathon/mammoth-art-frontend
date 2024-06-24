@@ -4,11 +4,15 @@
     display: block
     color: $n1
     transition: color .2s
+    &:not(:hover)
+        .preview
+            border: 0.5px solid $n0
+            img
+                transform: scale(1)
     &:hover
         color: $n11
         .preview
-            border: 1px solid $n0
-            box-shadow: 4px 6px 0px 0px $n0
+            border: 0.5px solid $n0
             img
                 transform: scale(1.05)
     &.large
@@ -27,8 +31,8 @@
     position: relative
     margin-bottom: rem(20)
     overflow: hidden
-    border: 1px solid $n10
-    box-shadow: 4px 6px 0px 0px $n10
+    border: 0.5px solid $n10
+    
     &:before
         content: ""
         display: block
@@ -36,13 +40,30 @@
     img
         transition: transform 1s
 
+.supply
+    position: absolute
+    top: rem(8)
+    left: rem(8)
+    z-index: 2
+    display: flex
+    align-items: center
+    padding: 4px 8px 4px 8px
+    border: 0.2px solid $n0
+    background: $n9
+    font-size: 12px
+    font-weight: 500
+    line-height: 14px
+    letter-spacing: -0.01em
+    text-align: center
+    color: #F7FBFA
+
 .title
     margin-bottom: rem(4)
-    +body1
-    +d
-        +body1M
-    +m
-        +body1
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
 
 .category
     +captionBold
@@ -87,3 +108,34 @@
     margin-right: rem(16)
     img
         border-radius: rem(24)
+
+.foot
+    position: relative
+    display: flex
+    justify-content: space-between
+    &:before
+        content: ""
+        position: absolute
+        top: 50%
+        left: 50%
+        width: rem(1)
+        height: rem(24)
+        transform: translate(-50%,-50%)
+        background: #D9D9D9
+        transition: background .2s
+
+.box
+    width: 50%
+    &:nth-child(1)
+        .text
+            margin-top: 16px
+            margin-bottom: 16px
+            position: relative
+
+    &:nth-child(2)
+        .text,
+        .price
+            margin-top: 16px
+            margin-bottom: 16px
+            margin-left: auto
+        

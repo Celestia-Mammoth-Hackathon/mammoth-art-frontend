@@ -4,15 +4,8 @@
     display: flex
     justify-content: space-between
     align-items: flex-start
-    margin-top: rem(64)
-    +d
-        margin-top: rem(40)
     +m
         display: block
-        margin-top: rem(32)
-
-.description
-    max-width: rem(488)
 
 .item
     &:not(:last-child)
@@ -20,18 +13,25 @@
 
 .category
     margin-bottom: rem(24)
-    +button
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    text-transform: uppercase
     color: $n5
 
 .content
-    +baseMedium
+    font-size: 16px
+    font-weight: 400
+    line-height: 24px
+    text-align: left
     color: $n0
 
 .links
     display: flex
     justify-content: space-between
     align-items: center
-    
+
 .link
     display: flex
     align-items: center

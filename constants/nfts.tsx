@@ -189,6 +189,7 @@ export const nfts = [
         "contractCreator": "0x40e46E07B71502D2D8d8285E2Ed1355CE966Ab9D",
         "collectionName": "Milo",
         "metadata": {
+            "id": "0",
             "name": "Milo",
             "description": "Milo is a special edition Fini whose moods reflect the price of TIA on a rolling 24-hour basis ✨",
             "image": "ipfs://bafybeif2b3oxb3wh7y4oc27lhnnhq3bdf6hhtzdronxpw2wzh7y5esee3y",
@@ -229,6 +230,7 @@ export const nfts = [
         states: {
             happy: {
                 metadata: {
+                    "id": "0",
                     "name": "Milo",
                     "description": "Milo is a special edition Fini whose moods reflect the price of TIA on a rolling 24-hour basis ✨",
                     "image": "ipfs://bafybeif2b3oxb3wh7y4oc27lhnnhq3bdf6hhtzdronxpw2wzh7y5esee3y",
@@ -269,6 +271,7 @@ export const nfts = [
             },
             sad: {
                 metadata: {
+                    "id": "0",
                     "name": "Milo",
                     "description": "Milo is a special edition Fini whose moods reflect the price of TIA on a rolling 24-hour basis ✨",
                     "image": "ipfs://bafybeiectbb3jjcc2pzst2vup3nwcjkepdtmy7pccyannwudjduqwr5wn4",
@@ -309,6 +312,7 @@ export const nfts = [
             },
             neutral: {
                 metadata: {
+                    "id": "0",
                     "name": "Milo",
                     "description": "Milo is a special edition Fini whose moods reflect the price of TIA on a rolling 24-hour basis ✨",
                     "image": "ipfs://bafybeibaahdieteawxje4say2igwphiffaqaf7ituoitppsdpfs72v26xi",
@@ -353,13 +357,65 @@ export const nfts = [
         "tokenId": "0",
         "contractType": "ERC721",
         "royalty": 750,
-        "deployed": false,
-        "created": false,
+        "deployed": true,
+        "created": true,
         "price": 0.33,
         "slug": "finis-milo",
         "merkleRoot": "0x219629712cded50c2af084a9c2601a138c554042b6aaf88bfaaa10d05a87b217",
         "merkleTree": FinisMerkleTree,
-    }
+    },
+    {
+        "uuid": "f1bb1a25-64ca-4544-992e-bd2ce75ebeaa",
+        "contractCreator": "0xc955f47333802c9064d655af97552cd49a87d777",
+        "collectionName": "Inertial Oscillation",
+        "metadata": {
+            "id": "0",
+            "name": "Inertial Oscillation",
+            "description": "Based on electric voltage oscillations, and arranged using polyrhythms, Maelstrom's newest experiment is modular by nature, borrowing from various sources and shapes on its journey to the resolution of its own story line.",
+            "image": "ipfs://bafybeiba74dtddmnk4wa3sxl7gsvac3ulmq5bijlezsc3hgphwfjjhyuna",
+            "animation_url": "ipfs://bafybeienepw25r7rrx6vwtwsk7df7owbwadznooip5oob57sgmr2mq7hvy",
+            "tags": [ "genesis", "modularium" ],
+            "attributes": [
+                { "trait_type": "Stems & High Fidelity WAV", "value": "https://file.io/iHI9UR6dFrjp" },
+              ],
+            "formats": [{
+                "uri": "ipfs://bafybeienepw25r7rrx6vwtwsk7df7owbwadznooip5oob57sgmr2mq7hvy",
+                "mime_type": "video/mp4",
+                "file_size": 14438157,
+                "dimensions": {
+                    "value": "720x720",
+                    "unit": "px"
+                },
+                "hash": {
+                    "value": "7b818d5984dc064739a06ce809c0d32419cec727bad566aa7eab23aec46e5190",
+                    "algo": "sha-256",
+                },
+            },{
+                "uri": "ipfs://bafybeiba74dtddmnk4wa3sxl7gsvac3ulmq5bijlezsc3hgphwfjjhyuna",
+                "mime_type": "image/jpeg",
+                "file_size": 352963,
+                "dimensions": {
+                    "value": "1024x1024",
+                    "unit": "px"
+                },
+                "hash": {
+                    "value": "0f75ac0f4bb7f38ea182ab709f7203b6236c9e2a2aa466c51e76dfcd8b6252e9",
+                    "algo": "sha-256",
+                },
+            }],
+        },
+        "cloudflareCdnId": "f4bd20ae62e92509d59fa5c77decf34b",
+        "music": true,
+        "type": "ERC1155",
+        "tokenAddress": isMainnet ? "0x330491d0a7F74E9592CC6c5b2CE2a25e20206784" : "0xbc738cc95d2d35e29d4b999d3e5036f37edc7e55",
+        "tokenId": "0",
+        "contractType": "ERC1155",
+        "royalty": 750,
+        "deployed": true,
+        "created": true,
+        "price": isMainnet ? 1 : 0.01,
+        "slug": "inertial-oscillation"
+    },
 ];
 
 export type ContractAddress = {
@@ -370,6 +426,8 @@ export type ContractAddress = {
 
 export let contractAddresses: ContractAddress[] = [];
 for (const nft of nfts) {
-    contractAddresses.push({ address: nft.tokenAddress.toLowerCase(), tokenId: nft.tokenId, type: nft.type });
+    if (nft.created && nft.tokenAddress) {
+        contractAddresses.push({ address: nft.tokenAddress?.toLowerCase(), tokenId: nft.tokenId, type: nft.type });
+    }
 }
 contractAddresses.reverse();

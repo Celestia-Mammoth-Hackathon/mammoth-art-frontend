@@ -6,38 +6,8 @@
     top: 0
     display: flex
     flex-direction: column
-    min-height: rem(800)
-    padding: rem(100) rem(80) rem(80)
-    +xl
-        min-height: rem(720)
-        padding: rem(100) rem(64) rem(80)
-    +w
-        padding: rem(100) rem(40) rem(80)
-    +t
-        display: block
-        min-height: auto
-        padding: rem(100) rem(24) rem(48)
-    .follow
-        margin-top: rem(8)
-        padding: 0 rem(30)
-        +d
-            min-width: rem(88)
-            margin-top: 0
-            padding: 0 rem(12)
-            font-size: 0
-            svg
-                margin: 0
-        +t
-            min-width: auto
-            padding: 0 rem(30)
-            font-size: rem(12)
-            svg
-                margin-left: rem(12)
-        +m
-            margin-top: rem(32)
+    padding: rem(100) 4rem 3.5rem 4rem
 
-.head
-    margin-bottom: auto
 
 .flex
     display: flex
@@ -66,19 +36,29 @@
 .code
     display: flex
     align-items: center
-    margin-left: rem(20)
     padding: rem(8) rem(12)
-    background: $a6
-    +base
-    +d
-        +baseM
+    padding-left: 0
+    transition: background-color .5s ease
+    
+.address
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n0
+    cursor: pointer
+    &:hover
+        text-decoration: underline
 
 .copy
     margin-left: rem(8)
     font-size: 0
+    background: $n0
+    filter: invert(1)
     svg
         width: rem(20)
         height: rem(20)
+        filter: invert(1)
 
 .actions
     display: flex
@@ -125,3 +105,5 @@
             height: rem(16)
 
 
+.copiedBg
+    background-color: $a5

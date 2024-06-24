@@ -1,70 +1,34 @@
-import { useState } from "react";
-import cn from "classnames";
 import styles from "./Tokens.module.sass";
-import Users from "@/components/Users";
-import Actions from "@/components/Actions";
 import Token from "@/components/Token";
-import Spinner from "@/components/Spinner";
 
 type TokensProps = {
-    titleUsers?: string;
     items: any;
-    users: any;
     theme: any;
-    setTheme: any;
     owned?: boolean;
 };
 
-const Tokens = ({ items, titleUsers, users, theme, setTheme, owned = false }: TokensProps) => {
-    const [sorting, setSorting] = useState<string>("grid");
-
+const Tokens = ({ items, theme, owned = false }: TokensProps) => {
     return (
-        <>
-            <div className={styles.head}>
-                <Users
-                    classUsersItem={styles.user}
-                    classUsersCounter={styles.counter}
-                    title={titleUsers}
-                    items={users}
-                    dark={theme}
-                    border
-                />
-                <Actions
-                    sortingValue={sorting}
-                    setSortingValue={setSorting}
-                    theme={theme}
-                    setTheme={setTheme}
-                    dark={theme}
-                />
-            </div>
-            <div
-                className={cn(styles.tokens, {
-                    [styles.list]: sorting === "list",
-                })}
-            >
-                {
-                    items.length ? (
-                        items.map((token: any, index: number) => (
-                            <Token
-                                className={styles.token}
-                                item={token}
-                                key={index}
-                                large={sorting === "list"}
-                                dark={theme}
-                                owned={owned}
-                            />
-                        ))
-                    ) : (
-                        <div className={styles.wrap}>
-                            <div className={styles.box}>No NFTs minted in collection </div>
-                        </div>
-                    )
-                }
-            </div>
+        <div className={styles.tokens}>
             {
-                items.length ? <Spinner dark={theme} /> : <></>
+                items.length ? (
+                    items.map((token: any, index: number) => (
+                        <Token
+                            className={styles.token}
+                            item={token}
+                            key={index}
+                            large={false}
+                            dark={theme}
+                            owned={owned}
+                        />
+                    ))
+                ) : (
+                    <div className={styles.wrap}>
+                        <div className={styles.box}>{owned ? "You don't own any NFT" : "No NFTs minted in collection"}</div>
+                    </div>
+                )
             }
-        </>
+        </div>
     );
 };
 

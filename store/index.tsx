@@ -71,6 +71,7 @@ interface State {
     fetchCollection: (tokenAddress: string, tokenId: string) => Promise<void>;
     fetchMintedSupply: (tokenAddress: string, tokenId: string) => Promise<void>;
     setSecondaryListings: (collectionId: string, secondaryListings: any[]) => Promise<void>;
+    fetchAllOwnNfts: (userAddress: string) => Promise<void>;
     fetchOwnNfts: (tokenAddress: string, tokenId: string, userAddress: string) => Promise<void>;
 };
 
@@ -230,6 +231,63 @@ const useCollectionStore = create<State>((set , get) => ({
             }));
         } catch (error) {
             console.error("Error fetching listings:", error);
+        }
+    },
+    fetchAllOwnNfts: async (userAddress: string) => {
+        try {
+            const [ drops, ownedSupply ] = await Promise.all([
+                indexer.getAllDrops(),
+                indexer.getUserBalance(userAddress),
+            ]);
+            
+            for(const item of ownedSupply) {
+                const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
+        
+                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+                const userBalance = ownedSupply.filter((element: any) => 
+                    element.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
+                    && ((token.type === 'ERC1155' && element.tokenId === item.tokenId) || token.type === 'ERC721')
+                );
+
+                const tokens = await indexer.getAllTokens();
+                const foundToken = tokens.find((token: any) => 
+                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() &&
+                    token.tokenId === item.tokenId
+                );
+
+                token.drop = drops.find((token:any) => 
+                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
+                        && token.tokenId === item.tokenId);
+                token.ownedSupply = (token.type === 'ERC1155' ? +userBalance[0]?.balance : userBalance.length) || 0;
+                token.mintedSupply = foundToken?.totalSupply || 0;
+                token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
+
+                set((state) => {
+                    const userState = state.users[userAddress] || { collections: {} };
+
+                    return {
+                        users: {
+                            ...state.users,
+                            [userAddress]: {
+                                ...userState,
+                                collections: {
+                                    ...userState.collections,
+                                    [collectionId]: {
+                                        ...userState.collections[collectionId],
+                                        token: token,
+                                        tokenIds: userBalance.map((balance: any) => balance.tokenId)
+                                            .sort((a: any, b: any) => Number(a) - Number(b)),
+                                        ownedSupply: token.ownedSupply,
+                                    }
+                                }
+                            }
+                        }
+                    };
+                });
+            }
+            
+        } catch (error) {
+            console.error("Error fetching own nfts:", error);
         }
     },
     fetchOwnNfts: async (tokenAddress: string, tokenId: string, userAddress: string) => {

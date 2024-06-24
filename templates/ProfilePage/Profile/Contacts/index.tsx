@@ -8,26 +8,18 @@ type LinksType = {
     url: string;
 };
 
-type SocialsType = {
-    icon: string;
-    url: string;
-};
-
 type ContactsProps = {
     links: LinksType[];
-    socials: SocialsType[];
+    bio: string;
 };
 
-const Contacts = ({ links, socials }: ContactsProps) => (
+const Contacts = ({ links, bio }: ContactsProps) => (
     <div className={styles.contacts}>
         <div className={styles.description}>
             <div className={styles.item}>
                 <div className={styles.category}>bio</div>
                 <div className={styles.content}>
-                    We are laying the groundwork for web3 — the next generation
-                    of the internet full of limitless possibilities. Join the
-                    millions of creators, collectors, and curators who are on
-                    this journey.
+                    {bio}
                 </div>
             </div>
             <div className={styles.item}>
@@ -35,7 +27,7 @@ const Contacts = ({ links, socials }: ContactsProps) => (
                 <div className={styles.links}>
                     {links.map((link, index) => (
                         <Link href={link.url} key={index}>
-                            <a className={styles.link}>
+                            <a className={styles.link} target="_blank" rel="noopener noreferrer">
                                 <Icon name={link.icon} />
                                 {link.title}
                             </a>
@@ -44,19 +36,6 @@ const Contacts = ({ links, socials }: ContactsProps) => (
                 </div>
             </div>
         </div>
-        {/* <div className={styles.socials}>
-            {socials.map((social, index) => (
-                <a
-                    className={styles.social}
-                    href={social.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    key={index}
-                >
-                    <Icon name={social.icon} />
-                </a>
-            ))}
-        </div> */}
     </div>
 );
 

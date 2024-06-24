@@ -2,20 +2,20 @@
 
 .row
     display: flex
-    min-height: calc(100vh - rem(400))
-    +xl
-        min-height: calc(100vh - rem(304))
-    +t
+    flex-direction: column
+    +m
         display: block
 
 .col
-    flex: 0 0 50%
-    width: 50%
+    flex: 0 0 100%
+    width: 100%
     background: $n9
     +t
         width: 100%
     &:nth-child(1)
         position: relative
+    &:nth-child(2)
+        padding-bottom: 14rem
 
 .avatar
     position: absolute
@@ -36,3 +36,30 @@
         height: rem(184)
     img
         border-radius: 50%
+
+.list
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    +m
+        display: block
+        margin: 0
+
+.card
+    flex: 0 0 calc(50% - rem(40))
+    width: calc(50% - rem(40))
+    margin: rem(64) rem(20) 0
+    margin-left: 0
+    +w
+        flex: 0 0 calc(33% - rem(32))
+        width: calc(33% - rem(32))
+        margin: rem(48) rem(16) 0
+        margin-left: 0
+    +t
+        flex: 0 0 calc(50% - rem(32))
+        width: calc(50% - rem(32))
+        margin-left: 0
+    +m
+        width: 100%
+        margin: rem(32) 0 0
+        margin-left: 0
