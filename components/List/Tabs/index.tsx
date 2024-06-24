@@ -4,7 +4,7 @@ import styles from "./Tabs.module.sass";
 type TabType = {
     title: string;
     value: string;
-    counter?: string;
+    counter?: any;
     onClick?: () => void;
 };
 
@@ -24,7 +24,7 @@ const Tabs = ({ className, items, value, setValue, dark, discover = false, nft =
         setValue(value);
         onClick && onClick();
     };
-
+    console.log(items)
     return (
         <div className={cn(styles.box, { [styles.dark]: dark }, { [styles.discover]: discover }, { [styles.nft]: nft }, { [styles.create]: create }, className)}>
             <div className={styles.tab}>
@@ -37,9 +37,11 @@ const Tabs = ({ className, items, value, setValue, dark, discover = false, nft =
                         key={index}
                     >
                         <span className={styles.title}>{item.title}</span>
-                        <div className={styles.counter}>
-                            {item.counter}
-                        </div>
+                        {(item.counter || item.counter === 0) && 
+                            <div className={styles.counter}>
+                                {item.counter}
+                            </div>
+                        }
                     </button>
                 ))}
             </div>
