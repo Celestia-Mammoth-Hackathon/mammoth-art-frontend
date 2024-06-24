@@ -4,6 +4,7 @@ import Icon from "@/components/Icon";
 import Preview from "./Preview";
 import Action from "./Action";
 import Tags from "./Tags";
+import Link from 'next/link';
 import { artistAddresses } from '@/constants/details';
 import { formatUserAddress } from "@/utils/index";
 
@@ -54,7 +55,13 @@ const Description = ({
                     <div className={styles.box}>
                         <div className={styles.boxHeader}>
                             <div className={styles.title}>{collection.token.metadata.name}</div>
-                            <div className={styles.creator}>{artistInfor?.name || formatUserAddress(collection.token.contractCreator)}</div>
+                            <Link href={{
+                                        pathname: '/profile/[slug]',
+                                        query: { slug: artistInfor?.slug },
+                            }}>
+                                <div className={styles.creator}>{artistInfor?.name || formatUserAddress(collection.token.contractCreator)}</div>
+                            </Link>
+                            
                         </div>
                         <div className={styles.boxBody}>
                             <div className={styles.stage}>Details</div>
