@@ -37,11 +37,9 @@ const Tabs = ({ className, items, value, setValue, dark, discover = false, nft =
                         key={index}
                     >
                         <span className={styles.title}>{item.title}</span>
-                        {item.counter && (
-                            <div className={styles.counter}>
-                                {item.counter}
-                            </div>
-                        )}
+                        <div className={styles.counter}>
+                            {item.counter}
+                        </div>
                     </button>
                 ))}
             </div>
