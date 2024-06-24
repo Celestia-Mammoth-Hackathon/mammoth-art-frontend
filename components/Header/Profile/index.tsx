@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import OutsideClickHandler from "react-outside-click-handler";
 import cn from "classnames";
@@ -7,21 +7,7 @@ import Image from "@/components/Image";
 import NavLink from "@/components/NavLink";
 import Icon from "@/components/Icon";
 import Wallet from "./Wallet";
-
-const menu = [
-    {
-        title: "MY PROFILE",
-        url: "/profile",
-    },
-    // {
-    //     title: "SETTINGS",
-    //     url: "/settings",
-    // },
-    // {
-    //     title: "HELP",
-    //     url: "/help",
-    // },
-];
+import { UserContext } from "context/user";
 
 
 type ProfileProps = {
@@ -46,6 +32,23 @@ const Profile = ({
     visible,
 }: ProfileProps) => {
     const initialRender = useRef(true);
+
+    const { address } = useContext(UserContext);
+
+    const menu = [
+        {
+            title: "MY PROFILE",
+            url: `/profile/${address}`,
+        },
+        // {
+        //     title: "SETTINGS",
+        //     url: "/settings",
+        // },
+        // {
+        //     title: "HELP",
+        //     url: "/help",
+        // },
+    ];
 
     const action = {
         title: "Disconnect",

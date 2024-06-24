@@ -1,7 +1,7 @@
-import Link from "next/link";
-import cn from "classnames";
+import { useContext } from "react";
 import styles from "./Wallet.module.sass";
-import Image from "@/components/Image";
+import { UserContext } from "context/user";
+import { nativeCurrency } from "@/constants/details";
 
 type WalletProps = {
     onDisconnect: () => void;
@@ -19,45 +19,21 @@ const Wallet = ({ account, onDisconnect }: WalletProps) => {
             onClick: "",
         },
     ];
-    const balances = [
-        "96 TIA",
-    ];
-    const balanceHistory = [
-        {
-            from: "Celestia",
-            chainIconFrom: "/images/transfer/tia-logo.jpg",
-            amountFrom: "51 TIA",
-            amountIconFrom: "/images/transfer/tia-logo.jpg",
-            to: "Ethereum",
-            chainIconTo: "/images/transfer/eth-logo.jpg",
-            amountTo: "0.51 ETH",
-            amountIconTo: "/images/transfer/eth-logo.jpg",
-            date: "1700469103964"
-        },
-        // {
-        //     from: "Celestia",
-        //     chainIconFrom: "/images/transfer/tia-logo.jpg",
-        //     amountFrom: "51 TIA",
-        //     amountIconFrom: "/images/transfer/tia-logo.jpg",
-        //     to: "Ethereum",
-        //     chainIconTo: "/images/transfer/eth-logo.jpg",
-        //     amountTo: "0.51 ETH",
-        //     amountIconTo: "/images/transfer/eth-logo.jpg",
-        //     date: "1700469103964"
-        // },
-    ]
+
+    const { balance } = useContext(UserContext);
+
     return (
         <div className={styles.wallet}>
             <div className={styles.head}>
                 <div className={styles.title}>Balance</div>
                 <div className={styles.balances}>
-                    {balances.map((balance: any, index: number) =>
-                        <div key={index}>
+                    
+                        <div >
                             <span className={styles.balance}>
-                                {balance}
+                                {balance} {nativeCurrency.symbol}
                             </span>
                         </div>
-                    )}
+                    
                 </div>
                 <div className={styles.actions}>
                     {actions.map((action: any, index: number) =>
