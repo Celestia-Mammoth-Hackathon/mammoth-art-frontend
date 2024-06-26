@@ -64,7 +64,6 @@ const Description = ({
                             
                         </div>
                         <div className={styles.boxBody}>
-                            <div className={styles.stage}>Details</div>
                             <div className={styles.content}>{collection.token.metadata.description}</div>
                         </div>
                         <Tags tags={collection.token.metadata.tags}/>
