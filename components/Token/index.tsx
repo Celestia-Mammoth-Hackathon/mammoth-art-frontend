@@ -80,35 +80,49 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
                 <div className={styles.details}>
                     {
                         loading ?
-                            <div className={styles.foot}>
-                                <div className={styles.box}>
-                                <div className={styles.category}>{owned ? "Mint Date" : "Total Minted"}</div>
-                                    <Skeleton sx={{ bgcolor: '#141414' }} height={10} width="50%" className={styles.price}/>
+                            <div>
+                                <div>
+                                    <Skeleton sx={{ bgcolor: '#141414' }} height={10} width="100%" className={styles.price}/>
                                 </div>
-                                <div className={styles.price}>
-                                    <div className={styles.category}>Price</div>
-                                    <Skeleton sx={{ bgcolor: '#141414' }} height={10} width="50%" className={styles.price}/>
-                                </div>
-                            </div>
-                            :
-                            <div className={styles.detailBox}>
-                                <div className={styles.edition}>
+                                <div className={styles.foot}>
+                                    <div className={styles.box}>
                                     <div className={styles.category}>{owned ? "Mint Date" : "Total Minted"}</div>
-                                    <div className={styles.edition}>{owned ? date : item.mintedSupply || "0"}</div>
-                                </div>
-                                <Image
-                                    src="/images/border.svg"
-                                    width="1"
-                                    height="24"
-                                    alt="border"
-                                />
-                                <div className={styles.price}>
-                                    <div className={styles.category}>Price</div>
+                                        <Skeleton sx={{ bgcolor: '#141414' }} height={10} width="50%" className={styles.price}/>
+                                    </div>
                                     <div className={styles.price}>
-                                        {item.price > 0 ? `${item.price} ${nativeCurrency.symbol || ''}` : 'Free'}
+                                        <div className={styles.category}>Price</div>
+                                        <Skeleton sx={{ bgcolor: '#141414' }} height={10} width="50%" className={styles.price}/>
                                     </div>
                                 </div>
                             </div>
+                            
+                            :
+                            <div>
+                                <div className={styles.titleWrapper}>
+                                    <span className={styles.title}>
+                                        {item.metadata.name}
+                                    </span>
+                                </div>
+                                <div className={styles.detailBox}>
+                                    <div className={styles.edition}>
+                                        <div className={styles.category}>{owned ? "Mint Date" : "Editions"}</div>
+                                        <div className={styles.edition}>{owned ? date : item.mintedSupply || "0"}</div>
+                                    </div>
+                                    <Image
+                                        src="/images/border.svg"
+                                        width="1"
+                                        height="24"
+                                        alt="border"
+                                    />
+                                    <div className={styles.price}>
+                                        <div className={styles.category}>Price</div>
+                                        <div className={styles.price}>
+                                            {item.price > 0 ? `${item.price} ${nativeCurrency.symbol || ''}` : 'Free'}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
                     }
                 </div>
             </a>

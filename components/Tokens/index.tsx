@@ -5,9 +5,11 @@ type TokensProps = {
     items: any;
     theme: any;
     owned?: boolean;
+    created?: boolean;
+    collection?: boolean;
 };
 
-const Tokens = ({ items, theme, owned = false }: TokensProps) => {
+const Tokens = ({ items, theme, owned = false, created = false, collection = false }: TokensProps) => {
     return (
         <div className={styles.tokens}>
             {
@@ -24,7 +26,7 @@ const Tokens = ({ items, theme, owned = false }: TokensProps) => {
                     ))
                 ) : (
                     <div className={styles.wrap}>
-                        <div className={styles.box}>{owned ? "You don't own any NFT" : "No NFTs minted in collection"}</div>
+                        <div className={styles.box}>{owned ? "You don't own any items" : created ?  "No items created" : "No Collections"}</div>
                     </div>
                 )
             }

@@ -56,7 +56,7 @@ const Profile = ({ mintedNFTs, ownedNFTs, artistInfor }: ProfileProps) => {
                     wrapperStyle={{ paddingLeft: "0", paddingTop: "0" }}
                 >
                     {sorting === "created" && (
-                        <Tokens items={mintedNFTs} theme={false} />
+                        <Tokens items={mintedNFTs} theme={false} created={true}/>
                     )}
 
                     {sorting === "owned" && (
@@ -64,7 +64,7 @@ const Profile = ({ mintedNFTs, ownedNFTs, artistInfor }: ProfileProps) => {
                     )}
 
                     {sorting === "collection" && (
-                        <Tokens items={mintedNFTs} theme={false} />
+                        <Tokens items={mintedNFTs} theme={false} collection={true}/>
                     )}
                     
                 </List>

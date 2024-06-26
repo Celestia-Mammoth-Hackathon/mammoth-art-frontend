@@ -57,17 +57,28 @@
     text-align: center
     color: #F7FBFA
 
+.titleWrapper
+    border-bottom: 1px solid $n10
+    padding-bottom: 1rem
+    
+
 .title
-    margin-bottom: rem(4)
     font-size: 20px
     font-weight: 500
     line-height: 32px
     letter-spacing: -0.02em
     text-align: left
+    color: $n0
+    &:hover
+        color: $n11
 
 .category
-    +captionBold
-    color: $n5
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: -0.01em
+    text-align: left
+    color: $n10
 
 .edition
     display: flex
@@ -75,10 +86,19 @@
     justify-content: space-between
 
 .edition
-    +base
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
     color: $n0
+
 .price
-    +base
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: right
     color: $n0
     display: flex
     flex-direction: column
@@ -90,16 +110,6 @@
     margin-top: 16px
     display: flex
     justify-content: space-between
-
-.user
-    display: flex
-    align-items: center
-    padding: rem(8) rem(16) rem(8) rem(8)
-    padding-left: 0
-    padding-bottom: 16px
-    border-bottom: 1px solid $n0
-    +title
-    color: $n0
 
 .image
     position: relative
