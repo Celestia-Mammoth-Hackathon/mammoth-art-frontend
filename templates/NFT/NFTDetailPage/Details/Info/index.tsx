@@ -56,22 +56,22 @@ const Info = ({collection}: InfoProps) => {
                 <div className={styles.title}>IPFS</div>
                 <div>
                     <a 
-                        className={styles.linkValue} 
+                        className={styles.ipfsValue} 
                         href={`${chainExplorerURL}/token/${collection.token.tokenAddress}/instance/${collection.token.tokenId}`} 
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        Artifact
+                        ARTIFACT
                     </a>
                 </div>
                 <div>
                     <a 
-                        className={styles.linkValue} 
+                        className={styles.ipfsValue} 
                         href={`${chainExplorerURL}/token/${collection.token.tokenAddress}/instance/${collection.token.tokenId}?tab=metadata`} 
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        Metadata
+                        METADATA
                     </a>
                 </div>
             </div>
