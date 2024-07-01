@@ -4,14 +4,16 @@ import Image from "@/components/Image";
 import List from "@/components/List";
 import Tokens from "@/components/Tokens";
 import Details from "./Details";
-
+import Skeleton from '@mui/material/Skeleton';
+import SkeletonNFT from "@/components/SkeletonNFT";
 type ProfileProps = {
     mintedNFTs: any;
     ownedNFTs: any;
     artistInfor: any;
+    loading: boolean;
 };
 
-const Profile = ({ mintedNFTs, ownedNFTs, artistInfor }: ProfileProps) => {
+const Profile = ({ mintedNFTs, ownedNFTs, artistInfor, loading = false }: ProfileProps) => {
     const [sorting, setSorting] = useState<string>("created");
     const tabsTokens = [
         {
@@ -36,16 +38,17 @@ const Profile = ({ mintedNFTs, ownedNFTs, artistInfor }: ProfileProps) => {
             <div className={styles.col}>
                 <div className={styles.avatar}>
                     {
-                        (artistInfor?.profilePic) &&
-                            <Image
-                            src={artistInfor?.profilePic}
-                            layout="fill"
-                            objectFit="contain"
-                            alt="Avatar"
-                        />
+                        loading 
+                        ?   <Skeleton variant="circular" height="100%" width="100%" sx={{ bgcolor: '#141414' }}/>
+                        :   <Image
+                                src={artistInfor?.profilePic}
+                                layout="fill"
+                                objectFit="contain"
+                                alt="Avatar"
+                            />
                     }
                 </div>
-                <Details artistInfor={artistInfor} />
+                <Details artistInfor={artistInfor} loading={loading}/>
             </div>
             <div className={styles.col}>
                 <List
@@ -65,8 +68,7 @@ const Profile = ({ mintedNFTs, ownedNFTs, artistInfor }: ProfileProps) => {
 
                     {sorting === "collection" && (
                         <Tokens items={mintedNFTs} theme={false} collection={true}/>
-                    )}
-                    
+                    )}   
                 </List>
             </div>
         </div>

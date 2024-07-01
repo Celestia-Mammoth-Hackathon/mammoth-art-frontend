@@ -89,12 +89,8 @@ const PrfilePage = ({ artist }: PrfilePageProps) => {
 
     return (
         <>
-            {!loading && (
-                <>
-                    <Background image={artist.bannerPic} />
-                    <Profile mintedNFTs={mintedNFTs} ownedNFTs={ownedNFTs} artistInfor={artist}/>
-                </>
-            )}
+            <Background image={artist.bannerPic} loading={loading}/>
+            <Profile mintedNFTs={mintedNFTs} ownedNFTs={ownedNFTs} artistInfor={artist} loading={loading}/>
         </>
     );
 };

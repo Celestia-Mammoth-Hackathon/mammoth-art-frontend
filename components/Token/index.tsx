@@ -95,7 +95,6 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
                                     </div>
                                 </div>
                             </div>
-                            
                             :
                             <div>
                                 <div className={styles.titleWrapper}>
