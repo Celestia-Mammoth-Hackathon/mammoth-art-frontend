@@ -1,4 +1,5 @@
 import Description from "@/components/Description";
+import SkeletonDescription from "@/components/SkeletonDescription";
 import Details from "./Details";
 import { useState, useEffect, useContext } from "react";
 import useCollectionStore, { DropState } from '@/store/index';
@@ -141,19 +142,27 @@ const MintNFTPage = ({ tokenAddress, tokenId, tab } : MintNFTPageProps) => {
     }, [collectionLoading, supplyLoading, collections]);
     
     return (
-        <>
-            <Description
-                collection={collection}
-                userToken={userToken}
-                loading={loading}
-            >
+        (loading || !collection)
+        ?   <SkeletonDescription>
                 <Details 
                     collection={collection}
                     userToken={userToken}
                     loading={loading}
                 />
-            </Description>
-        </>
+            </SkeletonDescription>
+        :   <>
+                <Description
+                    collection={collection}
+                    userToken={userToken}
+                    loading={loading}
+                >
+                    <Details 
+                        collection={collection}
+                        userToken={userToken}
+                        loading={loading}
+                    />
+                </Description>
+            </>
     );
 };
 

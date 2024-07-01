@@ -1,0 +1,229 @@
+@import @/styles/helpers
+
+.top
+    display: flex
+    padding: rem(36)
+    +shadow2
+    +t
+        padding: rem(32) rem(24)
+
+.exit
+    display: inline-flex
+    align-items: center
+    +base
+    color: $n5
+    transition: color .2s
+    svg
+        margin-right: rem(16)
+        fill: $n5
+        transition: fill .2s
+    &:hover
+        color: $red
+        svg
+            fill: $red
+
+.col
+    min-height: calc(100vh - rem(96))
+    +t
+        display: block
+        min-height: auto
+
+.row
+    flex: 0 0 100%
+    width: 100%
+    background: $n9
+    +t
+        width: 100%
+
+.box
+    padding: rem(32) rem(64)
+    display: flex
+    flex-direction: column
+    gap: 24px
+
+.boxHeader
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+.title
+    display: flex
+    align-items: center
+
+.creator
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    text-align: left
+    color: $n0
+    cursor: pointer
+    margin-top: 10px
+    width: max-content
+    &:hover
+        color: $n11
+
+.boxBody
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+.stage
+    font-weight: 700
+    line-height: 40px
+    text-align: left
+    color: $n0
+
+
+.content
+    font-size: 16px
+    font-weight: 500
+    line-height: 32px
+    text-align: left
+    color: $n0
+    
+.wrap
+    position: sticky
+    top: 0
+    display: flex
+    flex-direction: column
+    min-height: calc(100vh - rem(96))
+    padding-left: rem(64)
+    padding-right: rem(64)
+    padding-top: rem(32)
+
+.button
+    margin-top: rem(48)
+    +d
+        margin-top: rem(40)
+    +m
+        margin-top: rem(32)
+
+@import @/styles/helpers
+
+.action
+    margin-top: 1rem
+    margin-bottom: 1rem
+    padding-right: 4rem
+    padding-left: 4rem
+
+.line
+    display: flex
+    justify-content: space-between
+    margin-bottom: 1rem
+
+.infor
+    display: flex
+    gap: 32px
+    justify-content: space-between
+    align-items: center
+
+.own
+    display: flex
+    gap: 16px
+    justify-content: space-between
+    align-items: center
+
+.title
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n0
+
+.value
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    text-align: left
+    color: $n0
+    margin-left: 0.5rem
+    
+.actions
+    display: flex
+    margin: rem(8) 0 0 rem(16)
+    +d
+        margin-top: 0
+
+.button
+    border: 1px solid $n0
+    padding: 12px 32px 12px 32px
+    background: $n9
+    font-size: 14px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    margin-top: 0
+    &:hover
+        border: 1px solid $n0
+        background: $n13
+        cursor: pointer
+
+.listButton
+    height: 48px
+    width: auto
+
+.offerBtn
+    height: 48px
+    width: auto
+
+.buyBtn
+    height: 48px
+    width: auto
+    background: $n11
+    box-shadow: 2px 4px 0px 0px $n0
+    &:hover
+        border: 1px solid $n0
+        background: $n12
+
+.btns
+    display: flex
+    gap: 16px
+    justify-content: space-between
+    align-items: center
+
+.dot
+    fill: $n10 !important
+
+.date
+    display: flex
+    align-items: center
+    +captionBold
+    color: $n10
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: 0em
+    text-align: left
+    svg
+        flex-shrink: 0
+        width: rem(16)
+        height: rem(16)
+        margin-right: rem(12)
+        fill: $n10
+
+.preview
+    position: relative
+    margin-right: 4rem
+    margin-left: 4rem
+    height: calc(100vh - 11rem) !important
+    width: initial !important
+
+.tags
+    display: flex
+    flex-wrap: wrap
+    margin: rem(42) 0 0 rem(-6)
+    margin-top: 0
+
+.tag
+    margin: rem(6) 0 0 rem(6)
+    padding: rem(8)
+    background: $n13
+    font-size: 14px
+    font-weight: 700
+    line-height: 20px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+    display: flex
+    align-items: center
+    justify-content: center

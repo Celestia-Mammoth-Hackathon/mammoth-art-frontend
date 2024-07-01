@@ -7,6 +7,7 @@ import Tags from "./Tags";
 import Link from 'next/link';
 import { artistAddresses } from '@/constants/details';
 import { formatUserAddress } from "@/utils/index";
+import SkeletonDescription from "../SkeletonDescription";
 
 type DescriptionProps = {
     exit?: boolean;
@@ -25,10 +26,6 @@ const Description = ({
 }: DescriptionProps) => {
     const router = useRouter();
     
-    if(loading || !collection) {
-        return <></>
-    }
-
     const artistInfor:any = artistAddresses.find((element) => element.artistAddress === collection.token.contractCreator) || {};
 
     return (
@@ -44,6 +41,7 @@ const Description = ({
                     </button>
                 </div>
             )}
+
             <div className={styles.col}>
                 <div className={styles.row}>
                     <Preview 

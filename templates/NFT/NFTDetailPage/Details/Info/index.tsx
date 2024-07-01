@@ -25,20 +25,20 @@ const Info = ({collection}: InfoProps) => {
                 <div className={styles.title}>Contract</div>
                     <a 
                         className={styles.linkValue} 
-                        href={`${chainExplorerURL}/token/${collection.token.tokenAddress}`} 
+                        href={`${chainExplorerURL}/token/${collection?.token?.tokenAddress}`} 
                         target="_blank"
                         rel="noopener noreferrer"
                     >
-                        {collection.token.tokenAddress}
+                        {collection?.token?.tokenAddress}
                     </a>
             </div>
             <div className={styles.row}>
                 <div className={styles.title}>Editions</div>
-                <div className={styles.value}>{collection.token.drop.mintedSupply}</div>
+                <div className={styles.value}>{collection?.token?.drop.mintedSupply}</div>
             </div>
             <div className={styles.row}>
                 <div className={styles.title}>Royalty</div>
-                <div className={styles.value}>{convertToPercentage(collection.token.royalty)}%</div>
+                <div className={styles.value}>{convertToPercentage(collection?.token?.royalty)}%</div>
             </div>
             <div className={styles.row}>
                 <div className={styles.title}>Minted</div>
@@ -46,7 +46,7 @@ const Info = ({collection}: InfoProps) => {
             </div>
             <div className={styles.row}>
                 <div className={styles.title}>Token ID</div>
-                <div className={styles.value}>{collection.token.tokenId}</div>
+                <div className={styles.value}>{collection?.token?.tokenId}</div>
             </div>
             <div className={styles.row}>
                 <div className={styles.title}>License</div>
@@ -57,7 +57,7 @@ const Info = ({collection}: InfoProps) => {
                 <div>
                     <a 
                         className={styles.ipfsValue} 
-                        href={`${chainExplorerURL}/token/${collection.token.tokenAddress}/instance/${collection.token.tokenId}`} 
+                        href={`${chainExplorerURL}/token/${collection?.token?.tokenAddress}/instance/${collection?.token?.tokenId}`} 
                         target="_blank"
                         rel="noopener noreferrer"
                     >
@@ -67,7 +67,7 @@ const Info = ({collection}: InfoProps) => {
                 <div>
                     <a 
                         className={styles.ipfsValue} 
-                        href={`${chainExplorerURL}/token/${collection.token.tokenAddress}/instance/${collection.token.tokenId}?tab=metadata`} 
+                        href={`${chainExplorerURL}/token/${collection?.token?.tokenAddress}/instance/${collection?.token?.tokenId}?tab=metadata`} 
                         target="_blank"
                         rel="noopener noreferrer"
                     >

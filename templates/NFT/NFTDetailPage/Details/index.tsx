@@ -1,10 +1,10 @@
-import Link from "next/link";
 import cn from "classnames";
 import styles from "./Details.module.sass";
 import Image from "@/components/Image";
 import { useState } from "react";
 import List from "@/components/List";
 import Info from "./Info";
+import Skeleton from '@mui/material/Skeleton';
 
 type DetailsProps = {
     collection: any;
@@ -46,14 +46,38 @@ const Details = ({
     const onChange = (e:any) => {
         setValue(e.target.value)
     }
+
+    
+
     return (
-        <List
-            tabs={tabsTokens}
-            tabsValue={sorting}
-            setTabsValue={setSorting}
-            light={theme}
-            nftDetail={true}
-        >
+        loading 
+        ?   <List
+                tabs={tabsTokens}
+                tabsValue={sorting}
+                setTabsValue={setSorting}
+                light={theme}
+                nftDetail={true}
+            >
+                <div className={styles.loadingWrapper}>
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                    <Skeleton variant="rectangular" width="100%" sx={{ bgcolor: '#141414' }} className={styles.loading} />
+                </div>
+            </List>
+        :   <List
+                tabs={tabsTokens}
+                tabsValue={sorting}
+                setTabsValue={setSorting}
+                light={theme}
+                nftDetail={true}
+            >
                 {sorting === "info" && (
                     <Info collection={collection}/>
                 )}
@@ -74,7 +98,7 @@ const Details = ({
                                         <button
                                             className={styles.logo}
                                         >
-                                             <Image
+                                            <Image
                                                 src="/images/celestia.svg"
                                                 width={24}
                                                 height={24}

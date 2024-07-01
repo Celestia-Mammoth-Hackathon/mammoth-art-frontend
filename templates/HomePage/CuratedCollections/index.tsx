@@ -4,9 +4,9 @@ import styles from "./CuratedCollections.module.sass";
 import Collection from "./Collection";
 import React from 'react';
 import { useState, useEffect } from "react";
-import { curatedCollections } from "@/mocks/collections";
 import { Navigation, Scrollbar, Pagination } from "swiper";
-import useCollectionStore, { DropState } from '@/store/index';
+import useCollectionStore from '@/store/index';
+import SkeletonCollection from "../SkeletonCollection";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 
@@ -60,13 +60,17 @@ const CuratedCollections = ({}: CuratedCollectionsProps) => {
                 className="collections-swiper"
             >
                 {
-                    loading ? <></>
-                    :
-                    curatedCollections.map((collection:any, index:number) => (
-                        <SwiperSlide key={index}>
-                            <Collection item={collection.token} />
-                        </SwiperSlide>
-                    ))
+                    loading 
+                    ?   Array.from({ length: 3 }).map((_, index) => (
+                            <SwiperSlide key={index}>
+                                <SkeletonCollection/>
+                            </SwiperSlide>
+                        )) 
+                    :   curatedCollections.map((collection:any, index:number) => (
+                            <SwiperSlide key={index}>
+                                <Collection item={collection.token} />
+                            </SwiperSlide>
+                        ))
                 }
             </Swiper>
         </div>
