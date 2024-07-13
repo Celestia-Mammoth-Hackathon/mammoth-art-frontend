@@ -5,7 +5,6 @@ import { useState, useContext, useEffect } from "react";
 import Spinner from "@/components/Spinner";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Image from "@/components/Image";
-import { useWalletContext } from "context/wallet";
 import { UserContext } from "context/user";
 import useListNFT from "@/hooks/useListNft";
 import { STATUS } from "../status";
@@ -42,7 +41,7 @@ const ListModal: React.FC<ListModalProps> = ({
     setClaimNftTrigger,
 }) => {
     const { address } = useContext(UserContext);
-    const { checkNetwork } = useWalletContext();
+    const { checkNetwork } = useUserContext();
     const [listAmount, setListAmount] = useState<string>("");
     const [listPrice, setListPrice] = useState<string>("");
 

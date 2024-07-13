@@ -6,7 +6,7 @@
     padding: 0 rem(40)
     z-index: 10
     background: $n9
-    border-bottom: .5px solid $n0
+    border-bottom: 0.5px solid $n0
     +d
         padding: 0 rem(24)
     +t
@@ -67,7 +67,6 @@
         .createButton
             display: none
         .navigation
-            margin-right: rem(96)
             +xl
                 display: flex
             +t
@@ -128,7 +127,6 @@
 
 .navigation
     display: flex
-    margin-right: rem(96)
     +t
         display: none
     &.visibleSearch
@@ -136,29 +134,33 @@
 
 
 .link
-    font-size: 14px
-    font-weight: 700
-    line-height: 24px
-    text-align: left
-    cursor: pointer
+    +button
     color: $n10
     transition: color .2s
     &:hover
-        color: $n0 !important
+        color: $n0
 
+.createLink
+    color: $n10
+    cursor: pointer
+    transition: color .2s
+    display: block
+    width: max-content
+    &:hover
+        color: $n0
 
 .create,
 .notification,
 .profile
+    margin-right: rem(64)
     +t
-        margin-left: rem(32)
+        margin-right: rem(32)
         display: none
 
     +m
-        margin-left: rem(24)
+        margin-right: rem(24)
 
 .create
-    margin-right: rem(64)
     +d
         margin-left: 0
     +m
@@ -262,8 +264,8 @@ button.close
     z-index: 8
     width: 100%
     height: 100%
-    background: rgba(#202020, .95)
-    backdrop-filter: blur(rem(32))
+    background: rgba(#191B1F, .90)
+    backdrop-filter: blur(rem(4))
     visibility: hidden
     opacity: 0
     transition: all .2s
@@ -271,7 +273,7 @@ button.close
         z-index: 8
     &.visible
         visibility: visible
-        opacity: 1
+        opacity: 0.8
 
 .search
     +t
@@ -279,3 +281,10 @@ button.close
 
 div.modal
     display: block
+
+.active
+    color: #FFFFFF
+
+.mobileConnect
+    display: block
+    width: 100%

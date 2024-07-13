@@ -1,6 +1,7 @@
 import axios from "axios";
 import { transformUri } from "./ipfs"
 import { formatUnits } from 'viem';
+import * as dnum from "dnum";
 
 export const convertToPercentage = (number:number) => {
   return number / 100;
@@ -8,6 +9,11 @@ export const convertToPercentage = (number:number) => {
 
 export const convertBigNumberToString = (number:any, decimals:number) => {
   return number ? formatUnits(number, decimals) : "0";
+};
+
+export const dnumFormat = (value: bigint, decimals: number) => {
+  const amount: dnum.Dnum = [value, decimals];
+  return dnum.format(amount, { digits: 4, trailingZeros: true });
 };
 
 export const handleIpfsLink = (link:any, useCdn: boolean = true) => {
@@ -54,6 +60,8 @@ export const formatTime = (seconds:number) => {
 
     return formattedTime.trim();
 };
+
+export const isoToTimestamp = (iso: string): number => Math.floor(new Date(iso).getTime() / 1000);
 
 // Check if normalized decimal integer string
 export const isValidAmount = (str:string) => {

@@ -5,7 +5,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_URL!;
 
 const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || "1").split(","));
 
-const DEFAULT_MAX_PAGES = 10;
+const DEFAULT_MAX_PAGES = 20;
 
 const getAllDrops = async () => {
     const query = `query AllDrops {
@@ -20,6 +20,7 @@ const getAllDrops = async () => {
           endDate
           maxAllowed
           maxPerWallet
+          maxPerBlock
           price
           tokenAddress
           tokenId
@@ -52,6 +53,7 @@ const getMerkleDrops = async () => {
         endDate
         maxAllowed
         maxPerWallet
+        maxPerBlock
         price
         tokenAddress
         tokenId
@@ -92,6 +94,84 @@ const getAllTokens = async () => {
     if (tokens.items.length > 0) {
       return tokens.items;
     } else return [];
+};
+
+export type GetAllCollectionTokensParams = {
+  tokenAddress: string;
+  maxPages?: number;
+}
+
+const getAllCollectionTokens = async ({ tokenAddress, maxPages }: GetAllCollectionTokensParams) => {
+  const query = (cursor: string) => `query CollectionTokens {
+    tokens(
+      where: {tokenAddress: "${tokenAddress}"}
+      limit: 1000
+      orderBy: "tokenId"
+      orderDirection: "asc"
+      ${cursor ? 'after: "' + cursor + '"' : ''}
+    ) {
+      items {
+        tokenAddress
+        tokenId
+        totalSupply
+        isMarketplaceAllowed
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }`;
+
+  let ret: any[] = [];
+  let cursor = "";
+  for (let i = 0; i < (maxPages || DEFAULT_MAX_PAGES); i++) {
+    const {
+      data: {
+        data: { tokens },
+      },
+    } = await axios.post(`${BASE_URL}`, { query: query(cursor) });
+    if (tokens.items.length > 0) {
+      ret = [ ...ret, ...tokens.items ];
+    }
+    if (tokens.pageInfo.hasNextPage) {
+      cursor = tokens.pageInfo.endCursor;
+    } else {
+      break;
+    }
+  }
+  return ret;
+};
+
+export type GetCollectionTokenParams = {
+  tokenAddress: string;
+  tokenId: string;
+}
+
+const getCollectionToken = async ({ tokenAddress, tokenId }: GetCollectionTokenParams) => {
+  const query = `query CollectionToken {
+    tokens(
+      where: {tokenAddress: "${tokenAddress}", tokenId: "${tokenId}"}
+      limit: 1
+    ) {
+      items {
+        tokenAddress
+        tokenId
+        totalSupply
+        isMarketplaceAllowed
+      }
+    }
+  }`;
+
+  const {
+    data: {
+      data: { tokens },
+    },
+  } = await axios.post(`${BASE_URL}`, { query });
+
+  if (tokens.items.length > 0) {
+    return tokens.items[0];
+  }
 };
 
 export type GetAllOrdersParams = {
@@ -151,30 +231,85 @@ const getAllOrders = async ({ tokenAddress, tokenId, maxPages }: GetAllOrdersPar
     return ret;
 };
 
-const getUserBalance = async (userAddress:string) => {
-    const query = `
-        query MyQuery {
-            account(id: "${userAddress}") {
-            id
-            tokens(limit: 1000) {
-                items {
-                    tokenAddress
-                    tokenId
-                    balance
-                }
-            }
-            }
-        }`
-    ;
+export type GetUserBalanceParams = {
+  userAddress: string;
+  maxPages?: number;
+}
 
+const getUserBalance = async ({ userAddress, maxPages }: GetUserBalanceParams) => {
+  const query = (cursor: string) => `query AccountTokenBalances {
+    account(
+      id: "${userAddress}"
+      ${cursor ? 'after: "' + cursor + '"' : ''}
+    ) {
+      id
+      tokens(limit: 1000, where: {balance_gt: "0"}) {
+        items {
+          tokenAddress
+          tokenId
+          balance
+        }
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+      }
+    }
+  }`;
+
+  let ret: any[] = [];
+  let cursor = "";
+  for (let i = 0; i < (maxPages || DEFAULT_MAX_PAGES); i++) {
     const {
-        data: {
-          data: { account },
-        },
-    } = await axios.post(`${BASE_URL}`, { query });
-    if (account?.tokens?.items) {
-      return account.tokens.items;
-    } else return [];
+      data: {
+        data: { account },
+      },
+    } = await axios.post(`${BASE_URL}`, { query: query(cursor) });
+    if (account?.tokens?.items.length > 0) {
+      ret = [ ...ret, ...account.tokens.items ];
+    }
+    if (account?.tokens?.pageInfo?.hasNextPage) {
+      cursor = account.tokens?.pageInfo?.endCursor;
+    } else {
+      break;
+    }
+  }
+  return ret;
+};
+
+export type GetUserTokenBalanceParams = {
+  userAddress: string;
+  tokenAddress: string;
+  tokenId: string;
+}
+
+const getUserTokenBalance = async ({ userAddress, tokenAddress, tokenId }: GetUserTokenBalanceParams) => {
+  const query = `query AccountTokenBalances {
+    account(
+      id: "${userAddress}"
+    ) {
+      id
+      tokens(
+        where: {tokenAddress: "${tokenAddress}", tokenId: "${tokenId}", balance_gt: "0"}
+        limit: 1
+      ) {
+        items {
+          balance
+        }
+      }
+    }
+  }`;
+
+  const {
+    data: {
+      data: { account },
+    },
+  } = await axios.post(`${BASE_URL}`, { query });
+
+  if (account?.tokens?.items.length > 0) {
+    return account?.tokens.items[0].balance;
+  }
+  return "0";
 };
 
 const getLastestPriceOracleUpdate = async () => {
@@ -202,7 +337,10 @@ export default {
     getAllDrops,
     getMerkleDrops,
     getAllTokens,
+    getAllCollectionTokens,
+    getCollectionToken,
     getAllOrders,
     getUserBalance,
+    getUserTokenBalance,
     getLastestPriceOracleUpdate,
 };

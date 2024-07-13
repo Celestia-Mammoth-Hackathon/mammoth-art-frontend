@@ -15,18 +15,42 @@ export type Attribute = {
     value: string | number,
 };
 
+export type TokenFormatDimensions = {
+    value: string;
+    unit: string;
+};
+
+export type TokenFormatHash = {
+    value: string;
+    algo: string;
+};
+
+export type TokenFormat = {
+    uri: string;
+    mime_type: string;
+    file_size: string;
+    dimensions: TokenFormatDimensions;
+    hash: TokenFormatHash;
+}
+
+export type TokenMetadata = {
+    id: string;
+    name: string;
+    description: string;
+    image: string;
+    animation_url?: string;
+    tags?: string[];
+    rarity?: string;
+    rank?: number;
+    attributes?: Attribute[];
+    formats?: TokenFormat[];
+    cloudflareCdnId?: string;
+};
+
 type TokenState = {
-    "contractCreator": string,
-    "metadata": {
-        "name": string,
-        "description": string,
-        "image": string,
-        "id": string,
-        "uri": string,
-        "animation_url"?: string,
-        "tags": string[],
-        attributes?: Attribute[];
-    },
+    contractCreator: string;
+    collectionName: string;
+    metadata: TokenMetadata;
     "drop": {
         "id": string,
         "startDate": number,
@@ -47,9 +71,13 @@ type TokenState = {
     "royalty": number,
     "price": number,
     "mintedSupply": number,
-    isMarketplaceAllowed: boolean,
-    cloudflareCdnId?: string,
-    merkleDrops: [],
+    isMarketplaceAllowed: boolean;
+    isMerkleDrop?: boolean;
+    cloudflareCdnId?: string;
+    merkleDrops: [];
+    extraDescription?: string;
+    defaultMintAmount?: number;
+    tokens?: TokenMetadata[];
 };
 
 type CollectionState = {
@@ -71,7 +99,6 @@ interface State {
     fetchCollection: (tokenAddress: string, tokenId: string) => Promise<void>;
     fetchMintedSupply: (tokenAddress: string, tokenId: string) => Promise<void>;
     setSecondaryListings: (collectionId: string, secondaryListings: any[]) => Promise<void>;
-    fetchAllOwnNfts: (userAddress: string) => Promise<void>;
     fetchOwnNfts: (tokenAddress: string, tokenId: string, userAddress: string) => Promise<void>;
 };
 
@@ -86,16 +113,20 @@ const useCollectionStore = create<State>((set , get) => ({
                 indexer.getAllTokens(),
             ]);
 
-            drops.forEach(async (item: any) => {
+            const setCollections = new Set();
+
+            for (const item of drops) {
                 const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
+                if (!token) {
+                    continue;
+                }
 
-                const allListings = token?.tokenAddress && token?.tokenId ? await indexer.getAllOrders({
+                const allListings = await indexer.getAllOrders({
                     tokenAddress: token.tokenAddress,
-                    tokenId: token.type === 'ERC1155' ? token.tokenId : undefined,
+                    tokenId: token.type === 'ERC1155' && token.showCollection !== true ? token.tokenId : undefined,
                     maxPages: 1,
-                }) : [];
+                });
 
-                if (!token) return;
                 const foundToken = tokens.find((token:any) =>
                     token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
                         && token.tokenId === item.tokenId);
@@ -111,6 +142,7 @@ const useCollectionStore = create<State>((set , get) => ({
                     .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
                 token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
                 token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
+                token.isMerkleDrop = false;
 
                 set((state) => ({
                     collections: {
@@ -122,12 +154,76 @@ const useCollectionStore = create<State>((set , get) => ({
                             secondaryListings: allListings.filter(
                                 (listing : any) =>
                                     listing.tokenAddress.toLowerCase() === token.tokenAddress.toLowerCase()
-                                    && ((token.type === 'ERC1155' && listing.tokenId === token.tokenId) || token.type === 'ERC721')
+                                    && ((token.type === 'ERC1155' && listing.tokenId === token.tokenId) || token.type === 'ERC721' || token.showCollection === true)
                             ),
                         },
                     },
                 }));
-            });
+
+                if (dropState === DropState.InProgress) {
+                    setCollections.add(collectionId);
+                }
+            }
+
+            for (const item of allMerkleDrops) {
+                const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
+                if (!token) {
+                    continue;
+                }
+
+                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+
+                if (setCollections.has(collectionId)) {
+                    continue;
+                }
+
+                const allListings = await indexer.getAllOrders({
+                    tokenAddress: token.tokenAddress,
+                    tokenId: token.type === 'ERC1155' && token.showCollection !== true ? token.tokenId : undefined,
+                    maxPages: 1,
+                });
+
+                const foundToken = tokens.find((token:any) =>
+                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
+                        && token.tokenId === item.tokenId);
+
+                token.drop = item;
+                token.mintedSupply = 0;
+
+                const tokenDrops = drops.filter((d: any) =>
+                    token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId
+                );
+                token.mintedSupply += tokenDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
+
+                token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
+                const dropState = getDropState(item, token);
+
+                const merkleDrops = allMerkleDrops
+                    .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
+                token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
+                token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
+                token.isMerkleDrop = true;
+
+                set((state) => ({
+                    collections: {
+                        ...state.collections,
+                        [collectionId]: {
+                            token,
+                            dropState,
+                            tokenIds: [item.tokenId],
+                            secondaryListings: allListings.filter(
+                                (listing : any) =>
+                                    listing.tokenAddress.toLowerCase() === token.tokenAddress.toLowerCase()
+                                    && ((token.type === 'ERC1155' && listing.tokenId === token.tokenId) || token.type === 'ERC721' || token.showCollection === true)
+                            ),
+                        },
+                    },
+                }));
+
+                if (dropState === DropState.InProgress) {
+                    setCollections.add(collectionId);
+                }
+            }
         } catch (error) {
             console.error("Error fetching collections:", error);
         }
@@ -147,18 +243,31 @@ const useCollectionStore = create<State>((set , get) => ({
                 token.tokenAddress.toLowerCase() === tokenAddress.toLowerCase()
                     && token.tokenId === tokenId);
 
+            const merkleDrops = allMerkleDrops
+                .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
+
             token.drop = drops.find((token:any) => 
                 token.tokenAddress.toLowerCase() === tokenAddress.toLowerCase()
                     && token.tokenId === tokenId);
-            token.mintedSupply = Number(token.drop.minted || 0);
+            token.mintedSupply = Number(token.drop?.minted || 0);
             token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
+
+            token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
+
+            token.isMerkleDrop = false;
+            if (!token.drop || getDropState(token.drop, token) !== DropState.InProgress) {
+                if (token.merkleDrops.length > 0) {
+                    token.drop = token.merkleDrops[0];
+                    token.isMerkleDrop = true;
+                } else if (merkleDrops.length > 0) {
+                    token.drop = merkleDrops[merkleDrops.length - 1];
+                    token.isMerkleDrop = true;
+                }
+            }
 
             const collectionId = `${token.tokenAddress.toLowerCase()}_${token.tokenId}`;
             const dropState = getDropState(token.drop, token);
 
-            const merkleDrops = allMerkleDrops
-                .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
-            token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
             token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
 
             set((state) => ({
@@ -194,7 +303,7 @@ const useCollectionStore = create<State>((set , get) => ({
             let mintedSupply = Number(drop?.minted || 0);
 
             const merkleDrops = allMerkleDrops
-                .filter((d: any) => foundToken.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && foundToken.tokenId === d.tokenId);
+                .filter((d: any) => tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && tokenId === d.tokenId);
             mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
 
             const collectionId = `${tokenAddress.toLowerCase()}_${tokenId}`;
@@ -233,72 +342,15 @@ const useCollectionStore = create<State>((set , get) => ({
             console.error("Error fetching listings:", error);
         }
     },
-    fetchAllOwnNfts: async (userAddress: string) => {
-        try {
-            const [ drops, ownedSupply ] = await Promise.all([
-                indexer.getAllDrops(),
-                indexer.getUserBalance(userAddress),
-            ]);
-            
-            for(const item of ownedSupply) {
-                const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
-        
-                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
-                const userBalance = ownedSupply.filter((element: any) => 
-                    element.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
-                    && ((token.type === 'ERC1155' && element.tokenId === item.tokenId) || token.type === 'ERC721')
-                );
-
-                const tokens = await indexer.getAllTokens();
-                const foundToken = tokens.find((token: any) => 
-                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() &&
-                    token.tokenId === item.tokenId
-                );
-
-                token.drop = drops.find((token:any) => 
-                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
-                        && token.tokenId === item.tokenId);
-                token.ownedSupply = (token.type === 'ERC1155' ? +userBalance[0]?.balance : userBalance.length) || 0;
-                token.mintedSupply = foundToken?.totalSupply || 0;
-                token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
-
-                set((state) => {
-                    const userState = state.users[userAddress] || { collections: {} };
-
-                    return {
-                        users: {
-                            ...state.users,
-                            [userAddress]: {
-                                ...userState,
-                                collections: {
-                                    ...userState.collections,
-                                    [collectionId]: {
-                                        ...userState.collections[collectionId],
-                                        token: token,
-                                        tokenIds: userBalance.map((balance: any) => balance.tokenId)
-                                            .sort((a: any, b: any) => Number(a) - Number(b)),
-                                        ownedSupply: token.ownedSupply,
-                                    }
-                                }
-                            }
-                        }
-                    };
-                });
-            }
-            
-        } catch (error) {
-            console.error("Error fetching own nfts:", error);
-        }
-    },
     fetchOwnNfts: async (tokenAddress: string, tokenId: string, userAddress: string) => {
         try {
             const token: any = await getTokenStaticMetadata(tokenAddress, tokenId);
-            const ownedSupply = await indexer.getUserBalance(userAddress);
+            const ownedSupply = await indexer.getUserBalance({ userAddress });
 
             const collectionId = `${tokenAddress.toLowerCase()}_${tokenId}`;
-            const userBalance = ownedSupply.filter((element: any) => 
+            const userBalance = ownedSupply.filter((element: any) =>
                 element.tokenAddress.toLowerCase() === tokenAddress.toLowerCase()
-                && ((token.type === 'ERC1155' && element.tokenId === tokenId) || token.type === 'ERC721')
+                && ((token.type === 'ERC1155' && (element.tokenId === tokenId || (token.tokens && token.tokens.length > 0))) || token.type === 'ERC721')
             );
 
             const tokens = await indexer.getAllTokens();
@@ -325,7 +377,7 @@ const useCollectionStore = create<State>((set , get) => ({
                                     token: token,
                                     tokenIds: userBalance.map((balance: any) => balance.tokenId)
                                         .sort((a: any, b: any) => Number(a) - Number(b)),
-                                    ownedSupply: (token.type === 'ERC1155' ? +userBalance[0]?.balance : userBalance.length) || 0,
+                                    ownedSupply: userBalance.reduce((sum: number, balance: any) => sum + +balance.balance, 0) || 0,
                                 }
                             }
                         }

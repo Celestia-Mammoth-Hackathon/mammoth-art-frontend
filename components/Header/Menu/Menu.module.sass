@@ -4,14 +4,11 @@
     background: #FFFFFF
     filter: invert(1)
     position: relative
-    display: flex
-    flex-direction: column
-    justify-content: center
-    align-items: center
     flex-shrink: 0
     width: rem(40)
     height: rem(40)
     padding: rem(8)
+    display: none
     &:before,
     &:after
         content: ""
@@ -28,6 +25,11 @@
     &:hover
         &:after
             width: rem(24)
+    +t
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
 
 div.modal
     display: block
@@ -60,8 +62,8 @@ div.modal
 .col
     display: flex
     flex-direction: column
-    flex: 0 0 50%
-    width: 50%
+    flex: 0 0 100%
+    width: 100%
     padding: rem(80)
     +xl
         padding: rem(64)
@@ -73,15 +75,10 @@ div.modal
         padding-top: rem(80)
     +m
         padding: rem(56) rem(24) rem(24)
-    &:nth-child(1)
-        justify-content: flex-end
-        background: $a5
-        +t
-            display: none
 
 .title
     font-size: 64px
-    font-weight: 700
+    font-weight: 500
     line-height: 64px
     letter-spacing: 0em
     text-align: left
@@ -158,16 +155,16 @@ div.modal
         +body1S
 
 .btnsWrapper 
-    margin-top: auto 
+    margin-top: 16px
 
 .btns
     display: flex
     flex-direction: column
+    gap: 20px
     +d
         margin: 0 rem(-10)
         margin-top: auto
     +m
-        display: block
         margin: 0
         margin-top: auto
 
@@ -212,19 +209,15 @@ div.modal
     color: $n0
 
 .code
+    font-size: 24px
+    font-weight: 500
+    line-height: 24px
+    text-align: right
+    color: $n0
     display: flex
-    width: 166px
     justify-content: center
-    align-items: center
-    margin-left: auto
-    margin-right: auto
-    padding: rem(8)
-    background: $a6
-    margin-bottom: 16px
-    +base
-    color: $n9
-    +xl
-        +baseS
+    margin-bottom: 12px
+
 
 .copy
     margin-left: rem(8)
@@ -239,7 +232,7 @@ div.modal
 
 .balanceTitle
     font-size: 16px
-    font-weight: 700
+    font-weight: 500
     line-height: 24px
     letter-spacing: 0em
     text-align: left
@@ -253,7 +246,7 @@ div.modal
 
 .balance
     font-size: 24px
-    font-weight: 700
+    font-weight: 500
     line-height: 40px
     letter-spacing: 0em
     text-align: left
@@ -261,7 +254,7 @@ div.modal
 
 .currency
     font-size: 24px
-    font-weight: 700
+    font-weight: 500
     line-height: 40px
     letter-spacing: 0em
     text-align: left
@@ -291,7 +284,12 @@ div.modal
 
 .btnTitle
     font-size: 14px
-    font-weight: 700
+    font-weight: 500
     line-height: 24px
     letter-spacing: 0em
     text-align: left
+
+.footer
+    display: flex
+    flex-direction: column
+    gap: 20px

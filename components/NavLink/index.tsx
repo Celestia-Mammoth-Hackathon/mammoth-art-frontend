@@ -10,6 +10,7 @@ type NavLinkProps = {
     href: string;
     children: React.ReactNode;
     onClose?: () => void;
+    newPage?: boolean;
 };
 
 const NavLink = ({
@@ -17,7 +18,8 @@ const NavLink = ({
     activeClassName,
     href,
     children,
-    onClose
+    onClose,
+    newPage=false
 }: NavLinkProps) => {
     const router = useRouter();
 
@@ -30,16 +32,17 @@ const NavLink = ({
     return (
         <Link href={href}>
             <a
-                className={cn("h3", styles.link, className, {
+                className={cn(styles.link, className, {
                     [styles.active]: router.pathname === href,
                 })}
                 onClick={onClose ? handleOnClick : undefined}
+                target={newPage ? "_blank" : ""}
             >
                 <div className={styles.title}>
                     {children}
                     <span className={styles.hover}>{children}</span>
                 </div>
-                <Icon name="arrow-right" className={styles.icon}/>
+                {/* <Icon name="arrow-right" className={styles.icon}/> */}
             </a>
         </Link>
     );

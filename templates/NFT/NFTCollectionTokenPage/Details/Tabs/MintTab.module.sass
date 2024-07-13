@@ -1,0 +1,753 @@
+@import @/styles/helpers
+
+.details
+    background: $n9
+    border: 1px solid $n0
+    max-height: 425px
+    overflow-y: auto
+    padding-right: 15px
+
+
+.details::-webkit-scrollbar 
+    width: 12px
+
+
+.details::-webkit-scrollbar-thumb 
+    background-color: $n10 
+    border-radius: 6px
+
+
+.noItemDetails
+    padding: 32px
+    background: $n9
+    border: 1px solid $n0
+    
+.row
+    display: flex
+    +m
+        display: block
+
+.col
+    flex: 0 0 100%
+    width: 100%
+    padding: rem(32)
+    +w
+        padding: rem(24)
+    +m
+        padding: rem(16) rem(24)
+
+.label,
+.leftLabel,
+.rightLabel
+    +title
+    font-size: 18px
+    font-weight: 500
+    line-height: 36px
+    color: $n10
+
+.leftLabel
+    text-align: left
+
+.rightLabel
+    text-align: right
+
+.desc
+    font-size: 14px
+    font-weight: 400
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    
+.value,
+.leftValue,
+.rightValue
+    min-height: rem(40)
+    font-size: 32px
+    font-weight: 500
+    line-height: 40px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+    +d
+        min-height: rem(32)
+        +h4S
+    &:empty
+        &:before
+            content: ""
+            width: rem(160)
+            height: rem(24)
+            background: $n3
+            border-radius: rem(4)
+            +w
+                width: rem(120)
+            +d
+                width: rem(160)
+
+.leftValue
+    text-align: left
+
+.rightValue
+    text-align: right
+
+.foot
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-left: rem(32)
+    padding-top: rem(16)
+    padding-bottom: rem(16)
+    padding-right: rem(32)
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.user
+    display: flex
+    align-items: center
+    margin: 0 rem(16)
+    +d
+        order: 3
+        margin: rem(16) 0 0
+    +m
+        order: 2
+        margin: 0 0 rem(16)
+
+.avatar
+    position: relative
+    flex-shrink: 0
+    width: rem(48)
+    height: rem(48)
+    margin-right: rem(14)
+    border: rem(4) solid $n1
+    border-radius: 50%
+    img
+        position: relative
+        z-index: 3
+        border-radius: 50%
+    &:before
+        content: ""
+        position: absolute
+        inset: rem(-4)
+        border: rem(1) solid $n7
+        border-radius: 50%
+    &.history
+        &:before
+            inset: rem(-3)
+            z-index: 1
+            background: $n1
+            border-color: transparent
+        &:after
+            content: ""
+            position: absolute
+            inset: rem(-4)
+            background: $grd
+            border-radius: 50%
+
+.author
+    +base
+    color: $n0
+
+.code
+    margin-top: rem(2)
+    +captionBold
+    color: $n10
+
+.offerFoot
+    padding: rem(32)
+    border-top: rem(1) solid $n3
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.footBox
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+.footItem
+    display: flex
+    justify-content: space-between
+    height: 67px
+    gap: 21px
+    +s
+        flex-direction: column
+        margin-bottom: 40px
+        gap: 0px
+        .box
+
+
+
+.footTitle
+    font-size: 18px
+    font-weight: 500
+    line-height: 36px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+
+
+.button
+    border: 1px solid $n0
+    background: $n11
+    box-shadow: 4px 6px 0px 0px $n0
+    padding: 0 rem(22)
+    cursor: pointer
+    font-size: 14px
+    +m
+        order: 3
+        width: 100%
+    &:hover
+        background: $n12
+        border: 1px solid $n0
+    &:disabled
+        background: $n12
+        border: 1px solid $n0
+
+.fee
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    margin-left: 16px
+
+.percent
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+
+.set
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: rem(32)
+    border-top: rem(1) solid $n3
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.btn
+    width: max-content
+    max-width: 70%
+    margin-bottom: 32px
+    +t
+        max-width: 90px
+        margin-bottom: 0px
+
+.setBtn,
+.myListButton
+    background: $n9
+    &:hover
+        background: $n13
+        border: 1px solid $n0
+
+.qtyBtnWrap
+    display: flex
+    align-items: center
+    border: 1.5px solid $n10
+    box-shadow: 2px 4px 0px 0px $n10
+    height: 60px
+    max-width: 50%
+    &:hover
+        border: 1.5px solid $n0
+        box-shadow: 2px 4px 0px 0px $n0
+    &:focus-within 
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0 $n0
+
+.listQtyBtnWrap,
+.listPriceQtyBtnWrap
+    display: flex
+    align-items: center
+    border: 1.5px solid $n10
+    box-shadow: 2px 4px 0px 0px $n10
+    height: 60px
+    max-width: 100%
+    &:hover
+        border: 1.5px solid $n0
+        box-shadow: 2px 4px 0px 0px $n0
+    &:focus-within 
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0 $n0
+
+.listPriceQtyBtnWrap
+    width: 100%
+.btnWrap
+    display: flex
+    align-items: center
+    border: 1.5px solid $n10
+    box-shadow: 2px 4px 0px 0px $n10
+    height: 60px
+    max-width: 100%
+    width: 100%
+    &:hover
+        border: 1.5px solid $n0
+        box-shadow: 2px 4px 0px 0px $n0
+    &:focus-within 
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0 $n0
+    
+.btnLabel
+    font-size: 14px
+    font-weight: 400
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    margin-bottom: 8px
+    color: $n10
+
+.qtyInput
+    display: flex
+    background: $n9
+    text-align: center
+    font-size: 16px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    color: $n0
+    max-width: 100%
+    width: 100%
+    height: 100%
+
+.buyNowInput
+    display: flex
+    background: $n9
+    text-align: left
+    font-size: 16px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    padding-left: 16px
+    color: $n0
+    width: 100%
+    height: 100%
+
+
+
+    
+
+.logo
+    display: flex
+    justify-content: left
+    align-items: center
+    background: $n9
+    text-align: left
+    font-size: 40px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    color: $n10
+    padding-left: 16px
+
+.logoTitle
+    font-size: 20px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    margin-left: 8px
+
+.cancelButon
+    padding: 12px 32px 12px 32px
+    border: 1px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    color: $n0
+    cursor: pointer
+    width: 150px
+    text-align: center
+    font-size: 14px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: 0em
+    &:hover
+        background: $n13
+
+.timer
+    .timerValue
+        font-family: IBM Plex Mono
+        font-size: 32px
+        font-weight: 500
+        line-height: 40px
+        letter-spacing: 0em
+        text-align: left
+        +d
+            min-height: rem(32)
+            +h4S
+    .timerText
+        font-size: 32px
+        font-weight: 500
+        line-height: 40px
+        letter-spacing: 0em
+        text-align: left
+        color: $n0
+        +m
+            margin-top: 0
+        +d
+            min-height: rem(32)
+            +h4S
+
+.items
+    width: 100%
+    display: flex
+    justify-content: space-between
+    flex-wrap: wrap
+
+.item,
+.mintItem,
+.ownedItem,
+.nameItem
+    flex: 0 0 calc(50% - rem(20))
+    width: calc(50% - rem(20))
+    margin-bottom: 16px
+
+.ownedItem,
+.nameItem
+    display: flex
+    flex-direction: column
+
+.item,
+.ownedItem
+    +t
+        flex: 0 0 calc(30% - rem(20))
+        width: calc(30% - rem(20))
+
+.transferRightItem,
+.ownedRightItem
+    display: flex
+    justify-content: flex-end
+    gap: 24px
+    flex: 0 0 calc(50% - rem(140))
+    width: calc(50% - rem(140))
+    margin-left: auto
+    +t
+        width: 70%
+        gap: 32px
+
+.listRightItem
+    display: flex
+    justify-content: flex-end
+    gap: 24px
+    flex: 0 0 calc(50% - rem(140))
+    width: calc(50% - rem(140))
+    margin-left: auto
+    +t 
+        width: 100%
+        margin-left: 0
+        justify-content: space-between
+        flex-basis: 100%
+        width: 100%
+
+
+    
+
+.btns,
+.transferBtns
+    flex-direction: column
+    margin-top: 8px
+    display: flex
+    gap: 24px
+    justify-content: flex-end
+    align-items: center
+
+.transferBtns
+    flex-direction: row
+    +t 
+        justify-content: flex-start
+        gap: 14px
+        
+.amountBtn
+    border: 0.5px solid $n0
+    background: $n9
+    width: 10%
+    height: rem(48)
+    display: flex
+    justify-content: center
+    cursor: pointer
+    &:hover
+        border: 0.5px solid $n0
+        background: $n13
+
+.mintBtn
+    border: 0.5px solid $n0
+    background: $n9
+    width: 80%
+    margin:0 8px
+    &:hover
+        border: 0.5px solid $n0
+        background: $n13
+        
+.qty
+    width: 35%
+
+.listQty
+    width: 80%
+
+.recipient
+    width: 70%
+
+.change
+    display: flex
+    justify-content: space-between
+
+.minus,
+.plus
+    color: $n0
+    font-size: 20px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+
+.amount
+    margin-top: rem(20)
+    display: flex
+    width: 100%
+    +m
+        margin-top: rem(12)
+
+div.modal
+    position: absolute
+    top: 50%
+    left: 35%
+    display: block
+    width: 625px
+    margin: auto
+    border: 1px solid #FFFFFF
+    .close
+        top: rem(18)
+        right: rem(22)
+        border: none
+        +w
+            top: rem(24)
+            right: rem(29)
+        +d
+            right: rem(12)
+        +m
+            top: rem(20)
+            right: rem(11)
+        svg
+            width: rem(32)
+            height: rem(32)
+            +w
+                width: rem(24)
+                height: rem(24)
+        &:hover
+            +t
+                background: none
+        
+.modalRow
+    display: flex
+    flex-direction: column
+    flex-grow: 1
+    padding: 32px
+    border: 1px
+    gap: 24px
+
+
+.modalCol
+    display: flex
+    flex-direction: column
+    flex: 0 0 50%
+    width: 50%
+    padding: rem(80)
+    +xl
+        padding: rem(64)
+    +w
+        padding: rem(40)
+    +t
+        flex: 0 0 100%
+        width: 100%
+        padding-top: rem(80)
+    +m
+        padding: rem(56) rem(24) rem(24)
+    &:nth-child(1)
+        justify-content: flex-end
+        background: $a5
+        +t
+            display: none
+.title
+    font-size: 32px
+    font-weight: 700
+    line-height: 24px
+    text-align: left
+    color: #FFFFFF
+
+.modalBtns
+    margin-top: 8px
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.modalBtn
+    padding: 12px 32px 12px 32px
+    width: calc(50%)
+
+.modalBtn:first-child 
+    padding-left: 0
+    width: 30%
+
+
+.modalBtn:last-child 
+    padding-right: 0
+    width: 70%
+
+.listSelect
+    width: 100%
+
+.listValue,
+.nameValue,
+.listRightValue
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+    +t
+        overflow: hidden
+        text-overflow: ellipsis
+.nameValue
+    +t
+        white-space: nowrap
+        overflow: hidden
+        text-overflow: ellipsis
+
+.listRightValue
+    text-wrap: nowrap
+    text-align: right
+
+.listRow,
+.transferRow,
+.ownedListRow
+    display: flex
+    padding: 12px 32px 12px 32px
+    
+.ownedListRow
+    padding: 0
+    gap: 8px
+
+.listRow,
+.transferRow
+    +t
+        padding: 12px
+
+.listButton,
+.myListButton
+    padding: 12px 32px 12px 32px
+
+.spinner
+    margin: 0 !important
+
+.noItems
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+
+.connectBtn
+    width: 100%
+
+.error
+    border: 1px solid $n10
+    background: $n9
+    box-shadow: 4px 6px 0px 0px $n10
+    color: #828485
+    pointer-events: none
+    &:hover
+        background: $n9
+        border: 1px solid $n10
+    &:disabled
+        background: $n9
+        border: 1px solid $n10
+
+.errorText
+    font-size: 14px
+    font-weight: 400
+    line-height: 21px
+    text-align: center
+    color: #FF5E5E
+
+.btnsGroup
+    width: 100%
+    display: flex
+    flex-direction: column
+    gap: 12px
+
+.actions
+    display: flex
+    align-items: center
+    +t
+        position: relative
+
+.dotButton
+    width: 100%
+    background: $n9
+    border: 1px solid $n0
+
+.dot
+    fill: $n0 !important
+    position: relative
+    top: 4px
+    right: -4px
+
+.dropdown
+    position: absolute
+    top: 85%
+    left: -65px
+    padding: 16px 32px 16px 16px
+    border: 0.5px solid $n0
+    background: $n9
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    gap: 16px
+    z-index: 10
+
+.dropdownItem
+    width: max-content
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    text-align: left
+    color: $n0
+    span
+        &:hover
+            color: $n11
+
+.ownedListing
+    display: flex
+    flex-direction: column
+    gap: 4px
+    padding: 12px 32px 12px 32px
+    &:before
+        content: ""
+        position: relative
+        top: -16px
+        border: 1px solid #8C8D8F
+    +t
+        padding: 12px
+
+.ownedListWrapper
+    display: flex
+    flex-direction: column
+    gap: 8px

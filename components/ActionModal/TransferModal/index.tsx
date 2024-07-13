@@ -4,7 +4,6 @@ import styles from "./TransferModal.module.sass";
 import Modal from "@/components/Modal";
 import { chainExplorerURL } from "@/constants/details";
 import Spinner from "@/components/Spinner";
-import { useWalletContext } from "context/wallet";
 import { STATUS } from "../status";
 import { resolveName } from '@/utils/provider';
 import { debounce } from 'lodash';
@@ -38,7 +37,7 @@ const TransferModal: React.FC<TransferModalProps> = ({
     claimNftTrigger,
     setClaimNftTrigger,
 }) => {
-    const { checkNetwork } = useWalletContext();
+    const { checkNetwork } = useUserContext();
     const [transferAmount, setTransferAmount] = useState<any>(0);
     const [toAddress, setToAddress] = useState<string>("");
     const [resolvedAddress, setResolvedAddress] = useState<string>("");

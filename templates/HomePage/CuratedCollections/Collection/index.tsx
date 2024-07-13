@@ -10,8 +10,18 @@ type CollectionProps = {
 };
 
 const Collection = ({ item }: CollectionProps) => {
+    const href = item.showCollection
+        ? {
+            pathname: '/collection/[slug]',
+            query: { slug: item.slug },
+        }
+        : {
+            pathname: '/drop/[slug]',
+            query: { slug: item.slug },
+        };
+
     return (
-        <Link href={{ pathname: '/drop/[slug]', query: { slug: item.slug }}}>
+        <Link href={{ pathname: href.pathname, query: href.query}}>
             <a className={styles.collection}>
                 <div className={styles.images}>
                     <div className={styles.image}>

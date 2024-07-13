@@ -1,7 +1,6 @@
 @import @/styles/helpers
 
 .caption
-    margin-bottom: auto
     padding-bottom: rem(40)
 
 .line
@@ -13,7 +12,7 @@
 
 .title
     font-size: 60px
-    font-weight: 700
+    font-weight: 500
     line-height: 64px
     letter-spacing: -0.02em
     text-align: left
@@ -45,15 +44,22 @@
     display: flex
     align-items: center
     +captionBold
-    color: $n10
-    font-size: 20px
+    color: $n0
+    font-size: 32px
     font-weight: 500
-    line-height: 32px
-    letter-spacing: 0em
+    line-height: 40px
+    letter-spacing: -0.02em
     text-align: left
+    &:hover
+        .byUser
+            color: $n11
     svg
         flex-shrink: 0
         width: rem(16)
         height: rem(16)
         margin-right: rem(12)
         fill: $n10
+
+.byUser
+    color: $n0
+    margin-left: 10px

@@ -1,0 +1,179 @@
+@import @/styles/helpers
+
+.spotlight
+    padding: rem(40) rem(80)
+    background: $a5
+    +xl
+        padding: rem(32) rem(64)
+    +w
+        padding: rem(32) rem(40)
+    +d
+        padding: rem(20) rem(40)
+    +t
+        padding: rem(20) rem(24)
+
+.contentWrapper
+    background: $n8
+    padding: rem(80)
+    +xl
+        padding: rem(64)
+    +w
+        padding: rem(64) rem(40)
+    +d
+        padding: rem(40)
+    +t
+        padding: rem(40) rem(24)
+
+.dot
+    color: $n11
+
+.head
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    align-items: flex-start
+    gap: rem(40)
+    +m
+        display: block
+
+.imageWrapper
+    flex-shrink: 0
+    border: 0.5px solid $n10
+    overflow: hidden
+    position: relative
+    width: 140px
+    height: 140px
+    +m
+        width: 100%
+        height: auto
+        aspect-ratio: 1
+    &:before
+        content: ""
+        display: block
+        padding-bottom: 100%
+    &:after
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 43.33%, rgba(0, 0, 0, 0.5) 100%)
+        opacity: 0
+        transition: opacity .2s
+
+.photo
+    transform: scale(1)
+
+.details
+    flex-grow: 1
+    margin-right: rem(40)
+    +m
+        margin: rem(32) 0
+
+.title
+    margin-bottom: rem(20)
+    font-size: 24px
+    font-weight: 500
+    line-height: 31px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+
+.musicIcon
+    vertical-align: text-bottom
+    margin-left: 8px
+
+.info
+    font-size: 14px
+    font-weight: 500
+    line-height: 18px
+    max-width: 860px
+    color: $n5
+
+.list
+    display: flex
+    flex-wrap: wrap
+    justify-content: space-between
+    margin: 0
+    &::after
+        content: ""
+        flex: auto
+
+.card
+    flex: 0 0 calc(20% - 20px)
+    width: calc(20% - 20px)
+    margin: 0 0 48px
+    margin-right: 24px
+    &:nth-child(5n)
+        margin-right: 0
+    +w
+        margin-right: 24px !important
+        flex: 0 0 calc((100% / 3) - 16px)
+        width: calc((100% / 3) - 16px)
+        &:nth-child(3n)
+            margin-right: 0 !important
+    +t
+        margin-right: 24px !important
+        flex: 0 0 calc(50% - 12px)
+        width: calc(50% - 12px)
+        &:nth-child(2n)
+            margin-right: 0 !important
+
+.stats
+    display: flex
+    flex-direction: row
+    align-items: center
+    flex-shrink: 0
+    gap: 32px
+    +m
+        justify-content: space-between
+
+
+.stat
+    display: flex
+    flex-direction: column
+    align-items: center
+    flex-shrink: 0
+
+.statName
+    text-align: center
+    font-weight: 500
+    font-size: 12px
+    line-height: 24px
+    color: #8C8D8F
+
+.statValue
+    text-align: center
+    font-weight: 500
+    font-size: 18px
+    line-height: 32px
+    color: #FFFFFF
+
+.currency
+    font-size: 12px
+
+.filters
+    display: flex
+    justify-content: flex-end
+    margin-top: rem(-40)
+    +xl
+        margin-top: rem(-32)
+    +w
+        margin-top: rem(-32)
+    +d
+        margin-top: rem(-20)
+    +t
+        margin-top: rem(-20)
+    +m
+        display: block
+    margin-bottom: 16px
+    .dropdown
+        width: 250px
+        +m
+            width: 100%
+    .checkbox
+        margin-right: 16px
+        +m
+            width: 100%
+            margin-bottom: 16px

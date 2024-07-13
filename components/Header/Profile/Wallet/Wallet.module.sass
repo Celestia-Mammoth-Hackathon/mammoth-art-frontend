@@ -3,36 +3,34 @@
 .head
     display: flex
     flex-direction: column
-    align-items: center
     margin-bottom: rem(24)
+    gap: 20px
     +xl
         margin-bottom: rem(8)
 
 .title
     margin-right: auto
-    +title
-    color: $n5
-    +w
-        +base
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n10
 
 .actions
     width: 100%
     display: flex
     flex-wrap: wrap
     justify-content: space-between
-    margin-top: rem(16)
-    margin-bottom: rem(16)
+    margin-top: rem(24)
 
 .action
-    width: 43%
+    width: 100%
     height: 48px
     padding: 12px, 32px, 12px, 32px
-    border: 2px
     gap: 8px
     color: $n0
-    border: 2px solid $n0
-    box-shadow: 4px 6px 0px 0px $n0
-    background: $n9
+    border: 1px solid $n0
+    background: $n8
     &:hover
         background: $n13
 
@@ -94,12 +92,35 @@
     display: flex
     justify-content: space-between
     color: $n0
+
 .balance
-    font-size: 20px
-    font-weight: 700
+    font-size: 24px
+    font-weight: 500
     line-height: 40px
-    letter-spacing: 0em
     text-align: left
+
+.currency
+    font-size: 24px
+    font-weight: 500
+    line-height: 40px
+    text-align: left
+    color: $n10
 
 .chain
     color: $n0
+
+.addressWrapper
+    width: max-content
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+    color: $n0
+
+.address
+    display: flex
+    justify-content: flex-start
+    gap: 10px
+    color: $n0
+
+.copiedBg
+    background-color: $a5

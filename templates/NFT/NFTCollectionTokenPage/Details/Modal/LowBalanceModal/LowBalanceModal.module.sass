@@ -1,0 +1,54 @@
+@import "@/styles/helpers"
+
+.modal
+    margin-left: 33%
+    width: 40%
+    display: flex
+    justify-content: center
+    align-items: center
+    position: fixed
+    +t
+        width: 80%
+        margin-left: 8%
+
+.row
+    width: 100%
+    display: flex
+    flex-direction: column
+    justify-content: center
+    align-items: center
+    background: $n9
+    border: 1px solid #ffffff
+    padding: rem(32)
+    padding-top: rem(16)
+    text-align: center
+
+.label
+  font-size: 32px
+  font-weight: 700
+  color: #ffffff
+  margin-bottom: rem(8)
+  width: 100%
+  text-align: left
+
+.description
+    font-size: 14px
+    font-weight: 400
+    color: #ffffff
+    margin-bottom: rem(16)
+    width: 100%
+    text-align: left
+
+.button
+    border: 1px solid $n0
+    background: $n11
+    box-shadow: 4px 6px 0px 0px $n0
+    padding: 0 rem(22)
+    cursor: pointer
+    font-size: 14px
+    +m
+        order: 3
+        width: 100%
+    &:hover
+        background: $n12
+        border: 1px solid $n0

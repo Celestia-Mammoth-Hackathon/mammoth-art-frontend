@@ -141,6 +141,87 @@ export const artistAddresses = [
       },
     ],
   },
+  {
+    slug: "sarah-meyohas",
+    artistAddress: "0xD5Fa40f560a30A517db861e9C9E1e6bE200b13CA",
+    name: "Sarah Meyohas",
+    bio: "Sarah Meyohas (b. 1991, New York) is a conceptual artist and pioneer in the field of crypto art. In 2015, Meyohas created Bitchcoin, a cryptocurrency backed by her physical artwork, which predated the launch of Ethereum and is the first tokenization of physical art on a blockchain, effectively a \"proto-NFT.\" Meyohas's practice provides an intelligible visual language to articulate the systems and complex operations that increasingly govern our world.",
+    profilePic: "/images/artists/meyohas.jpg",
+    bannerPic: "/images/artists/meyohas-cover.png",
+    links: [
+      {
+        title: "",
+        icon: "x",
+        url: "https://x.com/SarahMeyohas",
+      },
+      {
+        title: "Website",
+        icon: "external-link",
+        url: "https://www.sarahmeyohas.com/",
+    },
+    ],
+    collections: [
+      {
+        tokenAddress: isMainnet ? "0x460B1b0F69dEF9526DcE4E3e4B9754cfECe160be" : "0x77De4D1F147EA3863E80E4d08b5c3433892D0068",
+        tokenId: "0",
+        type: "ERC1155",
+      },
+    ],
+  },
+  {
+    slug: "aura",
+    artistAddress: "0xDaF8208B2b11FEbc4f92506Ab03Ced784827a21a",
+    name: "Aura",
+    bio: "Cultivating onchain wonders.",
+    profilePic: "/images/artists/aura.png",
+    bannerPic: "/images/artists/aura-banner.png",
+    links: [
+      {
+        title: "",
+        icon: "x",
+        url: "https://x.com/__auras__",
+      },
+    ],
+    collections: [
+      {
+        tokenAddress: isMainnet ? "0x7b69fad7a6975ff5a34c06adc00e447ce24d2fc3" : "0xa230f012ffc26c332460c71a203aea29cc70f08d",
+        tokenId: "0",
+        type: "ERC1155",
+      },
+    ],
+  },
+  {
+    slug: "celestine-sloth-society",
+    artistAddress: "0x22230D9789B737627FC64a667A49aBBed44cdDc0",
+    name: "Celestine Sloth Society",
+    bio: "A group of extremely deliberate creatures dedicated to modular expansion.",
+    profilePic: "/images/artists/sloths.png",
+    bannerPic: "/images/artists/sloths-banner.jpg",
+    links: [
+      {
+        title: "",
+        icon: "x",
+        url: "https://x.com/CelestineSloths",
+      },
+      {
+        title: "Website",
+        icon: "external-link",
+        url: "https://www.celestineslothsociety.com/",
+    },
+    ],
+    collections: [
+      {
+        tokenAddress: isMainnet ? "0x96971371a6f266f074d18f3c3ab7b77c5489923d" : "0xfb5e2491582b96100be5eec673943bd5af7f0c5f",
+        tokenId: "0",
+        type: "ERC1155",
+      },
+      {
+        tokenAddress: isMainnet ? "0xEA30F63e08a0B01F8BCBE62037Ef810fBDB340Dc" : "0x16cd8DB7c97F4590C867b7fe7853a85D46311410",
+        tokenId: "0",
+        type: "ERC721",
+      },
+    ],
+  },
 ];
 
 export const nativeCurrency = {

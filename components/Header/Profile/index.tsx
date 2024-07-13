@@ -1,14 +1,16 @@
-import { useEffect, useRef, useContext } from "react";
+import { useEffect, useRef, useState } from "react";
 import { disablePageScroll, enablePageScroll } from "scroll-lock";
 import OutsideClickHandler from "react-outside-click-handler";
 import cn from "classnames";
 import styles from "./Profile.module.sass";
-import Image from "@/components/Image";
-import NavLink from "@/components/NavLink";
 import Icon from "@/components/Icon";
 import Wallet from "./Wallet";
-import { UserContext } from "context/user";
-
+import Image from "@/components/Image";
+// import Address from "./Address";
+import { formatUserAddress } from "@/utils/index";
+import { useUserContext } from "context/user";
+import NavLink from "@/components/NavLink";
+import { chainBridgeURL } from "@/constants/details";
 
 type ProfileProps = {
     account?: any;
@@ -19,6 +21,7 @@ type ProfileProps = {
     onOpen: () => void;
     onClose: () => void;
     onDisconnect: () => void;
+    canDisconnect: boolean;
 };
 
 const Profile = ({
@@ -29,33 +32,38 @@ const Profile = ({
     onOpen,
     onClose,
     onDisconnect,
+    canDisconnect,
     visible,
 }: ProfileProps) => {
+    const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
     const initialRender = useRef(true);
-
-    const { address } = useContext(UserContext);
-
-    const menu = [
+    const { address, ensName } = useUserContext();
+    const menu = address ? [
         {
             title: "MY PROFILE",
-            url: `/profile/${address}`,
+            url: "/my-collection",
         },
-        // {
-        //     title: "SETTINGS",
-        //     url: "/settings",
-        // },
-        // {
-        //     title: "HELP",
-        //     url: "/help",
-        // },
+        {
+            title: "BRIDGE FUNDS",
+            url: chainBridgeURL,
+            newPage : true,
+        },
+        {
+            title: "DISCORD",
+            url: "https://discord.gg/P6tEY8d7De",
+            newPage : true,
+        },
+    ] : [
+        {
+            title: "BRIDGE FUNDS",
+            url: chainBridgeURL,
+        },
+        {
+            title: "DISCORD",
+            url: "https://discord.gg/P6tEY8d7De",
+            newPage : true,
+        },
     ];
-
-    const action = {
-        title: "Disconnect",
-        icon: "close-square",
-        onClick: onDisconnect,
-    };
-
     useEffect(() => {
         if (initialRender.current) {
             initialRender.current = false;
@@ -73,16 +81,10 @@ const Profile = ({
                     className
                 )}
             >
-                <button
-                    className={cn(styles.head, headClassName)}
-                    onClick={onOpen}
-                >
-                    <Image
-                        src="/images/avatar.jpg"
-                        layout="fill"
-                        objectFit="cover"
-                        alt="Avatar"
-                    />
+                <button onClick={onOpen}>
+                    <div className={styles.connectBtn}>
+                        {ensName ? ensName : account.displayName}
+                    </div>
                 </button>
                 <div className={cn(styles.body, bodyClassName)}>
                     <button
@@ -104,22 +106,20 @@ const Profile = ({
                             />
                         </div>
                         <div className={styles.details}>
-                            <div className={cn("h3", styles.man)}>Dash</div>
-                            <div className={styles.login}>@randomdash</div>
+                            <div className={styles.login}>{ensName ? ensName : account.displayName}</div>
+                            
                         </div>
-                        <div className={styles.connect}>
-                            <div className={styles.code}>{account.displayName}</div>
-                            <button
-                                className={styles.action}
-                                onClick={action.onClick}
-                            >
-                                <Icon name={action.icon} />
-                                {action.title}
-                            </button>
-                        </div>
-                        
                     </div>
-                    <Wallet onDisconnect={onDisconnect} account={account}/>
+                    <Wallet account={account}/>
+                    {/* <Address /> */}
+                    {canDisconnect && (
+                        <button
+                            className={styles.button}
+                            onClick={onDisconnect}
+                        >
+                            <span className={styles.action}>DISCONNECT WALLET</span>
+                        </button>
+                    )}
                     <div className={styles.menu}>
                         {menu.map((link, index) => (
                             <NavLink
@@ -127,12 +127,14 @@ const Profile = ({
                                 activeClassName={styles.active}
                                 href={link.url}
                                 key={index}
-                                onClose={onClose}
+                                onClose={() => setVisibleMenu(false)}
+                                newPage={link?.newPage ? link.newPage : false}
                             >
                                 {link.title}
                             </NavLink>
                         ))}
                     </div>
+                    
                 </div>
             </div>
         </OutsideClickHandler>

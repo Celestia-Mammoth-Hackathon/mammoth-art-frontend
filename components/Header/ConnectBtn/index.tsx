@@ -1,12 +1,16 @@
+import { useEffect, useState } from "react";
 import cn from "classnames";
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import styles from "./ConnectBtn.module.sass";
 import Profile from "../Profile";
-import { useContext, useEffect } from "react";
-import { UserContext } from "context/user";
-import { useDisconnect } from 'wagmi'
+import { useUserContext } from "context/user";
+import { useAccount, useDisconnect, useBalance } from 'wagmi'
+import { useEnsName } from 'wagmi'
 import { lookUpAddress } from "@/utils/provider";
-import { isAddress } from 'viem'
+import { isAddress, withTimeout } from 'viem'
+import {usePrivy, useWallets} from '@privy-io/react-auth';
+import { chainId } from "@/constants/details";
+import {useSetActiveWallet} from '@privy-io/wagmi';
+import { dnumFormat } from "@/utils/index";
 
 type ConnectBtnProps = {
     visibleProfile: boolean;
@@ -27,8 +31,21 @@ export const ConnectBtn = ({
   className,
   children
 }: ConnectBtnProps) => {
+  const {ready, connectOrCreateWallet, logout} = usePrivy();
   const { disconnect } = useDisconnect();
-  const { address, setAddress, setBalance, ensName, setEnsName } = useContext(UserContext);
+  const {wallets, ready: walletsReady} = useWallets();
+  const {setActiveWallet} = useSetActiveWallet();
+  const {address: wagmiAddress, isConnected, isConnecting, isDisconnected} = useAccount();
+  const {data: balanceData} = useBalance({
+    address: wagmiAddress as `0x${string}`,
+  });
+  const activeWallet = wallets.find((wallet) => wallet.address === wagmiAddress);
+  // if (ready && walletsReady && wallets.length && !activeWallet) {
+  //   setActiveWallet(wallets[0]);
+  // }
+
+  const [reqSwitchNetwork, setReqSwitchNetwork] = useState<boolean>(false);
+  const { address, setAddress, setBalance, ensName, setEnsName } = useUserContext();
 
   useEffect(() => {
     const fetchEnsName = async () => {
@@ -39,91 +56,110 @@ export const ConnectBtn = ({
     };
 
     fetchEnsName();
-    }, [address]);  
+    }, [address]);
+
+  // switch network when needed
+  const caip2ChainId = `eip155:${chainId}`;
+  useEffect(() => {
+    if (activeWallet && activeWallet.chainId !== caip2ChainId) {
+      setReqSwitchNetwork(true);
+    } else {
+      setReqSwitchNetwork(false);
+    }
+  }, [activeWallet])
+
+  useEffect(() => {
+    if (isDisconnected || !activeWallet) {
+      setRegistration(false);
+      setAddress("");
+      setEnsName("");
+      setBalance(undefined);
+    }
+  }, [isDisconnected, activeWallet]);
+
+//   if (!ready || !walletsReady) {
+//     return <></>;
+//   }
+
+  if (isDisconnected || !activeWallet) {
+    return (
+      <div>
+        <button
+          onClick={connectOrCreateWallet}
+          className={cn(styles.button, className)}
+          type="button"
+          style={btnStyle}
+        >
+          <span className={styles.connect}>{children || "CONNECT WALLET"}</span>
+        </button>
+      </div>
+    )
+  }
+
+  if (reqSwitchNetwork) {
+    return (
+      <div>
+        <button
+          onClick={() => activeWallet.switchChain(chainId)}
+          className={cn(styles.button, className)}
+          type="button"
+          style={btnStyle}
+        >
+          <span className={styles.connect}>SWITCH NETWORK</span>
+        </button>
+      </div>
+    )
+  }
+
+  setRegistration(true);
+  setAddress(activeWallet.address);
+  setBalance(balanceData?.formatted);
+  const account = {
+    ...activeWallet,
+    displayName: `${activeWallet.address.slice(0, 4)}...${activeWallet.address.slice(-4)}`,
+    displayBalance: balanceData ? `${dnumFormat(balanceData.value, balanceData.decimals)} ${balanceData.symbol}` : '',
+  };
 
   return (
-      <ConnectButton.Custom>
-          {({
-              account,
-              chain,
-              openAccountModal,
-              openChainModal,
-              openConnectModal,
-              authenticationStatus,
-              mounted,
-          }) => {
-              const ready = mounted;
-              const connected = ready && account;
-              const chainUnSupported = chain?.unsupported;
-
-              return (
-                  <div
-                      {...(!ready && {
-                          'aria-hidden': true,
-                          'style': {
-                              opacity: 0,
-                              pointerEvents: 'none',
-                              userSelect: 'none',
-                          },
-                      })}
-                  >
-                      {(() => {
-                          if (!connected) {
-                              setRegistration(false);
-                              setAddress("");
-                              setEnsName("");
-                              setBalance(undefined); 
-                              return (
-                                <button 
-                                    onClick={openConnectModal} 
-                                    className={cn(styles.button, className)}
-                                    type="button"
-                                    style={btnStyle}  
-                                >
-                                    <span className={styles.connect}>{children || "CONNECT WALLET"}</span>
-                                </button>
-                            );
-                          }
-                          if (chainUnSupported) {
-                            return (
-                                <button 
-                                    onClick={openChainModal} 
-                                    className={cn(styles.button, className)}
-                                    type="button"
-                                    style={btnStyle}
-                                >
-                                    <span className={styles.connect}>SWITCH NETWORK</span>
-                                </button>
-                            );
-                          }
-                          setRegistration(true);
-                          setAddress(account.address);
-                          setBalance(account.balanceFormatted);
-                          return (
-                              <Profile
-                                  className={styles.profile}
-                                  onOpen={() =>
-                                      setVisibleProfile(!visibleProfile)
-                                  }
-                                  onClose={() => {
-                                      setVisibleProfile(false);
-                                  }}
-                                  onDisconnect={() => {
-                                      setAddress("");
-                                      setEnsName("");
-                                      setBalance(undefined); // Reset balance to undefined
-                                      setVisibleProfile(false);
-                                      setRegistration(false);
-                                      disconnect();
-                                  }}
-                                  visible={visibleProfile}
-                                  account={account}
-                              />
-                          );
-                      })()}
-                  </div>
-              );
+      <Profile
+          className={styles.profile}
+          onOpen={() =>
+              setVisibleProfile(!visibleProfile)
+          }
+          onClose={() => {
+              setVisibleProfile(false);
           }}
-      </ConnectButton.Custom>
+          canDisconnect={activeWallet.connectorType === "embedded" || (activeWallet.walletClientType === "metamask" && window.ethereum && window.ethereum.isMetaMask)}
+          onDisconnect={async () => {
+            if (activeWallet.connectorType === "embedded") {
+              await logout();
+            } else {
+              disconnect();
+              for (const wallet of wallets) {
+                wallet.disconnect();
+              }
+              if (typeof window.ethereum !== "undefined") {
+                try {
+                  await withTimeout(
+                    () =>
+                      window.ethereum.request({
+                        method: 'wallet_revokePermissions',
+                        params: [{ eth_accounts: {} }],
+                      }),
+                    { timeout: 100 },
+                  )
+                } catch {}
+              }
+            }
+
+            setAddress("");
+            setEnsName("");
+            setBalance(undefined); // Reset balance to undefined
+            setVisibleProfile(false);
+            setRegistration(false);
+          }}
+          visible={visibleProfile}
+          account={account}
+      />
   );
 };

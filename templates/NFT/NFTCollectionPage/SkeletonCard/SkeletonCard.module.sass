@@ -1,0 +1,267 @@
+@import @/styles/helpers
+
+.card
+    display: block
+    padding: rem(20)
+    border-radius: rem(24)
+    color: $n7
+    transition: background .2s, color .2s
+    flex: 0 0 calc(20% - rem(32))
+    width: calc(20% - rem(32))
+    +d
+        padding: 0
+        border-radius: 0
+    &.dark
+        color: $n1
+        .user
+            border-color: $n6
+        .foot
+            &:before
+                background: $n6
+    &:hover
+        .preview
+            border: 0.5px solid $n0
+            .photo
+                transition: transform 1s
+                transform: scale(1.05)
+        .login
+            color: $n11
+    +t
+        margin-top: 0
+        margin-bottom: 6rem
+        flex: 0 0 calc(50% - rem(32))
+        width: calc(50% - rem(32))
+
+.videoSpan
+    outline: none
+    box-sizing: border-box
+    display: block
+    overflow: hidden
+    width: initial
+    height: initial
+    background: none
+    opacity: 1
+    border: 0px
+    margin: 0px
+    padding: 0px
+    position: absolute
+    inset: 0px
+.preview
+    position: relative
+    margin-bottom: rem(24)
+    border: 0.5px solid $n10
+    
+    overflow: hidden
+    transition: transform 1s
+    &:before
+        content: ""
+        display: block
+        padding-bottom: 100%
+    &:after
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 43.33%, rgba(0, 0, 0, 0.5) 100%)
+        opacity: 0
+        transition: opacity .2s
+
+.category
+    position: absolute
+    top: rem(16)
+    left: rem(16)
+    z-index: 2
+    display: flex
+    align-items: center
+    padding: rem(8) rem(16) rem(8) rem(8)
+    border-radius: rem(12)
+    background: $n1
+    +title
+    color: $n8
+    opacity: 0
+    transition: opacity .2s
+
+.image
+    position: relative
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(16)
+    border: 0.5px solid $n10
+    
+
+.title
+    position: absolute
+    left: rem(28)
+    right: rem(28)
+    bottom: rem(28)
+    z-index: 2
+    +body1
+    color: $n1
+    opacity: 0
+    transition: opacity .2s
+
+.user
+    display: flex
+    align-items: center
+    margin-bottom: rem(16)
+    padding-bottom: rem(16)
+    border-bottom: rem(1) solid $n3
+    transition: border-color .2s
+
+.userBox
+    width: 100%
+    display: flex
+    justify-content: space-between
+    +t
+        flex-direction: column
+
+.byUser
+    font-size: 16px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: right
+    color: #8c8d8f
+    
+.avatar
+    position: relative
+    flex-shrink: 0
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(12)
+    img
+        border-radius: 50%
+
+.login
+    margin-right: auto
+    overflow: hidden
+    text-overflow: ellipsis
+    white-space: nowrap
+    color: $n0
+    +body2Bold
+    +t 
+        font-size: 16px
+        font-weight: 500
+        line-height: 32px
+        letter-spacing: -0.02em
+        text-align: left
+
+
+.verified
+    flex-shrink: 0
+    width: rem(24)
+    margin-left: rem(20)
+    font-size: 0
+
+.foot
+    position: relative
+    display: flex
+    justify-content: space-between
+
+
+.box
+    width: 50%
+    &:nth-child(1)
+        .text
+            margin-top: 16px
+            margin-bottom: 16px
+            position: relative
+
+    &:nth-child(2)
+        .text,
+        .price
+            margin-top: 16px
+            margin-bottom: 16px
+            margin-left: auto
+        
+
+.text
+    +base
+    color: $n10
+    +t
+        font-size: 16px
+        font-weight: 500
+        line-height: 24px
+        letter-spacing: -0.01em
+        text-align: left
+
+
+.price
+    +body1
+    color: $n0
+    font-size: 20px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    +xl
+        +body2Bold
+    +t
+        font-size: 12px
+        font-weight: 500
+        line-height: 32px
+        letter-spacing: -0.02em
+        text-align: left
+
+
+.button
+    margin-top: 16px
+    width: 100%
+    box-shadow: 4px 6px 0px 0px $n0
+    padding: 12px 24px 12px 24px
+    background: $n9
+    border: 2px solid $n0
+    cursor: pointer
+    height: 40px
+    &:hover
+        background: $n13
+
+.disabled
+    box-shadow: 4px 6px 0px 0px $n14
+    border: 2px solid $n14
+    .text
+        color: $n14
+    &:hover
+        background: $n9
+        border: 2px solid $n14
+
+
+.timerBox
+    position: absolute
+    top: 10px
+    left: 10px
+    flex-shrink: 0
+    z-index: 2
+    padding: 4px 8px 4px 8px
+    border-radius: 8px
+    background: #202025
+    height: 40px
+    gap: 8px
+    +t
+        bottom: 280px
+        
+
+.info
+    font-size: 10px
+    font-weight: 500
+    line-height: 14px
+    letter-spacing: -0.01em
+    text-align: left
+    color: $n10
+    
+.timer
+    color: $n0
+    .timerItem
+        flex: 1 1 auto
+    .timerValue
+        +w
+            font-size: 12px
+            font-weight: 500
+            line-height: 14px
+            letter-spacing: -0.01em
+            text-align: left
+    .timerText
+        color: $n0
+
+    

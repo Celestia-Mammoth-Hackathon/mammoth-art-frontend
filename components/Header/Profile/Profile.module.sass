@@ -36,30 +36,31 @@
         transition: box-shadow .2s
 
 .body
+    display: flex
+    flex-direction: column
     position: absolute
-    top: calc(100% + rem(40))
-    right: rem(-70)
-    width: rem(760)
-    max-height: calc(100vh - rem(128))
+    top: -20px
+    right: rem(-40)
+    height: 100vh
     padding: 5.5vh rem(40) 2.4vh
-    box-shadow: 4px 6px 0px 0px $n0
     background: $n9
-    border: 1px solid $n0
+    border: .5px solid $n0
     overflow: auto
     transform: translateY(rem(20))
     visibility: hidden
     opacity: 0
     transition: all .2s
+    width: rem(500)
     +rh(900)
-        width: rem(640)
-        padding: rem(40) rem(40) rem(20)
+        width: rem(500)
+        padding: 0px rem(40) rem(20)
     +xl
-        width: rem(640)
-        padding: rem(40) rem(40) rem(20)
+        width: rem(500)
+        padding: 0px rem(40) rem(20)
     +w
-        width: rem(560)
+        width: rem(500)
     +d
-        width: rem(480)
+        width: rem(500)
     +m
         top: 100%
         left: rem(16)
@@ -90,15 +91,11 @@
 .user
     display: flex
     align-items: center
-    margin-bottom: rem(16)
+    justify-content: center
+    margin-top: 20px
+    margin-bottom: rem(40)
     padding-bottom: rem(32)
-    border-bottom: rem(1) solid $n7
-    +rh(900)
-        margin-bottom: rem(12)
-        padding-bottom: rem(24)
-    +xl
-        margin-bottom: rem(12)
-        padding-bottom: rem(24)
+    border-bottom: 0.5px solid $n10
 
 .avatar
     position: relative
@@ -123,54 +120,100 @@
         +h4S
 
 .login
-    +body2Bold
-    color: $n5
-    +m
-        +base
+    font-size: 24px
+    font-weight: 500
+    line-height: 48px
+    text-align: left
+    color: $n0
 
 .link
-    padding: 1.8vh rem(40)
-    +rh(900)
-        font-size: rem(32)
-        line-height: rem(40)
-    +xl
-        padding: rem(16)
-        +h4S
-    +d
-        +h4S
-    +m
-        padding: rem(12) rem(16)
+    font-size: 16px
+    font-weight: 500
+    line-height: 48px
+    text-align: left
+    padding-top: 16px
+    padding-bottom: 16px
+    padding-left: 0
+    &:hover
+        color: $n11
     &:not(:last-child)
-        border-bottom: rem(1) solid $n7
+        border-bottom: .5px solid $n10
 
 .action
     display: flex
     align-items: center
-    margin: rem(8) 0 0 rem(32)
-    +title
-    color: $n1
-    +w
-        +base
-    svg
-        margin-right: rem(12)
-        fill: $n5
-        transition: fill .2s
-    &:nth-child(1)
-        +d
-            display: none
-    &:hover
-        svg
-            fill: $n1
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    text-align: left
+    color: $n0
+
 .code
     display: flex
-    justify-content: center
+    justify-content: flex-start
     align-items: center
-    padding: rem(8)
-    background: $a6
-    +base
-    color: $n9
-    +xl
-        +baseS
+    font-size: 24px
+    font-weight: 500
+    line-height: 24px
+    text-align: right
+    color: $n0
+    min-width: 235px
+
 .connect
-    margin-left: auto
-    margin-right: 35px
+    width: 100%
+    display: flex
+    justify-content: space-between
+    flex-direction: column
+    align-items: flex-start
+    gap: 12px
+
+.connectBtn
+    padding: 12px 24px 12px 24px
+    background: $n9
+    border: 2px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    font-size: 14px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+    min-width: 150px
+    display: flex
+    justify-content: center
+    &:hover
+        background: $n13
+
+
+.title
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n10
+
+.button
+    width: 100%
+    padding: 12px 32px 12px 32px
+    height: 48px
+    background: $n9
+    border: 1px solid $n0
+    display: flex
+    justify-content: center
+    &:hover
+        background: $n13
+
+.copy
+    margin-left: rem(8)
+    font-size: 0
+    background: $n0
+    filter: invert(1)
+    svg
+        width: rem(20)
+        height: rem(20)
+        filter: invert(1)
+
+.menu
+    display: flex
+    flex-direction: column
+    margin-top: auto

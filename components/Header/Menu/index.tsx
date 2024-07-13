@@ -1,69 +1,47 @@
-import { useState } from "react";
-import { useMediaQuery } from "react-responsive";
+import { useState, useEffect } from "react";
 import cn from "classnames";
 import styles from "./Menu.module.sass";
 import Modal from "@/components/Modal";
 import NavLink from "@/components/NavLink";
-import Icon from "@/components/Icon";
-import Search from "../Search";
-
-import { useDisconnect } from 'wagmi'
-import { ConnectButton } from '@rainbow-me/rainbowkit';
-
-const socials = [
-    {
-        icon: "discord-fat",
-        url: "https://www.instagram.com/ui8net/",
-    },
-    {
-        icon: "twitter-fat",
-        url: "https://twitter.com/ui8",
-    },
-];
-
-const menu = [
-    {
-        title: "My Profile",
-        url: "/profile",
-    },
-    {
-        title: "Discover",
-        url: "/discover",
-    },
-    {
-        title: "Create",
-        url: "/create",
-    },
-];
-
-const actions = [
-    {
-        title: "DEPOSIT",
-        onClick: "",
-    },
-    {
-        title: "WITHDRAW",
-        onClick: "",
-    },
-];
+import { useUserContext } from "context/user";
+import { chainBridgeURL } from "@/constants/details";
+import { ConnectBtn } from "./ConnectBtn";
 
 type MenuProps = {
     classBurger?: string;
-    resultSearch?: any;
-    address?: string;
-    balance?: string;
-    registration?: boolean;
 };
 
-const Menu = ({ classBurger, resultSearch, address, balance, registration }: MenuProps) => {
+const Menu = ({ classBurger }: MenuProps) => {
     const [visibleMenu, setVisibleMenu] = useState<boolean>(false);
+    const { address } = useUserContext();
 
-    const { disconnect } = useDisconnect()
-
-    const isTablet = useMediaQuery({
-        query: "(max-width: 1023px)",
-    });
-
+    const menu = address ? [
+        {
+            title: "MY PROFILE",
+            url: "/my-collection",
+        },
+        {
+            title: "BRIDGE FUNDS",
+            url: chainBridgeURL,
+            newPage : true,
+        },
+        {
+            title: "DISCORD",
+            url: "https://discord.gg/P6tEY8d7De",
+            newPage : true,
+        },
+    ] : [
+        {
+            title: "BRIDGE FUNDS",
+            url: chainBridgeURL,
+        },
+        {
+            title: "DISCORD",
+            url: "https://discord.gg/P6tEY8d7De",
+            newPage : true,
+        },
+    ];
+    
     return (
         <>
             <button
@@ -78,179 +56,21 @@ const Menu = ({ classBurger, resultSearch, address, balance, registration }: Men
             >
                 <div className={styles.row}>
                     <div className={styles.col}>
-                        <div className={cn("h1", styles.title)}>
-                            Create Anything.
-                        </div>
-                        <div className={styles.socials}>
-                            {socials.map((social, index) => (
-                                <a
-                                    className={styles.social}
-                                    href={social.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    key={index}
-                                >
-                                    <Icon name={social.icon} />
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-                    <div className={styles.col}>
-                        {isTablet && registration && (
-                            <>
-                                <div className={styles.head}>
-                                    <div className={styles.balanceTitle}>Balance</div>
-                                        <div className={styles.balances}>
-                                            <span className={styles.balance}>
-                                                {balance} 
-                                                <span className={styles.currency}>TIA</span>
-                                            </span>
-                                    </div>
-                                </div>
-                                <div className={styles.actions}>
-                                    {actions.map((action: any, index: number) =>
-                                        <button
-                                            className={styles.action}
-                                            // onClick={action.onClick}
-                                            key={index}
-                                        >
-                                            <span className={styles.btnTitle}>
-                                                {action.title}
-                                            </span>
-                                        </button>
-                                    )}
-                                </div>
-                                
-                            </>
-                            
-                        )}
-                        {
-                            isTablet && (
-                                <Search
-                                    className={styles.search}
-                                    result={resultSearch}    
-                                />
-                            )
-                        }
                         <div className={styles.menu}>
                             {menu.map((link, index) => (
-                                // Show NavLink based on specified conditions
-                                !(
-                                    (!registration && (link.title.toLowerCase() === "create" || link.title.toLowerCase() === "my profile")) ||
-                                    (registration && !isTablet && link.title.toLowerCase() === "my profile")
-                                ) && (
-                                    <NavLink
-                                        className={cn(styles.link)}
-                                        activeClassName={styles.active}
-                                        href={link.url}
-                                        key={index}
-                                        onClose={() => setVisibleMenu(false)}
-                                    >
-                                        {link.title}
-                                    </NavLink>
-                                )
+                                <NavLink
+                                    className={cn(styles.link)}
+                                    activeClassName={styles.active}
+                                    href={link.url}
+                                    key={index}
+                                    onClose={() => setVisibleMenu(false)}
+                                    newPage={link?.newPage ? link.newPage : false}
+                                >
+                                    {link.title}
+                                </NavLink>
                             ))}
                         </div>
-                        <ConnectButton.Custom>
-                            {({
-                                account,
-                                chain,
-                                openAccountModal,
-                                openChainModal,
-                                openConnectModal,
-                                authenticationStatus,
-                                mounted,
-                            }) => {
-                                const ready = mounted;
-                                const connected =
-                                ready &&
-                                account &&
-                                chain
-
-                                return (
-                                    <div
-                                        className={styles.btnsWrapper}
-                                        {...(!ready && {
-                                        'aria-hidden': true,
-                                        'style': {
-                                            opacity: 0,
-                                            pointerEvents: 'none',
-                                            userSelect: 'none',
-                                        },
-                                        })}
-                                    >
-                                        {(() => {
-                                        if (!connected) {
-                                            return (
-                                                <div className={styles.btns}>
-                                                    <button
-                                                        className={cn("button-white", styles.button)}
-                                                        onClick={openConnectModal}
-                                                    >
-                                                        <span className={styles.text}>CONNECT WALLET</span>
-                                                    </button>
-                                                </div>
-                                            );
-                                        }
-                                    return (
-                                        <div className={styles.btns}>
-                                            <div className={styles.code}>
-                                                {address}
-                                                <button className={styles.copy}>
-                                                    <Icon name="copy" />
-                                                </button>
-                                            </div>
-                                            <button
-                                                className={cn("button-white", styles.disconnect)}
-                                                onClick={() => {
-                                                    setVisibleMenu(false)
-                                                    disconnect()
-                                                }}
-                                            >
-                                                <span className={styles.text}>DISCONNECT WALLET</span>
-                                            </button>
-                                        </div>
-                                    );
-                                    })()}
-                                </div>
-                                );
-                            }}
-                            </ConnectButton.Custom>
-                        {/* {
-                            registration 
-                            ? (
-                                <div className={styles.btns}>
-                                    <div className={styles.code}>
-                                        {address}
-                                        <button className={styles.copy}>
-                                            <Icon name="copy" />
-                                        </button>
-                                    </div>
-                                    <button
-                                        className={cn("button-white", styles.disconnect)}
-                                        onClick={() => {
-                                            setVisibleMenu(false)
-                                            disconnect()
-                                        }}
-                                    >
-                                        <span className={styles.text}>DISCONNECT WALLET</span>
-                                    </button>
-                                </div>
-                            )
-                            : (
-                                <div className={styles.btns}>
-                                    <button
-                                        className={cn("button-white", styles.button)}
-                                        
-                                        
-                                        
-                                    >
-                                        <span className={styles.text}>CONNECT WALLET</span>
-                                    </button>
-                                </div>
-                            )
-                        } */}
-                        
+                        <ConnectBtn />
                     </div>
                 </div>
             </Modal>

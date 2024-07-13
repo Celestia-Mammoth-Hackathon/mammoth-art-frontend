@@ -6,10 +6,8 @@ import cn from "classnames";
 import styles from "./Layout.module.sass";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import '@rainbow-me/rainbowkit/styles.css';
 import { useContext } from 'react';
 import { UserContext } from "context/user";
-import Script from 'next/script';
 
 type LayoutProps = {
     layoutNoOverflow?: boolean;

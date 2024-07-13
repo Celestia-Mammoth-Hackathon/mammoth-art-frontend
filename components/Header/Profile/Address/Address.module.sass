@@ -1,0 +1,50 @@
+@import @/styles/helpers
+
+.user
+    display: flex
+    align-items: center
+    margin-top: 20px
+    margin-bottom: rem(16)
+    padding-bottom: rem(32)
+    +rh(900)
+        margin-bottom: rem(12)
+        padding-bottom: rem(24)
+    +xl
+        margin-bottom: rem(12)
+        padding-bottom: rem(24)
+
+.code
+    display: flex
+    justify-content: flex-start
+    align-items: center
+    font-size: 24px
+    font-weight: 500
+    line-height: 24px
+    text-align: right
+    color: $n0
+    min-width: 235px
+
+.connect
+    width: 100%
+    display: flex
+    justify-content: space-between
+    flex-direction: column
+    align-items: flex-start
+    gap: 12px
+
+.title
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n10
+
+.copy
+    margin-left: rem(8)
+    font-size: 0
+    background: $n0
+    filter: invert(1)
+    svg
+        width: rem(20)
+        height: rem(20)
+        filter: invert(1)

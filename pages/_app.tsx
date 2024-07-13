@@ -1,45 +1,65 @@
+import React from 'react'
 import "../styles/app.sass";
 import Layout from "@/components/Layout";
 import type { AppProps } from "next/app";
-import '@rainbow-me/rainbowkit/styles.css';
 import { UserProvider } from "context/user";
-import { WalletProvider } from "context/wallet";
-import { ModalProvider } from "context/modal";
-import { RainbowKitProvider, DisclaimerComponent } from '@rainbow-me/rainbowkit';
-import { WagmiConfig } from 'wagmi'
-import React from 'react'
-import { wagmiConfig, chains } from "@/config/wagmi";
-import { customTheme } from "@/config/theme";
+import { wagmiConfig } from "@/config/wagmi";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { PrivyProvider } from '@privy-io/react-auth';
+import { WagmiProvider } from '@privy-io/wagmi';
+import { forma } from "@/config/chain";
+import { walletConnectProjectId } from '@/constants/details';
+import { useRouter } from 'next/router';
 
-const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
-  <Text>
-    We <strong>HIGHLY</strong> reccomend everyone use desktop and the metamask browser extension at the moment
-  </Text>
-);
+// const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
+//   <Text>
+//     We <strong>HIGHLY</strong> reccomend everyone use desktop and the metamask browser extension at the moment
+//   </Text>
+// );
+
+const queryClient = new QueryClient()
 
 function MyApp({ Component, pageProps }: AppProps) {
-    return (
-        <WagmiConfig config={wagmiConfig}>
-            <RainbowKitProvider 
-                chains={chains}
-                theme={customTheme}
-                appInfo={{
-                  appName: 'Ubiquity',
-                  disclaimer: Disclaimer,
-                }}
-                modalSize="compact">
-                  <WalletProvider>
-                    <UserProvider>
-                      <ModalProvider>
-                        <Layout layoutNoOverflow footerHide={false}>
-                          <Component {...pageProps}/>
-                        </Layout>
-                      </ModalProvider>
-                    </UserProvider>
-                  </WalletProvider>
-            </RainbowKitProvider>
-        </WagmiConfig>
-    );
+  const router = useRouter();
+
+  let loginMethods: ("wallet" | "email" | "sms" | "google" | "twitter" | "discord" | "github" | "linkedin" | "spotify" | "instagram" | "tiktok" | "apple" | "farcaster" | "telegram")[] = ['email', 'wallet'];
+  let landingHeader = 'Connect a Wallet';
+  if (router.asPath === '/drop/modularsummit') {
+    loginMethods = ['email'];
+    landingHeader = 'Connect with Email';
+  }
+
+  return (
+    <PrivyProvider
+      appId={typeof window !== 'undefined' && window.location.hostname.endsWith('modularium.art') ? 'clyd28wj504pvrnubbcqjlpgl' : 'clxnlyg3300d5cfvojrsgoxgs'}
+      config={{
+        walletConnectCloudProjectId: walletConnectProjectId,
+        appearance: {
+          theme: 'dark',
+          showWalletLoginFirst: true,
+          walletList: [ 'metamask', 'wallet_connect', 'detected_wallets' ],
+          landingHeader,
+          logo: <></>,
+        },
+        loginMethods: loginMethods,
+        embeddedWallets: {
+          createOnLogin: 'users-without-wallets',
+        },
+        defaultChain: forma,
+        supportedChains: [forma],
+      }}
+    >
+      <QueryClientProvider client={queryClient}>
+      <WagmiProvider config={wagmiConfig}>
+          <UserProvider>
+            <Layout layoutNoOverflow footerHide={false}>
+              <Component {...pageProps}/>
+            </Layout>
+          </UserProvider>
+      </WagmiProvider>
+      </QueryClientProvider>
+    </PrivyProvider>
+  );
 }
 
 export default MyApp;

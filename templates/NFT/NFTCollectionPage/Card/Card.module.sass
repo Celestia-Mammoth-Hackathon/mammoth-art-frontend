@@ -1,0 +1,211 @@
+@import @/styles/helpers
+
+.card
+    display: block
+    color: $n7
+    transition: background .2s, color .2s
+    &.dark
+        color: $n1
+        .user
+            border-color: $n6
+        .foot
+            &:before
+                background: $n6
+    &:not(:hover)
+        .preview
+            .photo
+                transition: transform 1s
+                transform: scale(1)
+    &:hover
+        .login
+            color: $n11
+        .preview
+            border: 0.5px solid $n0
+            .photo
+                transition: transform 1s
+                transform: scale(1.05)
+
+.preview
+    position: relative
+    margin-bottom: rem(24)
+    border: 0.5px solid $n10
+    overflow: hidden
+    transition: transform 1s
+    &:before
+        content: ""
+        display: block
+        padding-bottom: 100%
+    &:after
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 43.33%, rgba(0, 0, 0, 0.5) 100%)
+        opacity: 0
+        transition: opacity .2s
+
+.category
+    position: absolute
+    top: rem(8)
+    left: rem(8)
+    z-index: 2
+    display: flex
+    align-items: center
+    padding: 4px 8px 4px 8px
+    border: 0.2px solid $n0
+    background: $n9
+    font-size: 12px
+    font-weight: 500
+    line-height: 14px
+    letter-spacing: -0.01em
+    text-align: center
+    color: #F7FBFA
+
+
+.image
+    position: relative
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(16)
+    border: 0.5px solid $n10
+    
+
+.title
+    position: absolute
+    left: rem(28)
+    right: rem(28)
+    bottom: rem(28)
+    z-index: 2
+    +body1
+    color: $n1
+    opacity: 0
+    transition: opacity .2s
+
+.user
+    display: flex
+    align-items: center
+    justify-content: space-between
+    margin-bottom: rem(16)
+    padding-bottom: rem(16)
+    border-bottom: rem(1) solid $n3
+    transition: border-color .2s
+
+.userBox
+    width: 100%
+    display: flex
+    justify-content: space-between
+
+.byUser
+    font-size: 16px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: right
+    color: #8c8d8f
+    
+.avatar
+    position: relative
+    flex-shrink: 0
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(12)
+    img
+        border-radius: 50%
+
+.login
+    font-size: 14px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+
+.verified
+    flex-shrink: 0
+    width: rem(24)
+    margin-left: rem(20)
+    font-size: 0
+
+.foot
+    position: relative
+    display: flex
+    justify-content: space-between
+
+.box
+    &:nth-child(1)
+        .text
+            position: relative
+
+    &:nth-child(2)
+        text-align: right
+
+.text,
+.textFirst,
+.textSecond
+    font-size: 14px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: -0.01em
+    color: $n5
+
+.textFirst
+    text-align: left
+.textSecond
+    text-align: right
+
+.price,
+.priceFirst,
+.priceSecond
+    font-size: 14px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    color: $n0
+
+.priceFirst
+    text-align: left
+
+.priceSecond
+    text-align: right
+
+.button
+    margin-top: 16px
+    width: 100%
+    box-shadow: 4px 6px 0px 0px $n0
+    padding: 12px 24px 12px 24px
+    background: $n9
+    border: 2px solid $n0
+    cursor: pointer
+    height: 40px
+    &:hover
+        background: $n13
+
+.disabled
+    box-shadow: 4px 6px 0px 0px $n14
+    border: 2px solid $n14
+    .text
+        color: $n14
+    &:hover
+        background: $n9
+        border: 2px solid $n14
+
+.byUser
+    font-size: 14px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: right
+
+.noNft
+    width: 100%
+    text-align: center
+
+.text
+    color: $n0
+    font-size: 14px
+    font-weight: 500
+    line-height: 40px
+    text-align: center
+    margin-bottom: 24px

@@ -48,7 +48,7 @@ const Footer = ({}: FooterProps) => (
         </div>
         <div className={styles.foot}>
             <div className={styles.copyright}>
-            Copyright © CoCoding Labs 2023. All rights reserved
+            Copyright <span className={styles.copyrightIcon}>©</span> CoCoding Labs 2023. All rights reserved
             </div>
             {/* <div className={styles.cookies}>
                 We use cookies for better service.
