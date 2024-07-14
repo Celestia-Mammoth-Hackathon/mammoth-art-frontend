@@ -1,5 +1,5 @@
 import { simpleERC1155UpgradeableABI } from '@/abi/SimpleERC1155Upgradeable.abi';
-import { useContractRead } from 'wagmi';
+import { useReadContract } from 'wagmi';
 
 type useReadBalanceProps = {
     address: any,
@@ -12,7 +12,7 @@ const useReadBalance = ({ address, tokenId, contractAddress, contractType }: use
     const abi = simpleERC1155UpgradeableABI;
 
     // Fetch owned supply data
-    const { data: balanceData, isError: isBalanceError, isLoading: isBalanceLoading, refetch: refetchBalance, isRefetching: isBalanceRefetching } = useContractRead({
+    const { data: balanceData, isError: isBalanceError, isLoading: isBalanceLoading, refetch: refetchBalance, isRefetching: isBalanceRefetching } = useReadContract({
         address: contractAddress,
         abi,
         functionName: 'balanceOf',

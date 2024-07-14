@@ -1,4 +1,6 @@
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useEffect } from 'react';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+
 import { simpleERC1155UpgradeableABI } from '@/abi/SimpleERC1155Upgradeable.abi';
 import { IERC721ABI } from '@/abi/IERC721';
 import { chainId } from "@/constants/details";
@@ -43,29 +45,6 @@ const useTransferNFT = ({
         });
     }
 
-    const { config } = usePrepareContractWrite({
-        address: tokenAddress as `0x${string}`,
-        abi: simpleERC1155UpgradeableABI,
-        functionName: 'safeBatchTransferFrom',
-        // from, to, ids, values, data
-        args: [address, toAddress, [tokenId], [transferAmount], ""],
-        chainId: chainId,
-        onError(error) {
-            console.error(error.message)
-        },
-    });
-
-    const { data, status, write, isLoading: isPrepareLoading  } = useContractWrite(config);
-    const { isLoading: isTransactionLoading, isError: isTransactionError } = useWaitForTransaction({
-        hash: data?.hash,
-        onSuccess(data) {
-            handleResponse(data);
-        },
-        onError(error) {
-            handleResponse(error);
-        },
-    });
-
     const handleResponse = (response:any) => {
         try {
             console.log("Transfer NFT successfully:", response);
@@ -78,9 +57,28 @@ const useTransferNFT = ({
         }
     };
 
+    const { data, status, writeContract, isPending: isPrepareLoading } = useWriteContract();
+    const { error: txError, isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransactionReceipt({
+        hash: data,
+    });
+
+    useEffect(() => {
+        if (isTransactionError) {
+            handleResponse(txError);
+        } else if (isTransactionSuccess) {
+            handleResponse(data);
+        }
+    }, [isTransactionError, isTransactionSuccess, txError, data]);
+
     const transferNft = async () => {
         try {
-            write?.();
+            writeContract({
+                address: tokenAddress as `0x${string}`,
+                abi: simpleERC1155UpgradeableABI,
+                functionName: 'safeBatchTransferFrom',
+                // from, to, ids, values, data
+                args: [address, toAddress, [tokenId], [transferAmount], ""],
+            })
         } catch (error) {
             console.error("Error initiating transaction:", error);
             setResponse(status);
@@ -91,8 +89,7 @@ const useTransferNFT = ({
         isTransferLoading : isTransactionLoading || isPrepareLoading,
         isTransferError: isTransactionError,
         transferNft,
-        writeTransferring: write,
-        transferHash: data?.hash
+        transferHash: data,
     };
 };
 
@@ -106,29 +103,6 @@ const useERC721Transfer = ({
     claimNftTrigger,
     setClaimNftTrigger
 }: useTransferNFTProps) => {
-    const { config } = usePrepareContractWrite({
-        address: tokenAddress as `0x${string}`,
-        abi: IERC721ABI,
-        functionName: 'safeTransferFrom',
-        // from, to, tokenId
-        args: [address as `0x${string}`, toAddress as `0x${string}`, BigInt(tokenId)],
-        chainId: chainId,
-        onError(error) {
-            console.error(error.message)
-        },
-    });
-
-    const { data, status, write, isLoading: isPrepareLoading  } = useContractWrite(config);
-    const { isLoading: isTransactionLoading, isError: isTransactionError } = useWaitForTransaction({
-        hash: data?.hash,
-        onSuccess(data) {
-            handleResponse(data);
-        },
-        onError(error) {
-            handleResponse(error);
-        },
-    });
-
     const handleResponse = (response:any) => {
         try {
             console.log("Transfer NFT successfully:", response);
@@ -141,9 +115,28 @@ const useERC721Transfer = ({
         }
     };
 
+    const { data, status, writeContract, isPending: isPrepareLoading } = useWriteContract();
+    const { error: txError, isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransactionReceipt({
+        hash: data,
+    });
+
+    useEffect(() => {
+        if (isTransactionError) {
+            handleResponse(txError);
+        } else if (isTransactionSuccess) {
+            handleResponse(data);
+        }
+    }, [isTransactionError, isTransactionSuccess, txError, data]);
+
     const transferNft = async () => {
         try {
-            write?.();
+            writeContract({
+                address: tokenAddress as `0x${string}`,
+                abi: IERC721ABI,
+                functionName: 'safeTransferFrom',
+                // from, to, tokenId
+                args: [address as `0x${string}`, toAddress as `0x${string}`, BigInt(tokenId)],
+            });
         } catch (error) {
             console.error("Error initiating transaction:", error);
             setResponse(status);
@@ -154,8 +147,7 @@ const useERC721Transfer = ({
         isTransferLoading : isTransactionLoading || isPrepareLoading,
         isTransferError: isTransactionError,
         transferNft,
-        writeTransferring: write,
-        transferHash: data?.hash
+        transferHash: data,
     };
 };
 

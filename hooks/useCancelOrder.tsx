@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useEffect } from 'react';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+
 import { simpleMarketplaceUpgradeableABI } from '@/abi/SimpleMarketplaceUpgradeable.abi';
-import { chainId } from "@/constants/details";
 import { marketplaceAddress } from "@/constants/details";
 
 type useCancelOrderProps = {
@@ -25,28 +25,17 @@ const useCancelOrder = ({
     response,
     setResponse,
 }: useCancelOrderProps) => {
-    const { data, status, write, isLoading: isPrepareLoading } = useContractWrite({
-        address: marketplaceAddress,
-        abi: simpleMarketplaceUpgradeableABI,
-        functionName: 'cancelOrder',
-        chainId: chainId,
-    });
-    const { isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransaction({
-        hash: data?.hash,
-        onSuccess(data) {
-            handleResponse(data);
-        },
-        onError(error) {
-            handleResponse(error);
-        },
-    });
-
     const handleResponse = (response:any) => {
         console.log("Response:", response);
         setResponse(status);
         setVisibleCancelMenu(true);
         setCancelLoadingId(null);
     };
+
+    const { data, status, writeContract, isPending: isPrepareLoading } = useWriteContract();
+    const { error: txError, isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransactionReceipt({
+        hash: data,
+    });
 
     const updateMyListings = () => {
         const updatedListings = listings.mine.filter((listing: any) => listing.id !== cancelLoadingId);
@@ -58,18 +47,27 @@ const useCancelOrder = ({
 
     const cancelOrder = async (listingId: any) => {
         try {
-            write?.({
-                args: [
-                    listingId
-                ],
+            writeContract({
+                address: marketplaceAddress,
+                abi: simpleMarketplaceUpgradeableABI,
+                functionName: 'cancelOrder',
+                args: [ listingId ],
             });
-            setCancelLoadingId(listingId); 
+            setCancelLoadingId(listingId);
         } catch (error) {
             console.error("Error initiating transaction:", error);
             setResponse(status);
         }
     };
-    
+
+    useEffect(() => {
+        if (isTransactionError) {
+            handleResponse(txError);
+        } else if (isTransactionSuccess) {
+            handleResponse(data);
+        }
+    }, [isTransactionError, isTransactionSuccess, txError, data]);
+
     useEffect(() => {
         if (isTransactionSuccess && !isTransactionLoading) {
             updateMyListings();
@@ -80,7 +78,6 @@ const useCancelOrder = ({
         isCancelLoading : isTransactionLoading || isPrepareLoading,
         isCancelError: isTransactionError,
         cancelOrder,
-        writeCanceling: write,
     };
 };
 

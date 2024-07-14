@@ -1,12 +1,58 @@
 import { nfts } from "@/constants/nfts";
 import { DropState } from "../store";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
+import { ethers } from "ethers";
 import indexer from "@/utils/indexer";
+
+export const getPrice = (nft: any) => {
+  let price = nft.drop?.price ? Number(ethers.utils.formatEther(ethers.BigNumber.from(nft.drop.price))) : (nft.price || 0);
+  if (nft.priceTiers && nft.priceTiers.length > 0) {
+    for (const tier of nft.priceTiers) {
+      if (nft.mintedSupply >= tier.qty) {
+        price = tier.price;
+      }
+    }
+  }
+  return price;
+}
+
+export const getAllTokenStaticMetadata = (tokenAddress: string, tokenIds: string[]) => {
+  let tokens = [];
+  for (const tokenId of tokenIds) {
+    const nft = nfts.find((nftItem) => {
+      if (nftItem.tokens && nftItem.tokens.length > 0) {
+        return nftItem.tokenAddress.toLowerCase() === tokenAddress.toLowerCase() && nftItem.tokens.find(t => t.id === tokenId);
+      }
+      return nftItem.tokenAddress.toLowerCase() === tokenAddress.toLowerCase() && nftItem.tokenId === tokenId;
+    });
+
+    if (nft?.tokens && nft?.tokens.length > 0) {
+      const tokenMeta = nft.tokens.find(t => t.id === tokenId);
+      if (tokenMeta) {
+        nft.metadata = tokenMeta;
+      }
+    }
+    if (nft) {
+      tokens.push({ ...nft });
+    }
+  }
+  return tokens;
+};
 
 export const getTokenStaticMetadata = async (contractAddress: string, tokenId: string) => {
   const nft = nfts.find((nftItem) => {
-      return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokenId === tokenId;
+    if (nftItem.tokens && nftItem.tokens.length > 0) {
+      return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokens.find(t => t.id === tokenId);
+    }
+    return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokenId === tokenId;
   });
+
+  if (nft?.tokens && nft?.tokens.length > 0) {
+    const tokenMeta = nft.tokens.find(t => t.id === tokenId);
+    if (tokenMeta) {
+      nft.metadata = tokenMeta;
+    }
+  }
 
   if (nft?.slug === 'finis-milo') {
     const oracleUpdate = await indexer.getLastestPriceOracleUpdate();

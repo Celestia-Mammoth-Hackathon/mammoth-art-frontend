@@ -1,5 +1,5 @@
 import { simpleERC1155UpgradeableABI } from '@/abi/SimpleERC1155Upgradeable.abi';
-import { useContractRead } from 'wagmi';
+import { useReadContract } from 'wagmi';
 
 type useReadMintedSupplyProps = {
     tokenId: string,
@@ -11,7 +11,7 @@ const useReadMintedSupply = ({ tokenId, contractAddress, contractType }: useRead
     const abi:any = simpleERC1155UpgradeableABI;
 
     // Fetch claim condition data
-    const { data: mintedSupply, isError: isMintedSupplyError, isLoading: isMintedSupplyLoading, refetch: refetchMintedSupply, isRefetching: isMintedSupplyRefetching } = useContractRead({
+    const { data: mintedSupply, isError: isMintedSupplyError, isLoading: isMintedSupplyLoading, refetch: refetchMintedSupply, isRefetching: isMintedSupplyRefetching } = useReadContract({
         address: contractAddress,
         abi,
         functionName: 'totalSupply',

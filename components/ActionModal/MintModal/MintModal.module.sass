@@ -3,7 +3,7 @@
 .details
     background: $n9
     border: 1px solid $n0
-    
+
 .row
     display: flex
     +m
@@ -23,6 +23,44 @@
         margin-top: rem(20)
         +m
             margin-top: rem(12)
+
+.previewRow
+    margin-top: rem(20)
+    display: flex
+    justify-content: space-evenly
+
+.previewContainer
+    position: relative
+    margin-bottom: rem(20)
+    width: 20%
+
+.preview
+    position: relative
+    margin-bottom: rem(10)
+    height: auto
+    border: 0.5px solid $n10
+    width: 100%
+    aspect-ratio: 1
+
+.chance
+    font-size: 14px
+    text-align: center
+    .chanceLabel
+        display: block
+        color: #8C8D8F
+    .chanceValue
+        display: block
+        font-size: 16px
+        font-weight: 500
+        color: #fff
+
+.spinner
+    margin: 0 !important
+
+.questionPhoto
+    padding: 24px !important
+    background: $n0
+    opacity: 0.08 !important
 
 .label
     +title
@@ -179,6 +217,9 @@
         order: 3
         width: 100%
     &:hover
+        background: $n12
+        border: 1px solid $n0
+    &:disabled
         background: $n12
         border: 1px solid $n0
 
@@ -438,7 +479,7 @@
 
 div.modal
     position: fixed
-    top: 35%
+    top: 20%
     left: 35%
     display: block
     width: 625px

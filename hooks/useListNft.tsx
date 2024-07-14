@@ -1,10 +1,11 @@
 import { useEffect } from "react";
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
 import { simpleMarketplaceUpgradeableABI } from '@/abi/SimpleMarketplaceUpgradeable.abi';
-import { chainId, marketplaceAddress, nativeCurrency } from "@/constants/details";
+import { marketplaceAddress, nativeCurrency } from "@/constants/details";
 import useApproveNFT from "@/hooks/useApproveNft";
 import { ethers } from "ethers";
 import { isValidAmount, isValidPrice } from "../utils";
+
 type useListNFTProps = {
     tokenAddress: string,
     tokenId: string;
@@ -58,24 +59,6 @@ const useListNFT = ({
         },
     };
 
-    const { data, write, isLoading: isPrepareLoading, isError: isPrepareError } = useContractWrite({
-        address: marketplaceAddress,
-        abi: simpleMarketplaceUpgradeableABI,
-        functionName: 'makeSellOrder',
-        chainId: chainId,
-        args: [sellConfig._params],
-    });
-
-    const { isLoading: isTransactionLoading, isError: isTransactionError } = useWaitForTransaction({
-        hash: data?.hash,
-        onSuccess(data) {
-            handleResponse(data);
-        },
-        onError(error) {
-            handleResponse(error);
-        },
-    });
-
     const handleResponse = (response: any) => {
         setResponse(response.status);
         setFetchListingTrigger(!fetchListingTrigger);
@@ -84,12 +67,30 @@ const useListNFT = ({
         }
     };
 
+    const { data, status, isError: isPrepareError, writeContract, isPending: isPrepareLoading } = useWriteContract();
+    const { error: txError, isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransactionReceipt({
+        hash: data,
+    });
+
+    useEffect(() => {
+        if (isTransactionError) {
+            handleResponse(txError);
+        } else if (isTransactionSuccess) {
+            handleResponse(data);
+        }
+    }, [isTransactionError, isTransactionSuccess, txError, data]);
+
     const listNft = async () => {
         try {
             if(!isApproved) {
                 await approveNft();
             } else {
-                write?.();
+                writeContract({
+                    address: marketplaceAddress,
+                    abi: simpleMarketplaceUpgradeableABI,
+                    functionName: 'makeSellOrder',
+                    args: [sellConfig._params],
+                });
             }
         } catch (error) {
             console.error("Error approving NFT:", error);
@@ -100,7 +101,12 @@ const useListNFT = ({
     useEffect(() => {
         if (isApprovingSuccess) {
             try {
-                write?.();
+                writeContract({
+                    address: marketplaceAddress,
+                    abi: simpleMarketplaceUpgradeableABI,
+                    functionName: 'makeSellOrder',
+                    args: [sellConfig._params],
+                });
             } catch (error) {
                 console.error("Error initiating transaction:", error);
                 setResponse(error);
@@ -113,7 +119,6 @@ const useListNFT = ({
         isApprovingLoading,
         isListingError: isTransactionError || isPrepareError,
         listNft,
-        writeListing: write,
     };
 };
 

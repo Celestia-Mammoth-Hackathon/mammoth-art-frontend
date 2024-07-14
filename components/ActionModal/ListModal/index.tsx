@@ -1,11 +1,11 @@
 import cn from "classnames";
 import styles from "./ListModal.module.sass";
 import Modal from "@/components/Modal";
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Spinner from "@/components/Spinner";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Image from "@/components/Image";
-import { UserContext } from "context/user";
+import { useUserContext } from "context/user";
 import useListNFT from "@/hooks/useListNft";
 import { STATUS } from "../status";
 import { nativeCurrency } from "@/constants/details";
@@ -40,8 +40,7 @@ const ListModal: React.FC<ListModalProps> = ({
     claimNftTrigger,
     setClaimNftTrigger,
 }) => {
-    const { address } = useContext(UserContext);
-    const { checkNetwork } = useUserContext();
+    const { address, checkNetwork } = useUserContext();
     const [listAmount, setListAmount] = useState<string>("");
     const [listPrice, setListPrice] = useState<string>("");
 
@@ -65,7 +64,7 @@ const ListModal: React.FC<ListModalProps> = ({
         setPriceChanged(true);
     }
 
-    const { isApprovingLoading, isListingLoading, listNft, writeListing, isListingError } = useListNFT({
+    const { isApprovingLoading, isListingLoading, listNft, isListingError } = useListNFT({
         tokenAddress,
         tokenId,
         address,
@@ -132,12 +131,6 @@ const ListModal: React.FC<ListModalProps> = ({
                                     placeholder="0.0"
                                 />
                                     <div className={styles.currency}>
-                                        <Image
-                                            src="/images/celestia.svg"
-                                            width="24"
-                                            height="24"
-                                            alt="logo"
-                                        />
                                         <span className={styles.currencyToken}>{nativeCurrency.symbol}</span>
                                     </div>
                             </button>
@@ -160,18 +153,18 @@ const ListModal: React.FC<ListModalProps> = ({
                     </div>
                     <div className={styles.modalBtn}>
                         <button
-                            disabled={!writeListing || isListingError || !isValidAmount(listAmount) || !isValidPrice(listPrice)}
+                            disabled={isListingError || !isValidAmount(listAmount) || !isValidPrice(listPrice)}
                             className={cn(
                                 "button-medium button-wide",
                                 styles.button,
-                                { [styles.error]: !writeListing || isListingError || !isValidAmount(listAmount) || !isValidPrice(listPrice) }
+                                { [styles.error]: isListingError || !isValidAmount(listAmount) || !isValidPrice(listPrice) }
                             )}
                             onClick={async () => {
                                 await checkNetwork();
                                 listNft();
                             }}
                         >
-                            { (!writeListing && !isListingError) ? <Spinner className={styles.spinner}/> : "List"}
+                            { (isApprovingLoading || isListingLoading) ? <Spinner className={styles.spinner}/> : "List"}
                         </button>
                     </div>
                 </div>
@@ -206,7 +199,7 @@ const ListModal: React.FC<ListModalProps> = ({
             closeClassName={styles.close}
             visible={visible}
             onClose={onClose}
-            showClose={showClose}
+            showClose={false}
         >
             {renderContent()}
         </Modal>

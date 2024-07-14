@@ -5,14 +5,11 @@ import Icon from "@/components/Icon";
 import Contacts from "../Contacts";
 import { formatUserAddress } from "@/utils/index";
 import { chainExplorerURL } from "@/constants/details";
-import Skeleton from '@mui/material/Skeleton';
-
 type DetailsProps = {
     artistInfor: any;
-    loading: boolean;
 };
 
-const Details = ({ artistInfor, loading = false }: DetailsProps) => {
+const Details = ({ artistInfor }: DetailsProps) => {
     const [isCopied, setIsCopied] = useState(false);
     const artistLink = `${chainExplorerURL}/address/${artistInfor.artistAddress}?tab=txs`;
     const copyToClipboard = async (text:any) => {
@@ -24,25 +21,9 @@ const Details = ({ artistInfor, loading = false }: DetailsProps) => {
             console.error('Failed to copy:', err);
         }
     };
-    const address = artistInfor.artistAddress || artistInfor.address;
+
     return (
-        loading 
-        ?   <div className={styles.details}>
-                <div className={styles.head}>
-                    <div className={styles.flex}>
-                        <div className={styles.box}>
-                            <Skeleton variant="text" sx={{ bgcolor: '#141414' }} height={64} width={144} className={styles.user}/>
-                            <div className={styles.line}>
-                                <div className={`${styles.code} ${isCopied ? styles.copiedBg : ''}`}>
-                                    <Skeleton variant="text" sx={{ bgcolor: '#141414' }} height={32} width={160} className={styles.address}/>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <Contacts links={artistInfor.links ?? []} bio={artistInfor.bio ?? ""} loading={loading}/>
-            </div>
-        : <div className={styles.details}>
+        <div className={styles.details}>
             <div className={styles.head}>
                 <div className={styles.flex}>
                     <div className={styles.box}>
@@ -53,12 +34,12 @@ const Details = ({ artistInfor, loading = false }: DetailsProps) => {
                                 href={artistLink}
                                 target="_blank"
                                 rel="noopener noreferrer" >
-                                {formatUserAddress(address)}
+                                {formatUserAddress(artistInfor.artistAddress)}
                             </a>
 
                             <button
                                 className={styles.copy}
-                                onClick={() => copyToClipboard(address)}
+                                onClick={() => copyToClipboard(artistInfor.artistAddress)}
                             >
                                 <Icon name="copy" />
                             </button>

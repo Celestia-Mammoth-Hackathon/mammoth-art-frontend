@@ -1,68 +1,64 @@
-import { useState, useEffect } from 'react';
-import { usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useEffect } from 'react';
+import { useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+
 import { parseEther } from "viem";
 import { simpleMarketplaceUpgradeableABI } from '@/abi/SimpleMarketplaceUpgradeable.abi';
 import { chainId, marketplaceAddress, nativeCurrency } from "@/constants/details";
 import { ethers } from "ethers";
+import { set } from 'lodash';
+import { write } from 'fs';
 
 type useBuyOrderProps = {
-    item: any,
-    address:string, 
-    buyAmount: number, 
-    visibleBuyMenu:boolean, 
-    setVisibleBuyMenu: any, 
-    buyLoadingId: any,
+    address:string,
+    buyAmount: number,
+    setVisibleBuyMenu: any,
     setBuyLoadingId: any,
-    response: any,
     setResponse: any,
     claimNftTrigger?: boolean,
     setClaimNftTrigger?: any,
     fetchListingTrigger: boolean,
-    setFetchListingTrigger: any
+    setFetchListingTrigger: any,
+    setInsufficientFunds: any,
 };
 
 const useBuyOrder = ({
-    item, 
-    address, 
-    buyAmount, 
-    visibleBuyMenu, 
-    setVisibleBuyMenu, 
-    buyLoadingId,
+    address,
+    buyAmount,
+    setVisibleBuyMenu,
     setBuyLoadingId,
-    response,
     setResponse,
     claimNftTrigger,
     setClaimNftTrigger,
     fetchListingTrigger,
     setFetchListingTrigger,
+    setInsufficientFunds,
 }: useBuyOrderProps) => {
-    const { data, status, write, isLoading: isPrepareLoading } = useContractWrite({
-        address: marketplaceAddress,
-        abi: simpleMarketplaceUpgradeableABI,
-        functionName: 'takeSellOrder',
-        chainId: chainId,
-        onError(error) {
-            console.log(error);
-        },
-    });
-    const { isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransaction({
-        hash: data?.hash,
-        onSuccess(data) {
-            handleResponse(data);
-        },
-        onError(error) {
-            handleResponse(error);
-        },
-    });
-
     const handleResponse = (response:any) => {
-        console.log("Buy NFT Response:", response);
         setResponse(status);
-        setVisibleBuyMenu(true);     
+        setVisibleBuyMenu(true);
         setBuyLoadingId(null);
         setFetchListingTrigger(!fetchListingTrigger);
         setClaimNftTrigger && setClaimNftTrigger(!claimNftTrigger);
     };
+
+    const { data, status, error: writeError, writeContract, isPending: isPrepareLoading } = useWriteContract();
+    const { error: txError, isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransactionReceipt({
+        hash: data,
+    });
+
+    useEffect(() => {
+        if (writeError && writeError.message.includes("The total cost (gas * gas fee + value) of executing this transaction exceeds the balance of the account.")) {
+            setInsufficientFunds(true);
+        }
+    }, [writeError]);
+
+    useEffect(() => {
+        if (isTransactionError) {
+            handleResponse(txError);
+        } else if (isTransactionSuccess) {
+            handleResponse(data);
+        }
+    }, [isTransactionError, isTransactionSuccess, txError, data]);
 
     const buyNft = async (listingId: any, orderPrice: any, quantity: any = 1) => {
         const pricePerNftBigNumber = ethers.BigNumber.from(orderPrice.toString());
@@ -76,17 +72,18 @@ const useBuyOrder = ({
                 _params: {
                     orderId: parseInt(listingId),
                     qty: quantity,
-                    recipient: address,    
+                    recipient: address,
                 },
             };
 
-            write?.({
-                args: [
-                    buyConfig._params,
-                ],
-                value: valueBigInt
+            writeContract({
+                address: marketplaceAddress,
+                abi: simpleMarketplaceUpgradeableABI,
+                functionName: 'takeSellOrder',
+                args: [ buyConfig._params ],
+                value: valueBigInt,
             });
-            setBuyLoadingId(listingId); 
+            setBuyLoadingId(listingId);
 
         } catch (error) {
             console.error("Error initiating transaction:", error);
@@ -95,10 +92,9 @@ const useBuyOrder = ({
     };
 
     return {
-        isBuyingLoading : isTransactionLoading || isPrepareLoading,
+        isBuyingLoading: isTransactionLoading || isPrepareLoading,
         isBuyingError: isTransactionError,
         buyNft,
-        writeBuying: write,
     };
 };
 

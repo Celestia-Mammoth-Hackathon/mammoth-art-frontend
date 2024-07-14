@@ -174,7 +174,7 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
 
   return (
     <>
-      <Description
+      {/* <Description
         image={token?.metadata.image}
         animation={token?.metadata.cloudflareCdnId || token?.metadata.animation_url}
         title={token?.metadata.name}
@@ -215,7 +215,7 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
           setOwnedTrigger={setOwnedTrigger}
           loading={loading}
         />
-      </Description>
+      </Description> */}
     </>
   );
 };

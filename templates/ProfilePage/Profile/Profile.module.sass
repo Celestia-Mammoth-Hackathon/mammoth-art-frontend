@@ -2,20 +2,20 @@
 
 .row
     display: flex
-    flex-direction: column
-    +m
+    min-height: calc(100vh - rem(400))
+    +xl
+        min-height: calc(100vh - rem(304))
+    +t
         display: block
 
 .col
-    flex: 0 0 100%
-    width: 100%
+    flex: 0 0 50%
+    width: 50%
     background: $n9
     +t
         width: 100%
     &:nth-child(1)
         position: relative
-    &:nth-child(2)
-        padding-bottom: 14rem
 
 .avatar
     position: absolute
@@ -63,21 +63,3 @@
         width: 100%
         margin: rem(32) 0 0
         margin-left: 0
-
-.skeleton
-    display: flex
-    justify-content: flex-start
-    flex-wrap: wrap
-    padding-right: 4rem
-    padding-left: 4rem
-    +m
-        display: block
-        margin: 0
-    &.list
-        display: block
-        margin: 0
-        .token
-            width: 100%
-            margin: rem(48) 0 0
-            +m
-                margin-top: rem(40)

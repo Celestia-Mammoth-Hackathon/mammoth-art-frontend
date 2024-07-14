@@ -1,6 +1,4 @@
 import React, { createContext, useContext, useState, ReactNode, useCallback } from 'react';
-import { useNetwork, useSwitchNetwork } from 'wagmi';
-import { chainId } from "@/constants/details";
 
 type ModalContextType = {
     visibleMintMenu: boolean;

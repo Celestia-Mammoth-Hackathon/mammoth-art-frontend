@@ -4,6 +4,7 @@ import styles from "./TransferModal.module.sass";
 import Modal from "@/components/Modal";
 import { chainExplorerURL } from "@/constants/details";
 import Spinner from "@/components/Spinner";
+import { useUserContext } from "context/user";
 import { STATUS } from "../status";
 import { resolveName } from '@/utils/provider';
 import { debounce } from 'lodash';

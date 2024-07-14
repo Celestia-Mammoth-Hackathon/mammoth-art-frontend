@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useContractRead, usePrepareContractWrite, useContractWrite, useWaitForTransaction } from 'wagmi';
+import { useReadContract, useWriteContract, useWaitForTransactionReceipt } from 'wagmi';
+
 import { simpleERC1155UpgradeableABI } from '@/abi/SimpleERC1155Upgradeable.abi';
 
 type useApproveNFTProps = {
@@ -16,7 +17,7 @@ const useApproveNFT = ({
     const [isApproved, setIsApproved] = useState(false);
 
     // Step 1: Check if already approved
-    const { data: approvalStatus, refetch: refetchApprovalStatus } = useContractRead({
+    const { data: approvalStatus, refetch: refetchApprovalStatus } = useReadContract({
         address: tokenAddress,
         abi: simpleERC1155UpgradeableABI,
         functionName: 'isApprovedForAll',
@@ -30,26 +31,6 @@ const useApproveNFT = ({
     }, [approvalStatus]);
 
     // Step 2: Prepare for approval if not already approved
-    const { config, error: prepareError } = usePrepareContractWrite({
-        address: tokenAddress,
-        abi: simpleERC1155UpgradeableABI,
-        functionName: 'setApprovalForAll',
-        args: [operator, true],
-    });
-
-    const { data, status, write, isLoading: isPrepareLoading } = useContractWrite(config);
-
-    const { isLoading: isTransactionLoading, isSuccess } = useWaitForTransaction({
-        hash: data?.hash,
-        onSuccess(data) {
-            handleResponse(data);
-            // Refetch approval status after successful transaction
-            refetchApprovalStatus();
-        },
-        onError(error) {
-            handleResponse(error);
-        },
-    });
 
     const handleResponse = (response: any) => {
         try {
@@ -59,10 +40,30 @@ const useApproveNFT = ({
         }
     };
 
+    const { data, writeContract, isPending: isPrepareLoading } = useWriteContract();
+    const { error: txError, isLoading: isTransactionLoading, isError: isTransactionError, isSuccess: isTransactionSuccess } = useWaitForTransactionReceipt({
+        hash: data,
+    });
+
+    useEffect(() => {
+        if (isTransactionError) {
+            handleResponse(txError);
+        } else if (isTransactionSuccess) {
+            handleResponse(data);
+            // Refetch approval status after successful transaction
+            refetchApprovalStatus();
+        }
+    }, [isTransactionError, isTransactionSuccess, txError, data]);
+
     const approveNft = async () => {
         if (!isApproved) {
             try {
-                write?.();
+                writeContract({
+                    address: tokenAddress,
+                    abi: simpleERC1155UpgradeableABI,
+                    functionName: 'setApprovalForAll',
+                    args: [operator, true],
+                });
             } catch (error) {
                 console.error("Error initiating transaction:", error);
             }
@@ -74,9 +75,8 @@ const useApproveNFT = ({
     return {
         isApprovingLoading: isTransactionLoading || isPrepareLoading,
         approveNft,
-        isApprovingSuccess: isSuccess,
+        isApprovingSuccess: isTransactionSuccess,
         isApproved,
-        prepareError
     };
 };
 
