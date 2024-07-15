@@ -24,6 +24,8 @@
             .photo
                 transition: transform 1s
                 transform: scale(1.05)
+            .button
+                opacity: 1
 
 .preview
     position: relative
@@ -46,6 +48,25 @@
         opacity: 0
         transition: opacity .2s
 
+    .button
+        opacity: 0
+        position: absolute
+        bottom: rem(8)
+        left: rem(8)
+        right: rem(8)
+        z-index: 2
+        padding: 12px 24px 12px 24px
+        background: $n11
+        border: 1px solid $n0
+        cursor: pointer
+        height: 40px
+        transition: opacity .5s
+        &:hover
+            background: $n12
+        &:disabled
+            background: $n12
+            opacity: 1
+
 .category
     position: absolute
     top: rem(8)
@@ -62,7 +83,6 @@
     letter-spacing: -0.01em
     text-align: center
     color: #F7FBFA
-
 
 .image
     position: relative
@@ -170,18 +190,6 @@
 .priceSecond
     text-align: right
 
-.button
-    margin-top: 16px
-    width: 100%
-    box-shadow: 4px 6px 0px 0px $n0
-    padding: 12px 24px 12px 24px
-    background: $n9
-    border: 2px solid $n0
-    cursor: pointer
-    height: 40px
-    &:hover
-        background: $n13
-
 .disabled
     box-shadow: 4px 6px 0px 0px $n14
     border: 2px solid $n14
@@ -209,3 +217,6 @@
     line-height: 40px
     text-align: center
     margin-bottom: 24px
+
+.spinner
+    margin: 0 !important

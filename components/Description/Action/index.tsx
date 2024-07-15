@@ -1,6 +1,6 @@
 import cn from "classnames";
 import styles from "./Action.module.sass";
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import Icon from "@/components/Icon";
 import { ModalContext } from "context/modal";
 import { UserContext } from "context/user";
@@ -11,10 +11,10 @@ type ActionProps = {
 };
 
 const Action = ({ collection, userToken }: ActionProps) => {
-    const { setVisibleListMenu } = useContext(ModalContext);
+    const [visibleListMenu, setVisibleListMenu] = useState<boolean>(false);
     const { address } = useContext(UserContext);
-    const sortedListings = collection.secondaryListings.sort((a: any, b: any) => parseFloat(a.price) - parseFloat(b.price));
-    const myListing = sortedListings.filter((listing : any) => listing.makerId.toLowerCase() === address.toLowerCase());
+    const sortedListings:any = collection?.secondaryListings?.sort((a: any, b: any) => parseFloat(a.price) - parseFloat(b.price)) || [];
+    const myListing = sortedListings?.filter((listing : any) => listing.makerId.toLowerCase() === address.toLowerCase());
     const ownedSupply = userToken ? userToken.ownedSupply : 0;
     const listingSupply = myListing.length ? myListing.reduce((sum:number, listing:any) => sum + (parseInt(listing.qty) - parseInt(listing.filled ?? 0)), 0) : 0;
     const availableSupply = ownedSupply - listingSupply;

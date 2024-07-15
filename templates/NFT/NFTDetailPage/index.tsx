@@ -153,6 +153,8 @@ const MintNFTPage = ({ tokenAddress, tokenId, tab } : MintNFTPageProps) => {
         :   <>
                 <Description
                     collection={collection}
+                    token={collection.token}
+                    contractCreator={collection.token.contractCreator}
                     userToken={userToken}
                     loading={loading}
                 >

@@ -10,6 +10,7 @@ import indexer from "@/utils/indexer";
 import { useUserContext } from "context/user";
 import Tabs from "./Details/Tabs";
 import Icon from "@/components/Icon";
+import useCollectionStore from '@/store/index';
 
 type NFTCollectionTokenPageProps = {
   collection: any;
@@ -19,10 +20,18 @@ type NFTCollectionTokenPageProps = {
 
 const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionTokenPageProps) => {
   const { address } = useUserContext();
+
+  const {
+    users,
+    fetchOwnNfts
+} = useCollectionStore();
+
   const [loading, setLoading] = useState<boolean>(true);
   const [tokenLoading, setTokenLoading] = useState<boolean>(false);
   const [token, setToken] = useState<any>(undefined);
   const [ownedSupply, setOwnedSupply] = useState<number>(0);
+  const [userToken, setUserToken] = useState<any>(null);
+  const [userTokenLoading, setUserTokenLoading] = useState(false);
   const [listings, setListings] = useState({
     all: [],
     mine: [],
@@ -32,12 +41,13 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
 
   const [ownedTrigger, setOwnedTrigger] = useState(false);
   const [fetchListingTrigger, setFetchListingTrigger] = useState(false);
-
+  
   useEffect(() => {
-    if (!tokenLoading && !listings.loading) {
+    if (!userTokenLoading && !tokenLoading && !listings.loading) {
+      setUserToken(users[address]?.collections[collection.collectionId])
       setLoading(false);
     }
-  }, [tokenLoading, listings.loading]);
+  }, [userTokenLoading, tokenLoading, listings.loading]);
 
   useEffect(() => {
     const fetchOwned = async () => {
@@ -49,6 +59,19 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
       }
     };
     fetchOwned();
+  }, [address, collection, tokenId, ownedTrigger]);
+  
+  useEffect(() => {
+    const fetchSupply = async () => {
+        if(address) {
+            try {
+                await fetchOwnNfts(collection.tokenAddress, tokenId, address);
+            } catch(error) {
+                console.log(error);
+            }
+        }
+    };
+    fetchSupply();
   }, [address, collection, tokenId, ownedTrigger]);
 
   useEffect(() => {
@@ -174,19 +197,12 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
 
   return (
     <>
-      {/* <Description
-        image={token?.metadata.image}
-        animation={token?.metadata.cloudflareCdnId || token?.metadata.animation_url}
-        title={token?.metadata.name}
-        date={date}
-        statistics={statistics}
-        links={links}
-        tags={token?.metadata.tags}
-        attributes={attributes}
-        property={property}
-        content={description}
-        loading={loading}
-        captionHide={true}
+      <Description
+          collection={collection}
+          token={token}
+          contractCreator={collection.contractCreator}
+          userToken={userToken}
+          loading={loading}
       >
         <div className={styles.viewCollection}>
         <Link href={{
@@ -215,7 +231,7 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
           setOwnedTrigger={setOwnedTrigger}
           loading={loading}
         />
-      </Description> */}
+      </Description>
     </>
   );
 };
