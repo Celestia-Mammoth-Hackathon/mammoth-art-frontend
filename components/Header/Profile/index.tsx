@@ -99,7 +99,7 @@ const Profile = ({
                     <div className={styles.user}>
                         <div className={styles.avatar}>
                             <Image
-                                src="/images/avatar.jpg"
+                                src="/images/users/avatar-1.jpg"
                                 layout="fill"
                                 objectFit="cover"
                                 alt="Avatar"
