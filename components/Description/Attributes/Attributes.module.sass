@@ -1,0 +1,41 @@
+@import @/styles/helpers
+
+.attributes
+
+.list
+    display: flex
+    margin: 0 rem(-20)
+    flex-wrap: wrap
+    margin-top: rem(42)
+    +d
+        margin: 0 rem(-12)
+    +m
+        display: block
+        margin: 0
+        margin-top: rem(42)
+
+.item
+    flex: 0 0 calc(33% - rem(40))
+    width: calc(33% - rem(40))
+    margin: 0 rem(20)
+    margin-bottom: rem(20)
+    +d
+        flex: 0 0 calc(33% - rem(24))
+        width: calc(33% - rem(24))
+        margin: 0 rem(12)
+    +m
+        width: 100%
+        margin: 0
+        &:not(:last-child)
+            margin-bottom: rem(24)
+
+.label
+    margin-bottom: rem(12)
+    +captionBold
+    font-size: 14px
+    color: $n10
+
+.details
+    +base
+    font-size: 14px
+    color: $n0

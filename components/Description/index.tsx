@@ -9,6 +9,7 @@ import Link from 'next/link';
 import { artistAddresses } from '@/constants/details';
 import { formatUserAddress } from "@/utils/index";
 import SkeletonDescription from "../SkeletonDescription";
+import Attributes from "./Attributes";
 
 type DescriptionProps = {
     exit?: boolean;
@@ -73,6 +74,7 @@ const Description = ({
                             <div className={styles.content}>{token.metadata.description}</div>
                         </div>
                         {token.metadata?.tags && <Tags tags={token?.metadata?.tags}/>}
+                        {token.metadata?.attributes && <Attributes attributes={token.metadata?.attributes} />}
                     </div>
                 </div>
                 <div className={styles.row}>
