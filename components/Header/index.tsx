@@ -105,7 +105,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                 visibleSearch={visibleSearch}
                                 setVisibleSearch={setVisibleSearch}
                             />
-                            <div>
+                            <div className={styles.connectBtnWrapper}>
                                 <ConnectBtn 
                                     registration={registration}
                                     setRegistration={setRegistration} 
