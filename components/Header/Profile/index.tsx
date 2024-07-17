@@ -81,10 +81,16 @@ const Profile = ({
                     className
                 )}
             >
-                <button onClick={onOpen}>
-                    <div className={styles.connectBtn}>
-                        {ensName ? ensName : account.displayName}
-                    </div>
+                <button
+                    className={cn(styles.head, headClassName)}
+                    onClick={onOpen}
+                >
+                    <Image
+                        src="/images/users/avatar-1.jpg"
+                        layout="fill"
+                        objectFit="cover"
+                        alt="Avatar"
+                    />
                 </button>
                 <div className={cn(styles.body, bodyClassName)}>
                     <button
