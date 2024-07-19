@@ -8,6 +8,7 @@ import Card from "./Card";
 import Pagination from '@mui/material/Pagination';
 import Dropdown from "@/components/Dropdown";
 import Checkbox from "@/components/Checkbox";
+import AttributeFilter from "./AttributeFilter";
 import indexer from "@/utils/indexer";
 import useCollectionStore, { DropState } from '@/store/index';
 import { useUserContext } from "context/user";
@@ -16,10 +17,10 @@ import { nativeCurrency } from '@/constants/details';
 
 type NFTCollectionPageProps = {
   collection: any;
-  attributes: Record<string, string>;
+  attributes: Record<string, string[]>;
 };
 
-const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) => {
+const NFTCollectionPage = ({ collection, attributes }: NFTCollectionPageProps) => {
   const { address } = useUserContext();
   const [loading, setLoading] = useState<boolean>(false);
   const [tokens, setTokens] = useState<any[]>([]);
@@ -29,6 +30,8 @@ const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) 
   const [mintedSupply, setMintedSupply] = useState<number>(0);
   const [ownedSupply, setOwnedSupply] = useState<number>(0);
   const [ownedTokenIds, setOwnedTokenIds] = useState<string[]>([]);
+  const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string[]>>(attributes);
+  const [filtersActive, setFiltersActive] = useState<boolean>(true);
   const {
     users,
     collections,
@@ -81,7 +84,7 @@ const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) 
             {convertBigNumberToString(floorItem.price, nativeCurrency.decimals)} <span className={styles.currency}>{nativeCurrency.symbol}</span>
           </>
           : <>--</>;
-          setFloorPrice(floorPrice);
+        setFloorPrice(floorPrice);
       } finally {
       }
     };
@@ -108,22 +111,13 @@ const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) 
           tokens[i].metadata = collection.tokens.find((t: any) => t.id === tokens[i].tokenId);
         }
 
-        let filteredTokens = tokens;
-        if (Object.keys(attributes).length > 0) {
-          filteredTokens = tokens.filter(token => {
-            return Object.entries(attributes).every(([key, value]) => {
-              return token.metadata.attributes.some((attr: any) => attr.trait_type.toLowerCase() === key && attr.value.toLowerCase() === value);
-            });
-          });
-        }
-
-        setTokens(filteredTokens);
+        setTokens(tokens);
       } finally {
         setLoading(false);
       }
     };
     fetchTokens();
-  }, [collection, attributes]);
+  }, [collection]);
 
   const [filterOnSale, setFilterOnSale] = useState(false);
   const [filterOwned, setFilterOwned] = useState(false);
@@ -136,6 +130,14 @@ const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) 
 
     if (filterOwned) {
       filtered = filtered.filter(token => ownedTokenIds.includes(token.tokenId));
+    }
+
+    if (Object.keys(selectedAttributes).length > 0) {
+      filtered = filtered.filter(token => {
+        return Object.entries(selectedAttributes).every(([key, values]) => {
+          return token.metadata.attributes.some((attr: any) => attr.trait_type.toLowerCase() === key && (values.length === 0 || values.includes(attr.value.toLowerCase())));
+        });
+      });
     }
 
     switch (sorting) {
@@ -162,15 +164,54 @@ const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) 
       default:
         return filtered;
     }
-  }, [sorting, tokens, tokenPrices, filterOnSale, filterOwned, ownedTokenIds]);
+  }, [sorting, tokens, tokenPrices, filterOnSale, filterOwned, ownedTokenIds, selectedAttributes]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    const contentWrapper = document.querySelector(`.${styles.contentWrapper}`);
+    if (contentWrapper) {
+        window.scrollTo({ top: (contentWrapper as HTMLElement).offsetTop + 40, behavior: 'smooth' });
+    }
   };
+
   const itemsPerPage = 50;
   const pageCount = useMemo(() => Math.ceil(sortedTokens.length / itemsPerPage), [sortedTokens]);
   const pagedTokens = useMemo(() => sortedTokens.slice((page - 1) * itemsPerPage, page * itemsPerPage), [sortedTokens, page]);
+
+  const selectAttribute = (traitType: string, traitValue: string, selected: boolean) => {
+    const newSelectedAttributes = { ...selectedAttributes };
+    traitType = traitType.toLowerCase();
+    traitValue = traitValue.toLowerCase();
+    if (selected) {
+      if (!newSelectedAttributes[traitType]) {
+        newSelectedAttributes[traitType] = [];
+      }
+      newSelectedAttributes[traitType].push(traitValue);
+    } else {
+      newSelectedAttributes[traitType] = newSelectedAttributes[traitType].filter((val: string) => val !== traitValue);
+    }
+    if (newSelectedAttributes[traitType].length === 0) {
+      delete newSelectedAttributes[traitType];
+    }
+    setSelectedAttributes(newSelectedAttributes);
+  };
+
+  const sortedAttributes = useMemo(() => {
+    if (!collection.attributes) return [] as [string, Record<string, number>][];
+
+    const sorted: Record<string, Record<string, number>> = {};
+
+    Object.entries(collection.attributes as Record<string, Record<string, number>>)
+      .sort(([traitTypeA], [traitTypeB]) => traitTypeA.localeCompare(traitTypeB))
+      .forEach(([traitType, traits]) => {
+        const sortedTraits = Object.fromEntries(
+          Object.entries(traits).sort(([, a], [, b]) => a - b)
+        );
+        sorted[traitType] = sortedTraits;
+      });
+
+    return Object.entries(sorted);
+  }, [collection.attributes]);
 
   return (
     <>
@@ -234,15 +275,60 @@ const NFTCollectionPage = ({ collection, attributes } : NFTCollectionPageProps) 
             options={sortingOpts}
           />
         </div>
-        <div className={styles.list}>
-          {loading
-            ? <SkeletonCard />
-            : pagedTokens.map((token: any, index: number) => (
-              <Card className={styles.card} collection={collection} token={token} key={index} />
-            ))
-          }
+        <div className={styles.row}>
+          <button
+            className={cn(
+              "button-medium",
+              styles.filterButton,
+              { [styles.active]: filtersActive },
+            )}
+            onClick={() => setFiltersActive(!filtersActive)}
+          >
+            <Icon name="funnel" size="24" /> Filter
+          </button>
+          <div className={styles.sidebar}>
+            <Dropdown
+              className={styles.dropdown}
+              value={sorting}
+              setValue={setSorting}
+              options={sortingOpts}
+            />
+            <Checkbox
+              className={styles.checkbox}
+              label={`Owned`}
+              value={filterOwned}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilterOwned(e.target.checked)}
+            />
+            <Checkbox
+              className={styles.checkbox}
+              label={`For Sale`}
+              value={filterOnSale}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFilterOnSale(e.target.checked)}
+            />
+            {sortedAttributes.length > 0 && (
+              <div className={styles.attributes}>
+                {sortedAttributes.map(([traitType, traitValues]) => (
+                  <AttributeFilter
+                    key={traitType}
+                    traitType={traitType}
+                    traitValues={traitValues as Record<string, number>}
+                    selectedValues={selectedAttributes[traitType.toLowerCase()] || []}
+                    selectAttribute={selectAttribute}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+          <div className={styles.list}>
+            {loading
+              ? <SkeletonCard />
+              : pagedTokens.map((token: any, index: number) => (
+                <Card className={styles.card} collection={collection} token={token} key={token.tokenId} />
+              ))
+            }
+          </div>
         </div>
-        <Pagination count={pageCount} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton/>
+        <Pagination count={pageCount} shape="rounded" onChange={handlePageChange} showFirstButton showLastButton />
       </div>
     </>
   );

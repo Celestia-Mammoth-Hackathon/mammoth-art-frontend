@@ -22,7 +22,7 @@ const queryClient = new QueryClient()
 function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  let loginMethods: ("wallet" | "email" | "sms" | "google" | "twitter" | "discord" | "github" | "linkedin" | "spotify" | "instagram" | "tiktok" | "apple" | "farcaster" | "telegram")[] = ['email', 'wallet'];
+  let loginMethods: ("wallet" | "email" | "sms" | "google" | "twitter" | "discord" | "github" | "linkedin" | "spotify" | "instagram" | "tiktok" | "apple" | "farcaster" | "telegram")[] = ['email', 'sms', 'wallet'];
   let landingHeader = 'Connect a Wallet';
   if (router.asPath === '/drop/modularsummit') {
     loginMethods = ['email'];

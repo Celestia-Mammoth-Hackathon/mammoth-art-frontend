@@ -53,17 +53,25 @@
     text-align: left
     color: $n0
 
-.creator
+.creatorWrapper
+    margin-top: .5rem
+    width: max-content
+    
+.creator,
+.byCreator
     font-size: 16px
     font-weight: 700
     line-height: 24px
     text-align: left
+    
+.creator
     color: $n0
     cursor: pointer
-    margin-top: 10px
-    width: max-content
     &:hover
         color: $n11
+
+.byCreator
+    color: $n10
 
 .boxBody
     display: flex
@@ -100,3 +108,22 @@
         margin-top: rem(40)
     +m
         margin-top: rem(32)
+
+.imageWrapper
+    margin-top: 10px
+    display: flex
+    align-items: center
+    gap: 0.5rem
+    cursor: pointer
+    &:hover
+        .collectionTitle
+            color: $n11
+.photo
+    transform: scale(1)
+
+.collectionTitle
+    font-size: 18px
+    font-weight: 500
+    line-height: 24px
+    text-align: left
+    color: $n0

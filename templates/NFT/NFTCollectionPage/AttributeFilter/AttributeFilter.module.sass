@@ -1,0 +1,44 @@
+@import @/styles/helpers
+
+.attributeGroup
+    &.active
+        .attributeGroupName
+            color: $n0
+            font-weight: 700
+    &.expanded
+        .attributeValues
+            display: block
+        .arrow
+            svg
+                transform: rotate(0deg)
+
+.attributeGroupName
+    position: relative
+    line-height: 24px
+    &:hover
+        cursor: pointer
+        color: $n0
+        .arrow
+            svg
+                fill: $n0
+
+.arrow
+    position: absolute
+    top: 0
+    right: 0
+    display: flex
+    justify-content: center
+    align-items: center
+    width: 24px
+    height: 24px
+    svg
+        fill: $n4
+        transform: rotate(-90deg)
+        transition: transform .2s
+
+.checkbox
+    width: 100%
+    margin-bottom: 2px
+
+.attributeValues
+    display: none

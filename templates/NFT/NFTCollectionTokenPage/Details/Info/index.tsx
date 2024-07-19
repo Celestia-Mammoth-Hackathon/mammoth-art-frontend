@@ -1,0 +1,84 @@
+import styles from "./Info.module.sass";
+import { convertToPercentage } from "@/utils/index";
+import { chainExplorerURL } from "@/constants/details";
+
+type InfoProps = {
+    collection: any;
+    token: any;
+};
+
+const Info = ({ collection, token }: InfoProps) => {
+    const parsedMintedTime  = collection ? new Date(collection.startDate * 1000) : new Date();
+    const formatMintedTime = parsedMintedTime.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+    });
+
+    const mintedDate =
+        parsedMintedTime instanceof Date
+            ? `${formatMintedTime}`
+            : "Invalid Date";
+
+    return (
+        <div className={styles.info}>
+            <div className={styles.row}>
+                <div className={styles.title}>Contract</div>
+                    <a 
+                        className={styles.linkValue} 
+                        href={`${chainExplorerURL}/token/${collection?.token?.tokenAddress}`} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        {collection.tokenAddress}
+                    </a>
+            </div>
+            <div className={styles.row}>
+                <div className={styles.title}>Editions</div>
+                <div className={styles.value}>{token.totalSupply}</div>
+            </div>
+            <div className={styles.row}>
+                <div className={styles.title}>Royalty</div>
+                <div className={styles.value}>{convertToPercentage(collection.royalty)}%</div>
+            </div>
+            <div className={styles.row}>
+                <div className={styles.title}>Minted</div>
+                <div className={styles.value}>{mintedDate}</div>
+            </div>
+            <div className={styles.row}>
+                <div className={styles.title}>Token ID</div>
+                <div className={styles.value}>{token?.tokenId}</div>
+            </div>
+            <div className={styles.row}>
+                <div className={styles.title}>License</div>
+                <div className={styles.value}>No License</div>
+            </div>
+            <div className={styles.row}>
+                <div className={styles.title}>IPFS</div>
+                <div>
+                    <a 
+                        className={styles.ipfsValue} 
+                        href={`${chainExplorerURL}/token/${collection?.token?.tokenAddress}/instance/${collection?.token?.tokenId}`} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        ARTIFACT
+                    </a>
+                </div>
+                <div>
+                    <a 
+                        className={styles.ipfsValue} 
+                        href={`${chainExplorerURL}/token/${collection?.token?.tokenAddress}/instance/${collection?.token?.tokenId}?tab=metadata`} 
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        METADATA
+                    </a>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+export default Info;

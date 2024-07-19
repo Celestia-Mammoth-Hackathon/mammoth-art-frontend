@@ -2,20 +2,20 @@ import React, { useState } from "react";
 import cn from "classnames";
 import OutsideClickHandler from "react-outside-click-handler";
 import styles from "./Dropdown.module.sass";
-import Icon from "@/components/Icon";
+import Icon from "../Icon";
 
-type DropdownProps = {
-    className?: any;
-    value: string;
-    setValue: (value: string) => void;
-    options: any;
+type Dropdown = {
+  className?: string;
+  value: string;
+  setValue: (value: string) => void;
+  options: string[];
 };
 
-const Dropdown = ({ className, value, setValue, options }:DropdownProps ) => {
+const Dropdown = ({ className, value, setValue, options }: Dropdown) => {
   const [visible, setVisible] = useState(false);
 
-  const handleClick = (newValue:any) => {
-    setValue(newValue)
+  const handleClick = (value: string) => {
+    setValue(value);
     setVisible(false);
   };
 
@@ -31,15 +31,15 @@ const Dropdown = ({ className, value, setValue, options }:DropdownProps ) => {
           </div>
         </div>
         <div className={styles.body}>
-          {options.map((opt:any, index:number) => (
+          {options.map((opt, index) => (
             <div
               className={cn(styles.option, {
-                [styles.selectioned]: opt.value === value,
+                [styles.selectioned]: opt === value,
               })}
-              onClick={() => handleClick(opt.value)}
+              onClick={() => handleClick(opt)}
               key={index}
             >
-              {opt.label}
+              {opt}
             </div>
           ))}
         </div>

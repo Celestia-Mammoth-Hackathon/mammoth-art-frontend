@@ -13,13 +13,16 @@ const CollectionPage: NextPage = () => {
     attributeQuery = [ attributeQuery ];
   }
 
-  const attributes: Record<string, string> = attributeQuery.reduce((acc, query) => {
+  const attributes: Record<string, string[]> = attributeQuery.reduce((acc, query) => {
     const [key, value] = query.split("=");
     if (key && value) {
-      acc[key] = value;
+      if (!acc[key]) {
+        acc[key] = [];
+      }
+      acc[key].push(value);
     }
     return acc;
-  }, {} as Record<string, string>);
+  }, {} as Record<string, string[]>);
 
   // prevent "404" from flashing
   if (!slug) {

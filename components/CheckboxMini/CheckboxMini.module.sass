@@ -1,0 +1,65 @@
+@import ../../styles/helpers
+
+.checkbox
+    position: relative
+    display: flex
+    align-items: center
+    user-select: none
+    cursor: pointer
+    min-height: 24px
+    padding: 0 16px 0 8px
+    border: none
+
+.input
+    position: absolute
+    top: 0
+    left: 0
+    opacity: 0
+    visibility: hidden
+    &:checked + .inner
+        .tick
+            background: $n13
+            &:before
+                opacity: 1
+
+.inner
+    display: flex
+    align-items: flex-start
+    width: 100%
+
+.tick
+    position: relative
+    flex-shrink: 0
+    width: 18px
+    height: 18px
+    margin: 4px 8px 0 0
+    border-radius: 0
+    background: $n13
+    transition: background .2s, border-color .2s
+    &:before
+        content: ""
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 18px
+        height: 18px
+        transform: translate(-50%,-50%)
+        background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEcAAABHCAYAAABVsFofAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAJsSURBVHhe7ds/b9NAHMbxA2aqSpQFd+iCSHgBZkaCPYEVUXWlwApqF5ZW8EYQEoKyN/xZ286oRawkC52aFwB5wq8DivP4Lval5+j5SFXvPFTuV7/aiaNeWlu7+cdJocv2XQooDqE4hOIQikMoDqE4hOIQikMoDqE4hOIQikMoDqE4hOIQikMoDqE4hOIQikMs1KcP3Qcdt/tmx3aTtl5su72Pn2xXbmEmpywM9PsDW/lZiDheYX4N3OHBoe38ND6Ob5itl9u289foOCFhQqcGGhsndhhoZJx5hIHGxZlXGGhUnHmGgcbEmXcYqBwny27YKp6LCAMzxcnv5O745/fxV+/bvtt89iRaJPzsiwgDV5aXr72ytZdWu+XevX9ru38Q6+xs6Ab9vhsOh3a0ut3XO25947HtisUKA8GT02rfstX/nj7fdJ3R+Nc1QQjTfdixXbGYYSA4zsrKdVtNqiuQb5h7d+9HCwPBcU5Pf9uqWNVAIWFiC77mnBz/GN09um5p6aodmTTrNSilMDDzw67e132XrfLpwMjjAZPPc5TUwsDMr3NwkjhZBhOE23DZn1iKYWDmOFBHoFTDQKU4gJPe+8Cfy04LlHIYCL4gF/nc+zL6xTPXvt2yI5Oy1Wz8AvLo4Gh8kU49DNQSB0IC5XmefBio/aMZn4kok0IYqG1yzvlMEJNKGKh8QS6C9ztlF+kieF2UShiofXLOhU4Qwqw/2rBdGqLFAd9AKYaBqHGgLFCqYSB6HJgWKOUwoP/xJKLcrRaF4hCKQygOoTiE4hCKQygOoTiE4hCKQygOoTiE4hCKQygOoTiE4kzl3F9oRTpkiGnyVAAAAABJRU5ErkJggg==") no-repeat 50% 50% / 100% auto
+        opacity: 0
+        transition: opacity .2s
+
+.label
+    font-size: 14px
+    font-weight: 500
+    line-height: 24px
+    color: $n4
+
+.checked
+    .label
+        color: $n0
+        font-weight: 700
+
+.checkbox
+    &:hover
+        .label
+            color: $n0

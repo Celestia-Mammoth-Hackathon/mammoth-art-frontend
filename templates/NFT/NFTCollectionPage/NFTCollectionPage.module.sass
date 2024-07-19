@@ -16,12 +16,14 @@
     background: $n8
     padding: rem(80)
     +xl
-        padding: rem(64)
+        padding: rem(80) rem(64)
     +w
-        padding: rem(64) rem(40)
+        padding: rem(80) rem(40) rem(64)
     +d
-        padding: rem(40)
+        padding: rem(80) rem(40) rem(40)
     +t
+        padding: rem(80) rem(24) rem(40)
+    +m
         padding: rem(40) rem(24)
 
 .dot
@@ -95,6 +97,8 @@
     display: flex
     flex-wrap: wrap
     justify-content: space-between
+    align-self: flex-start
+    flex-grow: 1
     margin: 0
     &::after
         content: ""
@@ -153,18 +157,51 @@
 .currency
     font-size: 12px
 
-.filters
+.row
+    position: relative
     display: flex
-    justify-content: flex-end
-    margin-top: rem(-40)
-    +xl
-        margin-top: rem(-32)
-    +w
-        margin-top: rem(-32)
-    +d
-        margin-top: rem(-20)
-    +t
-        margin-top: rem(-20)
+    flex-direction: row
+    gap: 20px
+
+.sidebar
+    width: 300px
+    min-width: 300px
+    max-width: 300px
+    align-self: flex-start
+    position: sticky
+    top: 40px
+    display: none
+    +m
+        display: none
+    .dropdown
+        width: 100%
+        margin-bottom: 16px
+    .checkbox
+        width: 100%
+        margin-bottom: 16px
+
+.attributes
+    border: 1px solid $n6
+    font-size: 14px
+    font-weight: 500
+    color: $n4
+    padding: 8px
+    max-height: 65vh
+    overflow-y: scroll
+    scrollbar-gutter: stable
+    scrollbar-color: $n10 $n8
+    scrollbar-width: thin
+
+.attributes::-webkit-scrollbar-thumb
+    border-radius: 0px
+    background: $n10
+
+.attributes::-webkit-scrollbar
+    background: $n8
+    width: 8px
+
+.filters
+    display: none
     +m
         display: block
     margin-bottom: 16px
@@ -177,3 +214,31 @@
         +m
             width: 100%
             margin-bottom: 16px
+
+.filterButton
+    background: transparent
+    position: absolute
+    left: 0
+    top: -64px
+    height: 48px
+    border: 1px solid $n6
+    font-weight: 500
+    color: $n4
+    padding: 0 16px
+    &:hover
+        border: 1px solid $n0
+    +m
+        display: none
+    svg
+        fill: none
+        stroke: $n4
+        stroke-width: 1px
+        stroke-linecap: round
+        stroke-linejoin: round
+        margin-left: 0
+        margin-right: 16px
+    &.active
+        + .sidebar
+            display: block
+            +m
+                display: none

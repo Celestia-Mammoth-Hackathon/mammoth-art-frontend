@@ -10,6 +10,7 @@ import { artistAddresses } from '@/constants/details';
 import { formatUserAddress } from "@/utils/index";
 import SkeletonDescription from "../SkeletonDescription";
 import Attributes from "./Attributes";
+import Image from '@/components/Image';
 
 type DescriptionProps = {
     exit?: boolean;
@@ -62,13 +63,36 @@ const Description = ({
                     <div className={styles.box}>
                         <div className={styles.boxHeader}>
                             <div className={styles.title}>{token.metadata.name}</div>
-                            <Link href={{
-                                        pathname: '/profile/[slug]',
-                                        query: { slug: artistInfor?.slug },
-                            }}>
-                                <div className={styles.creator}>{artistInfor?.name || formatUserAddress(contractCreator)}</div>
+                            <Link 
+                                href={{
+                                    pathname: '/collection/[slug]',
+                                    query: { slug: collection.slug },
+                                }}
+                            >
+                                <div className={styles.imageWrapper}>
+                                    <Image
+                                        className={styles.photo}
+                                        src={collection.collectionImage}
+                                        width={40}
+                                        height={40}
+                                        alt="Collection Image"
+                                        priority={true}
+                                    />
+                                    <span className={styles.collectionTitle}>
+                                        {collection.collectionName}
+                                    </span>
+                                </div>
                             </Link>
                             
+                            <div className={styles.creatorWrapper}>
+                                <span className={styles.byCreator}>By: </span>
+                                <Link href={{
+                                    pathname: '/profile/[slug]',
+                                    query: { slug: artistInfor?.slug },
+                                }}>
+                                    <span className={styles.creator}>{artistInfor?.name || formatUserAddress(contractCreator)}</span>
+                                </Link> 
+                            </div>
                         </div>
                         <div className={styles.boxBody}>
                             <div className={styles.content}>{token.metadata.description}</div>

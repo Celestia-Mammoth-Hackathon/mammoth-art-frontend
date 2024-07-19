@@ -11,6 +11,8 @@ import { useUserContext } from "context/user";
 import Tabs from "./Details/Tabs";
 import Icon from "@/components/Icon";
 import useCollectionStore from '@/store/index';
+import Details from "./Details";
+import SkeletonDescription from "@/components/SkeletonDescription";
 
 type NFTCollectionTokenPageProps = {
   collection: any;
@@ -196,43 +198,31 @@ const NFTCollectionTokenPage = ({ collection, tokenId, tab }: NFTCollectionToken
   }
 
   return (
-    <>
-      <Description
-          collection={collection}
-          token={token}
-          contractCreator={collection.contractCreator}
-          userToken={userToken}
-          loading={loading}
-      >
-        <div className={styles.viewCollection}>
-        <Link href={{
-            pathname: '/collection/[slug]/',
-            query: { slug: collection.slug },
-        }}>
-          <a>
-            <Icon name="arrow-left" className={styles.viewCollectionIcon} />
-            VIEW COLLECTION
-          </a>
-        </Link>
-        </div>
-        <Caption title={token?.metadata.name} login={artistInfo?.slug} user={artistInfo?.name} />
-        <Tabs
-          tab={tab}
-          collection={collection}
-          token={token}
-          address={address}
-          listings={listings}
-          setListings={setListings}
-          fetchListingTrigger={fetchListingTrigger}
-          setFetchListingTrigger={setFetchListingTrigger}
-          ownedSupply={ownedSupply}
-          availableSupply={availableSupply}
-          ownedTrigger={ownedTrigger}
-          setOwnedTrigger={setOwnedTrigger}
-          loading={loading}
-        />
-      </Description>
-    </>
+    (loading || !collection)
+        ?   <SkeletonDescription>
+                <Details 
+                    collection={collection}
+                    token={token}
+                    userToken={userToken}
+                    loading={loading}
+                />
+            </SkeletonDescription>
+        :  <>
+        <Description
+            collection={collection}
+            token={token}
+            contractCreator={collection.contractCreator}
+            userToken={userToken}
+            loading={loading}
+        >
+          <Details 
+            collection={collection}
+            token={token}
+            userToken={userToken}
+            loading={loading}
+          />
+        </Description>
+      </>
   );
 };
 

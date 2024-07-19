@@ -1,9 +1,8 @@
-@import ../../styles/helpers
+@import @/styles/helpers
 
 .dropdown
     position: relative
-    border: 1.5px solid $n10
-    box-shadow: 2px 4px 0px 0px $n10
+    z-index: 3
     &.active
         z-index: 10
         .head
@@ -14,20 +13,20 @@
             visibility: visible
             opacity: 1
             transform: translateY(0)
-    &:hover
-        border: 1.5px solid $n0
-        box-shadow: 2px 4px 0px 0px $n0
 
 .head
     position: relative
     height: 48px
     padding: 0 48px 0 16px
+    border: 1px solid $n6
+    color: $n4
     font-size: 14px
     font-weight: 500
     line-height: 48px
     cursor: pointer
     -webkit-tap-highlight-color: rgba(0,0,0,0)
-    transition: box-shadow .2s
+    &:hover
+        border: 1px solid $n0
 
 .selection
     overflow: hidden
@@ -36,7 +35,6 @@
 
 .arrow
     position: absolute
-    fill: white
     top: 50%
     right: 8px
     display: flex
@@ -44,23 +42,25 @@
     align-items: center
     width: 32px
     height: 32px
-    border-radius: 50%
     transform: translateY(-50%)
     svg
-        fill: $n10
+        fill: $n4
         transition: transform .2s
+        svg
+            fill: $n8
+
 .body
-    top: calc(100% + 2px)
-    border: 1px solid $n0
     position: absolute
+    top: calc(100% + 2px)
     left: 0
     right: 0
-    background: $n9
+    padding: 8px 0
+    background: $n8
+    border: 1px solid $n0
     visibility: hidden
     opacity: 0
     transform: translateY(3px)
     transition: all .2s
-
 
 .option
     padding: 8px 16px
@@ -69,8 +69,7 @@
     transition: color .2s
     cursor: pointer
     -webkit-tap-highlight-color: rgba(0,0,0,0)
-    &:not(:last-child) 
-        border-bottom: 1px solid $n0
-    &:hover
-        background: $n13
-    
+    color: $n5
+    &:hover,
+    &.selectioned
+        color: $n0

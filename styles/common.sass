@@ -1,5 +1,7 @@
 html
     font-size: calc(.9rem + .4vw)
+    scrollbar-color: $n10 $n8
+    scrollbar-width: thin
     +r(2400)
         font-size: calc(.8rem + .4vw)
     +r(2200)
@@ -10,7 +12,15 @@ html
         font-size: calc(.6rem + .4vw)
     +xl
         font-size: 16px
-    
+
+html::-webkit-scrollbar-thumb
+    border-radius: 0px
+    background: $n10
+
+html::-webkit-scrollbar
+    background: $n8
+    width: 8px
+
 body
     background: $n1
     +inter

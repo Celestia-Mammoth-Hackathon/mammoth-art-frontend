@@ -1,0 +1,288 @@
+@import @/styles/helpers
+
+@import @/styles/helpers
+
+.details
+    background: $n9
+    border: 1px solid $n0
+    
+.row
+    display: flex
+    +m
+        display: block
+
+.col
+    flex: 0 0 100%
+    width: 100%
+    padding: rem(32)
+    border-bottom: rem(1) solid $n3
+    +w
+        padding: rem(24)
+    +m
+        padding: rem(16) rem(24)
+    &:nth-child(1)
+    .button
+        margin-top: rem(20)
+        +m
+            margin-top: rem(12)
+
+.label
+    +title
+    font-size: 18px
+    font-weight: 700
+    line-height: 36px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+
+.value
+    display: flex
+    align-items: center
+    min-height: rem(40)
+    font-size: 32px
+    font-weight: 700
+    line-height: 40px
+    letter-spacing: 0em
+    text-align: left
+    color: $n0
+    +d
+        min-height: rem(32)
+        +h4S
+    &:empty
+        &:before
+            content: ""
+            width: rem(160)
+            height: rem(24)
+            background: $n3
+            border-radius: rem(4)
+            +w
+                width: rem(120)
+            +d
+                width: rem(160)
+
+.foot
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding-left: rem(32)
+    padding-top: rem(16)
+    padding-bottom: rem(16)
+    padding-right: rem(32)
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.user
+    display: flex
+    align-items: center
+    margin: 0 rem(16)
+    +d
+        order: 3
+        margin: rem(16) 0 0
+    +m
+        order: 2
+        margin: 0 0 rem(16)
+
+.avatar
+    position: relative
+    flex-shrink: 0
+    width: rem(48)
+    height: rem(48)
+    margin-right: rem(14)
+    border: rem(4) solid $n1
+    border-radius: 50%
+    img
+        position: relative
+        z-index: 3
+        border-radius: 50%
+    &:before
+        content: ""
+        position: absolute
+        inset: rem(-4)
+        border: rem(1) solid $n7
+        border-radius: 50%
+    &.history
+        &:before
+            inset: rem(-3)
+            z-index: 1
+            background: $n1
+            border-color: transparent
+        &:after
+            content: ""
+            position: absolute
+            inset: rem(-4)
+            background: $grd
+            border-radius: 50%
+
+.author
+    +base
+    color: $n0
+
+.code
+    margin-top: rem(2)
+    +captionBold
+    color: $n10
+
+.offerFoot
+    padding: rem(32)
+    border-top: rem(1) solid $n3
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.footBox
+    display: flex
+    flex-direction: column
+    justify-content: space-between
+
+.footItem
+    display: flex
+    justify-content: space-between
+    height: 67px
+    gap: 21px
+    +s
+        flex-direction: column
+        margin-bottom: 40px
+        gap: 0px
+        .box
+
+
+
+.footTitle
+    font-size: 18px
+    font-weight: 700
+    line-height: 36px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+
+
+.button
+    border: 1px solid $n0
+    background: $n11
+    box-shadow: 4px 6px 0px 0px $n0
+    padding: 0 rem(22)
+    cursor: pointer
+    +m
+        order: 3
+        width: 100%
+    &:hover
+        background: $n12
+        border: 1px solid $n0
+
+.fee
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    margin-left: 16px
+
+.percent
+    font-size: 16px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+
+.set
+    display: flex
+    justify-content: space-between
+    align-items: center
+    padding: rem(32)
+    border-top: rem(1) solid $n3
+    +w
+        padding: rem(24)
+    +d
+        flex-wrap: wrap
+    +m
+        padding: rem(16) rem(24)
+        border: none
+
+.setButton
+    padding: 32px
+
+.btnWrap
+    display: flex
+    align-items: center
+    border: 1.5px solid $n10
+    box-shadow: 2px 4px 0px 0px $n10
+    height: 60px
+    max-width: 100%
+    &:hover
+        border: 1.5px solid $n0
+        box-shadow: 2px 4px 0px 0px $n0
+    &:focus-within 
+        border-color: $n0
+        box-shadow: 2px 4px 0px 0 $n0
+    
+
+.buyNowInput
+    display: flex
+    background: $n9
+    text-align: left
+    font-size: 40px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    padding-left: 16px
+    border-right: 1px solid $n10
+    color: $n0
+    max-width: 80%
+    height: 100%
+    +d
+        max-width: 60%
+
+
+    
+
+.logo
+    display: flex
+    justify-content: left
+    align-items: center
+    background: $n9
+    text-align: left
+    font-size: 40px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    color: $n10
+    padding-left: 16px
+
+.logoTitle
+    font-size: 20px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    color: $n10
+    margin-left: 8px
+
+.cancelButon
+    padding: 12px 32px 12px 32px
+    border: 1px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    color: $n0
+    cursor: pointer
+    width: 150px
+    text-align: center
+    font-size: 14px
+    font-weight: 700
+    line-height: 24px
+    letter-spacing: 0em
+    &:hover
+        background: $n13
+
+.loadingWrapper
+    display: flex
+    flex-direction: column
+    gap: 1rem
