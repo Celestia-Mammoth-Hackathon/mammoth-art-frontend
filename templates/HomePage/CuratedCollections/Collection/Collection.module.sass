@@ -5,11 +5,11 @@
     border: 1px solid $n10
     color: $n7
     transition: color .2s
+    cursor: pointer
     &:hover
         .subtitle
             color: $n11
     
-
 .images
     display: flex
     flex-wrap: wrap
@@ -50,19 +50,23 @@
 
 .details
     display: flex
+    flex-direction: column
     justify-content: space-between
     align-items: center
     padding: 8px
 
 .box
     &:nth-child(1)
-        flex-shrink: 0
-        width: 50%
+        flex-shrink: 1
+        width: 100%
         text-align: left
-    &:nth-child(2)
-        flex-shrink: 0
-        width: 50%
-        text-align: right
+    &:nth-child(3)
+        flex-shrink: 1
+        width: 100%
+        display: flex
+        justify-content: space-between
+        align-items: center
+
 
 .subtitle
     color: $n0
@@ -79,13 +83,6 @@
         +body1M
     &:hover
         color: $n11
-
-.author
-    font-size: 16px
-    font-weight: 500
-    letter-spacing: -0.05em
-    text-align: left
-    color: $n0
 
 .avatar
     position: relative
@@ -110,3 +107,38 @@
     font-weight: 500
     letter-spacing: -0.05em
     text-align: right
+
+.byAuthor
+    font-family: IBM Plex Mono
+    font-size: 16px
+    font-weight: 500
+    line-height: 32px
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n10
+
+.author
+    font-size: 16px
+    font-weight: 500
+    letter-spacing: -0.05em
+    text-align: left
+    color: $n0
+    &:hover
+        color: $n11
+    
+.line
+    width: calc(100% + 1rem)
+    height: 1px
+    background-color: $n10
+    margin: 10px 0
+
+.subtitleHover
+    color: $n0 !important
+
+.label
+    font-size: 16px
+    font-weight: 500
+    line-height: 24px
+    letter-spacing: -0.01em
+    text-align: left
+    color: $n10
