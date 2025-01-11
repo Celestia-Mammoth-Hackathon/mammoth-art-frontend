@@ -26,9 +26,12 @@
     "@wagmi/core": "^2.6.15",
     "axios": "^1.7.2",
     "classnames": "^2.3.1",
+    "colorthief": "^2.4.0",
+    "crypto-js": "^4.2.0",
     "d": "^1.0.1",
     "dnum": "^2.13.1",
     "ethers": "^5.7.2",
+    "jszip": "^3.10.1",
     "next": "12.3.0",
     "react": "18.1.0",
     "react-compound-timer": "^1.2.0",
@@ -43,8 +46,7 @@
     "swiper": "^8.4.2",
     "uuid": "^9.0.1",
     "viem": "2.x",
-    "wagmi": "^2.10.7",
-    "colorthief": "^2.4.0"
+    "wagmi": "^2.10.7"
   },
   "devDependencies": {
     "@types/lodash": "^4.17.0",
