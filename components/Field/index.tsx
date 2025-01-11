@@ -3,13 +3,13 @@ import cn from "classnames";
 import styles from "./Field.module.sass";
 import Icon from "@/components/Icon";
 import Dropdown from '../Dropdown';
+import JSZip from "jszip";
 
 type FieldProps = {
   className?: string;
   inputClassName?: string;
   textarea?: boolean;
   upload?: boolean;
-  type?: string;
   value: string;
   onChange: any;
   placeholder?: string;
@@ -19,11 +19,12 @@ type FieldProps = {
   autoFocus?: any;
   light?: boolean;
   large?: boolean;
-  label?: string;
   options?: any;
   setImage?: any;
+  setUploadError?: any
   collectionImage?:boolean;
   bannerImage?:boolean;
+  uploadZipFile?: boolean;
   nftImage?:boolean;
   search?: boolean;
   number?: boolean;
@@ -31,13 +32,15 @@ type FieldProps = {
   min?: string;
   max?: string;
   isSubmitted?: boolean;
+  zipFile?:any;
+  setZipFile?:any;
+  setIsValidZip?: any
 };
 
 const Field = ({
   className,
   inputClassName,
   textarea,
-  type,
   value,
   onChange,
   placeholder,
@@ -46,11 +49,10 @@ const Field = ({
   autoFocus,
   light,
   large,
-  label,
   upload,
   options,
   setImage,
-  bannerImage,
+  uploadZipFile,
   collectionImage,
   nftImage,
   number,
@@ -59,6 +61,9 @@ const Field = ({
   max,
   search = false,
   isSubmitted,
+  zipFile,
+  setZipFile,
+  setIsValidZip
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
@@ -66,12 +71,12 @@ const Field = ({
   let fileDimension = null;
 
   const [isValid, setIsValid] = useState(true);
+  const [uploadError, setUploadError] = useState<any>(null);
   
-  if (bannerImage) {
-    fileName = "Banner Image";
-    fileType = "gif, jpeg, png, or svg ";
-    fileSize = "24MB";
-    fileDimension = "1600px by 400px";
+  if (uploadZipFile) {
+    fileName = "Zip File";
+    fileType = "zip";
+    fileSize = "2GB";
   } else if (collectionImage) {
     fileName = "Collection Image";
     fileType = "gif, jpeg, png, or svg ";
@@ -83,20 +88,57 @@ const Field = ({
     fileSize = "100MB";
   }
   
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleZipFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
-    
-    if (selectedFile) {
-        const reader = new FileReader();
-    
-        reader.onload = () => {
-          // Set the data URL as the image source using setImage prop
-          setImage(reader.result);
-        };
-    
-        reader.readAsDataURL(selectedFile);
-      }
-    setIsValid(!!selectedFile);
+    if (selectedFile && selectedFile.type === "application/x-zip-compressed") {
+      const reader = new FileReader();
+  
+      reader.onload = async (event) => {
+        try {
+          const zip = await JSZip.loadAsync(event.target?.result as ArrayBuffer);
+          // Check for the presence of required files
+          const requiredFiles = ["index.html", "index.js", "style.css"];
+          const folder = zip.folder(selectedFile?.name);
+
+          let missingFiles:any = [];
+          if (folder?.files) {
+            missingFiles = requiredFiles.filter((file) => {
+              // Check if any of the files in the folder includes the required file name
+              const foundFile = Object.keys(folder.files).some((fileName) =>
+                fileName.includes(file) 
+              );
+              return !foundFile;
+            });
+          }
+
+          if (missingFiles.length === 0) {
+            console.log("Valid ZIP file containing required files");
+            setZipFile(selectedFile);
+            setIsValid(true);
+            setIsValidZip(true)
+          } else {
+            setUploadError(
+              `Invalid ZIP file. Missing required files: ${missingFiles.join(",")}`
+            );
+            setZipFile(null);
+            setIsValid(false);
+            setIsValidZip(false);
+          }
+        } catch (err) {
+          setUploadError("No files found in the folder.");
+          setZipFile(null);
+          setIsValid(false);
+          setIsValidZip(false);
+        }
+      };
+  
+      reader.readAsArrayBuffer(selectedFile);
+    } else {
+      console.error("Invalid file type. Please upload a ZIP file.");
+      setZipFile(null);
+      setIsValid(false);
+      setIsValidZip(false);
+    }
   };
 
   const handleDrop = useCallback((event:any) => {
@@ -115,6 +157,7 @@ const Field = ({
   
       reader.readAsDataURL(selectedFile);
     }
+
     setIsValid(droppedFiles.length > 0);
   }, []);
 
@@ -142,7 +185,7 @@ const Field = ({
     if(isSubmitted) {
       validateField();
     }
-  }, [value, upload, number, isSubmitted]);
+  }, [value, upload, number, isSubmitted, zipFile]);
 
   const preventDefaultHandler = (event:any) => {
     event.preventDefault();
@@ -180,18 +223,31 @@ const Field = ({
                     <input
                     className={styles.file}
                     type="file"
-                    onChange={handleFileChange}
+                    accept=".zip"
+                    onChange={handleZipFile}
                     required
                     />
                     UPLOAD
                 </label>
             
-            <div className={styles.details}>
-              <div className={styles.detail}>Drag and Drop {fileName}</div>
-              <div className={styles.type}>Types supported: {fileType}</div>
-              <div className={styles.type}>Max file size is {fileSize}</div>
-              <div className={styles.type}>{fileDimension ? `Recommended size: ${fileDimension}` : ""}</div>
-            </div>
+                <div className={styles.details}>
+                  {zipFile && isValid ? (
+                    <div className={styles.success}>
+                      Uploaded File: {zipFile.name} 
+                    </div>
+                  ) : uploadError ? (
+                    <div className={styles.error}>
+                      {uploadError}
+                    </div>
+                  ) : (
+                    <div className={styles.details}>
+                      <div className={styles.detail}>Drag and Drop {fileName}</div>
+                      <div className={styles.type}>Types supported: {fileType}</div>
+                      <div className={styles.type}>Max file size is {fileSize}</div>
+                      <div className={styles.type}>{fileDimension ? `Recommended size: ${fileDimension}` : ""}</div>
+                    </div>
+                  )}
+                </div>
           </div>
         ) : number ? (
           <input 
@@ -222,7 +278,7 @@ const Field = ({
           />
         )}
       </div>
-      {label && !isValid && required && <div className={styles.label}>{label}</div>}
+      {/* {label && !isValid && required && <div className={styles.label}>{label}</div>} */}
     </div>
   );
 };

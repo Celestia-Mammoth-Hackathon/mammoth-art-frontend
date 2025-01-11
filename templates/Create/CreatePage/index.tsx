@@ -8,47 +8,8 @@ import Icon from "@/components/Icon";
 const CreatPage = () => {
     return (
         <>
-            <LayoutCreate
-                left={
-                    <>
-                        <div className={cn("h1", styles.title)}>
-                            Create
-                        </div>
-                        <Arrow className={styles.arrow} />
-                        <div className={styles.content}>
-                            Create a collection or select a 
-                            collection to create a NFT under.
-                        </div>
-                    </>
-                }
-            >
-                <div className={styles.head}>
-                    <div className={styles.subtitle}>Your collection(s)</div>
-                    <div className={styles.counter}>0</div>
-                </div>
-                <Link href="/create/step-1">
-                    <a className={styles.add}>
-                        <div className={styles.plus}></div>
-                        <div className={styles.info}>Create a new collection</div>
-                    </a>
-                </Link>
-                <div className={styles.list}>
-                    {Array.from(Array(3).keys()).map((x) => (
-                        <div className={styles.item} key={x}>
-                            <div className={styles.preview}>
-                                <Icon name="picture" />
-                            </div>
-                            <div className={styles.lines}></div>
-                        </div>
-                    ))}
-                </div>
-                {/* <div className={styles.foot}>
-                    <Link href="/article">
-                        <a className={styles.link}>
-                            Learn about Collection on Crypter
-                        </a>
-                    </Link>
-                </div> */}
+            <LayoutCreate step="1">
+                
             </LayoutCreate>
         </>
     );

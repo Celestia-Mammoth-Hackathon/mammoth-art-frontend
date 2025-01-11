@@ -25,24 +25,16 @@ const Details = ({
     const [theme, setTheme] = useState<boolean>(false);
     const tabsTokens = [
         {
-            title: "Info",
+            title: "[INFO]",
             value: "info",
         },
         {
-            title: "Listings",
+            title: "[LISTINGS]",
             value: "listings",
         },
         {
-            title: "Offers",
-            value: "offers",
-        },
-        {
-            title: "Owners",
-            value: "owners",
-        },
-        {
-            title: "History",
-            value: "history",
+            title: "[ACTIVITY]",
+            value: "activity",
         },
     ];
     const onChange = (e:any) => {

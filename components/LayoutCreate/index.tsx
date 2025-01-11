@@ -1,164 +1,72 @@
 import styles from "./LayoutCreate.module.sass";
 import { useEffect, useState } from "react";
 import cn from "classnames";
-import List from "@/components/List";
-import Preview from "../../templates/Create/CreateStep1Page/Preview";
-import LeftElementCollection from "./Collection/LeftElement";
-import RightElementCollection from "./Collection/RightElement";
-import LeftElementNft from "./Nft/LeftElement";
-import RightElementNft from "./Nft/RightElement";
-import Field from "@/components/Field";
+import Icon from "@/components/Icon";
+import Link from "next/link";
+import UploadElement from "./Upload";
 
 type LayoutCreateProps = {
-    left: React.ReactNode;
-    children: React.ReactNode;
+    step: string; // Updated type to match expected prop
 };
 
-const collectionOptions = [
-    {
-        label: "Da Best NFTs",
-        value: "Da Best NFTs",
-    },
-    {
-        label: "Da Great NFTs",
-        value: "Da Great NFTs",
-    },
-];
+const LayoutCreate = ({ step }: LayoutCreateProps) => {
+    const [steps, setSteps] = useState([
+        { id: 1, name: "Upload", icon: "upload", href: "/create/upload" },
+        { id: 2, name: "Checking Files", icon: "check", href: "/create/upload" },
+        { id: 3, name: "Preview Images", icon: "preview", href: "/create/upload" },
+        { id: 4, name: "Distributions", icon: "give", href: "/create/upload" },
+        { id: 5, name: "Project Details", icon: "details", href: "/create/upload" },
+        { id: 6, name: "Preview & Mint", icon: "mint", href: "/create/upload" },
+    ]);
 
-const LayoutCreate = ({ left, children }: LayoutCreateProps) => {
-    const [theme, setTheme] = useState<any>(false);
-    const [sortingTokens, setSortingTokens] = useState<string>("");
     const [leftElement, setLeftElement] = useState<any>(null);
     const [rightElement, setRightElement] = useState<any>(null);
 
-    const [name, setName] = useState<string>("");
-    const [symbol, setSymbol] = useState<string>("");
-    const [description, setDescription] = useState<string>("");
-    const [bannerImage, setBannerImage] = useState<any>("");
-    const [collectionImage, setCollectionImage] = useState<any>("");
-
-    const [collection, setCollection] = useState<string>("Da Best NFTs")
-    const [nftName, setNftName] = useState<string>("");
-    const [nftDesc, setNftDesc] = useState<string>("");
-    const [edition, setEdition] = useState<string>("");
-    const [royalty, setRoyalty] = useState<string>("");
-    const [nftImage, setNftImage] = useState<any>(""); 
-
-    const [isNftSubmitted, setIsNftSubmitted] = useState<boolean>(false);
-    const [isCollectionSubmitted, setIsCollectionSubmitted] = useState<boolean>(false);
-    const tabsSorting = [
-        {
-            title: "Create NFT",
-            value: "nft",
-        },
-        {
-            title: "Create Collection",
-            value: "collection",
-        },
-    ];
-
     useEffect(() => {
-        // Check if sortingTokens is 'nfts'
-        if (sortingTokens === "collection") {
-            setLeftElement(
-                <LeftElementCollection
-                    name={name}
-                    description={description}
-                    bannerImage={bannerImage}
-                    collectionImage={collectionImage}
-                    setName={setName}
-                    setDescription={setDescription}
-                    setBannerImage={setBannerImage}
-                    setCollectionImage={setCollectionImage}
-                    isCollectionSubmitted={isCollectionSubmitted}
-                />
-            );
-            setRightElement(
-                <RightElementCollection
-                    name={name}
-                    description={description}
-                    collectionImage={collectionImage}
-                    bannerImage={bannerImage}
-                    setIsCollectionSubmitted={setIsCollectionSubmitted}
-                />
-            );
-        } else if(sortingTokens === "nft") {
-            setLeftElement(
-                <LeftElementNft
-                    collection={collection}
-                    nftName={nftName}
-                    nftDesc={nftDesc}
-                    edition={edition}
-                    royalty={royalty}
-                    nftImage={nftImage}
-                    options={collectionOptions}
-                    setCollection={setCollection}
-                    setNftName={setNftName}
-                    setNftDesc={setNftDesc}
-                    setEdition={setEdition}
-                    setRoyalty={setRoyalty}
-                    setNftImage={setNftImage}
-                    isNftSubmitted={isNftSubmitted}
-                />
-            );
-            setRightElement(
-                <RightElementNft 
-                    collection={collection}
-                    edition={edition}
-                    royalty={royalty}
-                    nftName={nftName}
-                    nftDesc={nftDesc}
-                    nftImage={nftImage}
-                    setIsNftSubmitted={setIsNftSubmitted}
-                />
-            );
-        } else {
-            setLeftElement(
-                <>
-                        <div className={cn("h1", styles.title)}>
-                            Create An NFT
-                        </div>
-                        
-                        <div className={styles.content}>
-                        You haven’t created a collection yet. To create a NFT, you must
-                        first create a collection and then mint your NFT under that collection.
-                        </div>
-                        <button className={styles.noColButton}>
-                            CREATE COLLECTION
-                        </button>
-                </>
-            )
-            setRightElement(
-                <></>
-            )
-        }
-    }, [sortingTokens, collection, edition, royalty, nftImage, nftName, nftDesc, collectionImage, bannerImage, name, description, isNftSubmitted, isCollectionSubmitted]);
+        setLeftElement(
+            <>
+                <div className={styles.content}>
+                    {steps.map((item, index) => (
+                        <Link
+                            key={item.id}
+                            href={item.href}
+                            className={cn({
+                                [styles.disabled]: step > String(item.id),  // Items after active
+                            })}
+                        >
+                            <div
+                                className={cn(styles.step, {
+                                    [styles.active]: step === String(item.id),
+                                    [styles.beforeActive]: step > String(item.id),
+                                    [styles.afterActive]: step < String(item.id),
+                                })}
+                            >
+                                <Icon name={item.icon} fill="#ffffff" />
+                                <span>{item.name}</span>
+                            </div>
+                        </Link>
+                    ))}
+                </div>
+            </>
+        );
+
+        setRightElement(<UploadElement/>);
+    }, [step, steps]);
 
     return (
-        <div className={styles.row}>
-        <List
-            tabs={tabsSorting}
-            tabsValue={sortingTokens}
-            setTabsValue={setSortingTokens}
-            light={theme}
-            create={true}
-        >
-            <form
-                className={styles.form}
-                action=""
-                onSubmit={() => console.log("Submit")}
-            >
-                <div className={styles.col}>
-                    <div className={styles.wrap}>{leftElement}</div>
-                </div>
-                <div className={styles.col}>
-                    {rightElement}
-                </div>
-            </form>
-        </List>
-    </div>
-    )
-    
+        <div className={styles.layout}>
+            <div className={cn("h1", styles.title)}>
+                —mint a Generative Collection
+            </div>
+            <div className={styles.row}>
+            <div className={styles.col}>
+                <div className={styles.wrap}>{leftElement}</div>
+            </div>
+                <div className={styles.col}>{rightElement}</div>
+            </div>
+        </div>
+        
+    );
 };
 
 export default LayoutCreate;
