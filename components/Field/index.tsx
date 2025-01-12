@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import cn from "classnames";
 import styles from "./Field.module.sass";
-import Icon from "@/components/Icon";
 import Dropdown from '../Dropdown';
 import JSZip from "jszip";
+
 
 type FieldProps = {
   className?: string;
@@ -34,7 +34,8 @@ type FieldProps = {
   isSubmitted?: boolean;
   zipFile?:any;
   setZipFile?:any;
-  setIsValidZip?: any
+  setIsValidZip?: any;
+  setUploadedFile?: any;
 };
 
 const Field = ({
@@ -63,7 +64,8 @@ const Field = ({
   isSubmitted,
   zipFile,
   setZipFile,
-  setIsValidZip
+  setIsValidZip,
+  setUploadedFile
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
@@ -97,7 +99,7 @@ const Field = ({
         try {
           const zip = await JSZip.loadAsync(event.target?.result as ArrayBuffer);
           // Check for the presence of required files
-          const requiredFiles = ["index.html", "index.js", "style.css"];
+          const requiredFiles = ["index.html", "index.js", "styles.css"];
           const folder = zip.folder(selectedFile?.name);
 
           let missingFiles:any = [];
@@ -115,7 +117,8 @@ const Field = ({
             console.log("Valid ZIP file containing required files");
             setZipFile(selectedFile);
             setIsValid(true);
-            setIsValidZip(true)
+            setIsValidZip(true);
+            setUploadedFile(selectedFile);
           } else {
             setUploadError(
               `Invalid ZIP file. Missing required files: ${missingFiles.join(",")}`

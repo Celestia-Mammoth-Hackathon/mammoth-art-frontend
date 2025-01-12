@@ -1,14 +1,19 @@
 import axios from "axios";
 
-export const uploadFileToNFTStorage = async (file:any) => {
-  const form = new FormData();
-  form.append("asset", file);
+export const uploadFolderToNFTStorage = async (formData:any) => {
+  const res = await fetch(
+    "https://api.pinata.cloud/pinning/pinFileToIPFS",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+      },
+      body: formData,
+    }
+  );
+  const resData = await res.json();
 
-  const res = await axios.post("https://upload.crunchy.network/single", form, {
-    headers: { "Content-Type": "multipart/form-data" },
-  });
-
-  return res.data.cid;
+  return resData.IpfsHash;
 };
 
 const MOD_IPFS_CIDS = [

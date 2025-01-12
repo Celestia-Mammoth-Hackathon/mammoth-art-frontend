@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import Icon from "@/components/Icon";
 import Link from "next/link";
-import UploadElement from "./Upload";
+
 
 type LayoutCreateProps = {
-    step: string; // Updated type to match expected prop
+    step: string; 
+    rightElement: any;
 };
 
-const LayoutCreate = ({ step }: LayoutCreateProps) => {
+const LayoutCreate = ({ step, rightElement }: LayoutCreateProps) => {
     const [steps, setSteps] = useState([
         { id: 1, name: "Upload", icon: "upload", href: "/create/upload" },
         { id: 2, name: "Checking Files", icon: "check", href: "/create/upload" },
@@ -20,7 +21,6 @@ const LayoutCreate = ({ step }: LayoutCreateProps) => {
     ]);
 
     const [leftElement, setLeftElement] = useState<any>(null);
-    const [rightElement, setRightElement] = useState<any>(null);
 
     useEffect(() => {
         setLeftElement(
@@ -49,8 +49,6 @@ const LayoutCreate = ({ step }: LayoutCreateProps) => {
                 </div>
             </>
         );
-
-        setRightElement(<UploadElement/>);
     }, [step, steps]);
 
     return (

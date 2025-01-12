@@ -3,7 +3,7 @@ import cn from "classnames";
 import styles from "./Icon.module.sass";
 
 type IconsType = {
-    [key: string]: string;
+    [key: string]: any;
 };
 
 const icons: IconsType = {
@@ -92,6 +92,11 @@ const icons: IconsType = {
     details: "M3 4h18a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zm1 2v12h16V6H4zm3 2h10v2H7V8zm0 4h6v2H7v-2z",
     mint: "M16.5 2.5a1.5 1.5 0 0 1 1.5 1.5v16a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V4A1.5 1.5 0 0 1 7.5 2.5h9zm-4.5 13a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
     info: "M12 7C12.8284 7 13.5 6.32843 13.5 5.5C13.5 4.67157 12.8284 4 12 4C11.1716 4 10.5 4.67157 10.5 5.5C10.5 6.32843 11.1716 7 12 7ZM11 9C10.4477 9 10 9.44772 10 10C10 10.5523 10.4477 11 11 11V19C11 19.5523 11.4477 20 12 20C12.5523 20 13 19.5523 13 19V10C13 9.44772 12.5523 9 12 9H11Z",
+    shuffle: [
+        "M6.843 20H2.5a1 1 0 0 1 0-2h4.343c.79 0 1.563-.32 2.121-.878l6.657-6.657A4.967 4.967 0 0 1 19.157 9H23.5a1 1 0 0 1 0 2h-4.343c-.79 0-1.563.32-2.121.878l-6.657 6.657A4.967 4.967 0 0 1 6.843 20z",
+        "M23.5 20h-4.343a4.967 4.967 0 0 1-3.535-1.464l-6.657-6.657A3.02 3.02 0 0 0 6.843 11H2.5a1 1 0 0 1 0-2h4.343c1.335 0 2.591.52 3.535 1.464l6.657 6.657a3.02 3.02 0 0 0 2.122.879H23.5a1 1 0 0 1 0 2zM21.5 12.412V7.588c0-.368.401-.596.717-.408l4.052 2.412a.474.474 0 0 1 0 .815l-4.052 2.412a.474.474 0 0 1-.717-.407z",
+        "M21.5 21.412v-4.823c0-.368.401-.596.717-.408l4.052 2.412a.474.474 0 0 1 0 .815l-4.052 2.412a.475.475 0 0 1-.717-.408z"
+    ],
 
 };
 
@@ -102,15 +107,20 @@ type IconProps = {
     fill?: string;
 };
 
-const Icon = ({ className, name, size, fill }: IconProps) => (
-    <svg
-        className={cn(styles.icon, className)}
-        width={size || 24}
-        height={size || 24}
-        viewBox="0 0 24 24"
-    >
-        <path fill={fill} d={icons[name]}></path>
-    </svg>
-);
+const Icon = ({ className, name, size, fill }: IconProps) => {
+    const iconPaths = icons[name];
+    return (
+        <svg
+            className={cn(styles.icon, className)}
+            width={size || 24}
+            height={size || 24}
+            viewBox="0 0 24 24"
+        >
+            {Array.isArray(iconPaths)
+                ? iconPaths.map((path, index) => <path key={index} fill={fill} d={path}></path>)
+                : <path fill={fill} d={iconPaths}></path>}
+        </svg>
+    );
+};
 
 export default Icon;

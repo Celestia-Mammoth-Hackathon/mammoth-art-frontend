@@ -10,54 +10,10 @@ type FooterProps = {};
 
 const Footer = ({}: FooterProps) => (
     <footer className={styles.footer}>
-        <div className={styles.body}>
-            <div className={styles.details}>
-                <Logo className={styles.logo} />
-            </div>
-            <div className={styles.group}>
-                {footerNavigation.map((item, index) => (
-                    <div className={styles.item} key={index}>
-                        <div className={styles.category}>{item.title}</div>
-                        <div className={item.title === "Ubiquity.art" ? styles.menu : styles.menuIcon}>
-                            {item.menu.map((link: any, index: number) =>
-                                link.external ? (
-                                    <a
-                                        className={styles.link}
-                                        href={link.url}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        key={index}
-                                    >
-                                        {link.icon && <Icon name={link.icon} />}
-                                    </a>
-                                ) : (
-                                    <Link href={link.url} key={index}>
-                                        <a className={styles.link}>
-                                            {link.icon && (
-                                                <Icon name={link.icon} />
-                                            )}
-                                            {link.title}
-                                        </a>
-                                    </Link>
-                                )
-                            )}
-                        </div>
-                    </div>
-                ))}
-            </div>
-        </div>
         <div className={styles.foot}>
             <div className={styles.copyright}>
-            Copyright <span className={styles.copyrightIcon}>©</span> CoCoding Labs 2023. All rights reserved
+            Copyright <span className={styles.copyrightIcon}>©</span> Mammothon Bros 2025. All rights reserved
             </div>
-            {/* <div className={styles.cookies}>
-                We use cookies for better service.
-                <button
-                    className={cn("button-stroke button-small", styles.button)}
-                >
-                    ACCEPT
-                </button>
-            </div> */}
         </div>
     </footer>
 );
