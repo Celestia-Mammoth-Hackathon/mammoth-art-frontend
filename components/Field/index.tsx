@@ -36,6 +36,7 @@ type FieldProps = {
   setZipFile?:any;
   setIsValidZip?: any;
   setUploadedFile?: any;
+  type?: any;
 };
 
 const Field = ({
