@@ -10,6 +10,8 @@ import { WagmiProvider } from '@privy-io/wagmi';
 import { forma } from "@/config/chain";
 import { walletConnectProjectId } from '@/constants/details';
 import { useRouter } from 'next/router';
+import { FileProvider } from 'context/file';
+import { CollectionProvider } from 'context/collection';
 
 // const Disclaimer: DisclaimerComponent = ({ Text, Link }) => (
 //   <Text>
@@ -52,9 +54,13 @@ function MyApp({ Component, pageProps }: AppProps) {
       <QueryClientProvider client={queryClient}>
       <WagmiProvider config={wagmiConfig}>
           <UserProvider>
-            <Layout layoutNoOverflow footerHide={false}>
-              <Component {...pageProps}/>
-            </Layout>
+            <FileProvider>
+              <CollectionProvider>
+                <Layout layoutNoOverflow footerHide={false}>
+                  <Component {...pageProps}/>
+                </Layout>
+              </CollectionProvider>
+            </FileProvider>
           </UserProvider>
       </WagmiProvider>
       </QueryClientProvider>
