@@ -1,16 +1,10 @@
-import Link from "next/link";
-import cn from "classnames";
-import styles from "./CreatePage.module.sass";
 import LayoutCreate from "@/components/LayoutCreate";
-import Arrow from "@/components/Arrow";
-import Icon from "@/components/Icon";
+import Upload from "./Upload";
 
 const CreatPage = () => {
     return (
         <>
-            <LayoutCreate step="1">
-                
-            </LayoutCreate>
+            <LayoutCreate step="1" rightElement={Upload}/>
         </>
     );
 };

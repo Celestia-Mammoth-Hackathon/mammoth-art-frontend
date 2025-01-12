@@ -1,0 +1,97 @@
+@import @/styles/helpers
+
+.uploadWrapper 
+    display: flex
+    flex-direction: column
+    justify-content: center
+    gap: 62px
+
+.info
+    width: 100%
+    display: flex
+    padding: 12px
+    border: 1px solid $n0
+    background: $n15
+    justify-content: space-between
+    align-items: center
+    gap: 16px
+
+.infoText
+    font-style: normal
+    font-weight: 400
+    font-size: 12px
+    line-height: 19px
+    color: #FFFFFF
+
+.previewText
+    display: flex
+    justify-content: space-between
+
+.text
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    line-height: 24px
+    color: $n0
+
+
+.preview
+    display: flex
+    justify-content: flex-start
+    gap: 16px
+    margin-top: 2rem
+
+.inputs
+    display: flex
+    justify-content: flex-start
+    flex-direction: column
+    
+.randomAll
+    display: flex
+    flex-direction: row
+    align-items: center
+    gap: 8px
+    color: $n0
+
+.buttonWrapper
+    display: flex
+    justify-content: center
+    gap: 78px
+
+.button
+    max-width: 160px
+    border: 1px solid $n0
+    padding: 0
+    cursor: pointer
+    font-size: 14px
+    display: flex
+    gap: 8px
+    +m
+        order: 3
+        width: 100%
+
+
+.nextBtn
+    background: $n11
+    &:hover
+        background: $n12
+        border: 1px solid $n0
+
+.prevBtn
+    background: $n9
+    &:hover
+        background: $n10
+        border: 1px solid $n0
+
+.nextDisabled
+    pointer-events: none
+    background: $n12
+    border: 1px solid $n0
+
+.prevDisabled
+    pointer-events: none
+    background: $n10
+    border: 1px solid $n0
+
+
+    
