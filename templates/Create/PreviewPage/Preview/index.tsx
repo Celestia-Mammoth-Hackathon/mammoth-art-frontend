@@ -71,7 +71,7 @@ const Preview = ({ cid }: PreviewProps) => {
           </div>
           <div>
             <div>
-              <span>Inputs</span>
+              <span>Collection Inputs</span>
               <span>Randomize</span>
               <div className={styles.attributes}>
                 {/* Placeholder for dynamic attributes */}
