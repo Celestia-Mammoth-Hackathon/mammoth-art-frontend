@@ -1,11 +1,70 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_URL!;
+const BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_URL!.replace(/\/$/, "");
 
 const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || "1").split(","));
 
-const DEFAULT_MAX_PAGES = 20;
+const DEFAULT_MAX_PAGES = 40;
+
+const cache = new Map();
+const CACHE_DURATION = 500;
+
+const cachedAxiosPost = async (url: string, data: any) => {
+  const cacheKey = JSON.stringify({ url, data });
+
+  if (cache.has(cacheKey)) {
+    const cachedData = cache.get(cacheKey);
+    if (cachedData.promise) {
+      return cachedData.promise;
+    }
+    if (Date.now() - cachedData.timestamp < CACHE_DURATION) {
+      return cachedData.result;
+    }
+  }
+
+  const resultPromise = axios.post(url, data);
+
+  cache.set(cacheKey, { promise: resultPromise, timestamp: Date.now() });
+
+  try {
+    const result = await resultPromise;
+    cache.set(cacheKey, { result, timestamp: Date.now() });
+    setTimeout(() => cache.delete(cacheKey), CACHE_DURATION);
+    return result;
+  } catch (error) {
+    cache.delete(cacheKey);
+    throw error;
+  }
+};
+
+const cachedAxiosGet = async (url: string) => {
+  const cacheKey = url;
+
+  if (cache.has(cacheKey)) {
+    const cachedData = cache.get(cacheKey);
+    if (cachedData.promise) {
+      return cachedData.promise;
+    }
+    if (Date.now() - cachedData.timestamp < CACHE_DURATION) {
+      return cachedData.result;
+    }
+  }
+
+  const resultPromise = axios.get(url);
+
+  cache.set(cacheKey, { promise: resultPromise, timestamp: Date.now() });
+
+  try {
+    const result = await resultPromise;
+    cache.set(cacheKey, { result, timestamp: Date.now() });
+    setTimeout(() => cache.delete(cacheKey), CACHE_DURATION);
+    return result;
+  } catch (error) {
+    cache.delete(cacheKey);
+    throw error;
+  }
+};
 
 const getAllDrops = async () => {
     const query = `query AllDrops {
@@ -33,7 +92,7 @@ const getAllDrops = async () => {
       data: {
         data: { drops },
       },
-    } = await axios.post(`${BASE_URL}`, { query });
+    } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
 
     if (drops.items.length > 0) {
       return drops.items;
@@ -66,7 +125,7 @@ const getMerkleDrops = async () => {
     data: {
       data: { drops },
     },
-  } = await axios.post(`${BASE_URL}`, { query });
+  } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
 
   if (drops.items.length > 0) {
     return drops.items;
@@ -89,7 +148,7 @@ const getAllTokens = async () => {
       data: {
         data: { tokens },
       },
-    } = await axios.post(`${BASE_URL}`, { query });
+    } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
 
     if (tokens.items.length > 0) {
       return tokens.items;
@@ -98,49 +157,23 @@ const getAllTokens = async () => {
 
 export type GetAllCollectionTokensParams = {
   tokenAddress: string;
-  maxPages?: number;
 }
 
-const getAllCollectionTokens = async ({ tokenAddress, maxPages }: GetAllCollectionTokensParams) => {
-  const query = (cursor: string) => `query CollectionTokens {
-    tokens(
-      where: {tokenAddress: "${tokenAddress}"}
-      limit: 1000
-      orderBy: "tokenId"
-      orderDirection: "asc"
-      ${cursor ? 'after: "' + cursor + '"' : ''}
-    ) {
-      items {
-        tokenAddress
-        tokenId
-        totalSupply
-        isMarketplaceAllowed
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-    }
-  }`;
+export type TokenRow = {
+  tokenAddress: string;
+  tokenId: string;
+  tokenType: string;
+  totalSupply: string;
+  isMarketplaceAllowed: boolean;
+  metadata?: any;
+}
 
-  let ret: any[] = [];
-  let cursor = "";
-  for (let i = 0; i < (maxPages || DEFAULT_MAX_PAGES); i++) {
-    const {
-      data: {
-        data: { tokens },
-      },
-    } = await axios.post(`${BASE_URL}`, { query: query(cursor) });
-    if (tokens.items.length > 0) {
-      ret = [ ...ret, ...tokens.items ];
-    }
-    if (tokens.pageInfo.hasNextPage) {
-      cursor = tokens.pageInfo.endCursor;
-    } else {
-      break;
-    }
+const getAllCollectionTokens = async ({ tokenAddress }: GetAllCollectionTokensParams): Promise<TokenRow[]> => {
+  const res = await cachedAxiosGet(`${BASE_URL}/collection/${tokenAddress}/tokens`);
+  if (!res || !res.data) {
+    return [];
   }
-  return ret;
+  return res.data;
 };
 
 export type GetCollectionTokenParams = {
@@ -167,7 +200,7 @@ const getCollectionToken = async ({ tokenAddress, tokenId }: GetCollectionTokenP
     data: {
       data: { tokens },
     },
-  } = await axios.post(`${BASE_URL}`, { query });
+  } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
 
   if (tokens.items.length > 0) {
     return tokens.items[0];
@@ -178,16 +211,17 @@ export type GetAllOrdersParams = {
   tokenAddress: string;
   tokenId?: string;
   maxPages?: number;
+  limit?: number;
 }
 
-const getAllOrders = async ({ tokenAddress, tokenId, maxPages }: GetAllOrdersParams) => {
+const getAllOrders = async ({ tokenAddress, tokenId, maxPages, limit }: GetAllOrdersParams) => {
     let whereToken = `tokenAddress: "${tokenAddress}"`;
     if (tokenId !== undefined) {
       whereToken += `, tokenId: "${tokenId}"`;
     }
     const query = (cursor: string) => `query GetOrders {
       orders(
-        limit: 1000
+        limit: ${limit || 1000}
         orderBy: "price"
         orderDirection: "asc"
         where: {orderType: SELL, orderStatus: ACTIVE, ${whereToken}}
@@ -218,7 +252,7 @@ const getAllOrders = async ({ tokenAddress, tokenId, maxPages }: GetAllOrdersPar
         data: {
           data: { orders },
         },
-      } = await axios.post(`${BASE_URL}`, { query: query(cursor) });
+      } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query: query(cursor) });
       if (orders.items.length > 0) {
         ret = [ ...ret, ...orders.items ];
       }
@@ -264,7 +298,7 @@ const getUserBalance = async ({ userAddress, maxPages }: GetUserBalanceParams) =
       data: {
         data: { account },
       },
-    } = await axios.post(`${BASE_URL}`, { query: query(cursor) });
+    } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query: query(cursor) });
     if (account?.tokens?.items.length > 0) {
       ret = [ ...ret, ...account.tokens.items ];
     }
@@ -304,7 +338,7 @@ const getUserTokenBalance = async ({ userAddress, tokenAddress, tokenId }: GetUs
     data: {
       data: { account },
     },
-  } = await axios.post(`${BASE_URL}`, { query });
+  } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
 
   if (account?.tokens?.items.length > 0) {
     return account?.tokens.items[0].balance;
@@ -327,10 +361,103 @@ const getLastestPriceOracleUpdate = async () => {
     data: {
       data: { priceOracleUpdates },
     },
-  } = await axios.post(`${BASE_URL}`, { query });
+  } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
   if (priceOracleUpdates?.items && priceOracleUpdates?.items.length > 0) {
     return priceOracleUpdates.items[0];
   }
+};
+
+const getCollectionStats = async ({ tokenAddress }: { tokenAddress: string }) => {
+  const res = await axios.get(`${BASE_URL}/stats/${tokenAddress}`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+};
+
+const getTokenStats = async ({ tokenAddress, tokenId }: { tokenAddress: string, tokenId: string }) => {
+  const res = await axios.get(`${BASE_URL}/stats/${tokenAddress}/${tokenId}`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+};
+
+const getTokenActivity = async ({ tokenAddress, tokenId }: { tokenAddress: string, tokenId: string }): Promise<ActivityRow[]> => {
+  const res = await axios.get(`${BASE_URL}/activity/${tokenAddress}/${tokenId}`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+};
+
+enum EventType {
+  MAKE = "MAKE",
+  CANCEL = "CANCEL",
+  TAKE = "TAKE"
+}
+
+export type ActivityRow = {
+  event: EventType;
+  timestamp: number;
+  block: number;
+  txhash: `0x${string}`;
+  makerId: `0x${string}`;
+  takerId: `0x${string}`;
+  tokenAddress: `0x${string}`;
+  tokenId: string;
+  qty: number;
+  price: number;
+}
+
+const getCollectionActivity = async ({ tokenAddress }: { tokenAddress: string }): Promise<ActivityRow[]> => {
+  const res = await cachedAxiosGet(`${BASE_URL}/activity/${tokenAddress}`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+};
+
+export type HolderRow = {
+  ownerId: `0x${string}`;
+  tokenAddress: `0x${string}`;
+  tokenId: string;
+  balance: string;
+};
+
+const getCollectionHolders = async ({ tokenAddress }: { tokenAddress: string }): Promise<HolderRow[]> => {
+  const res = await cachedAxiosGet(`${BASE_URL}/holders/${tokenAddress}`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+};
+
+export type ListingRow = {
+  tokenId: string;
+  floorPrice: number;
+  orderId: string;
+}
+
+const getCollectionFloorListings = async ({ tokenAddress }: { tokenAddress: string }): Promise<ListingRow[]> => {
+  const res = await cachedAxiosGet(`${BASE_URL}/collection/${tokenAddress}/floor-listings`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+};
+
+export type FeuillerRow = {
+  flowerNo: number;
+  isComplete: boolean;
+}
+
+const getFeuillerLaMarguerite = async (): Promise<FeuillerRow[]> => {
+  const res = await cachedAxiosGet(`${BASE_URL}/feuiller-la-marguerite`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
 };
 
 export default {
@@ -343,4 +470,11 @@ export default {
     getUserBalance,
     getUserTokenBalance,
     getLastestPriceOracleUpdate,
+    getCollectionStats,
+    getCollectionActivity,
+    getCollectionHolders,
+    getCollectionFloorListings,
+    getFeuillerLaMarguerite,
+    getTokenStats,
+    getTokenActivity,
 };
