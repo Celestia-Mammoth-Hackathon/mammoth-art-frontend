@@ -26,7 +26,7 @@
 .previewText
     display: flex
     justify-content: space-between
-
+ 
 .text
     font-style: normal
     font-weight: 400
@@ -37,7 +37,7 @@
 
 .preview
     display: flex
-    justify-content: flex-start
+    justify-content: space-between
     gap: 16px
     margin-top: 2rem
 
@@ -45,7 +45,7 @@
     display: flex
     justify-content: flex-start
     flex-direction: column
-    
+    gap: 16px
 .randomAll
     display: flex
     flex-direction: row
@@ -93,5 +93,59 @@
     background: $n10
     border: 1px solid $n0
 
-
+.selectBox
+    background: $n9
+    border: 1px solid $n0
+    min-height: 300px
+    min-width: 300px
     
+.selectWrapper
+    padding: 16px
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.collectionWrapper
+    padding: 16px
+    display: flex
+    justify-content: space-between
+    flex-direction: column
+    gap: 8px
+    align-items: center
+
+
+.selectBtn
+    background: $n11
+    width: 48px
+    height: 48px
+    display: flex
+    align-items: center
+    justify-content: center
+    &:hover
+        background: $n12
+
+.traitType
+    font-style: normal
+    font-weight: 700
+    font-size: 14px
+    line-height: 24px
+    color: $n0
+
+.traitSection
+    font-style: normal
+    font-weight: 400
+    font-size: 14px
+    line-height: 24px
+    color: $n0
+
+.collectionSection
+    width: 100%
+    display: flex
+    justify-content: flex-start
+    flex-direction: column
+
+.selectInfWrapper
+    display: flex
+    flex-direction: column
+    padding: 16px
+    gap: 8px

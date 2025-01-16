@@ -104,7 +104,6 @@ const Upload = ({}: UploadProps) => {
           className={cn(
             "button-medium button-wide",
             styles.button,
-            styles.listButton,
             { [styles.disabled]: !isValidZip } 
           )}
           onClick={isValidZip ? handleNextStep : undefined} 
