@@ -15,19 +15,38 @@ export const useCollectionContext = () => {
 };
 
 export const CollectionProvider = ({ children } : CollectionProviderProps) => {
-  const [collectionData, setCollectionData] = useState({
-    collectionName: '',
-    contractName: '',
-    contractSymbol: '',
-    description: '',
-    size: 0,
-    price: '',
-    image: null,
-    startDate: '',
-    endDate: '',
-    primarySaleAddress: '',
-    royalty: '',
-    royaltyAddress: '',
+  const [collectionData, setCollectionData] = useState<{
+    collectionName: string;
+    contractName: string;
+    contractSymbol: string;
+    description: string;
+    size: number;
+    price: string;
+    image: File | null;
+    startDate: string;
+    endDate: string;
+    primarySaleAddress: string;
+    royalty: string;
+    royaltyAddress: string;
+    formaCollection: {
+        [collectionName: string]: {
+            [traitType: string]: string[];
+        };
+    } | null;
+  }>({
+      collectionName: '',
+      contractName: '',
+      contractSymbol: '',
+      description: '',
+      size: 0,
+      price: '',
+      image: null,
+      startDate: '',
+      endDate: '',
+      primarySaleAddress: '',
+      royalty: '',
+      royaltyAddress: '',
+      formaCollection: null,
   });
 
   return (
