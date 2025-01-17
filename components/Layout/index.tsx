@@ -43,7 +43,7 @@ const Layout = ({
     return (
             <>
                 <Head>
-                    <title>Ubiquity.art</title>
+                    <title>MammothArt</title>
                 </Head>
                 <div
                     className={cn(styles.layout, {

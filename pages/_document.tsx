@@ -18,11 +18,11 @@ class MyDocument extends Document {
                 <Head>
                     <meta
                         content="Create Anything"
-                        name="Ubiquity.art- NFT Marketplace. Create Anything.
+                        name="MammothArt- NFT Marketplace. Create Anything.
                             Powered by Celestia"
                     />
                     <meta
-                        content="Ubiquity.art- NFT Marketplace. Create Anything.
+                        content="MammothArt- NFT Marketplace. Create Anything.
                                 Powered by Celestia"
                         property="og:title"
                     />
@@ -40,11 +40,11 @@ class MyDocument extends Document {
                     />
                     <meta
                         property="og:site_name"
-                        content="Ubiquity.art- NFT Marketplace. Create Anything.
+                        content="MammothArt- NFT Marketplace. Create Anything.
                             Powered by Celestia"
                     />
                     <meta
-                        content="Ubiquity.art- NFT Marketplace. Create Anything.
+                        content="MammothArt- NFT Marketplace. Create Anything.
                             Powered by Celestia"
                         property="twitter:title"
                     />

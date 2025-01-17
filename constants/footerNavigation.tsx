@@ -1,6 +1,6 @@
 export const footerNavigation = [
     {
-        title: "Ubiquity.art",
+        title: "MammothArt",
         menu: [
             {
                 title: "Create",
