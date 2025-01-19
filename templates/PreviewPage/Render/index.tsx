@@ -47,7 +47,7 @@ const Render = ({}: RenderProps) => {
       <div className={styles.info}>
         <Icon name={"info"} fill="#ffffff" />
         <span className={styles.infoText}>
-          The .zip file of your project needs to be uploaded to our servers for
+          The file of your project needs to be uploaded to our servers for
           testing & capture purposes.
         </span>
       </div>
