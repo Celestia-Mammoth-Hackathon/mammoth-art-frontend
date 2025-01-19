@@ -1,0 +1,61 @@
+@import @/styles/helpers
+
+.uploadWrapper 
+    display: flex
+    flex-direction: column
+    justify-content: center
+    gap: 62px
+
+.info
+    width: 100%
+    display: flex
+    padding: 12px
+    border: 1px solid $n0
+    background: $n15
+    justify-content: space-between
+    align-items: center
+    gap: 16px
+
+.infoText
+    font-style: normal
+    font-weight: 400
+    font-size: 12px
+    line-height: 19px
+    color: #FFFFFF
+
+
+.upload
+    display: flex
+    justify-content: center
+    margin-top: 5rem
+
+.buttonWrapper
+    display: flex
+    justify-content: center
+
+.button
+    max-width: 160px
+    border: 1px solid $n0
+    background: $n11
+    padding: 0
+    cursor: pointer
+    font-size: 14px
+    +m
+        order: 3
+        width: 100%
+    &:hover
+        background: $n12
+        border: 1px solid $n0
+        
+.disabled
+    cursor: default
+    background: $n12
+    border: 1px solid $n0
+
+.next
+    display: flex
+    align-items: center
+    justify-content: space-between
+
+.spinner
+    margin: 0

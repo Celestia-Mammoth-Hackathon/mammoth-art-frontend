@@ -28,6 +28,9 @@ export const CollectionProvider = ({ children } : CollectionProviderProps) => {
     primarySaleAddress: string;
     royalty: string;
     royaltyAddress: string;
+    trigger: number;
+    target: any;
+    resolution: number[];
     formaCollection: {
         [collectionName: string]: {
             [traitType: string]: string[];
@@ -46,6 +49,9 @@ export const CollectionProvider = ({ children } : CollectionProviderProps) => {
       primarySaleAddress: '',
       royalty: '',
       royaltyAddress: '',
+      target: "Viewport",
+      trigger: 0,
+      resolution: [],
       formaCollection: null,
   });
 
