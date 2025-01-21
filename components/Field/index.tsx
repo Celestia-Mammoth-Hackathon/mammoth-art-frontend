@@ -100,18 +100,28 @@ const Field = ({
         try {
           const zip = await JSZip.loadAsync(event.target?.result as ArrayBuffer);
           // Check for the presence of required files
-          const requiredFiles = ["index.html", "index.js", "styles.css"];
+          const requiredFiles = ["index.html", "lib/hl-gen.js"];
+          const optionalFiles = ["index.js", "sketch.js"];
           const folder = zip.folder(selectedFile?.name);
 
-          let missingFiles:any = [];
+          let missingFiles: any = [];
           if (folder?.files) {
+            // Check required files
             missingFiles = requiredFiles.filter((file) => {
-              // Check if any of the files in the folder includes the required file name
               const foundFile = Object.keys(folder.files).some((fileName) =>
-                fileName.includes(file) 
+                fileName.includes(file)
               );
               return !foundFile;
             });
+
+            // Check optional files (at least one must be present)
+            const hasOptionalFile = optionalFiles.some((file) =>
+              Object.keys(folder.files).some((fileName) => fileName.includes(file))
+            );
+
+            if (!hasOptionalFile) {
+              missingFiles.push("Either index.js or sketch.js");
+            }
           }
 
           if (missingFiles.length === 0) {
