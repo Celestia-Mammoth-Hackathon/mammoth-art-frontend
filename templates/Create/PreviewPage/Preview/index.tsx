@@ -23,26 +23,73 @@ const Preview = ({ cid }: PreviewProps) => {
   } = useCollectionStore();
   const router = useRouter();
   const { collectionData } = useCollectionContext();
-  const [options, setOptions] = useState<any>([
-    { value: "Spring", label: "Spring" },
-    { value: "Summer", label: "Summer" },
-    { value: "Autumn", label: "Autumn" },
-    { value: "Winter", label: "Winter" }
-  ]);
+  const [options, setOptions] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
-  useEffect(() => {
-          const fetchData = async () => {
-              try {
-                  setLoading(true);
-                  await fetchAllCollections();
-              } catch (error) {
-                  console.error("Error fetching drops:", error);
-              } finally {
-                  setLoading(false);
-              }
-          };
+
+  const fetchTraits = async () => {
+    try {
+      setLoading(true);
   
-          fetchData();
+      // Fetch the script from IPFS
+      const response = await fetch(`https://ipfs.io/ipfs/${cid}/sketch.js`);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch script: ${response.statusText}`);
+      }
+  
+      const scriptContent = await response.text();
+  
+      // Flexible regex to match hl.token.setTraits() even with different spaces or line breaks
+      const traitsRegex = /hl\.token\.setTraits\s*\(\s*(\w+)\s*\)/;
+      const match = scriptContent.match(traitsRegex);
+
+      if (match) {
+        let variableName = match[1];
+        
+        // Use the variable name to extract the traits object definition
+        let traitsRegex = new RegExp(`let\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, 'm');
+        let traitsMatch:any = scriptContent.match(traitsRegex);
+        let traitsWithoutNewLines = traitsMatch[1].replace(/\n/g, '');
+
+        // Regex to match all keys
+        let keyRegex = /"([^"]+)":/g;
+
+        let keys = [];
+        let keyMatch;
+        while ((keyMatch = keyRegex.exec(traitsWithoutNewLines)) !== null) {
+            keys.push(keyMatch[1]);
+        }
+
+        // Map traits to options
+        setOptions(keys.map(key => ({
+          value: key,
+          label: key
+        })));
+  
+      } else {
+        throw new Error("Traits object not found in the script.");
+      }
+    } catch (error) {
+      console.error("Error fetching traits:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  
+
+  useEffect(() => {
+
+    const fetchData = async () => {
+        try {
+            setLoading(true);
+            await fetchAllCollections();
+        } catch (error) {
+            console.error("Error fetching drops:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
+      fetchTraits();
+      fetchData();
     }, []);
   
     useEffect(() => {
