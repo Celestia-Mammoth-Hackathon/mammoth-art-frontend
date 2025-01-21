@@ -93,7 +93,7 @@ const getAllDrops = async () => {
         data: { drops },
       },
     } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
-
+    console.log(BASE_URL, drops)
     if (drops.items.length > 0) {
       return drops.items;
     } else return [];
