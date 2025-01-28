@@ -31,6 +31,7 @@ export const CollectionProvider = ({ children } : CollectionProviderProps) => {
     trigger: number;
     target: any;
     resolution: number[];
+    influences: [],
     formaCollection: {
         [collectionName: string]: {
             [traitType: string]: string[];
@@ -52,6 +53,7 @@ export const CollectionProvider = ({ children } : CollectionProviderProps) => {
       target: "Viewport",
       trigger: 0,
       resolution: [],
+      influences: [],
       formaCollection: null,
   });
 
