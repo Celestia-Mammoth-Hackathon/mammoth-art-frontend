@@ -21,11 +21,10 @@ type FieldProps = {
   large?: boolean;
   options?: any;
   setImage?: any;
+  collectionImage?:any;
+  uploadCollectionImage?: boolean;
   setUploadError?: any
-  collectionImage?:boolean;
-  bannerImage?:boolean;
   uploadZipFile?: boolean;
-  nftImage?:boolean;
   search?: boolean;
   number?: boolean;
   select?: boolean;
@@ -56,7 +55,7 @@ const Field = ({
   setImage,
   uploadZipFile,
   collectionImage,
-  nftImage,
+  uploadCollectionImage,
   number,
   select,
   min,
@@ -80,15 +79,11 @@ const Field = ({
     fileName = "Zip File";
     fileType = "zip";
     fileSize = "2GB";
-  } else if (collectionImage) {
+  } else if (uploadCollectionImage) {
     fileName = "Collection Image";
     fileType = "gif, jpeg, png, or svg ";
     fileSize = "24MB";
     fileDimension = "400px by 400px";
-  } else if (nftImage) {
-    fileName = "to Upload NFT File";
-    fileType = "gif, jpeg, png, svg, mp4, webm, glb, mp3, wav, flac, pdf, zip (interactive)";
-    fileSize = "100MB";
   }
   
   const handleZipFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -155,6 +150,14 @@ const Field = ({
     }
   };
 
+  const handleCollectionImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    onChange((prevData: any) => ({
+      ...prevData,
+      image: selectedFile,
+    }));
+  }
+
   const handleDrop = useCallback((event:any) => {
     event.preventDefault();
 
@@ -174,7 +177,7 @@ const Field = ({
 
     setIsValid(droppedFiles.length > 0);
   }, []);
-
+  
   const validateField = () => {
     if (upload) {
       setIsValid(!!value);
@@ -199,7 +202,7 @@ const Field = ({
     if(isSubmitted) {
       validateField();
     }
-  }, [value, upload, number, isSubmitted, zipFile]);
+  }, [value, upload, number, isSubmitted, zipFile, collectionImage]);
 
   const preventDefaultHandler = (event:any) => {
     event.preventDefault();
@@ -226,7 +229,7 @@ const Field = ({
             required={required}
             autoFocus={autoFocus}
           ></textarea>
-        ) : upload ? (
+        ) : uploadZipFile ? (
           <div className={styles.upload}
             onDrop={handleDrop}
             onDragOver={preventDefaultHandler}
@@ -248,6 +251,43 @@ const Field = ({
                   {zipFile && isValid ? (
                     <div className={styles.success}>
                       Uploaded File: {zipFile.name} 
+                    </div>
+                  ) : uploadError ? (
+                    <div className={styles.error}>
+                      {uploadError}
+                    </div>
+                  ) : (
+                    <div className={styles.details}>
+                      <div className={styles.detail}>Drag and Drop {fileName}</div>
+                      <div className={styles.type}>Types supported: {fileType}</div>
+                      <div className={styles.type}>Max file size is {fileSize}</div>
+                      <div className={styles.type}>{fileDimension ? `Recommended size: ${fileDimension}` : ""}</div>
+                    </div>
+                  )}
+                </div>
+          </div>
+        ) : upload ? (
+          <div className={styles.upload}
+            onDrop={handleDrop}
+            onDragOver={preventDefaultHandler}
+            onDragEnter={preventDefaultHandler}
+          >
+            
+                <label className={styles.customFileUpload}>
+                    <input
+                    className={styles.file}
+                    type="file"
+                    accept=".gif, .jpeg, .png, .svg"
+                    onChange={handleCollectionImage}
+                    required
+                    />
+                    UPLOAD
+                </label>
+            
+                <div className={styles.details}>
+                  {(collectionImage && isValid) ? (
+                    <div className={styles.success}>
+                      Uploaded File: {collectionImage?.name} 
                     </div>
                   ) : uploadError ? (
                     <div className={styles.error}>

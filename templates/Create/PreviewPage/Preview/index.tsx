@@ -22,7 +22,7 @@ const Preview = ({ cid }: PreviewProps) => {
     fetchAllCollections
   } = useCollectionStore();
   const router = useRouter();
-  const { collectionData } = useCollectionContext();
+  const { collectionData, setCollectionData } = useCollectionContext();
   const [options, setOptions] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
 
