@@ -4,11 +4,6 @@ import styles from "./Details.module.sass";
 import Field from "@/components/Field";
 import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
-import { useRouter } from "next/router";
-import { useFileContext } from "context/file";
-import JSZip from "jszip";
-import { uploadFolderToNFTStorage } from "@/utils/ipfs";
-import Spinner from "@/components/Spinner";
 
 type DetailsProps = {};
 
