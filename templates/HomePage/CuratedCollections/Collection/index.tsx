@@ -16,11 +16,11 @@ const Collection = ({ item }: CollectionProps) => {
 
     const href = item.showCollection
         ? {
-            pathname: '/collection/[slug]',
+            pathname: 'https://modularium.art/collection/[slug]',
             query: { slug: item.slug },
         }
         : {
-            pathname: '/drop/[slug]',
+            pathname: 'https://modularium.art/drop/[slug]',
             query: { slug: item.slug },
         };
     const artistInfor:any = artistAddresses.find((element) => element.artistAddress === item.contractCreator) || {};
@@ -28,26 +28,28 @@ const Collection = ({ item }: CollectionProps) => {
     return (
         <>
             <div className={styles.collection}>
-                <Link href={{ pathname: href.pathname, query: href.query}}>
-                    <div className={styles.images}>
-                        <div className={styles.image}>
-                            <Image
-                                className={styles.photo}
-                                src={handleIpfsLink(item.metadata.image)}
-                                layout="fill"
-                                objectFit="contain"
-                                alt="Curated Collection"
-                                priority={true}
-                            />
-                        </div>
+                <Link href={{ pathname: href.pathname, query: href.query}} passHref>
+                <a target="_blank" rel="noopener noreferrer">
+                    <div className={styles.image}>
+                        <Image
+                            className={styles.photo}
+                            src={handleIpfsLink(item.metadata.image)}
+                            layout="fill"
+                            objectFit="contain"
+                            alt="Curated Collection"
+                            priority={true}
+                        />
                     </div>
+                </a>
                 </Link>
                 <div className={styles.details}>
                     <div className={styles.box}>
-                        <Link href={{ pathname: href.pathname, query: href.query}}>
-                            <div className={`${styles.subtitle} ${isAuthorHovered ? styles.subtitleHover : ''}`}>
-                                {item.metadata.name}
-                            </div>
+                        <Link href={{ pathname: href.pathname, query: href.query}} passHref>
+                            <a target="_blank" rel="noopener noreferrer">
+                                <div className={`${styles.subtitle} ${isAuthorHovered ? styles.subtitleHover : ''}`}>
+                                    {item.metadata.name}
+                                </div>
+                            </a>
                         </Link>
                         <div className={styles.authorWrapper}>
                             {/* <div className={styles.avatar}>
@@ -60,14 +62,16 @@ const Collection = ({ item }: CollectionProps) => {
                             </div> */}
                             <span className={styles.byAuthor}>By: </span>
                             <Link href={{
-                                    pathname: '/profile/[slug]',
+                                    pathname: 'https://modularium.art/profile/[slug]',
                                     query: { slug: artistInfor?.slug },
-                                }}>
-                                    <span 
-                                        className={styles.author}
-                                        onMouseEnter={() => setIsAuthorHovered(true)}
-                                        onMouseLeave={() => setIsAuthorHovered(false)}
-                                    >{artistInfor?.name || formatUserAddress(item.contractCreator)}</span>
+                                }} passHref>
+                                    <a target="_blank" rel="noopener noreferrer">
+                                        <span 
+                                            className={styles.author}
+                                            onMouseEnter={() => setIsAuthorHovered(true)}
+                                            onMouseLeave={() => setIsAuthorHovered(false)}
+                                        >{artistInfor?.name || formatUserAddress(item.contractCreator)}</span>
+                                    </a>
                                 </Link> 
                         </div>
                     </div>
@@ -81,10 +85,13 @@ const Collection = ({ item }: CollectionProps) => {
                             <div className={styles.label}>Mints</div>
                             <div className={styles.text}>{item.mintedSupply}</div>
                         </div>
+                         
                         
+                       
                         
                     </div>
-                </div>
+              
+  </div>
             </div>
         </>
         
