@@ -11,27 +11,19 @@ import Item from "./Item";
 
 const list = [
     {
-        title: "Infinite",
-        collection: "Evermore",
+        title: "Mammoths",
+        collection: "MammothBros",
         price: "10.00 TIA",
         reserve: "2.38 TIA",
         image: "/images/main-pic-1.jpg",
     },
     {
-        title: "Robot Dog",
-        collection: "Evermore",
+        title: "Habitats",
+        collection: "MammothBros",
         price: "24.33 TIA",
         reserve: "5.64 TIA",
         image: "/images/main-pic-2.jpg",
         color: "#BCE6EC",
-    },
-    {
-        title: "Pyramid",
-        collection: "Evermore",
-        price: "5.4 TIA",
-        reserve: "1.45 TIA",
-        image: "/images/auction-pic-2.jpg",
-        color: "#B9A9FB",
     },
 ];
 
