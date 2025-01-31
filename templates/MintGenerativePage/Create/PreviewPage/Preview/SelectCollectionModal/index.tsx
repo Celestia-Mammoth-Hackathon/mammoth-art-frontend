@@ -23,7 +23,7 @@ const SelectCollectionModal: React.FC<SelectCollectionModalProps> = ({
     const [validCollections, setValidCollections] = useState<boolean>(false);
     const [step, setStep] = useState<number>(1);
     const { setCollectionData } = useCollectionContext();
-
+    
     const handleRowClick = (index: number) => {
         setSelectedRows((prevSelected) =>
           prevSelected.includes(index)

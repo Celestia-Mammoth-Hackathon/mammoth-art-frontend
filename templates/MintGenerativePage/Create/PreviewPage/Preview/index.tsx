@@ -3,8 +3,8 @@ import cn from "classnames";
 import styles from "./Preview.module.sass";
 import Icon from "@/components/Icon";
 import { useRouter } from "next/router";
-import SelectCollectionModal from "@/templates/Create/PreviewPage/Preview/SelectCollectionModal"
-import useCollectionStore from '@/store/index';
+import SelectCollectionModal from "./SelectCollectionModal";
+import useCollectionStore from "@/store/index";
 import { useCollectionContext } from "context/collection";
 import SelectMultiple from "@/components/SelectMultiple";
 
@@ -13,42 +13,55 @@ type PreviewProps = {
 };
 
 const Preview = ({ cid }: PreviewProps) => {
-  const [randomKey, setRandomKey] = useState<number>(Date.now()); 
+  const [randomKey, setRandomKey] = useState<number>(Date.now());
   const [visibleCollectionModal, setVisibleCollectionModal] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [curatedCollections, setCuratedCollections] = useState([]);
-  const {
-    collections,
-    fetchAllCollections
-  } = useCollectionStore();
+  const { collections, fetchAllCollections } = useCollectionStore();
   const router = useRouter();
   const { collectionData, setCollectionData } = useCollectionContext();
   const [options, setOptions] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
 
+  // Sync selectedOptions with collectionData.influences
+  useEffect(() => {
+    if (collectionData.influences) {
+      setSelectedOptions(collectionData.influences);
+    }
+  }, [collectionData.influences]);
+
+  // Update collectionData.influences when selectedOptions changes
+  const handleSelectedOptionsChange = (newSelectedOptions: any) => {
+    setSelectedOptions(newSelectedOptions);
+    setCollectionData((prevData: any) => ({
+      ...prevData,
+      influences: newSelectedOptions,
+    }));
+  };
+
   const fetchTraits = async () => {
     try {
       setLoading(true);
-  
+
       // Fetch the script from IPFS
       const response = await fetch(`https://ipfs.io/ipfs/${cid}/sketch.js`);
       if (!response.ok) {
         throw new Error(`Failed to fetch script: ${response.statusText}`);
       }
-  
+
       const scriptContent = await response.text();
-  
+
       // Flexible regex to match hl.token.setTraits() even with different spaces or line breaks
       const traitsRegex = /hl\.token\.setTraits\s*\(\s*(\w+)\s*\)/;
       const match = scriptContent.match(traitsRegex);
 
       if (match) {
         let variableName = match[1];
-        
+
         // Use the variable name to extract the traits object definition
-        let traitsRegex = new RegExp(`let\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, 'm');
-        let traitsMatch:any = scriptContent.match(traitsRegex);
-        let traitsWithoutNewLines = traitsMatch[1].replace(/\n/g, '');
+        let traitsRegex = new RegExp(`let\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, "m");
+        let traitsMatch: any = scriptContent.match(traitsRegex);
+        let traitsWithoutNewLines = traitsMatch[1].replace(/\n/g, "");
 
         // Regex to match all keys
         let keyRegex = /"([^"]+)":/g;
@@ -56,15 +69,16 @@ const Preview = ({ cid }: PreviewProps) => {
         let keys = [];
         let keyMatch;
         while ((keyMatch = keyRegex.exec(traitsWithoutNewLines)) !== null) {
-            keys.push(keyMatch[1]);
+          keys.push(keyMatch[1]);
         }
 
         // Map traits to options
-        setOptions(keys.map(key => ({
-          value: key,
-          label: key
-        })));
-  
+        setOptions(
+          keys.map((key) => ({
+            value: key,
+            label: key,
+          }))
+        );
       } else {
         throw new Error("Traits object not found in the script.");
       }
@@ -74,32 +88,30 @@ const Preview = ({ cid }: PreviewProps) => {
       setLoading(false);
     }
   };
-  
 
   useEffect(() => {
-
     const fetchData = async () => {
-        try {
-            setLoading(true);
-            await fetchAllCollections();
-        } catch (error) {
-            console.error("Error fetching drops:", error);
-        } finally {
-            setLoading(false);
-        }
+      try {
+        setLoading(true);
+        await fetchAllCollections();
+      } catch (error) {
+        console.error("Error fetching drops:", error);
+      } finally {
+        setLoading(false);
+      }
     };
-      fetchTraits();
-      fetchData();
-    }, []);
-  
-    useEffect(() => {
-            const curatedCollections:any = Object.values(collections);
-            setCuratedCollections(curatedCollections);
-    }, [collections]);
+    fetchTraits();
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const curatedCollections: any = Object.values(collections);
+    setCuratedCollections(curatedCollections);
+  }, [collections]);
 
   const onCloseModal = (setVisibleModal: any) => {
     return () => {
-        setVisibleModal(false);
+      setVisibleModal(false);
     };
   };
 
@@ -109,11 +121,11 @@ const Preview = ({ cid }: PreviewProps) => {
   };
 
   const handleNextStep = async () => {
-    router.push(`/preview`);
+    router.push(`/mint-generative/preview?cid=${cid}`);
   };
 
   const handlePrevStep = async () => {
-    router.push(`/create`);
+    router.push(`/mint-generative/create`);
   };
 
   return (
@@ -141,7 +153,7 @@ const Preview = ({ cid }: PreviewProps) => {
             </button>
           </div>
           <iframe
-            src={`https://ipfs.io/ipfs/${cid}/index.html?random=${randomKey}`} 
+            src={`https://ipfs.io/ipfs/${cid}/index.html?random=${randomKey}`}
             width="664"
             height="662"
             style={{
@@ -160,31 +172,32 @@ const Preview = ({ cid }: PreviewProps) => {
               <div className={styles.selectWrapper}>
                 <span>Select a collection</span>
                 <div
-                    className={cn(
-                      styles.button,
-                      styles.selectBtn,
-                    )}
-                    onClick={() => setVisibleCollectionModal(true)}
-                  >
-                    <Icon name={"plus"} fill="#ffffff" />
+                  className={cn(styles.button, styles.selectBtn)}
+                  onClick={() => setVisibleCollectionModal(true)}
+                >
+                  <Icon name={"plus"} fill="#ffffff" />
                 </div>
               </div>
               <div className={styles.collectionWrapper}>
-                {Object.entries(collectionData.formaCollection || {}).map(([collectionName, attributes]: any[]) => (
+                {Object.entries(collectionData.formaCollection || {}).map(
+                  ([collectionName, attributes]: any[]) => (
                     <div key={collectionName} className={styles.collectionSection}>
-                        <h3>{collectionName}</h3>
-                        {attributes && Object.entries(attributes).map(([traitType, traitValues]: any[]) => (
-                            <div key={traitType} className={styles.traitSection}>
-                                <strong className={styles.traitType}>{traitType}:</strong> {traitValues ? traitValues.join(', ') : ""}
-                            </div>
+                      <h3>{collectionName}</h3>
+                      {attributes &&
+                        Object.entries(attributes).map(([traitType, traitValues]: any[]) => (
+                          <div key={traitType} className={styles.traitSection}>
+                            <strong className={styles.traitType}>{traitType}:</strong>{" "}
+                            {traitValues ? traitValues.join(", ") : ""}
+                          </div>
                         ))}
                     </div>
-                ))}
+                  )
+                )}
               </div>
               <SelectCollectionModal
-                  visible={visibleCollectionModal}
-                  onClose={onCloseModal(setVisibleCollectionModal)}
-                  curatedCollections={curatedCollections}
+                visible={visibleCollectionModal}
+                onClose={onCloseModal(setVisibleCollectionModal)}
+                curatedCollections={curatedCollections}
               />
             </div>
           </div>
@@ -199,21 +212,18 @@ const Preview = ({ cid }: PreviewProps) => {
                   options={options}
                   setOptions={setOptions}
                   selectedOptions={selectedOptions}
-                  setSelectedOptions={setSelectedOptions}
+                  setSelectedOptions={handleSelectedOptionsChange} // Use the modified handler
                 />
               </div>
-              <div className={styles.collectionWrapper}>
-                
-              </div>
+              <div className={styles.collectionWrapper}></div>
               <SelectCollectionModal
-                  visible={visibleCollectionModal}
-                  onClose={onCloseModal(setVisibleCollectionModal)}
-                  curatedCollections={curatedCollections}
+                visible={visibleCollectionModal}
+                onClose={onCloseModal(setVisibleCollectionModal)}
+                curatedCollections={curatedCollections}
               />
             </div>
           </div>
         </div>
-        
       </div>
       <div className={styles.buttonWrapper}>
         <div
@@ -229,11 +239,7 @@ const Preview = ({ cid }: PreviewProps) => {
           PREV STEP
         </div>
         <div
-          className={cn(
-            "button-medium button-wide",
-            styles.button,
-            styles.nextBtn
-          )}
+          className={cn("button-medium button-wide", styles.button, styles.nextBtn)}
           onClick={handleNextStep}
         >
           NEXT STEP

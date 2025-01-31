@@ -8,10 +8,12 @@ import { useFileContext } from "context/file";
 import JSZip from "jszip";
 import { uploadFolderToNFTStorage } from "@/utils/ipfs";
 import Spinner from "@/components/Spinner";
+import { useCollectionContext } from "context/collection";
 
 type UploadProps = {};
 
 const Upload = ({}: UploadProps) => {
+  const { collectionData, setCollectionData } = useCollectionContext();
   const [zipFile, setZipFile] = useState<any>(null);
   const [isValidZip, setIsValidZip] = useState<boolean>(false);
   const { uploadedFile, setUploadedFile } = useFileContext();
@@ -19,7 +21,14 @@ const Upload = ({}: UploadProps) => {
   const router = useRouter();
 
   useEffect(() => {
-    if (uploadedFile) {
+    if (collectionData.zipFile) {
+      setZipFile(collectionData.zipFile);
+      setIsValidZip(true);
+    }
+  }, [collectionData.zipFile]);
+
+  useEffect(() => {
+      if (uploadedFile) {
       setZipFile(uploadedFile);
       setIsValidZip(true);
     }
@@ -52,8 +61,9 @@ const Upload = ({}: UploadProps) => {
 
       // Step 2: Upload unzipped files to /multiple API
       const cid = await uploadFolderToNFTStorage(formData)
-      console.log(cid)
-      // Step 3: Generate hash for original ZIP file
+      
+      // Step 3: Generate hash for original ZIP file and 
+      // save ZIP file to localStorage with specfic IPFS cid
       const fileReader = new FileReader();
       fileReader.onload = (e) => {
         const fileContent: any = e.target?.result;
@@ -62,8 +72,13 @@ const Upload = ({}: UploadProps) => {
           alert("Error reading the ZIP file. Please try again.");
           return;
         }
-  
-        router.push(`/create?cid=${cid}`);
+
+        setCollectionData((prevData: any) => ({
+          ...prevData,
+          zipFile: uploadedFile,
+        }));
+
+        router.push(`/mint-generative/create?cid=${cid}`);
       };
       fileReader.readAsArrayBuffer(zipFile);
       setLoading(false);

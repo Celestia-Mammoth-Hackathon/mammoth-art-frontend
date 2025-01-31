@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
-import CreatePage from "@/templates/Create/CreatePage";
-import PreviewPage from "@/templates/Create/PreviewPage";
+import CreatePage from "@/templates/MintGenerativePage/Create/CreatePage";
+import PreviewPage from "@/templates/MintGenerativePage/Create/PreviewPage";
 import { useRouter } from 'next/router';
 
 const Create: NextPage = () => {

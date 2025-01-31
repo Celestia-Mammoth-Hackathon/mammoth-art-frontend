@@ -1,7 +1,7 @@
 import styles from "./CollectionAttribute.module.sass";
 import { useCollectionContext } from "context/collection";
 import { useState, useMemo } from "react";
-import Input from "../../../../../../components/Input";
+import Input from "components/Input";
 
 type CollectionAttributeProps = {
     collection: any;

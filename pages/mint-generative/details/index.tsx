@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import DetailsPage from "@/templates/DetailsPage";
+import DetailsPage from "@/templates/MintGenerativePage/DetailsPage";
 
 const Details: NextPage = () => {
     return <DetailsPage/>;

@@ -5,9 +5,6 @@ import Field from "@/components/Field";
 import Icon from "@/components/Icon";
 import { useRouter } from "next/router";
 import { useFileContext } from "context/file";
-import JSZip from "jszip";
-import { uploadFolderToNFTStorage } from "@/utils/ipfs";
-import Spinner from "@/components/Spinner";
 import { useCollectionContext } from "context/collection";
 
 type RenderProps = {};
@@ -18,7 +15,7 @@ const Render = ({}: RenderProps) => {
   const { uploadedFile, setUploadedFile } = useFileContext();
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  
+  const {cid} = router.query;
   const [trigger, setTrigger] = useState<number>(0);
   const [resolution, setResolution] = useState<number[]>([0,0]);
   const { collectionData, setCollectionData } = useCollectionContext();
@@ -29,6 +26,10 @@ const Render = ({}: RenderProps) => {
       setIsValidZip(true);
     }
   }, [uploadedFile]);
+  
+  const handlePrevStep = async () => {
+    router.push(`/mint-generative/create?cid=${cid}`);
+  };
 
   const handleNextStep = async () => {
     setCollectionData((prevData: any) => ({
@@ -64,19 +65,20 @@ const Render = ({}: RenderProps) => {
           className={cn(
             "button-medium button-wide",
             styles.button,
-            { [styles.disabled]: !isValidZip } 
+            styles.prevBtn,
+            { [styles.prevDisabled]: false }
           )}
-          onClick={isValidZip ? handleNextStep : undefined} 
+          onClick={handlePrevStep}
         >
-          {
-            loading 
-              ? <Spinner className={styles.spinner}/> 
-              : <div className={styles.next}> 
-                  NEXT STEP
-                  <Icon name={"arrow-right"} fill="#ffffff" />
-                </div>
-          }
-          
+          <Icon name={"arrow-left"} fill="#ffffff" />
+          PREV STEP
+        </div>
+        <div
+          className={cn("button-medium button-wide", styles.button, styles.nextBtn)}
+          onClick={handleNextStep}
+        >
+          NEXT STEP
+          <Icon name={"arrow-right"} fill="#ffffff" />
         </div>
       </div>
     </div>
