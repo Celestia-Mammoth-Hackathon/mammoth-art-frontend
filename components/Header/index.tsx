@@ -64,7 +64,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                         <div className={styles.col}>
                             {
                                 address && 
-                                    <Link href="/create">
+                                    <Link href="/mint-generative/create">
                                         <div className={cn(
                                             styles.create,
                                             {

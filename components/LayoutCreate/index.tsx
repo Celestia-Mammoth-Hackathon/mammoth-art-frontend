@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import cn from "classnames";
 import Icon from "@/components/Icon";
 import Link from "next/link";
-
+import { useRouter } from "next/router";
 
 type LayoutCreateProps = {
     step: string; 
@@ -11,13 +11,15 @@ type LayoutCreateProps = {
 };
 
 const LayoutCreate = ({ step, rightElement }: LayoutCreateProps) => {
+    const router = useRouter();
+    const { cid } = router.query;
     const [steps, setSteps] = useState([
-        { id: 1, name: "Upload", icon: "upload", href: "/create/upload" },
-        { id: 2, name: "Checking Files", icon: "check", href: "/create/upload" },
-        { id: 3, name: "Preview Images", icon: "preview", href: "/create/upload" },
-        { id: 4, name: "Distributions", icon: "give", href: "/create/upload" },
-        { id: 5, name: "Project Details", icon: "details", href: "/create/upload" },
-        { id: 6, name: "Preview & Mint", icon: "mint", href: "/create/upload" },
+        { id: 1, name: "Upload", icon: "upload", href: "/mint-generative/create" },
+        { id: 2, name: "Checking Files", icon: "check", href: `/mint-generative/create?cid=${cid}`},
+        { id: 3, name: "Preview Images", icon: "preview", href: `/mint-generative/preview?cid=${cid}` },
+        { id: 4, name: "Distributions", icon: "give", href: `/mint-generative/distributions?cid=${cid}` },
+        { id: 5, name: "Project Details", icon: "details", href: `/mint-generative/details?cid=${cid}` },
+        { id: 6, name: "Preview & Mint", icon: "mint", href: `/mint-generative/mint=?cid=${cid}` },
     ]);
 
     const [leftElement, setLeftElement] = useState<any>(null);
