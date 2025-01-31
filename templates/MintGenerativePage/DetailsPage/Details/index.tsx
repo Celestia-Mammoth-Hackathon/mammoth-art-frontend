@@ -4,12 +4,16 @@ import styles from "./Details.module.sass";
 import Field from "@/components/Field";
 import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
+import { useRouter } from "next/router";
 
-type DetailsProps = {};
+type DetailsProps = {
+  cid: any;
+};
 
-const Details = ({}: DetailsProps) => {
+const Details = ({cid}: DetailsProps) => {
   const { collectionData, setCollectionData } = useCollectionContext();
-  
+  const router = useRouter();
+
   const setCollectionName = (name: string) => {
     setCollectionData((prevData: any) => ({
       ...prevData,
@@ -37,6 +41,14 @@ const Details = ({}: DetailsProps) => {
       contractSymbol: contractSymbol,
     }));
   }
+
+  const handleNextStep = async () => {
+    router.push(`/mint-generative/mint?cid=${cid}`);
+  };
+
+  const handlePrevStep = async () => {
+    router.push(`/mint-generative/distribute?cid=${cid}`);
+  };
 
   return (
     <div className={styles.detailsWrapper}>
@@ -100,7 +112,7 @@ const Details = ({}: DetailsProps) => {
             <div className={styles.labelInfo}>Choose an image to represent this series. This may or may not be the same as one of your token images and will appear on third-party platforms like OpenSea.</div>
           </label>
           <Field
-                placeholder="Enter contract symbol"
+                placeholder="Enter collection image"
                 value={collectionData.image}
                 onChange={setCollectionData}
                 collectionImage={collectionData.image}
@@ -117,7 +129,7 @@ const Details = ({}: DetailsProps) => {
             styles.prevBtn,
             { [styles.prevDisabled]: false }
           )}
-        //   onClick={handlePrevStep}
+          onClick={handlePrevStep}
         >
           <Icon name={"arrow-left"} fill="#ffffff" />
           PREV STEP
@@ -128,7 +140,7 @@ const Details = ({}: DetailsProps) => {
             styles.button,
             styles.nextBtn
           )}
-        //   onClick={handleNextStep}
+          onClick={handleNextStep}
         >
           NEXT STEP
           <Icon name={"arrow-right"} fill="#ffffff" />
