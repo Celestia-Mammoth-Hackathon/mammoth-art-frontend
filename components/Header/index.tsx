@@ -72,11 +72,12 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                                 [styles.active]: router.pathname === "/create", 
                                             },
                                         )}>
-                                            <span className={cn(styles.link)} style={{ color: router.pathname === "/create" ? '#FFFFFF' : '#8C8D8F' }}>CREATE</span>
+                                            <span className={cn(styles.link)} style={{ color: router.pathname.includes("/mint-generative") ? '#FFFFFF' : '#8C8D8F' }}>CREATE</span>
                                         </div>
                                     </Link>
                             }
-                            <Link href="/discover">
+
+                            {/* <Link href="/discover">
                                     <div className={cn(
                                         styles.create,
                                         {
@@ -86,7 +87,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                     )}>
                                         <span className={cn(styles.link)} style={{ color: router.pathname === "/discover" ? '#FFFFFF' : '#8C8D8F' }}>DISCOVER</span>
                                     </div>
-                            </Link>
+                            </Link> */}
                             <Link href="/create">
                                 <a
                                     className={cn(

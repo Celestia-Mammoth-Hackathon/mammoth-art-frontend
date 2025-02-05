@@ -66,6 +66,7 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
     }
     // Return default data if no CID or no data found
     return {
+      contractAddress: '',
       zipFile: null,
       collectionName: '',
       contractName: '',
