@@ -1,14 +1,14 @@
 import type { NextPage } from "next";
-import MintPage from "@/templates/MintGenerativePage/MintPage";
+import DeployPage from "@/templates/MintGenerativePage/DeployPage";
 import { useRouter } from 'next/router';
 
-const Mint: NextPage = () => {
+const Deploy: NextPage = () => {
     const router = useRouter();
     const { cid } = router.query;
     
-    return <MintPage cid={cid}/>;
+    return <DeployPage cid={cid}/>;
     
 
 };
 
-export default Mint;
+export default Deploy;

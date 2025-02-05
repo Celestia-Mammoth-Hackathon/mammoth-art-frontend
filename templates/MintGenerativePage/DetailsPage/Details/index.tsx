@@ -43,7 +43,7 @@ const Details = ({cid}: DetailsProps) => {
   }
 
   const handleNextStep = async () => {
-    router.push(`/mint-generative/mint?cid=${cid}`);
+    router.push(`/mint-generative/deploy?cid=${cid}`);
   };
 
   const handlePrevStep = async () => {

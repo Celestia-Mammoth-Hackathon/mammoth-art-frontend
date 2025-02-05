@@ -1,16 +1,79 @@
 import React from "react";
 import cn from "classnames";
-import styles from "./Mint.module.sass";
+import styles from "./Deploy.module.sass";
 import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
 import Image from "next/image"; // Import the Image component from Next.js
+import { useRouter } from "next/router";
+import useDeployGenerativeCollection from "@/hooks/useDeployGenerativeCollection";
+import { useUserContext } from "context/user";
+import DeployModal from "@/components/ActionModal/DeployModal";
+import { useState, useEffect } from "react";
+import Spinner from "@/components/Spinner";
 
-type MintProps = {
+type DeployProps = {
   cid: any;
 };
 
-const Mint = ({ cid }: MintProps) => {
-  const { collectionData } = useCollectionContext();
+
+const Deploy = ({ cid }: DeployProps) => {
+  const { address, checkNetwork } = useUserContext();
+  const [visibleDeployModal, setVisibleDeployModal] = useState<boolean>(false);
+  const { collectionData, setCollectionData } = useCollectionContext();
+  const [loading, setLoading] = useState<boolean>(false);
+
+  const router = useRouter();
+
+  const placeholderMetadata = {
+    name: collectionData.collectionName,
+    description: collectionData.description,
+    image: collectionData.image,
+    tags: [
+      "generative",
+      "mammothArt",
+    ]
+  };
+
+  const { 
+    deployCollection,
+    contractAddress,
+    isDeployed,
+    deployTxHash, 
+  } = useDeployGenerativeCollection({
+    collectionName: collectionData.collectionName,
+    symbol: collectionData.symbol,
+    collectionSize: collectionData.size,
+    royaltyRecipient: collectionData.royaltyRecipient,
+    royaltyFee: collectionData.royaltyFee,
+    placeholderMetadata: placeholderMetadata,
+  });
+
+  const onCloseModal = (setVisibleModal: any) => {
+    return () => {
+      setVisibleModal(false);
+    };
+  };
+
+  const handlePrevStep = () => {
+    router.push(`/mint-generative/details?cid=${cid}`);
+  };
+  useEffect(() => {
+    if (isDeployed) {
+      setVisibleDeployModal(true);
+      setCollectionData({
+        ...collectionData,
+        contractAddress: contractAddress,
+      });
+    }
+  }, [isDeployed]);
+
+  const handleDeployCollection = () => {
+    setLoading(true);
+    deployCollection();
+    setLoading(false);
+  };
+
+
 
   return (
     <div className={styles.detailsWrapper}>
@@ -131,7 +194,7 @@ const Mint = ({ cid }: MintProps) => {
             styles.prevBtn,
             { [styles.prevDisabled]: false }
           )}
-          // onClick={handlePrevStep}
+          onClick={handlePrevStep}
         >
           <Icon name={"arrow-left"} fill="#ffffff" />
           PREV STEP
@@ -142,14 +205,33 @@ const Mint = ({ cid }: MintProps) => {
             styles.button,
             styles.nextBtn
           )}
-          // onClick={handleNextStep}
+          onClick={handleDeployCollection}
         >
-          NEXT STEP
-          <Icon name={"arrow-right"} fill="#ffffff" />
+          {
+            loading 
+              ? <Spinner className={styles.spinner}/> 
+              : <div className={styles.next}> 
+                  DEPLOY COLLECTION
+                  <Image
+                      src="/rocket-svgrepo-com.svg"
+                      width={24}
+                      height={24}
+                      alt="Deploy Collection"
+                  />
+                </div>
+          }
         </div>
       </div>
+      {address && (
+        <DeployModal
+          visible={visibleDeployModal}
+          onClose={onCloseModal(setVisibleDeployModal)}
+          contractAddress={contractAddress}
+        />
+
+      )}
     </div>
   );
 };
 
-export default Mint;
+export default Deploy;
