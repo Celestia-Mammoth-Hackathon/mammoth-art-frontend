@@ -1,4 +1,4 @@
-import { generativeERC721UpgradeableABI } from '@/abi/GenerativeERC721Upgradeable';
+import generativeERC721Upgradeable from '@/abi/GenerativeERC721Upgradeable.abi.json';
 import { useWriteContract } from 'wagmi';
 
 type UseMintGenerativeProps = {
@@ -19,7 +19,7 @@ const useMintGenerative = ({ contractAddress }: UseMintGenerativeProps = {}) => 
         
         writeContract({
             address: contractAddress,
-            abi: generativeERC721UpgradeableABI,
+            abi: generativeERC721Upgradeable.abi,
             functionName: 'mint',
             args: [to, amount],
         });
