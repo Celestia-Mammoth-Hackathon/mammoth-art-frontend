@@ -10,6 +10,7 @@ import { useUserContext } from "context/user";
 import DeployModal from "@/components/ActionModal/DeployModal";
 import { useState, useEffect } from "react";
 import Spinner from "@/components/Spinner";
+import useCreateDrop from "@/hooks/useCreateDrop";
 
 type DeployProps = {
   cid: any;
@@ -36,9 +37,11 @@ const Deploy = ({ cid }: DeployProps) => {
 
   const { 
     deployCollection,
-    contractAddress,
-    isDeployed,
-    deployTxHash, 
+    contractAddress: proxyContractAddress,
+    isDeployed : isProxyDeployed,
+    deployTxHash: proxyDeployTxHash,
+    deployStatus: proxyDeployStatus,
+    setPlaceHolderMetadataStatus
   } = useDeployGenerativeCollection({
     collectionName: collectionData.collectionName,
     symbol: collectionData.symbol,
@@ -46,6 +49,29 @@ const Deploy = ({ cid }: DeployProps) => {
     royaltyRecipient: collectionData.royaltyRecipient,
     royaltyFee: collectionData.royaltyFee,
     placeholderMetadata: placeholderMetadata,
+  });
+
+  const { 
+    createDrop,
+    grantMinterStatus,
+    grantMinterTxHash,
+    isDropCreated,
+    createDropStatus
+  } = useCreateDrop({
+    proxyContractAddress: proxyContractAddress as `0x${string}`,
+    recipient: collectionData.primarySaleAddress,
+    token: {
+      tokenAddress: proxyContractAddress as `0x${string}`,
+      tokenId: 0,
+    },
+    maxAllowed: 0,
+    maxPerWallet: 0,
+    maxPerToken: 0,
+    maxPerBlock: 0,
+    reserves: 0,
+    startDate: new Date(collectionData.startDate),
+    endDate: new Date(collectionData.endDate),
+    price: collectionData.price,
   });
 
   const onCloseModal = (setVisibleModal: any) => {
@@ -57,23 +83,49 @@ const Deploy = ({ cid }: DeployProps) => {
   const handlePrevStep = () => {
     router.push(`/mint-generative/details?cid=${cid}`);
   };
+
   useEffect(() => {
-    if (isDeployed) {
-      setVisibleDeployModal(true);
+    if (isProxyDeployed) {
       setCollectionData({
         ...collectionData,
-        contractAddress: contractAddress,
+        contractAddress: proxyContractAddress,
       });
+      createDrop();
     }
-  }, [isDeployed]);
+  }, [isProxyDeployed]);
 
-  const handleDeployCollection = () => {
-    setLoading(true);
-    deployCollection();
-    setLoading(false);
+  useEffect(() => {
+    console.log(proxyDeployStatus, setPlaceHolderMetadataStatus, grantMinterStatus, createDropStatus);
+    if(proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
+      setLoading(false);
+    }
+  }, [proxyDeployStatus, setPlaceHolderMetadataStatus, grantMinterStatus, createDropStatus]);
+
+  const handleDeployCollection = async () => {
+    try {
+      setLoading(true);
+      deployCollection();
+    } catch (error) {
+      console.error('Deployment error:', error);
+      setLoading(false);
+    }
   };
 
+  const getStatusIcon = (status: 'pending' | 'success' | 'error' | 'idle') => {
+    switch (status) {
+      case 'pending':
+        return <Spinner className={styles.spinner} />;
+      case 'success':
+        return <Icon name="check" fill="#00ff00" />;
+      case 'error':
+        return <Icon name="close" fill="#ff0000" />;
+      case 'idle':
+        return <Image src="/images/icons/hourglass.svg" alt="idle" width={24} height={24}/>;
+      default:
+        return null;
+    }
 
+  };
 
   return (
     <div className={styles.detailsWrapper}>
@@ -160,28 +212,50 @@ const Deploy = ({ cid }: DeployProps) => {
           </div>
         </div>
         <div className={styles.preview}>
-          <div>Preview</div>
-          <div className={styles.previewImage}>
-            {collectionData.image ? (
-              <Image
-                src={
-                  typeof collectionData.image === "string"
-                    ? collectionData.image // Base64 string or URL
-                    : URL.createObjectURL(collectionData.image) // Convert File to URL
-                }
-                alt="preview"
-                width={300} // Set appropriate width
-                height={300} // Set appropriate height
-                layout="responsive" // Use responsive layout
-              />
-            ) : (
-              <></>
-            )}
-          </div>
-          <div className={styles.previewText}>
-            <span className={styles.text}>
-              {collectionData.collectionName ? collectionData.collectionName : ""}
-            </span>
+            <div>
+              <div>Preview</div>
+              <div className={styles.previewImage}>
+                {collectionData.image ? (
+                  <Image
+                    src={
+                      typeof collectionData.image === "string"
+                        ? collectionData.image // Base64 string or URL
+                        : URL.createObjectURL(collectionData.image) // Convert File to URL
+                    }
+                    alt="preview"
+                    width={300} // Set appropriate width
+                    height={300} // Set appropriate height
+                    layout="responsive" // Use responsive layout
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className={styles.previewText}>
+                <span className={styles.text}>
+                  {collectionData.collectionName ? collectionData.collectionName : ""}
+                </span>
+              </div>
+            </div>
+          
+          <div className={styles.deploymentStatus}>
+            <h3>Deployment Status</h3>
+            <div className={styles.statusItem}>
+              {getStatusIcon(proxyDeployStatus)}
+              <span>Deploy proxy contract</span>
+            </div>
+            <div className={styles.statusItem}>
+              {getStatusIcon(setPlaceHolderMetadataStatus)}
+              <span>Set up placeholder metadata</span>
+            </div>
+            <div className={styles.statusItem}>
+              {getStatusIcon(createDropStatus)}
+              <span>Create drop</span>
+            </div>
+            <div className={styles.statusItem}>
+              {getStatusIcon(grantMinterStatus)}
+              <span>Grant minter role for drop</span>
+            </div>
           </div>
         </div>
       </div>
@@ -226,7 +300,7 @@ const Deploy = ({ cid }: DeployProps) => {
         <DeployModal
           visible={visibleDeployModal}
           onClose={onCloseModal(setVisibleDeployModal)}
-          contractAddress={contractAddress}
+          proxyContractAddress={proxyContractAddress}
         />
 
       )}

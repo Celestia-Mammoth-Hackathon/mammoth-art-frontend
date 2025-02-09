@@ -7,7 +7,7 @@ import { STATUS } from "../status";
 import Image from "@/components/Image";
 import { transformUri } from "@/utils/ipfs";
 import Spinner from "@/components/Spinner";
-
+import { useUserContext } from "context/user";
 type MintModalProps = {
     visible: boolean;
     onClose: () => void;
@@ -32,9 +32,11 @@ const MintModal: React.FC<MintModalProps> = ({
     claimNFT,
 }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const { address } = useUserContext();
     const renderContent = () => {
         if (!response) {
             return (
+
                 <>
                 </>
             );
@@ -105,7 +107,7 @@ const MintModal: React.FC<MintModalProps> = ({
                             }
                         </button>
                     )}
-                    <Link href="/my-collection">
+                    <Link href={`/profile/${address}`}>
 
                                 <a
                                     className={cn(

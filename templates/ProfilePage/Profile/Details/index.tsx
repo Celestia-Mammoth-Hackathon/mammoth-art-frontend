@@ -6,12 +6,13 @@ import Contacts from "../Contacts";
 import { formatUserAddress } from "@/utils/index";
 import { chainExplorerURL } from "@/constants/details";
 type DetailsProps = {
-    artistInfor: any;
+    userInfor: any;
+    address: string;
 };
 
-const Details = ({ artistInfor }: DetailsProps) => {
+const Details = ({ userInfor, address }: DetailsProps) => {
     const [isCopied, setIsCopied] = useState(false);
-    const artistLink = `${chainExplorerURL}/address/${artistInfor.artistAddress}?tab=txs`;
+    const artistLink = `${chainExplorerURL}/address/${address}?tab=txs`;
     const copyToClipboard = async (text:any) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -27,19 +28,19 @@ const Details = ({ artistInfor }: DetailsProps) => {
             <div className={styles.head}>
                 <div className={styles.flex}>
                     <div className={styles.box}>
-                        <div className={cn("h2", styles.user)}>{artistInfor.name}</div>
+                        <div className={cn("h2", styles.user)}>{userInfor?.name}</div>
                         <div className={styles.line}>
                         <div className={`${styles.code} ${isCopied ? styles.copiedBg : ''}`}>
                             <a className={styles.address} 
                                 href={artistLink}
                                 target="_blank"
                                 rel="noopener noreferrer" >
-                                {formatUserAddress(artistInfor.artistAddress)}
+                                {formatUserAddress(address)}
                             </a>
 
                             <button
                                 className={styles.copy}
-                                onClick={() => copyToClipboard(artistInfor.artistAddress)}
+                                onClick={() => copyToClipboard(address)}
                             >
                                 <Icon name="copy" />
                             </button>
@@ -48,7 +49,7 @@ const Details = ({ artistInfor }: DetailsProps) => {
                     </div>
                 </div>
             </div>
-            <Contacts links={artistInfor.links ?? []} bio={artistInfor.bio ?? ""}/>
+            <Contacts links={userInfor?.links ?? []} bio={userInfor?.bio ?? ""}/>
         </div>
     );
 };

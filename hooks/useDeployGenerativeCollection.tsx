@@ -5,7 +5,7 @@ import ERC1967Proxy from '@openzeppelin/upgrades-core/artifacts/@openzeppelin/co
 import { useEffect } from 'react';
 import { ethers } from "ethers";
 
-const IMPLEMENTATION_ADDRESS = "0xB7bF8FcBd1afFD5D28C9B3Cd365b355da5E549B6";
+const IMPLEMENTATION_ADDRESS = process.env.NEXT_PUBLIC_GENERATIVE_ERC721_IMPLEMENTATION_ADDRESS || "0xB7bF8FcBd1afFD5D28C9B3Cd365b355da5E549B6";
 
 type UseDeployGenerativeCollectionProps = {
   collectionName: string;
@@ -80,7 +80,7 @@ const useDeployGenerativeCollection = ({
         ethers.BigNumber.from(100)
       ]);
 
-
+      console.log(initData);
       // Deploy the proxy contract
       deployProxyContract({
         abi: ERC1967Proxy.abi,
@@ -98,6 +98,7 @@ const useDeployGenerativeCollection = ({
     isDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success',
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
+    setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,
     deployCollection,
   };
 };

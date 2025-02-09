@@ -3,18 +3,26 @@ import Image from "@/components/Image";
 import List from "@/components/List";
 import Tokens from "@/components/Tokens";
 import Details from "./Details";
+import { useState } from "react";
+import Collections from "@/components/Collections";
 
 type ProfileProps = {
-    nfts: any;
-    artistInfor: any;
+    ownedNFTs: any;
+    userInfor: any;
     address: string;
 };
 
-const Profile = ({ nfts, artistInfor, address }: ProfileProps) => {
+const Profile = ({ ownedNFTs, userInfor, address }: ProfileProps) => {
+    const [tab, setTab] = useState("owned");
+    
     const tabsTokens = [{
-        title: "Created",
-        value: "created",
-        counter: nfts.length,
+        title: "Owned",
+        value: "owned",
+        counter: ownedNFTs.length,
+    }, {
+        title: "Collections",
+        value: "collections",
+        counter: Object.keys(userInfor?.collections || {}).length,
     }];
 
     return (
@@ -22,26 +30,32 @@ const Profile = ({ nfts, artistInfor, address }: ProfileProps) => {
             <div className={styles.col}>
                 <div className={styles.avatar}>
                     {
-                        (artistInfor?.profilePic) &&
+                        (userInfor?.profilePic) ?
                             <Image
-                            src={artistInfor?.profilePic}
+                            src={userInfor?.profilePic}
                             layout="fill"
                             objectFit="contain"
                             alt="Avatar"
-                        />
+                        /> : <Image
+                            src="/images/artists/sloths.png"
+                            layout="fill"
+                            objectFit="contain"
+                            alt="Avatar"
+                    />
                     }
                 </div>
-                <Details artistInfor={artistInfor} />
+                <Details userInfor={userInfor} address={address}/>
             </div>
             <div className={styles.col}>
                 <List
                     tabs={tabsTokens}
-                    tabsValue="created"
-                    setTabsValue={() => {}}
+                    tabsValue={tab}
+                    setTabsValue={setTab}
                     light={false}
                     wrapperStyle={{ paddingLeft: "0", paddingTop: "0" }}
                 >
-                    <Tokens items={nfts} theme={false} />
+                    {tab === "owned" && <Tokens items={ownedNFTs} theme={false} owned/>}
+                    {tab === "collections" && <Collections items={Object.values(userInfor?.collections || {})} theme={false} />}
                 </List>
             </div>
         </div>

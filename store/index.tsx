@@ -91,12 +91,15 @@ type CollectionState = {
 
 type UserState = {
     collections: Record<string, CollectionState>;
+    bannerPic: string;
+    profilePic: string;
 };
 
 interface State {
     collections: Record<string, CollectionState>;
     users: Record<string, UserState>;
     fetchAllCollections: () => Promise<void>;
+    fetchAllGenerativeCollections: () => Promise<void>;
     fetchUserBalance: (userAddress: string) => Promise<void>;
     fetchCollection: (tokenAddress: string, tokenId: string) => Promise<void>;
     fetchMintedSupply: (tokenAddress: string, tokenId: string) => Promise<void>;
@@ -225,7 +228,14 @@ const useCollectionStore = create<State>((set , get) => ({
             console.error("Error fetching collections:", error);
         }
     },
-
+    fetchAllGenerativeCollections: async () => {
+        try {
+            const tokens = await indexer.getAllTokens();
+            console.log(tokens);
+        } catch (error) {
+            console.error("Error fetching collections:", error);
+        }
+    },
     fetchCollection: async (tokenAddress: string, tokenId: string) => {
         try {
             const token:any = await getTokenStaticMetadata(tokenAddress, tokenId);

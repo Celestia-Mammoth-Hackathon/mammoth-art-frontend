@@ -3,32 +3,37 @@ import styles from "./DeployModal.module.sass";
 import Modal from "@/components/Modal";
 import Link from "next/link";
 import { STATUS } from "../status";
+import { useUserContext } from "context/user";
 
 type DeployModalProps = {
     visible: boolean;
     onClose: () => void;
-    contractAddress: any;
+    proxyContractAddress: any;   
 };
 
 const DeployModal: React.FC<DeployModalProps> = ({
     visible,
     onClose,
-    contractAddress
+    proxyContractAddress,
 }) => {
+    const { address } = useUserContext();
     const renderContent = () => {
-        if (!contractAddress) {
+        if (!proxyContractAddress) {
+
             return (
                 <>
                 </>
             );
-        } else if (contractAddress) {
+        } else if (proxyContractAddress) {
             return (
                 <>
                     <div className={styles.label}>DEPLOYED!</div>
                     <div className={styles.desc}>
-                    Your contract is deployed on address: {contractAddress}
+                    Your contract is deployed on address: {proxyContractAddress}
                     </div>
-                    <Link href="/my-collection">
+
+
+                    <Link href={`/profile/${address}`}>
 
                                 <a
                                     className={cn(
@@ -36,6 +41,7 @@ const DeployModal: React.FC<DeployModalProps> = ({
                                         styles.button,
                                         styles.setBtn
                                     )}
+
                                 >
                                     VIEW MY COLLECTION
                                 </a>

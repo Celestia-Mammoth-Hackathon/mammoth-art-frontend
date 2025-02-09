@@ -41,7 +41,7 @@ const Profile = ({
     const menu = address ? [
         {
             title: "MY PROFILE",
-            url: "/my-collection",
+            url: `/profile/${address}`,
         },
         {
             title: "BRIDGE FUNDS",

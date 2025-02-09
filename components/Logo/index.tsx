@@ -17,8 +17,8 @@ const Logo = ({ className, light, onClick }: LogoProps) => (
         >
             <Image
                 src="/mstile-150x150.png"
-                width={80}
-                height={80}
+                width={64}
+                height={64}
                 alt="Logo"
             />
             MammothArt

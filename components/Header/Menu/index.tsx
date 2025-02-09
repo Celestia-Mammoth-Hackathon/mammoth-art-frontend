@@ -18,13 +18,14 @@ const Menu = ({ classBurger }: MenuProps) => {
     const menu = address ? [
         {
             title: "MY PROFILE",
-            url: "/my-collection",
+            url: `/profile/${address}`,
         },
         {
             title: "BRIDGE FUNDS",
             url: chainBridgeURL,
             newPage : true,
         },
+
         {
             title: "DISCORD",
             url: "https://discord.gg/P6tEY8d7De",

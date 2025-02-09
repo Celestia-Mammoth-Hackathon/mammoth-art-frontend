@@ -12,25 +12,8 @@ const Profile: NextPage = () => {
         return <></>
     }
 
-    
-    const artist = artistAddresses.find(a => a.slug === slug?.toLowerCase());
-
-    if (!artist) {
-        const user = {
-            address: slug,
-            bannerPic: "/images/gloverinterface_header_1800x500_.jpg",
-            bio: "",
-            collections: [],
-            links: [],
-            name: "Dash",
-            profilePic: "/images/users/avatar-3.jpg",
-            slug: ""
-        }
-        return <ProfilePage artist={user} />
-    }
-
     return (
-        <ProfilePage artist={artist} />
+        <ProfilePage userAddress={slug} />
     )
 };
 

@@ -4,16 +4,17 @@ import Profile from "./Profile";
 import useCollectionStore from '@/store/index';
 
 type PrfilePageProps = {
-    artist: any;
+    userAddress: any;
 };
 
-const PrfilePage = ({ artist }: PrfilePageProps) => {
+const PrfilePage = ({ userAddress }: PrfilePageProps) => {
     const {
         collections,
-        fetchAllCollections,
+        users,
+        fetchUserBalance,
     } = useCollectionStore();
 
-    const [mintedNFTs, setMintedNFTs] = useState([]);
+    const [ownedNFTs, setOwnedNFTs] = useState([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
@@ -21,18 +22,18 @@ const PrfilePage = ({ artist }: PrfilePageProps) => {
             try {
                 setLoading(true);
                 if (Object.keys(collections).length < 1) {
-                    await fetchAllCollections();
+                    await fetchUserBalance(userAddress);
                 }
-
-                if (Object.keys(collections).length > 0) {
+                console.log(users);   
+                if (Object.keys(collections).length > 0 && users[userAddress]?.collections) {
                     let allMintedNFTs: any = [];
-                    for (const collection of artist.collections) {
-                        const collectionId = `${collection.tokenAddress.toLowerCase()}_${collection.tokenId}`
+                    Object.values(users[userAddress].collections).forEach(collection => {
+                        const collectionId = `${collection.token.tokenAddress.toLowerCase()}_${collection.token.tokenId}`
                         if (collections[collectionId]) {
                             allMintedNFTs.push(collections[collectionId].token);
                         }
-                    }
-                    setMintedNFTs(allMintedNFTs);
+                    });
+                    setOwnedNFTs(allMintedNFTs);
                 }
             } catch (error) {
                 console.error("Error fetching drops:", error);
@@ -41,19 +42,19 @@ const PrfilePage = ({ artist }: PrfilePageProps) => {
             }
         };
 
-        if (artist && artist.collections.length > 0) {
+        if (userAddress) {
             fetchData();
         } else {
             setLoading(false);
         }
-    }, [artist, collections]);
+    }, [userAddress, collections]);
 
     return (
         <>
             {!loading && (
                 <>
-                    <Background image={artist.bannerPic} />
-                    <Profile nfts={mintedNFTs} artistInfor={artist} address={artist.artistAddress} />
+                    <Background image={users[userAddress]?.bannerPic || "/images/artists/sloths.png"} />
+                    <Profile ownedNFTs={ownedNFTs} userInfor={users[userAddress]} address={userAddress} />
                 </>
             )}
         </>

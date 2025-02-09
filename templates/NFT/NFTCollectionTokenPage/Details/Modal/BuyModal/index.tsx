@@ -3,7 +3,7 @@ import styles from "./BuyModal.module.sass";
 import Modal from "@/components/Modal";
 import Link from "next/link";
 import { STATUS } from "../status";
-
+import { useUserContext } from "context/user";
 type BuyModalProps = {
     visible: boolean;
     onClose: () => void;
@@ -15,8 +15,10 @@ const BuyModal: React.FC<BuyModalProps> = ({
     onClose,
     response
 }) => {
+    const { address } = useUserContext();
     const renderContent = () => {
         if (!response) {
+
             return (
                 <>
                 </>
@@ -28,7 +30,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
                     <div className={styles.desc}>
                     Successfully purchased! You can check your collection to view your NFTs.
                     </div>
-                    <Link href="/my-collection">
+                    <Link href={`/profile/${address}`}>
 
                                 <a
                                     className={cn(
