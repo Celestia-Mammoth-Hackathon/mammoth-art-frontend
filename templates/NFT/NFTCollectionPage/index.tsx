@@ -58,7 +58,7 @@ const NFTCollectionPage = ({ collection, attributes }: NFTCollectionPageProps) =
     const c = collections[collectionId];
 
     if (c) {
-      setMintedSupply(c.token.mintedSupply);
+      setMintedSupply(c.token.mintedSupply ?? 0);
     } else {
       setMintedSupply(0);
     }
