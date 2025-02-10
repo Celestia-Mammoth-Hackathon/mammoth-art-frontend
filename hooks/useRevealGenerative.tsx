@@ -28,7 +28,7 @@ const useRevealGenerative = ({
         abi: generativeERC721Upgradeable.abi,
         functionName: 'tokenURICemented',
         args: tokenId ? [BigInt(tokenId)] : undefined,
-        chainId: 1, // specify the chain ID if needed
+        chainId: process.env.NEXT_PUBLIC_CHAIN_ID,
 
     });
 

@@ -54,8 +54,8 @@ const Profile = ({ ownedNFTs, userInfor, address }: ProfileProps) => {
                     light={false}
                     wrapperStyle={{ paddingLeft: "0", paddingTop: "0" }}
                 >
-                    {tab === "owned" && <Tokens items={ownedNFTs} theme={false} owned/>}
-                    {tab === "collections" && <Collections items={Object.values(userInfor?.collections || {})} theme={false} />}
+                    {tab === "owned" && <Tokens items={ownedNFTs} theme={false} owned={true}/>}
+                    {tab === "collections" && <Collections items={Object.values(userInfor?.collections || [])} theme={false} />}
                 </List>
             </div>
         </div>
