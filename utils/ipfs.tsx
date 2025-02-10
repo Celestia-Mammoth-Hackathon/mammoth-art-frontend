@@ -39,7 +39,7 @@ export const transformUri = (uri:any, useCdn: boolean = true) => {
   if (useCdn) {
     uri = uri.replace("ipfs://", "/images/ipfs/");
   } else {
-    const gateway = "https://nftstorage.link/ipfs/";
+    const gateway = "https://ipfs.io/ipfs/";
     uri = uri.replace("ipfs://", gateway);
   }
 

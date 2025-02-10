@@ -48,11 +48,11 @@ export type TokenMetadata = {
     cloudflareCdnId?: string;
 };
 
-type TokenState = {
-    contractCreator: string;
-    collectionName: string;
-    metadata: TokenMetadata;
-    "drop": {
+export type TokenState = {
+    contractCreator?: string;
+    collectionName?: string;
+    metadata?: TokenMetadata;
+    "drop"?: {
         "id": string,
         "startDate": number,
         "endDate": number,
@@ -65,13 +65,15 @@ type TokenState = {
         "merkleRoot": string
     },
     "order": {},
-    "type": string,
+    "type"?: string,
     "tokenAddress": string,
     "tokenId": string,
     "contractType"?: string,
-    "royalty": number,
-    "price": number,
-    "mintedSupply": number,
+    tokenType?: string,
+    "royalty"?: number,
+    "price"?: number,
+    "mintedSupply"?: number,
+    totalSupply?: number,
     isMarketplaceAllowed: boolean;
     isMerkleDrop?: boolean;
     cloudflareCdnId?: string;
@@ -79,6 +81,7 @@ type TokenState = {
     extraDescription?: string;
     defaultMintAmount?: number;
     tokens?: TokenMetadata[];
+    tokenMetadata?: TokenMetadata;
 };
 
 type CollectionState = {
@@ -91,6 +94,7 @@ type CollectionState = {
 
 type UserState = {
     collections: Record<string, CollectionState>;
+    tokens: [TokenState];
     bannerPic: string;
     profilePic: string;
 };
@@ -402,50 +406,95 @@ const useCollectionStore = create<State>((set , get) => ({
             console.error("Error fetching own nfts:", error);
         }
     },
+    // fetchUserBalance: async (userAddress: string) => {
+    //     try {
+    //         const ownedSupply = await indexer.getUserBalance({ userAddress });
+            
+    //         for (const item of ownedSupply) {
+    //             const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
+
+    //             const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+    //             const userBalance = ownedSupply.filter((element: any) =>
+    //                 element.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
+    //                 && ((token.type === 'ERC1155' && (element.tokenId === item.tokenId || (token.tokens && token.tokens.length > 0))) || token.type === 'ERC721')
+    //             );
+
+    //             const tokens = await indexer.getAllTokens();
+    //             const foundToken = tokens.find((token: any) => 
+    //                 token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() &&
+    //                 token.tokenId === item.tokenId
+    //             );
+
+    //             token.mintedSupply = foundToken?.totalSupply || 0;
+    //             token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
+
+    //             set((state) => {
+    //                 const userState = state.users[userAddress] || { collections: {} };
+    
+    //                 return {
+    //                     users: {
+    //                         ...state.users,
+    //                         [userAddress]: {
+    //                             ...userState,
+    //                             collections: {
+    //                                 ...userState.collections,
+    //                                 [collectionId]: {
+    //                                     ...userState.collections[collectionId],
+    //                                     token: token,
+    //                                     tokenIds: userBalance.map((balance: any) => balance.tokenId)
+    //                                         .sort((a: any, b: any) => Number(a) - Number(b)),
+    //                                     ownedSupply: userBalance.reduce((sum: number, balance: any) => sum + +balance.balance, 0) || 0,
+    //                                 }
+    //                             }
+    //                         }
+    //                     }
+    //                 };
+    //             });
+    //         }
+            
+            
+
+            
+    //     } catch (error) {
+    //         console.error("Error fetching own nfts:", error);
+    //     }
+    // },
     fetchUserBalance: async (userAddress: string) => {
         try {
             const ownedSupply = await indexer.getUserBalance({ userAddress });
+            let ownedCollection = await indexer.getDropsByUser(userAddress);
+            ownedCollection = await Promise.all(
+                ownedCollection.map(async (item:any) => {
+                    try {
+                        const token: any = await indexer.getTokenMetadata({
+                            tokenAddress: item.tokenAddress,
+                            tokenId: "1"
+                        });
 
-            for (const item of ownedSupply) {
-                const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
-                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
-                const userBalance = ownedSupply.filter((element: any) =>
-                    element.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
-                    && ((token.type === 'ERC1155' && (element.tokenId === item.tokenId || (token.tokens && token.tokens.length > 0))) || token.type === 'ERC721')
-                );
+                        return {
+                            ...item,
+                            tokenMetadata: token?.tokenMetadata || null
+                        };
+                    } catch (error) {
+                        console.error(`Error fetching metadata for token ${item.tokenId} at ${item.tokenAddress}:`, error);
+                        return { ...item, metadata: null }; // Preserve structure even on failure
+                    }
+                })
+            );            set((state) => {
+                const userState = state.users[userAddress] || { collections: {} };
 
-                const tokens = await indexer.getAllTokens();
-                const foundToken = tokens.find((token: any) => 
-                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() &&
-                    token.tokenId === item.tokenId
-                );
-
-                token.mintedSupply = foundToken?.totalSupply || 0;
-                token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
-
-                set((state) => {
-                    const userState = state.users[userAddress] || { collections: {} };
-    
-                    return {
-                        users: {
-                            ...state.users,
-                            [userAddress]: {
-                                ...userState,
-                                collections: {
-                                    ...userState.collections,
-                                    [collectionId]: {
-                                        ...userState.collections[collectionId],
-                                        token: token,
-                                        tokenIds: userBalance.map((balance: any) => balance.tokenId)
-                                            .sort((a: any, b: any) => Number(a) - Number(b)),
-                                        ownedSupply: userBalance.reduce((sum: number, balance: any) => sum + +balance.balance, 0) || 0,
-                                    }
-                                }
-                            }
+                return {
+                    users: {
+                        ...state.users,
+                        [userAddress]: {
+                            ...userState,
+                            tokens: ownedSupply,
+                            collections: ownedCollection
                         }
-                    };
-                });
-            }
+                    }
+                };
+            });
+            
             
             
 

@@ -3,7 +3,11 @@ import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_URL!.replace(/\/$/, "");
 
-const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || "1").split(","));
+const BASE_RAILWAY_URL = process.env.NEXT_PUBLIC_RAILWAY_INDEXER_API_URL!.replace(/\/$/, "");
+
+const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, "");
+
+const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || "1,2,3,4,5").split(","));
 
 const DEFAULT_MAX_PAGES = 40;
 
@@ -99,6 +103,36 @@ const getAllDrops = async () => {
     } else return [];
 };
 
+const getDropsByUser = async (userAddress: string) => {
+  const query = `query DropsByUser {
+    drops(
+      where: {id_not_in: ${EXCLUDE_DROP_IDS}, creator: "${userAddress}"}
+      orderBy: "id",
+      orderDirection: "desc",
+    ) {
+      items {
+        id
+        startDate
+        endDate
+        maxAllowed
+        maxPerWallet
+        price
+        tokenAddress
+        tokenId
+        minted
+        merkleRoot
+      }
+    }
+  }`; 
+  const {
+    data: {
+      data: { drops },
+    },
+  } = await cachedAxiosPost(`${BASE_RAILWAY_URL}/graphql`, { query });
+  if (drops.items.length > 0) {
+    return drops.items;
+  } else return [];
+} 
 const getMerkleDrops = async () => {
   const query = `query MerkleDrops {
     drops(
@@ -270,46 +304,67 @@ export type GetUserBalanceParams = {
   maxPages?: number;
 }
 
-const getUserBalance = async ({ userAddress, maxPages }: GetUserBalanceParams) => {
-  const query = (cursor: string) => `query AccountTokenBalances {
-    account(
-      id: "${userAddress}"
-      ${cursor ? 'after: "' + cursor + '"' : ''}
-    ) {
-      id
-      tokens(limit: 1000, where: {balance_gt: "0"}) {
-        items {
-          tokenAddress
-          tokenId
-          balance
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-      }
-    }
-  }`;
+export type GetTokenMetadataParams = {
+  tokenAddress: string;
+  tokenId: string;
+}
 
-  let ret: any[] = [];
-  let cursor = "";
-  for (let i = 0; i < (maxPages || DEFAULT_MAX_PAGES); i++) {
-    const {
-      data: {
-        data: { account },
-      },
-    } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query: query(cursor) });
-    if (account?.tokens?.items.length > 0) {
-      ret = [ ...ret, ...account.tokens.items ];
-    }
-    if (account?.tokens?.pageInfo?.hasNextPage) {
-      cursor = account.tokens?.pageInfo?.endCursor;
-    } else {
-      break;
-    }
+// const getUserBalance = async ({ userAddress, maxPages }: GetUserBalanceParams) => {
+//   const query = (cursor: string) => `query AccountTokenBalances {
+//     account(
+//       id: "${userAddress}"
+//       ${cursor ? 'after: "' + cursor + '"' : ''}
+//     ) {
+//       id
+//       tokens(limit: 1000, where: {balance_gt: "0"}) {
+//         items {
+//           tokenAddress
+//           tokenId
+//           balance
+//         }
+//         pageInfo {
+//           hasNextPage
+//           endCursor
+//         }
+//       }
+//     }
+//   }`;
+
+//   let ret: any[] = [];
+//   let cursor = "";
+//   for (let i = 0; i < (maxPages || DEFAULT_MAX_PAGES); i++) {
+//     const {
+//       data: {
+//         data: { account },
+//       },
+//     } = await cachedAxiosPost(`${BASE_RAILWAY_URL}/graphql`, { query: query(cursor) });
+//     if (account?.tokens?.items.length > 0) {
+//       ret = [ ...ret, ...account.tokens.items ];
+//     }
+//     if (account?.tokens?.pageInfo?.hasNextPage) {
+//       cursor = account.tokens?.pageInfo?.endCursor;
+//     } else {
+//       break;
+//     }
+//   }
+//   return ret;
+// };
+
+const getUserBalance = async ({ userAddress }: GetUserBalanceParams) => {
+  const res = await cachedAxiosGet(`${BASE_API_URL}/wallet/${userAddress}/tokens`);
+  if (!res || !res.data) {
+    return [];
   }
-  return ret;
-};
+  return res.data;
+}
+
+const getTokenMetadata = async ({ tokenAddress, tokenId = "1" }: GetTokenMetadataParams) => {
+  const res = await cachedAxiosGet(`${BASE_API_URL}/collection/${tokenAddress}/${tokenId}`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+}
 
 export type GetUserTokenBalanceParams = {
   userAddress: string;
@@ -463,11 +518,13 @@ const getFeuillerLaMarguerite = async (): Promise<FeuillerRow[]> => {
 export default {
     getAllDrops,
     getMerkleDrops,
+    getDropsByUser,
     getAllTokens,
     getAllCollectionTokens,
     getCollectionToken,
     getAllOrders,
     getUserBalance,
+    getTokenMetadata,
     getUserTokenBalance,
     getLastestPriceOracleUpdate,
     getCollectionStats,
