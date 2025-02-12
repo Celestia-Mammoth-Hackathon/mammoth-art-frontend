@@ -17,14 +17,20 @@ const Details = ({cid}: DetailsProps) => {
   const setCollectionName = (name: string) => {
     setCollectionData((prevData: any) => ({
       ...prevData,
-      collectionName: name,
+      placeholderMetadata: {
+        ...prevData.placeholderMetadata,
+        name: name,
+      },
     }));
   };
 
   const setDescription = (description: string) => { 
     setCollectionData((prevData: any) => ({
       ...prevData,
-      description: description,
+      placeholderMetadata: {
+        ...prevData.placeholderMetadata,
+        description: description,
+      },
     }));
   }
 
@@ -113,9 +119,9 @@ const Details = ({cid}: DetailsProps) => {
           </label>
           <Field
                 placeholder="Enter collection image"
-                value={collectionData.image}
+                value={collectionData.placeholderMetadata?.image}
                 onChange={setCollectionData}
-                collectionImage={collectionData.image}
+                collectionImage={collectionData.placeholderMetadata?.image}
                 uploadCollectionImage={true}
                 required
                 upload

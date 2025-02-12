@@ -26,9 +26,9 @@ const Deploy = ({ cid }: DeployProps) => {
   const router = useRouter();
 
   const placeholderMetadata = {
-    name: collectionData.collectionName,
-    description: collectionData.description,
-    image: collectionData.image,
+    name: collectionData.placeholderMetadata?.name,
+    description: collectionData.placeholderMetadata?.description,
+    image: collectionData.placeholderMetadata?.image,
     tags: [
       "generative",
       "mammothArt",
@@ -48,7 +48,7 @@ const Deploy = ({ cid }: DeployProps) => {
     collectionSize: collectionData.size,
     royaltyRecipient: collectionData.royaltyRecipient,
     royaltyFee: collectionData.royaltyFee,
-    placeholderMetadata: placeholderMetadata,
+    placeholderMetadata: collectionData.placeholderMetadata,
   });
 
   const { 
@@ -148,24 +148,24 @@ const Deploy = ({ cid }: DeployProps) => {
           </div>
           <div className={styles.formGroup}>
             <span className={styles.label}>Collection name</span>
-            {collectionData.collectionName ? (
-              <span className={styles.value}>{collectionData.collectionName}</span>
+            {collectionData.placeholderMetadata?.name ? (
+              <span className={styles.value}>{collectionData.placeholderMetadata?.name}</span>
             ) : (
               <span className={styles.notUploadedValue}>Add collection name</span>
             )}
           </div>
           <div className={styles.formGroup}>
             <span className={styles.label}>Collection logo image</span>
-            {collectionData.image ? (
-              <span className={styles.value}>{collectionData.image.name}</span>
+            {collectionData.placeholderMetadata?.image ? (
+              <span className={styles.value}>{collectionData.placeholderMetadata?.image.name}</span>
             ) : (
               <span className={styles.notUploadedValue}>Add collection logo image</span>
             )}
           </div>
           <div className={styles.formGroup}>
             <span className={styles.label}>Description</span>
-            {collectionData.description ? (
-              <span className={styles.value}>{collectionData.description}</span>
+            {collectionData.placeholderMetadata?.description ? (
+              <span className={styles.value}>{collectionData.placeholderMetadata?.description}</span>
             ) : (
               <span className={styles.notUploadedValue}>Add description</span>
             )}
@@ -215,12 +215,12 @@ const Deploy = ({ cid }: DeployProps) => {
             <div>
               <div>Preview</div>
               <div className={styles.previewImage}>
-                {collectionData.image ? (
+                {collectionData.placeholderMetadata?.image ? (
                   <Image
                     src={
-                      typeof collectionData.image === "string"
-                        ? collectionData.image // Base64 string or URL
-                        : URL.createObjectURL(collectionData.image) // Convert File to URL
+                      typeof collectionData.placeholderMetadata?.image === "string"
+                        ? collectionData.placeholderMetadata?.image // Base64 string or URL
+                        : URL.createObjectURL(collectionData.placeholderMetadata?.image) // Convert File to URL
                     }
                     alt="preview"
                     width={300} // Set appropriate width
@@ -233,7 +233,7 @@ const Deploy = ({ cid }: DeployProps) => {
               </div>
               <div className={styles.previewText}>
                 <span className={styles.text}>
-                  {collectionData.collectionName ? collectionData.collectionName : ""}
+                  {collectionData.placeholderMetadata?.name ? collectionData.placeholderMetadata?.name : ""}
                 </span>
               </div>
             </div>
@@ -242,7 +242,7 @@ const Deploy = ({ cid }: DeployProps) => {
             <h3>Deployment Status</h3>
             <div className={styles.statusItem}>
               {getStatusIcon(proxyDeployStatus)}
-              <span>Deploy proxy contract</span>
+              <span>Deploy generative art contract</span>
             </div>
             <div className={styles.statusItem}>
               {getStatusIcon(setPlaceHolderMetadataStatus)}

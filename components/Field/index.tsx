@@ -154,7 +154,10 @@ const Field = ({
     const selectedFile = e.target.files?.[0];
     onChange((prevData: any) => ({
       ...prevData,
-      image: selectedFile,
+      placeholderMetadata: {
+        ...prevData.placeholderMetadata,
+        image: selectedFile,
+      },
     }));
   }
 

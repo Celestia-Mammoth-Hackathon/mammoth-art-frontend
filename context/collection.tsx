@@ -66,15 +66,18 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
     }
     // Return default data if no CID or no data found
     return {
+      placeholderMetadata: {
+        name: '',
+        description: '',
+        image: null,
+        attributes: [],
+      },
       contractAddress: '',
       zipFile: null,
-      collectionName: '',
       contractName: '',
       contractSymbol: '',
-      description: '',
       size: 0,
       price: '',
-      image: null,
       startDate: '',
       endDate: '',
       primarySaleAddress: '',
