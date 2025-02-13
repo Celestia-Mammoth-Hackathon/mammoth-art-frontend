@@ -1,13 +1,14 @@
 /* eslint-disable import/no-anonymous-default-export */
 import axios from "axios";
-
+import { ethers } from "ethers";
+import generativeERC721Upgradeable  from "@/abi/GenerativeERC721Upgradeable.abi.json";
 const BASE_URL = process.env.NEXT_PUBLIC_INDEXER_API_URL!.replace(/\/$/, "");
 
 const BASE_RAILWAY_URL = process.env.NEXT_PUBLIC_RAILWAY_INDEXER_API_URL!.replace(/\/$/, "");
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, "");
 
-const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || "1,2,3,4,5").split(","));
+const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || ["1", "2", "3", "4", "5"]));
 
 const DEFAULT_MAX_PAGES = 40;
 
@@ -103,6 +104,40 @@ const getAllDrops = async () => {
     } else return [];
 };
 
+const getAllGenerativeDrops = async () => {
+  const query = `query AllDrops {
+    drops(
+      where: {id_not_in: ${EXCLUDE_DROP_IDS}}
+      orderBy: "id",
+      orderDirection: "desc"
+    ) {
+      items {
+        id
+        startDate
+        endDate
+        maxAllowed
+        maxPerWallet
+        price
+        tokenAddress
+        tokenId
+        minted
+        merkleRoot
+        creator
+      }
+    }
+  }`;
+  const {
+    data: {
+      data: { drops },
+    },
+  } = await cachedAxiosPost(`${BASE_RAILWAY_URL}/graphql`, { query });
+
+  if (drops.items.length > 0) {
+    return drops.items;
+  } else return [];
+}
+
+
 const getDropsByUser = async (userAddress: string) => {
   const query = `query DropsByUser {
     drops(
@@ -121,6 +156,7 @@ const getDropsByUser = async (userAddress: string) => {
         tokenId
         minted
         merkleRoot
+        creator
       }
     }
   }`; 
@@ -166,6 +202,38 @@ const getMerkleDrops = async () => {
   } else return [];
 };
 
+const getGenerativeMerkleDrops = async () => {
+  const query = `query MerkleDrops {
+    drops(
+      where: {id_not_in: ${EXCLUDE_DROP_IDS}}
+      orderBy: "id",
+      orderDirection: "desc"
+    ) {
+      items {
+        id
+        startDate
+        endDate
+        maxAllowed
+        maxPerWallet
+        price
+        tokenAddress
+        tokenId
+        minted
+        merkleRoot
+      }
+    }
+  }`;
+  const {
+    data: {
+      data: { drops },
+    },
+  } = await cachedAxiosPost(`${BASE_RAILWAY_URL}/graphql`, { query });
+
+  if (drops.items.length > 0) {
+    return drops.items;
+  } else return [];
+};
+
 const getAllTokens = async () => {
     const query = `
         query MyQuery {
@@ -183,6 +251,29 @@ const getAllTokens = async () => {
         data: { tokens },
       },
     } = await cachedAxiosPost(`${BASE_URL}/graphql`, { query });
+
+    if (tokens.items.length > 0) {
+      return tokens.items;
+    } else return [];
+};
+
+const getAllGenerativeTokens = async () => {
+  const query = `
+        query MyQuery {
+          tokens(where: {tokenId_lte: "1"}, limit: 1000) {
+            items {
+                    tokenAddress
+                    tokenId
+                    totalSupply
+                    isMarketplaceAllowed
+                }
+            }
+        }`;
+    const {
+      data: {
+        data: { tokens },
+      },
+    } = await cachedAxiosPost(`${BASE_RAILWAY_URL}/graphql`, { query });
 
     if (tokens.items.length > 0) {
       return tokens.items;
@@ -366,6 +457,37 @@ const getTokenMetadata = async ({ tokenAddress, tokenId = "1" }: GetTokenMetadat
   return res.data;
 }
 
+export async function getContractMetadata(contractAddress: string) {
+  try {
+      if (!window.ethereum) {
+          throw new Error("MetaMask is not installed");
+      }
+
+      const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_CHAIN_RPC);    
+      const contract = new ethers.Contract(contractAddress, generativeERC721Upgradeable.abi, provider);
+
+      const uri = await contract.contractURI();
+
+      // Step 1: Remove Base64 prefix
+      const base64Data = uri.replace("data:application/json;base64,", "");
+
+      // Step 2: Decode Base64 to JSON
+      const jsonMetadata = JSON.parse(atob(base64Data));
+      return jsonMetadata;
+  } catch (error) {
+      console.error("Error fetching contractURI:", error);
+      throw error;
+  }
+}
+
+const getPlaceHolderMetadata = async ( tokenAddress : string) => {
+  const res = await cachedAxiosGet(`${BASE_API_URL}/collection/${tokenAddress}/metadata`);
+  if (!res || !res.data) {
+    return [];
+  }
+  return res.data;
+}
+
 export type GetUserTokenBalanceParams = {
   userAddress: string;
   tokenAddress: string;
@@ -517,14 +639,19 @@ const getFeuillerLaMarguerite = async (): Promise<FeuillerRow[]> => {
 
 export default {
     getAllDrops,
+    getAllGenerativeDrops,
     getMerkleDrops,
+    getGenerativeMerkleDrops,
     getDropsByUser,
     getAllTokens,
+    getAllGenerativeTokens,
     getAllCollectionTokens,
     getCollectionToken,
     getAllOrders,
     getUserBalance,
     getTokenMetadata,
+    getContractMetadata,
+    getPlaceHolderMetadata,
     getUserTokenBalance,
     getLastestPriceOracleUpdate,
     getCollectionStats,

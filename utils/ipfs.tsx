@@ -42,6 +42,5 @@ export const transformUri = (uri:any, useCdn: boolean = true) => {
     const gateway = "https://ipfs.io/ipfs/";
     uri = uri.replace("ipfs://", gateway);
   }
-
   return uri;
 };

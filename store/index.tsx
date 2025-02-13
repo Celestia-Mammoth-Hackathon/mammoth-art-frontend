@@ -100,6 +100,7 @@ type UserState = {
 };
 
 interface State {
+    generativeCollections: Record<string, any>;
     collections: Record<string, CollectionState>;
     users: Record<string, UserState>;
     fetchAllCollections: () => Promise<void>;
@@ -112,6 +113,7 @@ interface State {
 };
 
 const useCollectionStore = create<State>((set , get) => ({
+    generativeCollections: {},
     collections: {},
     users: {},
     fetchAllCollections: async () => {
@@ -234,10 +236,64 @@ const useCollectionStore = create<State>((set , get) => ({
     },
     fetchAllGenerativeCollections: async () => {
         try {
-            const tokens = await indexer.getAllTokens();
-            console.log(tokens);
+            const [ drops, allMerkleDrops ] = await Promise.all([
+                indexer.getAllGenerativeDrops(),
+                indexer.getGenerativeMerkleDrops(),
+            ]);
+
+            const setCollections = new Set();
+            const mapTokens = new Map();
+            
+            for (const item of [...drops, ...allMerkleDrops]) {    
+                const token: any = await indexer.getContractMetadata(item.tokenAddress);
+                if (!token) {
+                    continue;
+                }
+
+                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+                if (mapTokens.has(collectionId)) {
+                    continue;
+                }
+
+                mapTokens.set(collectionId, token);
+            }
+
+            for (const item of [...drops]) {
+                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+       
+                if (!mapTokens.has(collectionId)) {
+                    continue;
+                }
+                const token = mapTokens.get(collectionId);
+
+                token.drop = item;
+                token.mintedSupply = Number(token.drop.minted || 0);
+
+                const dropState = getDropState(item, token);
+
+                const merkleDrops = allMerkleDrops
+                    .filter((d: any) => token.drop.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
+                token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
+                token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
+                token.isMerkleDrop = false;
+
+                set((state) => ({
+                    generativeCollections: {
+                        ...state.generativeCollections,
+                        [collectionId]: {
+                            token,
+                            dropState,
+                            tokenIds: [item.tokenId],
+                        },
+                    },
+                }));
+
+                if (dropState === DropState.InProgress) {
+                    setCollections.add(collectionId);
+                }
+            }
         } catch (error) {
-            console.error("Error fetching collections:", error);
+            console.error("Error fetching geneative collections:", error);
         }
     },
     fetchCollection: async (tokenAddress: string, tokenId: string) => {
@@ -466,39 +522,33 @@ const useCollectionStore = create<State>((set , get) => ({
             ownedCollection = await Promise.all(
                 ownedCollection.map(async (item:any) => {
                     try {
-                        const token: any = await indexer.getTokenMetadata({
-                            tokenAddress: item.tokenAddress,
-                            tokenId: "1"
-                        });
+                        const contractMetadata = await indexer.getContractMetadata(item.tokenAddress);
 
                         return {
                             ...item,
-                            tokenMetadata: token?.tokenMetadata || null
+                            tokenMetadata: contractMetadata || null
                         };
                     } catch (error) {
                         console.error(`Error fetching metadata for token ${item.tokenId} at ${item.tokenAddress}:`, error);
                         return { ...item, metadata: null }; // Preserve structure even on failure
                     }
                 })
-            );            set((state) => {
-                const userState = state.users[userAddress] || { collections: {} };
+            );            
 
+            set((state) => {
+                const userState = state.users[userAddress] || { tokens: [{}], collections: {}, bannerPic: '', profilePic: '' }; // Initialize with single empty token
+            
                 return {
                     users: {
                         ...state.users,
                         [userAddress]: {
                             ...userState,
-                            tokens: ownedSupply,
+                            tokens: ownedSupply,  // Ensure tokens is assigned correctly
                             collections: ownedCollection
                         }
                     }
                 };
             });
-            
-            
-            
-
-            
         } catch (error) {
             console.error("Error fetching own nfts:", error);
         }

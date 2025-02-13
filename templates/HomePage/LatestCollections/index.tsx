@@ -3,15 +3,44 @@ import cn from "classnames";
 import styles from "./LatestCollections.module.sass";
 import Collection from "./Collection";
 import React from 'react';
-import { latestCollections } from "@/mocks/collections";
+import { useState, useEffect } from "react";
 import { Navigation, Scrollbar, Pagination } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import Link from "next/link";
+import useCollectionStore from '@/store/index';
 
 type LatestCollectionsProps = {};
 
 const LatestCollections = ({}: LatestCollectionsProps) => {
+    const [loading, setLoading] = useState<boolean>(false);
+    const [latestCollections, setLatestCollections] = useState([]);
+
+    const {
+        generativeCollections,
+        fetchAllGenerativeCollections
+    } = useCollectionStore();
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                await fetchAllGenerativeCollections();
+            } catch (error) {
+                console.error("Error fetching drops:", error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    useEffect(() => {
+        const latestCollections:any = Object.values(generativeCollections);
+        setLatestCollections(latestCollections);
+    }, [generativeCollections]);
+    console.log(latestCollections)
     return (
     <div className={styles.collections}>
         <div className={styles.header}>
