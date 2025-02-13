@@ -3,15 +3,16 @@ import cn from "classnames";
 import styles from "./RandomCollections.module.sass";
 import Collection from "./Collection";
 import React from 'react';
-import { randomCollections } from "@/mocks/collections";
 import { Navigation, Scrollbar, Pagination } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import Link from "next/link";
 
-type RandomCollectionsProps = {};
+type RandomCollectionsProps = {
+    collections: any;
+};
 
-const RandomCollections = ({}: RandomCollectionsProps) => {
+const RandomCollections = ({collections}: RandomCollectionsProps) => {
     return (
     <div className={styles.collections}>
         <div className={styles.header}>
@@ -40,7 +41,7 @@ const RandomCollections = ({}: RandomCollectionsProps) => {
                 modules={[Navigation, Pagination, Scrollbar]}
                 className="collections-swiper"
             >
-                {randomCollections.map((collection, index) => (
+                {collections.map((collection: any, index: any) => (
                     <SwiperSlide key={index}>
                         <Collection item={collection} />
                     </SwiperSlide>

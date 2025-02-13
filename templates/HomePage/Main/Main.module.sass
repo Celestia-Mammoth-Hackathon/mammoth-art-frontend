@@ -68,35 +68,40 @@
     margin-right: auto
     color: $n0
     font-size: 32px
-    font-weight: 500
+    font-weight: 700
     letter-spacing: -0.02em
     text-align: left
+    cursor: pointer
     +d
         padding-top: rem(8)
     +m
         padding-top: 0
+    &:hover
+        color: $n11
 
+.author
+    display: flex
+    align-items: center
+    gap: 1rem
+
+.author,
 .subtitle
     font-size: 24px
     color: $n0
     font-weight: 500
     letter-spacing: -0.02em
     text-align: left
+    cursor: pointer
 
-.author
-    margin-left: auto !important
-    border: 2px solid $n0
-    display: inline-flex
-    align-items: center
-    flex-shrink: 0
-    margin: 0 0 rem(8) rem(24)
-    margin-bottom: 250px !important
-    padding: rem(12)
-    background: $n8
-    +title
-    color: $n1
-    +m
-        margin: rem(12) 0 0
+.subtitle
+    &:hover
+        color: $n11
+.price
+    font-size: 24px
+    color: $n0
+    font-weight: 500
+    letter-spacing: -0.02em
+    text-align: left
 
 .avatar
     position: relative
@@ -181,8 +186,9 @@
     color: $n9
     width: 214px
     height: 64px
+    cursor: pointer
     &:hover
-        background: $n3
+        background: $n11
 
 .featuredSwiper
     margin-left: 14rem

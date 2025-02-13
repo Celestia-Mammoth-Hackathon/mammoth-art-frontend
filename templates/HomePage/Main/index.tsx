@@ -8,38 +8,25 @@ import { curatedArtworks } from "@/mocks/artworks";
 import Icon from "@/components/Icon";
 import TimeCounter from "@/components/TimeCounter";
 import Item from "./Item";
-
-const list = [
-    {
-        title: "Mammoths",
-        collection: "MammothBros",
-        price: "10.00 TIA",
-        reserve: "2.38 TIA",
-        image: "/images/main-pic-1.jpg",
-    },
-    {
-        title: "Habitats",
-        collection: "MammothBros",
-        price: "24.33 TIA",
-        reserve: "5.64 TIA",
-        image: "/images/main-pic-2.jpg",
-        color: "#BCE6EC",
-    },
-];
-
+import { formatUserAddress, convertBigNumberToString } from "@/utils/index";
 import SwiperCore from 'swiper'
 import { Navigation, Scrollbar, Autoplay, EffectFade } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 import "swiper/css/autoplay";
 import 'swiper/css/effect-fade';
+import { nativeCurrency } from "@/constants/details";
+import { transformUri } from "@/utils/ipfs";
+
 SwiperCore.use([Autoplay]);
-type MainProps = {};
+type MainProps = {
+    collections: any;
+};
 
-const Main = ({}: MainProps) => {
-    const [bgColor, setBgColor] = useState(list[0].image);
-    const [item, setItem] = useState<any>(list[0]);
-
+const Main = ({collections}: MainProps) => {
+    const [item, setItem] = useState<any>(collections[0]?.token);
+    const [bgColor, setBgColor] = useState(collections[0]?.token?.image);
+    
     const updateBackgroundColor = (imageSrc: string) => {
         const colorThief = new (require("colorthief")).default();
         const img = document.createElement("img") as HTMLImageElement;
@@ -52,7 +39,7 @@ const Main = ({}: MainProps) => {
       };
 
     useEffect(() => {
-        updateBackgroundColor(list[0].image); // Initial color
+        updateBackgroundColor(transformUri(collections[0]?.token?.image, false)); // Initial color
     }, []);
 
 
@@ -89,11 +76,11 @@ const Main = ({}: MainProps) => {
                 }}
                 onSlideChange={(swiper) => {
                     const currentSlide = swiper.realIndex;
-                    updateBackgroundColor(list[currentSlide].image);
-                    setItem(list[currentSlide])
+                    updateBackgroundColor(collections[currentSlide].token.image);
+                    setItem(collections[currentSlide])
                 }}
             >
-                {list.map((x, index) => (
+                {collections.map((x: any, index: any) => (
                     <SwiperSlide key={index}>
                         <Item item={x} key={index} />
                     </SwiperSlide>
@@ -101,19 +88,25 @@ const Main = ({}: MainProps) => {
             </Swiper>
             <div className={styles.wrap} style={{ backgroundColor: "black" }}>
                 <div className={styles.titleWrap}>
-                    <div className={cn("h1", styles.title)}>{item.title}</div>
-                    <div className={cn("h1", styles.subtitle)}>By {item.collection}</div>
+                    <Link href={`/collection/${item?.token?.drop?.tokenAddress}`} passHref>
+                        <a className={cn("h1", styles.title)}>{item?.token?.name}</a>
+                    </Link>
+                    <div className={styles.author}>
+                        By 
+                        <Link href={`/profile/${item?.token?.drop?.creator}`} passHref>
+                            <a className={cn("h1", styles.subtitle)}>{formatUserAddress(item?.token?.drop?.creator)}</a>
+                        </Link>
+                    </div>
+                    <span className={cn("h1", styles.price)}>Price: {convertBigNumberToString(item?.token?.drop?.price, nativeCurrency.decimals)} TIA</span>
                 </div>
                 
                 <div className={styles.btns}>
-                    <Link href="/buy-now">
-                        <a className={cn("button", styles.button)}>MINT</a>
-                    </Link>
+                    <div className={cn("button", styles.button)}>MINT</div>
                 </div>
             </div>
         </div> 
     </>
-
-)};
+    )
+};
 
 export default Main;

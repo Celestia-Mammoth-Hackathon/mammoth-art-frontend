@@ -1,28 +1,27 @@
-import Link from "next/link";
-import cn from "classnames";
 import styles from "./Item.module.sass";
 import Image from "@/components/Image";
-import Icon from "@/components/Icon";
-import Details from "../Details";
+import { transformUri } from "@/utils/ipfs";
 
-type MainProps = {
+type ItemProps = {
     item: any;
 };
 
-const Main = ({ item }: MainProps) => (
-    <div className={styles.item}>
-        <div className={styles.preview}>
-            <Image
-                className={styles.image}
-                src={item.image}
-                layout="fill"
-                objectFit="cover"
-                alt="Main"
-                width={400}
-                height={400}
-            />
+const Item = ({ item }: ItemProps) => {
+    return (
+        <div className={styles.item}>
+            <div className={styles.preview}>
+                <Image
+                    className={styles.image}
+                    src={transformUri(item?.token?.image, false)}
+                    layout="fill"
+                    objectFit="cover"
+                    alt="Item"
+                    width={400}
+                    height={400}
+                />
+            </div>
         </div>
-    </div>
-);
+    );
+};
 
-export default Main;
+export default Item;

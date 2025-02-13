@@ -25,6 +25,7 @@ const MOD_IPFS_CIDS = [
 ]
 
 export const transformUri = (uri:any, useCdn: boolean = true) => {
+  if(!uri) return "";
   // normalize
   uri = uri.replace("https://gateway.pinata.cloud/ipfs/", "ipfs://");
   uri = uri.replace("https://ipfs.io/ipfs/", "ipfs://");

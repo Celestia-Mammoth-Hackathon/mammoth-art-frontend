@@ -10,37 +10,11 @@ import "swiper/css/scrollbar";
 import Link from "next/link";
 import useCollectionStore from '@/store/index';
 
-type LatestCollectionsProps = {};
+type LatestCollectionsProps = {
+    collections: any;
+};
 
-const LatestCollections = ({}: LatestCollectionsProps) => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [latestCollections, setLatestCollections] = useState([]);
-
-    const {
-        generativeCollections,
-        fetchAllGenerativeCollections
-    } = useCollectionStore();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                await fetchAllGenerativeCollections();
-            } catch (error) {
-                console.error("Error fetching drops:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const latestCollections:any = Object.values(generativeCollections);
-        setLatestCollections(latestCollections);
-    }, [generativeCollections]);
-    console.log(latestCollections)
+const LatestCollections = ({collections}: LatestCollectionsProps) => {
     return (
     <div className={styles.collections}>
         <div className={styles.header}>
@@ -69,7 +43,7 @@ const LatestCollections = ({}: LatestCollectionsProps) => {
                 modules={[Navigation, Pagination, Scrollbar]}
                 className="collections-swiper"
             >
-                {latestCollections.map((collection, index) => (
+                {collections.map((collection: any, index: number) => (
                     <SwiperSlide key={index}>
                         <Collection item={collection} />
                     </SwiperSlide>
