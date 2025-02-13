@@ -38,7 +38,7 @@ const PrfilePage = ({ userAddress }: PrfilePageProps) => {
         } else {
             setLoading(false);
         }
-    }, [userAddress, collections]);
+    }, [userAddress]);
 
     return (
         <>

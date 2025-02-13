@@ -18,7 +18,7 @@ const Profile = ({ ownedNFTs, userInfor, address }: ProfileProps) => {
     const tabsTokens = [{
         title: "Owned",
         value: "owned",
-        counter: ownedNFTs.length,
+        counter: Object.keys(userInfor?.tokens || []).length,
     }, {
         title: "Collections",
         value: "collections",
@@ -54,7 +54,7 @@ const Profile = ({ ownedNFTs, userInfor, address }: ProfileProps) => {
                     light={false}
                     wrapperStyle={{ paddingLeft: "0", paddingTop: "0" }}
                 >
-                    {tab === "owned" && <Tokens items={ownedNFTs} theme={false} owned={true}/>}
+                    {tab === "owned" && <Tokens items={Object.values(userInfor?.tokens || [])} theme={false} owned={true}/>}
                     {tab === "collections" && <Collections items={Object.values(userInfor?.collections || [])} theme={false} />}
                 </List>
             </div>

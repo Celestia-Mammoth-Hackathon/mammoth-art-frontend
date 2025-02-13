@@ -39,7 +39,7 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
         contractAddress: item.tokenAddress,
         tokenId: item.tokenId
     });  
-    
+
     return (
         // <Link href={{
         //     pathname: '/drop/[slug]',
@@ -110,7 +110,7 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
                                         </div>
                                     </div>
                                 </div>
-                                {address && 
+                                {(address && !owned && item.creator === address) &&
                                     <>
                                         <button 
                                             className={cn(styles.button, {
