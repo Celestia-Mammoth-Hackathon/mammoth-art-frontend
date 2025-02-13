@@ -26,21 +26,21 @@ const Menu = ({ classBurger }: MenuProps) => {
             newPage : true,
         },
 
-        {
-            title: "DISCORD",
-            url: "https://discord.gg/P6tEY8d7De",
-            newPage : true,
-        },
+        // {
+        //     title: "DISCORD",
+        //     url: "https://discord.gg/P6tEY8d7De",
+        //     newPage : true,
+        // },
     ] : [
         {
             title: "BRIDGE FUNDS",
             url: chainBridgeURL,
         },
-        {
-            title: "DISCORD",
-            url: "https://discord.gg/P6tEY8d7De",
-            newPage : true,
-        },
+        // {
+        //     title: "DISCORD",
+        //     url: "https://discord.gg/P6tEY8d7De",
+        //     newPage : true,
+        // },
     ];
     
     return (
