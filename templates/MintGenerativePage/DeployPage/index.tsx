@@ -3,7 +3,7 @@ import Deploy from "./Deploy"
 const DeployPage = ({ cid } : any) => {
     return (
         <>
-            <LayoutCreate step="6" rightElement={<Deploy cid={cid}/>}/>
+            <LayoutCreate step="7" rightElement={<Deploy cid={cid}/>}/>
         </>
 
     );

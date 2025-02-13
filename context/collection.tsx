@@ -73,9 +73,12 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
         attributes: [],
       },
       contractAddress: '',
-      zipFile: null,
       contractName: '',
       contractSymbol: '',
+      collectionName: '',
+      collectionDescription: '',
+      collectionImage: null,
+      collectionAttributes: [],
       size: 0,
       price: '',
       startDate: '',
@@ -89,10 +92,36 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
       influences: [],
       formaCollection: null,
       dropContractAddress: '',
+      zipFile: null,
     };
   };
 
-  const [collectionData, setCollectionData] = useState(() => loadCollectionData(undefined)); // Initialize with default data
+  // Add a dedicated save function
+  const saveCollectionData = async (dataToSave: any) => {
+    if (!cid || typeof cid !== 'string') return;
+
+    const preparedData = { ...dataToSave };
+
+    // Convert File image to Base64 before saving
+    if (preparedData.image instanceof File) {
+      const base64 = await fileToBase64(preparedData.image);
+      preparedData.image = {
+        data: base64,
+        name: preparedData.image.name,
+        type: preparedData.image.type,
+      };
+    }
+
+    localStorage.setItem(cid, JSON.stringify(preparedData));
+  };
+
+  const [collectionData, setCollectionData] = useState(() => loadCollectionData(undefined));
+
+  // Update the setCollectionData to automatically save
+  const updateCollectionData = async (newData: any) => {
+    setCollectionData(newData);
+    await saveCollectionData(newData);
+  };
 
   // Update collectionData when cid becomes available
   useEffect(() => {
@@ -103,31 +132,12 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
     }
   }, [cid]);
 
-  // Save collection data to localStorage whenever it changes
-  useEffect(() => {
-    if (cid && typeof cid === 'string') {
-      const saveData = async () => {
-        const dataToSave : any = { ...collectionData };
-
-        // Convert File image to Base64 before saving
-        if (dataToSave.image instanceof File) {
-          const base64 = await fileToBase64(dataToSave.image);
-          dataToSave.image = {
-            data: base64,
-            name: dataToSave.image.name,
-            type: dataToSave.image.type,
-          };
-        }
-
-        localStorage.setItem(cid, JSON.stringify(dataToSave));
-      };
-
-      saveData();
-    }
-  }, [collectionData, cid]);
-
   return (
-    <CollectionContext.Provider value={{ collectionData, setCollectionData, cid }}>
+    <CollectionContext.Provider value={{ 
+      collectionData, 
+      setCollectionData: updateCollectionData,
+      cid 
+    }}>
       {children}
     </CollectionContext.Provider>
   );

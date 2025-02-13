@@ -23,35 +23,16 @@
     line-height: 19px
     color: #FFFFFF
 
-.previewGroup
-    display: flex
-    gap: 48px
-    +t
-        flex-direction: column
-    
-.preview
-    display: flex
-    flex-direction: column
-    gap: 16px
-    
-.previewImage
-    width: 400px
-    height: 400px
-    border: 1px solid $n0
-
 .form
     display: flex
     flex-direction: column
-    gap: 48px
-    width: 65%
-    +t
-        width: 100%
+    gap: 20px
 
 .formGroup
     display: flex
-    justify-content: space-between
-    border-bottom: 1px solid $n0
-
+    flex-direction: column
+    gap: 8px
+    
 .buttonWrapper
     display: flex
     justify-content: center
@@ -71,17 +52,11 @@
 
 
 .nextBtn
-    max-width: max-content
-    padding: 0 24px
     background: $n11
     &:hover
         background: $n12
         border: 1px solid $n0
-.next
-    display: flex
-    align-items: center
-    gap: 8px
-    
+
 .prevBtn
     background: $n9
     &:hover
@@ -112,49 +87,6 @@
     line-height: 19px
     color: $n10
 
-.value
-    color: $n10
 
-.notUploadedValue
-    color: $n11
 
-.previewTitle
-    font-style: normal
-    font-weight: 600
-    font-size: 20px
-    line-height: 30px
-    color: $n0
-
-.text
-    font-style: normal
-    font-weight: 400
-    font-size: 14px
-    line-height: 30px
-    color: $n0
-
-.deploymentStatus
-  margin-top: 20px
-  padding: 20px
-  background: rgba(255, 255, 255, 0.1)
-  border-radius: 12px
-  
-  h3
-    margin-bottom: 16px
-    font-size: 18px
-    font-weight: 600
-
-.statusItem
-  display: flex
-  align-items: center
-  margin-bottom: 12px
-  gap: 12px
-  
-  span
-    font-size: 14px
-    opacity: 0.8
-
-.spinner
-  width: 24px !important
-  height: 24px !important
-  margin: 0 !important
 

@@ -23,6 +23,8 @@ type FieldProps = {
   setImage?: any;
   collectionImage?:any;
   uploadCollectionImage?: boolean;
+  tokenImage?:any;
+  uploadTokenImage?: boolean;
   setUploadError?: any
   uploadZipFile?: boolean;
   search?: boolean;
@@ -55,7 +57,9 @@ const Field = ({
   setImage,
   uploadZipFile,
   collectionImage,
-  uploadCollectionImage,
+  uploadCollectionImage,  
+  tokenImage,
+  uploadTokenImage,
   number,
   select,
   min,
@@ -81,6 +85,11 @@ const Field = ({
     fileSize = "2GB";
   } else if (uploadCollectionImage) {
     fileName = "Collection Image";
+    fileType = "gif, jpeg, png, or svg ";
+    fileSize = "24MB";
+    fileDimension = "400px by 400px";
+  } else if (uploadTokenImage) {
+    fileName = "Token Image";
     fileType = "gif, jpeg, png, or svg ";
     fileSize = "24MB";
     fileDimension = "400px by 400px";
@@ -154,12 +163,20 @@ const Field = ({
     const selectedFile = e.target.files?.[0];
     onChange((prevData: any) => ({
       ...prevData,
+      collectionImage: selectedFile,
+    }));
+  }
+
+  const handleTokenImage = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
+    onChange((prevData: any) => ({
+      ...prevData,
       placeholderMetadata: {
         ...prevData.placeholderMetadata,
         image: selectedFile,
       },
     }));
-  }
+  } 
 
   const handleDrop = useCallback((event:any) => {
     event.preventDefault();
@@ -269,7 +286,7 @@ const Field = ({
                   )}
                 </div>
           </div>
-        ) : upload ? (
+        ) : uploadCollectionImage ? (
           <div className={styles.upload}
             onDrop={handleDrop}
             onDragOver={preventDefaultHandler}
@@ -291,6 +308,43 @@ const Field = ({
                   {(collectionImage && isValid) ? (
                     <div className={styles.success}>
                       Uploaded File: {collectionImage?.name} 
+                    </div>
+                  ) : uploadError ? (
+                    <div className={styles.error}>
+                      {uploadError}
+                    </div>
+                  ) : (
+                    <div className={styles.details}>
+                      <div className={styles.detail}>Drag and Drop {fileName}</div>
+                      <div className={styles.type}>Types supported: {fileType}</div>
+                      <div className={styles.type}>Max file size is {fileSize}</div>
+                      <div className={styles.type}>{fileDimension ? `Recommended size: ${fileDimension}` : ""}</div>
+                    </div>
+                  )}
+                </div>
+          </div>
+        ) : uploadTokenImage ? (
+          <div className={styles.upload}
+            onDrop={handleDrop}
+            onDragOver={preventDefaultHandler}
+            onDragEnter={preventDefaultHandler}
+          >
+            
+                <label className={styles.customFileUpload}>
+                    <input
+                    className={styles.file}
+                    type="file"
+                    accept=".gif, .jpeg, .png, .svg"
+                    onChange={handleTokenImage}
+                    required
+                    />
+                    UPLOAD
+                </label>
+            
+                <div className={styles.details}>
+                  {(tokenImage && isValid) ? (
+                    <div className={styles.success}>
+                      Uploaded File: {tokenImage?.name} 
                     </div>
                   ) : uploadError ? (
                     <div className={styles.error}>

@@ -3,7 +3,7 @@ import Details from "./Details"
 const DetailsPage = ({ cid } : any) => {
     return (
         <>
-            <LayoutCreate step="5" rightElement={<Details cid={cid}/>}/>
+            <LayoutCreate step="6" rightElement={<Details cid={cid}/>}/>
         </>
     );
 };

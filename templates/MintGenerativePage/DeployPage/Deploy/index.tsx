@@ -148,24 +148,24 @@ const Deploy = ({ cid }: DeployProps) => {
           </div>
           <div className={styles.formGroup}>
             <span className={styles.label}>Collection name</span>
-            {collectionData.placeholderMetadata?.name ? (
-              <span className={styles.value}>{collectionData.placeholderMetadata?.name}</span>
+            {collectionData?.collectionName ? (
+              <span className={styles.value}>{collectionData?.collectionName}</span>
             ) : (
               <span className={styles.notUploadedValue}>Add collection name</span>
             )}
           </div>
           <div className={styles.formGroup}>
             <span className={styles.label}>Collection logo image</span>
-            {collectionData.placeholderMetadata?.image ? (
-              <span className={styles.value}>{collectionData.placeholderMetadata?.image.name}</span>
+            {collectionData?.collectionImage ? (
+              <span className={styles.value}>{collectionData?.collectionImage.name}</span>
             ) : (
               <span className={styles.notUploadedValue}>Add collection logo image</span>
             )}
           </div>
           <div className={styles.formGroup}>
             <span className={styles.label}>Description</span>
-            {collectionData.placeholderMetadata?.description ? (
-              <span className={styles.value}>{collectionData.placeholderMetadata?.description}</span>
+            {collectionData?.collectionDescription ? (
+              <span className={styles.value}>{collectionData?.collectionDescription}</span>
             ) : (
               <span className={styles.notUploadedValue}>Add description</span>
             )}
@@ -210,34 +210,6 @@ const Deploy = ({ cid }: DeployProps) => {
               <span className={styles.notUploadedValue}>Add primary sale address</span>
             )}
           </div>
-        </div>
-        <div className={styles.preview}>
-            <div>
-              <div>Preview</div>
-              <div className={styles.previewImage}>
-                {collectionData.placeholderMetadata?.image ? (
-                  <Image
-                    src={
-                      typeof collectionData.placeholderMetadata?.image === "string"
-                        ? collectionData.placeholderMetadata?.image // Base64 string or URL
-                        : URL.createObjectURL(collectionData.placeholderMetadata?.image) // Convert File to URL
-                    }
-                    alt="preview"
-                    width={300} // Set appropriate width
-                    height={300} // Set appropriate height
-                    layout="responsive" // Use responsive layout
-                  />
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className={styles.previewText}>
-                <span className={styles.text}>
-                  {collectionData.placeholderMetadata?.name ? collectionData.placeholderMetadata?.name : ""}
-                </span>
-              </div>
-            </div>
-          
           <div className={styles.deploymentStatus}>
             <h3>Deployment Status</h3>
             <div className={styles.statusItem}>
@@ -257,6 +229,59 @@ const Deploy = ({ cid }: DeployProps) => {
               <span>Grant minter role for drop</span>
             </div>
           </div>
+        </div>
+        <div className={styles.preview}>
+          <div>
+            <div className={styles.previewTitle}>Collection Preview</div>
+            <div className={styles.previewImage}>
+              {collectionData?.collectionImage ? (
+                <Image
+                  src={
+                    typeof collectionData?.collectionImage === "string"
+                      ? collectionData?.collectionImage // Base64 string or URL
+                      : URL.createObjectURL(collectionData?.collectionImage) // Convert File to URL
+                  }
+                  alt="preview"
+                  width={400} // Set appropriate width
+                  height={400} // Set appropriate height
+                  layout="responsive" // Use responsive layout
+                />
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className={styles.previewText}>
+              <span className={styles.text}>
+                {collectionData?.collectionName ? collectionData?.collectionName + ": " + collectionData?.collectionDescription : ""}
+              </span>
+            </div>
+          </div>
+          
+          <div>
+              <div className={styles.previewTitle}>Placeholder Metadata Preview</div>
+              <div className={styles.previewImage}>
+                {collectionData?.placeholderMetadata?.image ? (
+                  <Image
+                    src={
+                      typeof collectionData?.placeholderMetadata?.image === "string"
+                        ? collectionData?.placeholderMetadata?.image // Base64 string or URL
+                        : URL.createObjectURL(collectionData?.placeholderMetadata?.image) // Convert File to URL
+                    }
+                    alt="preview"
+                    width={400} // Set appropriate width
+                    height={400} // Set appropriate height
+                    layout="responsive" // Use responsive layout
+                  />
+                ) : (
+                  <></>
+                )}
+              </div>
+              <div className={styles.previewText}>
+                <span className={styles.text}>
+                  {collectionData?.placeholderMetadata ? collectionData?.placeholderMetadata?.name + ": " + collectionData.placeholderMetadata?.description : ""}
+                </span>
+              </div>
+            </div>
         </div>
       </div>
 
