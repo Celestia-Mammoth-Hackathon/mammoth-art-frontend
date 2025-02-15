@@ -101,20 +101,86 @@
 .foot
     background: $a5
     display: flex
-    align-items: center
-    justify-content: center
-    padding: rem(32) rem(80)
+    align-items: flex-start
+    justify-content: space-between
+    padding: rem(32) rem(144)
     border-top: rem(0.5) solid $n0
     +caption
     color: $n4
-    +xl
-        padding: rem(32) rem(64)
-    +w
-        padding: rem(32) rem(40)
     +t
         padding: rem(24)
     +m
         display: block
+
+.footContent
+    max-width: 1440px
+    margin: auto
+    width: 100%
+    display: flex
+    flex-direction: row
+    align-items: flex-start
+    justify-content: flex-start
+    gap: 10px
+
+.connect
+    display: flex
+    gap: rem(8)
+    align-items: center
+
+.connectTitle
+    color: $n10
+    font-size: 0.875rem
+    font-weight: 400
+
+.connectItem
+    &:hover
+        color: $n15
+        path
+            fill: $n15 !important
+
+.information
+    display: flex
+    flex-direction: column
+    gap: rem(64)
+
+.informationList
+    display: flex
+    flex-direction: column
+    gap: rem(16)
+
+.informationItem,
+.statusItem
+    color: $n10
+    font-size: 0.875rem
+    font-weight: 400
+    cursor: pointer
+    &:hover
+        text-decoration: underline
+        color: $n15
+
+.statusItem
+    margin-top: rem(8)
+    display: flex
+    gap: rem(8)
+    align-items: center
+
+.status
+    display: flex
+    gap: rem(8)
+    align-items: center
+
+.powered
+    color: $n0
+    font-size: 0.875rem
+    display: flex
+    flex-direction: column
+    gap: rem(8)
+
+.poweredLink
+    color: $n15
+    &:hover
+        text-decoration: underline
+        color: $n15
 
 .copyright
     font-size: 14px
@@ -123,6 +189,7 @@
     letter-spacing: 0em
     text-align: center
     color: $n0
+
 
 .cookies
     margin-left: rem(24)
