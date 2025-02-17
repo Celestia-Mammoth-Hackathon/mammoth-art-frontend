@@ -123,12 +123,12 @@ const Deploy = ({ cid }: DeployProps) => {
         setCollectionData({
           ...collectionData,
           revealMetadata: {
-            _metadata: ipfsResult.metadataHash,
+            _metadata: 'ipfs://' + ipfsResult.metadataHash,
           },
         });
         saveDataToLocalStorage({
           revealMetadata: {
-            _metadata: ipfsResult.metadataHash,
+            _metadata: 'ipfs://' + ipfsResult.metadataHash,
           },
         });
         return true; // Return true on success
