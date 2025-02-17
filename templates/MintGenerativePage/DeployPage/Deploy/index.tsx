@@ -11,6 +11,7 @@ import DeployModal from "@/components/ActionModal/DeployModal";
 import { useState, useEffect } from "react";
 import Spinner from "@/components/Spinner";
 import useCreateDrop from "@/hooks/useCreateDrop";
+import { uploadZipFileToIPFS } from "@/utils/ipfs";
 
 type DeployProps = {
   cid: any;
@@ -20,8 +21,9 @@ type DeployProps = {
 const Deploy = ({ cid }: DeployProps) => {
   const { address, checkNetwork } = useUserContext();
   const [visibleDeployModal, setVisibleDeployModal] = useState<boolean>(false);
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const [loading, setLoading] = useState<boolean>(false);
+  const [dropZipContentStatus, setDropZipContentStatus] = useState<any>("idle");
 
   const router = useRouter();
 
@@ -41,7 +43,8 @@ const Deploy = ({ cid }: DeployProps) => {
     isDeployed : isProxyDeployed,
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
-    setPlaceHolderMetadataStatus
+    setPlaceHolderMetadataStatus,
+    setRevealMetadataStatus
   } = useDeployGenerativeCollection({
     collectionName: collectionData.collectionName,
     symbol: collectionData.symbol,
@@ -49,6 +52,7 @@ const Deploy = ({ cid }: DeployProps) => {
     royaltyRecipient: collectionData.royaltyRecipient,
     royaltyFee: collectionData.royaltyFee,
     placeholderMetadata: collectionData.placeholderMetadata,
+    revealMetadata: collectionData.revealMetadata,
   });
 
   const { 
@@ -90,21 +94,68 @@ const Deploy = ({ cid }: DeployProps) => {
         ...collectionData,
         contractAddress: proxyContractAddress,
       });
+      saveDataToLocalStorage({
+        contractAddress: proxyContractAddress,
+      });
       createDrop();
     }
   }, [isProxyDeployed]);
 
   useEffect(() => {
     console.log(proxyDeployStatus, setPlaceHolderMetadataStatus, grantMinterStatus, createDropStatus);
-    if(proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
+    if(dropZipContentStatus === 'error' || proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
       setLoading(false);
     }
-  }, [proxyDeployStatus, setPlaceHolderMetadataStatus, grantMinterStatus, createDropStatus]);
+  }, [dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus]);
+
+  const deployZipContentToIPFS = async () => {
+    try {
+      setDropZipContentStatus('pending');
+      console.log(collectionData.zipFile, collectionData.size, collectionData.collectionName);
+      const ipfsResult = await uploadZipFileToIPFS(
+        collectionData.zipFile, 
+        collectionData.size, 
+        collectionData.collectionName
+      );
+
+      if (ipfsResult.metadataHash) {
+        setDropZipContentStatus('success');
+        setCollectionData({
+          ...collectionData,
+          revealMetadata: {
+            _metadata: ipfsResult.metadataHash,
+          },
+        });
+        saveDataToLocalStorage({
+          revealMetadata: {
+            _metadata: ipfsResult.metadataHash,
+          },
+        });
+        return true; // Return true on success
+      } else {
+        setDropZipContentStatus('error');
+        return false; // Return false on failure
+      }
+    } catch (error) {
+      console.error('IPFS upload error:', error);
+      setDropZipContentStatus('error');
+      setLoading(false);
+      return false;
+    }
+  }
 
   const handleDeployCollection = async () => {
     try {
       setLoading(true);
-      deployCollection();
+      const ipfsSuccess = await deployZipContentToIPFS();
+      
+      if (ipfsSuccess) {
+        // Only proceed with deployment if IPFS upload was successful
+        deployCollection();
+      } else {
+        console.error('IPFS upload failed, stopping deployment');
+        setLoading(false);
+      }
     } catch (error) {
       console.error('Deployment error:', error);
       setLoading(false);
@@ -213,12 +264,20 @@ const Deploy = ({ cid }: DeployProps) => {
           <div className={styles.deploymentStatus}>
             <h3>Deployment Status</h3>
             <div className={styles.statusItem}>
+              {getStatusIcon(dropZipContentStatus)}
+              <span>Deploy zip content to IPFS</span>
+            </div>
+            <div className={styles.statusItem}>
               {getStatusIcon(proxyDeployStatus)}
               <span>Deploy generative art contract</span>
             </div>
             <div className={styles.statusItem}>
               {getStatusIcon(setPlaceHolderMetadataStatus)}
               <span>Set up placeholder metadata</span>
+            </div>
+            <div className={styles.statusItem}>
+              {getStatusIcon(setRevealMetadataStatus)}
+              <span>Set up reveal metadata</span>
             </div>
             <div className={styles.statusItem}>
               {getStatusIcon(createDropStatus)}

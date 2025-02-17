@@ -11,7 +11,7 @@ type DetailsProps = {
 };
 
 const Details = ({cid}: DetailsProps) => {
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const router = useRouter();
 
   const setCollectionName = (name: string) => {
@@ -43,6 +43,13 @@ const Details = ({cid}: DetailsProps) => {
   }
 
   const handleNextStep = async () => {
+    // Save to localStorage
+    saveDataToLocalStorage({
+      collectionName: collectionData.collectionName,
+      description: collectionData.description,
+      contractName: collectionData.contractName,
+      contractSymbol: collectionData.contractSymbol,
+    }, cid);
     router.push(`/mint-generative/deploy?cid=${cid}`);
   };
 

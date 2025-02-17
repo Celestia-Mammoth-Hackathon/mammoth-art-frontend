@@ -19,6 +19,9 @@ type UseDeployGenerativeCollectionProps = {
     image: string;
     tags?: string[];
   };
+  revealMetadata: {
+    _metadata: string;
+  };
 };
 
 const useDeployGenerativeCollection = ({ 
@@ -27,9 +30,11 @@ const useDeployGenerativeCollection = ({
   collectionSize,
   royaltyRecipient,
   royaltyFee,
-  placeholderMetadata
+  placeholderMetadata,
+  revealMetadata
 }: UseDeployGenerativeCollectionProps) => {
   const { data: setPlaceHolderMetadataDataTxHash, status: setPlaceHolderMetadataStatus, writeContract } = useWriteContract();
+  const { data: setRevealMetadataDataTxHash, status: setRevealMetadataStatus, writeContract: writeRevealMetadataContract } = useWriteContract();
   const { address } = useUserContext();
 
   // Hook for deploying the proxy contract
@@ -50,6 +55,14 @@ const useDeployGenerativeCollection = ({
           abi: generativeERC721Upgradeable.abi,
           functionName: 'setPlaceholderMetadata',
           args: [JSON.stringify(placeholderMetadata)],
+        });
+      }
+      if (revealMetadata) {
+        writeRevealMetadataContract({
+          address: proxyDeployReceipt.contractAddress as `0x${string}`,
+          abi: generativeERC721Upgradeable.abi,
+          functionName: 'setRevealPlaceholderMetadata',
+          args: [revealMetadata._metadata],
         });
       }
     }
@@ -95,10 +108,11 @@ const useDeployGenerativeCollection = ({
 
   return {
     contractAddress: proxyDeployReceipt?.contractAddress,
-    isDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success',
+    isDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success',
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,
+    setRevealMetadataStatus: setRevealMetadataStatus,
     deployCollection,
   };
 };

@@ -44,6 +44,7 @@ const base64ToFile = (base64: string, filename: string, mimeType: string): File 
   return new File([blob], filename, { type: mimeType });
 };
 
+
 export const CollectionProvider = ({ children }: CollectionProviderProps) => {
   const router = useRouter();
   const { cid } = router.query;
@@ -51,26 +52,42 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
   // Load collection data from localStorage based on CID
   const loadCollectionData = async (cid: string | undefined) => {
     if (cid) {
-      const savedData = localStorage.getItem(cid); // Use CID as the key
+      const savedData = localStorage.getItem(cid);
       if (savedData) {
         const parsedData = JSON.parse(savedData);
+        // Convert Base64 collection image back to File
+        if (parsedData.collectionImage?.data) {
+          const { name, type, data } = parsedData.collectionImage;
+          parsedData.collectionImage = base64ToFile(data, name, type);
+        }
 
-        // Convert Base64 image back to File object
-        if (parsedData.image) {
-          const { name, type } = parsedData.image;
-          parsedData.image = base64ToFile(parsedData.image.data, name, type);
+        // Convert Base64 placeholder metadata image back to File
+        if (parsedData.placeholderMetadata?.image?.data) {
+          const { name, type, data } = parsedData.placeholderMetadata.image;
+          parsedData.placeholderMetadata.image = base64ToFile(data, name, type);
+        }
+
+        // Convert Base64 zip file back to File
+        if (parsedData.zipFile?.data) {
+          const { name, type, data } = parsedData.zipFile;
+          parsedData.zipFile = base64ToFile(data, name, type);
         }
 
         return parsedData;
       }
     }
+
     // Return default data if no CID or no data found
     return {
+      influcingNFTs: [],
       placeholderMetadata: {
         name: '',
         description: '',
         image: null,
         attributes: [],
+      },
+      revealMetadata: {
+        _metadata: '',
       },
       contractAddress: '',
       contractName: '',
@@ -96,31 +113,49 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
     };
   };
 
-  // Add a dedicated save function
-  const saveCollectionData = async (dataToSave: any) => {
-    if (!cid || typeof cid !== 'string') return;
-
-    const preparedData = { ...dataToSave };
-
-    // Convert File image to Base64 before saving
-    if (preparedData.image instanceof File) {
-      const base64 = await fileToBase64(preparedData.image);
-      preparedData.image = {
-        data: base64,
-        name: preparedData.image.name,
-        type: preparedData.image.type,
+  // Function to save to localStorage
+  const saveCollectionData = async (newData: any, passedCid: any = cid) => {
+    if (!passedCid || typeof passedCid !== 'string') return;
+    
+    try {
+      // Get existing data from localStorage
+      const existingDataStr = localStorage.getItem(passedCid);
+      const existingData = existingDataStr ? JSON.parse(existingDataStr) : {};
+      
+      // Prepare the fields that need to be updated
+      const updates: any = {};
+      
+      // Process each field in the new data
+      for (const [key, value] of Object.entries(newData)) {
+        if (value instanceof File) {
+          // Handle File objects
+          const base64 = await fileToBase64(value as File);
+          updates[key] = {
+            data: base64,
+            name: (value as File).name,
+            type: (value as File).type,
+          };
+        } else {
+          // Handle other types of data
+          updates[key] = value;
+        }
+      }
+      
+      // Merge the data: new fields are added, existing fields are updated
+      const mergedData = {
+        ...existingData,
+        ...updates
       };
+      
+      localStorage.setItem(passedCid, JSON.stringify(mergedData));
+    } catch (error) {
+      console.error('Error saving to localStorage:', error);
     }
-
-    localStorage.setItem(cid, JSON.stringify(preparedData));
   };
-
-  const [collectionData, setCollectionData] = useState(() => loadCollectionData(undefined));
 
   // Update the setCollectionData to automatically save
   const updateCollectionData = async (newData: any) => {
     setCollectionData(newData);
-    await saveCollectionData(newData);
   };
 
   // Update collectionData when cid becomes available
@@ -132,10 +167,13 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
     }
   }, [cid]);
 
+  const [collectionData, setCollectionData] = useState(() => loadCollectionData(undefined));
+
   return (
     <CollectionContext.Provider value={{ 
       collectionData, 
       setCollectionData: updateCollectionData,
+      saveDataToLocalStorage: saveCollectionData,
       cid 
     }}>
       {children}

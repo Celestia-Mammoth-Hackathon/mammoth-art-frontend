@@ -1,6 +1,6 @@
 import styles from "./CollectionAttribute.module.sass";
 import { useCollectionContext } from "context/collection";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import Input from "components/Input";
 
 type CollectionAttributeProps = {
@@ -11,7 +11,7 @@ const CollectionAttribute: React.FC<CollectionAttributeProps> = ({
     collection
 }) => {
     const [selectedAttributes, setSelectedAttributes] = useState<Record<string, string[]>>({});
-    const { setCollectionData } = useCollectionContext();
+    const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
 
     const sortedAttributes = useMemo(() => {
         if (!collection.attributes) return [] as [string, Record<string, number>][];
@@ -34,6 +34,18 @@ const CollectionAttribute: React.FC<CollectionAttributeProps> = ({
         return Object.entries(sorted);
     }, [collection]);
 
+    useEffect(() => {
+        // Safely check if formaCollection and collection name exist
+        if (collectionData?.formaCollection && 
+            collection?.collectionName && 
+            collectionData.formaCollection[collection.collectionName]) {
+            setSelectedAttributes(collectionData.formaCollection[collection.collectionName]);
+        } else {
+            // Set default empty state if no data exists
+            setSelectedAttributes({});
+        }
+    }, [collectionData?.formaCollection, collection?.collectionName]);
+    
     const selectAttribute = (traitType: string, traitValue: string, selected: boolean) => {
         const newSelectedAttributes = { ...selectedAttributes };
         traitType = traitType.toLowerCase();
@@ -60,6 +72,13 @@ const CollectionAttribute: React.FC<CollectionAttributeProps> = ({
               [collection.collectionName]: newSelectedAttributes,
           },
         }));
+
+        // Save to localStorage
+        saveDataToLocalStorage({
+          formaCollection: {
+            [collection.collectionName]: newSelectedAttributes,
+          },
+        });
     };
 
     return (

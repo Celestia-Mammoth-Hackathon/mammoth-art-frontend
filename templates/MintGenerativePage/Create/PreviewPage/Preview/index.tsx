@@ -19,7 +19,7 @@ const Preview = ({ cid }: PreviewProps) => {
   const [curatedCollections, setCuratedCollections] = useState([]);
   const { collections, fetchAllCollections } = useCollectionStore();
   const router = useRouter();
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const [options, setOptions] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
 
@@ -121,6 +121,10 @@ const Preview = ({ cid }: PreviewProps) => {
   };
 
   const handleNextStep = async () => {
+    // Save to localStorage
+    saveDataToLocalStorage({
+      influences: collectionData.influences
+    });
     router.push(`/mint-generative/preview?cid=${cid}`);
   };
 

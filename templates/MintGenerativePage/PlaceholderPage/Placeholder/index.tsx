@@ -11,7 +11,7 @@ type PlaceholderProps = {
 };
 
 const Placeholder = ({cid}: PlaceholderProps) => {
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const router = useRouter();
 
   const setPlaceholderName = (name: string) => {
@@ -35,6 +35,10 @@ const Placeholder = ({cid}: PlaceholderProps) => {
   }
 
   const handleNextStep = async () => {
+    // Save to localStorage
+    saveDataToLocalStorage({
+      placeholderMetadata: collectionData.placeholderMetadata
+    });
     router.push(`/mint-generative/details?cid=${cid}`);
   };
 
