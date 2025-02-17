@@ -3,6 +3,10 @@ import cn from "classnames";
 import styles from "./Field.module.sass";
 import Dropdown from '../Dropdown';
 import JSZip from "jszip";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import dayjs from 'dayjs';
 
 
 type FieldProps = {
@@ -38,6 +42,7 @@ type FieldProps = {
   setIsValidZip?: any;
   setUploadedFile?: any;
   type?: any;
+  date?: boolean;
 };
 
 const Field = ({
@@ -69,7 +74,8 @@ const Field = ({
   zipFile,
   setZipFile,
   setIsValidZip,
-  setUploadedFile
+  setUploadedFile,
+  date,
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
@@ -360,6 +366,26 @@ const Field = ({
                   )}
                 </div>
           </div>
+        ) : date ? (
+          <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <DateTimePicker
+              className={cn(styles.input, styles.date, inputClassName)}
+              value={value ? dayjs(value) : null}
+              onChange={(newValue: any) => {
+                onChange(newValue ? newValue.format('YYYY-MM-DDTHH:mm') : '');
+              }}
+              minDate={min ? dayjs(min) : undefined}
+              maxDate={max ? dayjs(max) : undefined}
+              slotProps={{
+                textField: {
+                  placeholder,
+                  required,
+                  fullWidth: true,
+                  className: styles.muiInput
+                }
+              }}
+            />
+          </LocalizationProvider>
         ) : number ? (
           <input 
             className={cn(styles.input, styles.number, {[styles.search] : search}, inputClassName)}
