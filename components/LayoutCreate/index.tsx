@@ -20,7 +20,7 @@ const LayoutCreate = ({ step, rightElement }: LayoutCreateProps) => {
         { id: 4, name: "Distributions", icon: "give", href: `/mint-generative/distribute?cid=${cid}` },
         { id: 5, name: "Placeholder", icon: "placeholder", href: `/mint-generative/placeholder?cid=${cid}` },
         { id: 6, name: "Project Details", icon: "details", href: `/mint-generative/details?cid=${cid}` },
-        { id: 7, name: "Preview & Deploy", icon: "mint", href: `/mint-generative/deploy=?cid=${cid}` },
+        { id: 7, name: "Preview & Deploy", icon: "mint", href: `/mint-generative/deploy?cid=${cid}` },
     ]);
 
     const [leftElement, setLeftElement] = useState<any>(null);
