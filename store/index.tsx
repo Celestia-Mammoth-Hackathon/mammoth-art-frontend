@@ -123,13 +123,13 @@ const useCollectionStore = create<State>((set , get) => ({
                 indexer.getMerkleDrops(),
                 indexer.getAllTokens(),
             ]);
-
+            const newCollections: any = {};
             const indexedExternalDrops = externalDrops.filter(drop => drop.indexed === true).map(d => d.drop);
 
             const setCollections = new Set();
             const mapTokens = new Map();
 
-            for (const item of [...drops, ...allMerkleDrops, ...indexedExternalDrops]) {
+            for (const item of [...drops, ...allMerkleDrops]) {
                 const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
 
                 if (!token) {
@@ -177,13 +177,69 @@ const useCollectionStore = create<State>((set , get) => ({
                         },
                     },
                 }));
-
+                newCollections[collectionId] = {
+                    token,
+                    dropState,
+                    tokenIds: [item.tokenId],
+                };
                 if (dropState === DropState.InProgress) {
                     setCollections.add(collectionId);
                 }
             }
-            
-            return get().collections;
+
+            for (const item of allMerkleDrops) {
+                const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+                if (!mapTokens.has(collectionId)) {
+                    continue;
+                }
+
+                if (setCollections.has(collectionId)) {
+                    continue;
+                }
+
+                const token = mapTokens.get(collectionId);
+
+                const foundToken = tokens.find((token:any) =>
+                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
+                        && token.tokenId === item.tokenId);
+
+                token.drop = item;
+                token.mintedSupply = 0;
+
+                const tokenDrops = drops.filter((d: any) =>
+                    token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId
+                );
+                token.mintedSupply += tokenDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
+
+                token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
+                const dropState = getDropState(item, token);
+
+                const merkleDrops = allMerkleDrops
+                    .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
+                token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
+                token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
+                token.isMerkleDrop = true;
+
+                set((state) => ({
+                    collections: {
+                        ...state.collections,
+                        [collectionId]: {
+                            token,
+                            dropState,
+                            tokenIds: [item.tokenId],
+                        },
+                    },
+                }));
+                newCollections[collectionId] = {
+                    token,
+                    dropState,
+                    tokenIds: [item.tokenId],
+                };
+                if (dropState === DropState.InProgress) {
+                    setCollections.add(collectionId);
+                }
+            }
+            return newCollections;
         } catch (error) {
             console.error("Error fetching collections:", error);
         }
