@@ -3,10 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Link from "next/link";
 import styles from "./Main.module.sass";
-import Image from "@/components/Image";
-import { curatedArtworks } from "@/mocks/artworks";
-import Icon from "@/components/Icon";
-import TimeCounter from "@/components/TimeCounter";
+import Spinner from "@/components/Spinner";
 import Item from "./Item";
 import { formatUserAddress, convertBigNumberToString } from "@/utils/index";
 import SwiperCore from 'swiper'
@@ -17,6 +14,7 @@ import "swiper/css/autoplay";
 import 'swiper/css/effect-fade';
 import { nativeCurrency } from "@/constants/details";
 import { transformUri } from "@/utils/ipfs";
+import useClaimNFT from "@/hooks/useClaimNft";
 
 SwiperCore.use([Autoplay]);
 type MainProps = {
@@ -26,7 +24,15 @@ type MainProps = {
 const Main = ({collections}: MainProps) => {
     const [item, setItem] = useState<any>(collections[0]?.token);
     const [bgColor, setBgColor] = useState(collections[0]?.token?.image);
-    
+
+    const { claimNFT, isMintingLoading, isMintingError, mintingError, canMerkleMint, mintedTokens } = useClaimNFT({
+        item: item?.token,
+        address: item?.token?.drop?.tokenAddress,
+        mintAmount: 1,
+        setVisibleMintMenu: () => {},
+        setResponse: () => {},
+    });
+
     const updateBackgroundColor = (imageSrc: string) => {
         const colorThief = new (require("colorthief")).default();
         const img = document.createElement("img") as HTMLImageElement;
@@ -42,6 +48,9 @@ const Main = ({collections}: MainProps) => {
         updateBackgroundColor(transformUri(collections[0]?.token?.image, false)); // Initial color
     }, []);
 
+    const mintGenerative = () => {
+        
+    }
 
     return (
     <>
@@ -62,7 +71,7 @@ const Main = ({collections}: MainProps) => {
                     hide: true,
                 }}
                 autoplay={{
-                    delay: 5000,
+                    delay: isMintingLoading ? 15000 : 5000,
                     disableOnInteraction: true,
                 }}
                 speed={1500}
@@ -101,7 +110,15 @@ const Main = ({collections}: MainProps) => {
                 </div>
                 
                 <div className={styles.btns}>
-                    <div className={cn("button", styles.button)}>MINT</div>
+                    {
+                        isMintingLoading ? (
+                            <div className={cn("button", styles.button)}>
+                                <Spinner className={styles.spinner}/>
+                            </div>
+                        ) : (
+                            <div className={cn("button", styles.button)} onClick={claimNFT}>MINT FOR {convertBigNumberToString(item?.token?.drop?.price, nativeCurrency.decimals)} TIA</div>
+                        )
+                    }
                 </div>
             </div>
         </div> 

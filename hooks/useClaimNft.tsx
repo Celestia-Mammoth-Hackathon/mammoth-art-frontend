@@ -61,7 +61,7 @@ const useClaimNFT = ({
     const tokenId = item?.metadata?.id;
 
     const claimConfig = {
-        _dropId: item.drop.id,
+        _dropId: item?.drop?.id,
         _qty: mintAmount,
         _recipient: address || `0x0000000000000000000000000000000000000000`,
         _merkleProof: [] as string[],
@@ -121,7 +121,7 @@ const useClaimNFT = ({
         functionName: 'mint',
         args: args,
         value: valueBigInt,
-        gas: item.overrideGas ? item.overrideGas(mintAmount) : undefined,
+        gas: item?.overrideGas ? item?.overrideGas(mintAmount) : undefined,
     });
 
     const { data, status, writeContract, isPending: isPrepareLoading } = useWriteContract();
@@ -141,7 +141,7 @@ const useClaimNFT = ({
         functionName: 'mint',
         args: [ merkleDrop?.id || 0, mintAmount, address, proof ],
         value: merkleValue,
-        gas: item.overrideGas ? item.overrideGas(mintAmount) : undefined,
+        gas: item?.overrideGas ? item?.overrideGas(mintAmount) : undefined,
         maxFeePerGas: parseGwei('20'),
         maxPriorityFeePerGas: parseGwei('1'),
     });

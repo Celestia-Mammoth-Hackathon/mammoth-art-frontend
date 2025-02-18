@@ -129,6 +129,7 @@ const Distribution = ({cid}: DistributionProps) => {
                 value={collectionData.price}
                 onChange={(e:any) => setCollectionPrice(e.target.value)}
                 required
+                rightIcon="TIA"
             />
         </div>
         <div className={styles.formGroup}>
@@ -180,6 +181,7 @@ const Distribution = ({cid}: DistributionProps) => {
                 value={collectionData.royalty}
                 onChange={(e:any) => setRoyalty(e.target.value)}
                 required
+                rightIcon="%"
             />
           </div>
           <div className={styles.royaltyAddressWrapper}>
