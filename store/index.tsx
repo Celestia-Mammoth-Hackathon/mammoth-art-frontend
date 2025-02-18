@@ -131,7 +131,7 @@ const useCollectionStore = create<State>((set , get) => ({
 
             for (const item of [...drops, ...allMerkleDrops, ...indexedExternalDrops]) {
                 const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
-                console.log(token);
+
                 if (!token) {
                     continue;
                 }
@@ -154,7 +154,7 @@ const useCollectionStore = create<State>((set , get) => ({
                 const foundToken = tokens.find((token:any) =>
                     token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
                         && token.tokenId === item.tokenId);
-                console.log(foundToken);
+
                 token.drop = item;
                 token.mintedSupply = Number(token.drop.minted || 0);
                 token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;

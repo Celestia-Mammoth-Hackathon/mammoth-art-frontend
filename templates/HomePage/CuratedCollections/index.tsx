@@ -10,38 +10,12 @@ import SkeletonCollection from "../SkeletonCollection";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 
-type CuratedCollectionsProps = {};
+type CuratedCollectionsProps = {
+    collections: any;
+};
 
-const CuratedCollections = ({}: CuratedCollectionsProps) => {
-    const [loading, setLoading] = useState<boolean>(false);
-    const [curatedCollections, setCuratedCollections] = useState([]);
-
-    const {
-        collections,
-        fetchAllCollections
-    } = useCollectionStore();
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                setLoading(true);
-                await fetchAllCollections();
-            } catch (error) {
-                console.error("Error fetching drops:", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchData();
-    }, []);
-
-    useEffect(() => {
-        const curatedCollections:any = Object.values(collections);
-        console.log(curatedCollections);
-        setCuratedCollections(curatedCollections);
-    }, [collections]);
-
+const CuratedCollections = ({collections}: CuratedCollectionsProps) => {
+    console.log(collections);
     return (
     <div className={styles.collections}>
         <div className={cn("h1", styles.title)}>CURATED
@@ -60,19 +34,11 @@ const CuratedCollections = ({}: CuratedCollectionsProps) => {
                 modules={[Navigation, Pagination, Scrollbar]}
                 className="collections-swiper"
             >
-                {
-                    loading 
-                    ?   Array.from({ length: 3 }).map((_, index) => (
-                            <SwiperSlide key={index}>
-                                <SkeletonCollection/>
-                            </SwiperSlide>
-                        )) 
-                    :   curatedCollections.map((collection:any, index:number) => (
-                            <SwiperSlide key={index}>
-                                <Collection item={collection.token} />
-                            </SwiperSlide>
-                        ))
-                }
+                {collections.map((collection: any, index: number) => (
+                    <SwiperSlide key={index}>
+                        <Collection item={collection.token} />
+                    </SwiperSlide>
+                ))}
             </Swiper>
         </div>
     </div>

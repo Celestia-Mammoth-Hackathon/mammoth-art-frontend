@@ -11,10 +11,13 @@ const HomePage = () => {
     const [latestCollections, setLatestCollections] = useState([]);
     const [randomCollections, setRandomCollections] = useState([]);
     const [mainCollections, setMainCollections] = useState([]);
+    const [curatedCollections, setCuratedCollections] = useState([]);
 
     const {
+        collections,
         generativeCollections,
-        fetchAllGenerativeCollections
+        fetchAllGenerativeCollections,
+        fetchAllCollections
     } = useCollectionStore();
 
     useEffect(() => {
@@ -22,6 +25,7 @@ const HomePage = () => {
             try {
                 setLoading(true);
                 await fetchAllGenerativeCollections();
+                await fetchAllCollections();
             } catch (error) {
                 console.error("Error fetching drops:", error);
             } finally {
@@ -33,11 +37,13 @@ const HomePage = () => {
     }, []);
 
     useEffect(() => {
-        const collections:any = Object.values(generativeCollections);
-        setLatestCollections(collections);
-        setMainCollections(collections);
-        setRandomCollections(collections);
-    }, [generativeCollections]);
+        const curatedCollections:any = Object.values(collections);
+        const allGenerativeCollections:any = Object.values(generativeCollections);
+        setLatestCollections(allGenerativeCollections);
+        setMainCollections(allGenerativeCollections);
+        setRandomCollections(allGenerativeCollections);
+        setCuratedCollections(curatedCollections);
+    }, [generativeCollections, collections]);
 
     return (
             loading ? (
@@ -45,7 +51,7 @@ const HomePage = () => {
             ) : (
                 <>
                     <Main collections={mainCollections}/>
-                    <CuratedCollections />
+                    <CuratedCollections collections={curatedCollections}/>
                     <LatestCollections collections={latestCollections}/>
                     <RandomCollections collections={randomCollections}/>
                     {/* <OpenCollections /> */}
