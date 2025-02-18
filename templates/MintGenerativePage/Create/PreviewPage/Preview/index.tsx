@@ -58,8 +58,8 @@ const Preview = ({ cid }: PreviewProps) => {
       if (match) {
         let variableName = match[1];
 
-        // Use the variable name to extract the traits object definition
-        let traitsRegex = new RegExp(`let\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, "m");
+        // Modified regex to match both 'let' and 'const' declarations
+        let traitsRegex = new RegExp(`(?:let|const)\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, "m");
         let traitsMatch: any = scriptContent.match(traitsRegex);
         let traitsWithoutNewLines = traitsMatch[1].replace(/\n/g, "");
 
