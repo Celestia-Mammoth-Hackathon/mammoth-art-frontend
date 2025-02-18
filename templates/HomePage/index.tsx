@@ -3,15 +3,15 @@ import CuratedCollections from "./CuratedCollections";
 import OpenCollections from "./OpenCollections";
 import LatestCollections from "./LatestCollections";
 import RandomCollections from "./RandomCollections";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import useCollectionStore from '@/store/index';
 
 const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false);
-    const [latestCollections, setLatestCollections] = useState([]);
-    const [randomCollections, setRandomCollections] = useState([]);
-    const [mainCollections, setMainCollections] = useState([]);
-    const [curatedCollections, setCuratedCollections] = useState([]);
+    const [latestCollections, setLatestCollections] = useState<any[]>([]);
+    const [randomCollections, setRandomCollections] = useState<any[]>([]);
+    const [mainCollections, setMainCollections] = useState<any[]>([]);
+    const [curatedCollections, setCuratedCollections] = useState<any[]>([]);
 
     const {
         collections,
@@ -36,14 +36,17 @@ const HomePage = () => {
         fetchData();
     }, []);
 
+    const allCuratedCollections = useMemo(() => Object.values(collections), [collections]);
+    const allGenerativeCollections = useMemo(() => Object.values(generativeCollections), [generativeCollections]);
+
     useEffect(() => {
-        const curatedCollections:any = Object.values(collections);
-        const allGenerativeCollections:any = Object.values(generativeCollections);
+        if (!allGenerativeCollections.length || !curatedCollections.length) return;
+
         setLatestCollections(allGenerativeCollections);
         setMainCollections(allGenerativeCollections);
         setRandomCollections(allGenerativeCollections);
-        setCuratedCollections(curatedCollections);
-    }, [generativeCollections, collections]);
+        setCuratedCollections(allCuratedCollections);
+    }, [allGenerativeCollections, allCuratedCollections]);
 
     return (
             loading ? (

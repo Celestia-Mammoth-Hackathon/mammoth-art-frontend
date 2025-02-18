@@ -15,7 +15,7 @@ type CuratedCollectionsProps = {
 };
 
 const CuratedCollections = ({collections}: CuratedCollectionsProps) => {
-    console.log(collections);
+
     return (
     <div className={styles.collections}>
         <div className={cn("h1", styles.title)}>CURATED
