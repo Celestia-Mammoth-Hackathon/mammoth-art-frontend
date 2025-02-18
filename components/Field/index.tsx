@@ -43,6 +43,7 @@ type FieldProps = {
   setUploadedFile?: any;
   type?: any;
   date?: boolean;
+  rightIcon?: string;
 };
 
 const Field = ({
@@ -76,6 +77,7 @@ const Field = ({
   setIsValidZip,
   setUploadedFile,
   date,
+  rightIcon,
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
@@ -404,7 +406,20 @@ const Field = ({
               setValue={onChange}
               options={options}
             />
-          ) : (
+          ) : rightIcon ? (
+            <>
+              <input 
+                className={cn(styles.input, {[styles.search] : search}, inputClassName)}
+                value={value}
+                onChange={onChange}
+                placeholder={placeholder}
+                required={required}
+                autoFocus={autoFocus}
+              />
+              <span className={styles.rightIcon}>{rightIcon}</span>
+            </>
+            
+          ) :  (
           <input 
             className={cn(styles.input, {[styles.search] : search}, inputClassName)}
             value={value}
