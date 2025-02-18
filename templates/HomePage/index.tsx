@@ -46,9 +46,9 @@ const HomePage = () => {
                 <>
                     <Main collections={mainCollections}/>
                     <CuratedCollections />
-                    <OpenCollections />
                     <LatestCollections collections={latestCollections}/>
                     <RandomCollections collections={randomCollections}/>
+                    {/* <OpenCollections /> */}
                 </>
             )
     );
