@@ -160,6 +160,7 @@ const Preview = ({ cid }: PreviewProps) => {
             </button>
           </div>
           <iframe
+            className={styles.iframe}
             src={`https://ipfs.io/ipfs/${cid}/index.html?random=${randomKey}`}
             width="664"
             height="662"
