@@ -27,6 +27,7 @@ const HomePage = () => {
             try {
                 setLoading(true);
                 const [genCollections, collCollections] = await Promise.all([fetchAllGenerativeCollections(), fetchAllCollections()]);
+                console.log(genCollections, collCollections);
                 setMainCollections(Object.values(genCollections));
                 setRandomCollections(Object.values(genCollections));
                 setLatestCollections(Object.values(genCollections));
