@@ -43,7 +43,7 @@ const Placeholder = ({cid}: PlaceholderProps) => {
   };
 
   const handlePrevStep = async () => {
-    router.push(`/mint-generative/distribute?cid=${cid}`);
+    router.push(`/mint-generative/distribution?cid=${cid}`);
   };
 
   return (
