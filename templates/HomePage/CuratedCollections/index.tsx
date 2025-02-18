@@ -38,6 +38,7 @@ const CuratedCollections = ({}: CuratedCollectionsProps) => {
 
     useEffect(() => {
         const curatedCollections:any = Object.values(collections);
+        console.log(curatedCollections);
         setCuratedCollections(curatedCollections);
     }, [collections]);
 
