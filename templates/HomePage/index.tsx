@@ -21,29 +21,20 @@ const HomePage = () => {
     } = useCollectionStore();
 
     useEffect(() => {
-        let isMounted = true; // Flag to track if component is still mounted
-
         const fetchData = async () => {
             try {
                 setLoading(true);
-                const [genCollections, collCollections] = await Promise.all([fetchAllGenerativeCollections(), fetchAllCollections()]);
-                console.log(genCollections, collCollections);
-                setMainCollections(Object.values(genCollections));
-                setRandomCollections(Object.values(genCollections));
-                setLatestCollections(Object.values(genCollections));
-                setCuratedCollections(Object.values(collCollections));
+                await fetchAllGenerativeCollections();
+                await fetchAllCollections();
+                console.log("Collections after fetch:", collections);
             } catch (error) {
                 console.error("Error fetching collections:", error);
             } finally {
-                if (isMounted) setLoading(false);
+                setLoading(false);
             }
         };
-
+    
         fetchData();
-
-        return () => {
-            isMounted = false; // Cleanup to avoid setting state on unmounted component
-        };
     }, []);
 
     // Memoize collections to prevent unnecessary re-renders

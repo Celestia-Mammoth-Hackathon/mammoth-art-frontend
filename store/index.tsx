@@ -118,122 +118,101 @@ const useCollectionStore = create<State>((set , get) => ({
     users: {},
     fetchAllCollections: async () => {
         try {
-            const [ drops, allMerkleDrops, tokens ] = await Promise.all([
+            const [drops, allMerkleDrops, tokens] = await Promise.all([
                 indexer.getAllDrops(),
                 indexer.getMerkleDrops(),
                 indexer.getAllTokens(),
             ]);
-
-            const indexedExternalDrops = externalDrops.filter(drop => drop.indexed === true).map(d => d.drop);
-
+    
+            const indexedExternalDrops = externalDrops.filter(drop => drop.indexed).map(d => d.drop);
             const setCollections = new Set();
             const mapTokens = new Map();
-
+    
             for (const item of [...drops, ...allMerkleDrops, ...indexedExternalDrops]) {
                 const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
-
-                if (!token) {
-                    continue;
-                }
-
+                if (!token) continue;
                 const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
-                if (mapTokens.has(collectionId)) {
-                    continue;
-                }
-
+                if (mapTokens.has(collectionId)) continue;
                 mapTokens.set(collectionId, token);
             }
-
+    
+            const newCollections: any = {};
+    
             for (const item of [...drops, ...indexedExternalDrops]) {
                 const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
-                if (!mapTokens.has(collectionId)) {
-                    continue;
-                }
+                if (!mapTokens.has(collectionId)) continue;
                 const token = mapTokens.get(collectionId);
-
-                const foundToken = tokens.find((token:any) =>
-                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
-                        && token.tokenId === item.tokenId);
-
+    
+                const foundToken = tokens.find((t: any) =>
+                    t.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() && t.tokenId === item.tokenId);
+    
                 token.drop = item;
                 token.mintedSupply = Number(token.drop.minted || 0);
                 token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
-
+    
                 const dropState = getDropState(item, token);
-
-                const merkleDrops = allMerkleDrops
-                    .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
+    
+                const merkleDrops = allMerkleDrops.filter((d: any) =>
+                    token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId
+                );
+    
                 token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
                 token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
                 token.isMerkleDrop = false;
-
-                set((state) => ({
-                    collections: {
-                        ...state.collections,
-                        [collectionId]: {
-                            token,
-                            dropState,
-                            tokenIds: [item.tokenId],
-                        },
-                    },
-                }));
-
+    
+                newCollections[collectionId] = { token, dropState, tokenIds: [item.tokenId] };
+    
                 if (dropState === DropState.InProgress) {
                     setCollections.add(collectionId);
                 }
             }
-
+    
             for (const item of allMerkleDrops) {
                 const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
-                if (!mapTokens.has(collectionId)) {
-                    continue;
-                }
-
-                if (setCollections.has(collectionId)) {
-                    continue;
-                }
-
+                if (!mapTokens.has(collectionId)) continue;
+                if (setCollections.has(collectionId)) continue;
+    
                 const token = mapTokens.get(collectionId);
-
-                const foundToken = tokens.find((token:any) =>
-                    token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
-                        && token.tokenId === item.tokenId);
-
+    
+                const foundToken = tokens.find((t: any) =>
+                    t.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() && t.tokenId === item.tokenId
+                );
+    
                 token.drop = item;
                 token.mintedSupply = 0;
-
+    
                 const tokenDrops = drops.filter((d: any) =>
                     token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId
                 );
+    
                 token.mintedSupply += tokenDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
-
                 token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
                 const dropState = getDropState(item, token);
-
-                const merkleDrops = allMerkleDrops
-                    .filter((d: any) => token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId);
+    
+                const merkleDrops = allMerkleDrops.filter((d: any) =>
+                    token.tokenAddress.toLowerCase() === d.tokenAddress.toLowerCase() && token.tokenId === d.tokenId
+                );
+    
                 token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
                 token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
                 token.isMerkleDrop = true;
-
-                set((state) => ({
-                    collections: {
-                        ...state.collections,
-                        [collectionId]: {
-                            token,
-                            dropState,
-                            tokenIds: [item.tokenId],
-                        },
-                    },
-                }));
-
+    
+                newCollections[collectionId] = { token, dropState, tokenIds: [item.tokenId] };
+    
                 if (dropState === DropState.InProgress) {
                     setCollections.add(collectionId);
                 }
             }
+    
+            await new Promise((resolve) => {
+                set((state) => ({ collections: { ...state.collections, ...newCollections } }));
+                resolve(true);
+            });
+    
             return get().collections;
         } catch (error) {
             console.error("Error fetching collections:", error);
+            return {};
         }
     },
     fetchAllGenerativeCollections: async () => {
