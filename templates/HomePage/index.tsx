@@ -27,10 +27,10 @@ const HomePage = () => {
             try {
                 setLoading(true);
                 const [genCollections, collCollections] = await Promise.all([fetchAllGenerativeCollections(), fetchAllCollections()]);
-                setMainCollections(genCollections);
-                setRandomCollections(genCollections);
-                setLatestCollections(genCollections);
-                setCuratedCollections(collCollections);
+                setMainCollections(Object.values(genCollections));
+                setRandomCollections(Object.values(genCollections));
+                setLatestCollections(Object.values(genCollections));
+                setCuratedCollections(Object.values(collCollections));
             } catch (error) {
                 console.error("Error fetching collections:", error);
             } finally {
