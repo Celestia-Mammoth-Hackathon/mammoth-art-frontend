@@ -63,13 +63,16 @@ const Preview = ({ cid }: PreviewProps) => {
         let traitsMatch: any = scriptContent.match(traitsRegex);
         let traitsWithoutNewLines = traitsMatch[1].replace(/\n/g, "");
 
-        // Regex to match all keys
-        let keyRegex = /"([^"]+)":/g;
+        // Regex to match keys with either single or double quotes
+        let keyRegex = /'([^']+)':|"([^"]+)":/g;
 
         let keys = [];
         let keyMatch;
+
         while ((keyMatch = keyRegex.exec(traitsWithoutNewLines)) !== null) {
-          keys.push(keyMatch[1]);
+          // Since we have two capture groups now, we need to take the non-null one
+          const key = keyMatch[1] || keyMatch[2];
+          keys.push(key);
         }
 
         // Map traits to options
