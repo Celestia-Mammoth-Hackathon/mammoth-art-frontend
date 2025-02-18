@@ -154,6 +154,7 @@ const Distribution = ({cid}: DistributionProps) => {
                 placeholder="Enter closing time"
                 value={collectionData.endDate}
                 onChange={setCollectionEndDate}
+                min={dayjs().format('YYYY-MM-DDTHH:mm')}
                 required
                 date
             />
@@ -183,10 +184,10 @@ const Distribution = ({cid}: DistributionProps) => {
           </div>
           <div className={styles.royaltyAddressWrapper}>
             <div className={styles.label}>
-              Royalty payout address/ENS
+              Royalty payout address/ Celestials ID
             </div>
             <Field
-                placeholder="e.g. vitalik.eth, 0x0000000000000000000000000000000000000000"
+                placeholder="e.g. codecrafting.id, 0x0000000000000000000000000000000000000000"
                 value={collectionData.royaltyAddress}
                 onChange={(e:any) => setRoyaltyAddress(e.target.value)}
                 required
