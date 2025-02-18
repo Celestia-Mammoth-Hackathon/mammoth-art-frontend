@@ -43,7 +43,7 @@ const HomePage = () => {
 
     useEffect(() => {
         if (!allGenerativeCollections.length || !allCuratedCollections.length) return;
-
+        console.log(allGenerativeCollections, allCuratedCollections);
         setLatestCollections(allGenerativeCollections);
         setMainCollections(allGenerativeCollections);
         setRandomCollections(allGenerativeCollections);

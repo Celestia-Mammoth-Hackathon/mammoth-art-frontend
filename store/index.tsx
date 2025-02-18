@@ -117,13 +117,16 @@ const useCollectionStore = create<State>((set , get) => ({
     collections: {},
     users: {},
     fetchAllCollections: async () => {
+        let isSubscribed = true;
         try {
             const [drops, allMerkleDrops, tokens] = await Promise.all([
                 indexer.getAllDrops(),
                 indexer.getMerkleDrops(),
                 indexer.getAllTokens(),
             ]);
-    
+
+            if (!isSubscribed) return () => {};
+
             const indexedExternalDrops = externalDrops.filter(drop => drop.indexed).map(d => d.drop);
             const setCollections = new Set();
             const mapTokens = new Map();
@@ -204,15 +207,16 @@ const useCollectionStore = create<State>((set , get) => ({
                 }
             }
     
-            await new Promise((resolve) => {
-                set((state) => ({ collections: { ...state.collections, ...newCollections } }));
-                resolve(true);
-            });
-    
-            return get().collections;
+            // Update state in one batch
+            set((state) => ({ 
+                collections: { ...state.collections, ...newCollections } 
+            }));
+
+            // Return cleanup function
+            return () => { isSubscribed = false; };
         } catch (error) {
             console.error("Error fetching collections:", error);
-            return {};
+            return () => { isSubscribed = false; };
         }
     },
     fetchAllGenerativeCollections: async () => {
@@ -444,59 +448,6 @@ const useCollectionStore = create<State>((set , get) => ({
             console.error("Error fetching own nfts:", error);
         }
     },
-    // fetchUserBalance: async (userAddress: string) => {
-    //     try {
-    //         const ownedSupply = await indexer.getUserBalance({ userAddress });
-            
-    //         for (const item of ownedSupply) {
-    //             const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
-
-    //             const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
-    //             const userBalance = ownedSupply.filter((element: any) =>
-    //                 element.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
-    //                 && ((token.type === 'ERC1155' && (element.tokenId === item.tokenId || (token.tokens && token.tokens.length > 0))) || token.type === 'ERC721')
-    //             );
-
-    //             const tokens = await indexer.getAllTokens();
-    //             const foundToken = tokens.find((token: any) => 
-    //                 token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase() &&
-    //                 token.tokenId === item.tokenId
-    //             );
-
-    //             token.mintedSupply = foundToken?.totalSupply || 0;
-    //             token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
-
-    //             set((state) => {
-    //                 const userState = state.users[userAddress] || { collections: {} };
-    
-    //                 return {
-    //                     users: {
-    //                         ...state.users,
-    //                         [userAddress]: {
-    //                             ...userState,
-    //                             collections: {
-    //                                 ...userState.collections,
-    //                                 [collectionId]: {
-    //                                     ...userState.collections[collectionId],
-    //                                     token: token,
-    //                                     tokenIds: userBalance.map((balance: any) => balance.tokenId)
-    //                                         .sort((a: any, b: any) => Number(a) - Number(b)),
-    //                                     ownedSupply: userBalance.reduce((sum: number, balance: any) => sum + +balance.balance, 0) || 0,
-    //                                 }
-    //                             }
-    //                         }
-    //                     }
-    //                 };
-    //             });
-    //         }
-            
-            
-
-            
-    //     } catch (error) {
-    //         console.error("Error fetching own nfts:", error);
-    //     }
-    // },
     fetchUserBalance: async (userAddress: string) => {
         try {
             const ownedSupply = await indexer.getUserBalance({ userAddress });
