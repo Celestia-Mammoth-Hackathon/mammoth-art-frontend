@@ -85,7 +85,7 @@ const Main = ({collections}: MainProps) => {
                 }}
                 onSlideChange={(swiper) => {
                     const currentSlide = swiper.realIndex;
-                    updateBackgroundColor(transformUri(collections[currentSlide].token.image, false));
+                    updateBackgroundColor(transformUri(collections[currentSlide]?.token?.image, false));
                     setItem(collections[currentSlide])
                 }}
             >

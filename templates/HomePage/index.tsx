@@ -4,10 +4,10 @@ import OpenCollections from "./OpenCollections";
 import LatestCollections from "./LatestCollections";
 import RandomCollections from "./RandomCollections";
 import { useState, useEffect, useMemo } from "react";
-import useCollectionStore from '@/store/index';
+import useCollectionStore from "@/store/index";
 
 const HomePage = () => {
-    const [loading, setLoading] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
     const [latestCollections, setLatestCollections] = useState<any[]>([]);
     const [randomCollections, setRandomCollections] = useState<any[]>([]);
     const [mainCollections, setMainCollections] = useState<any[]>([]);
@@ -21,26 +21,32 @@ const HomePage = () => {
     } = useCollectionStore();
 
     useEffect(() => {
+        let isMounted = true; // Flag to track if component is still mounted
+
         const fetchData = async () => {
             try {
                 setLoading(true);
-                await fetchAllGenerativeCollections();
-                await fetchAllCollections();
+                await Promise.all([fetchAllGenerativeCollections(), fetchAllCollections()]);
             } catch (error) {
-                console.error("Error fetching drops:", error);
+                console.error("Error fetching collections:", error);
             } finally {
-                setLoading(false);
+                if (isMounted) setLoading(false);
             }
         };
 
         fetchData();
+
+        return () => {
+            isMounted = false; // Cleanup to avoid setting state on unmounted component
+        };
     }, []);
 
+    // Memoize collections to prevent unnecessary re-renders
     const allCuratedCollections = useMemo(() => Object.values(collections), [collections]);
     const allGenerativeCollections = useMemo(() => Object.values(generativeCollections), [generativeCollections]);
 
     useEffect(() => {
-        if (!allGenerativeCollections.length || !curatedCollections.length) return;
+        if (!allGenerativeCollections.length || !allCuratedCollections.length) return;
 
         setLatestCollections(allGenerativeCollections);
         setMainCollections(allGenerativeCollections);
@@ -48,18 +54,16 @@ const HomePage = () => {
         setCuratedCollections(allCuratedCollections);
     }, [allGenerativeCollections, allCuratedCollections]);
 
-    return (
-            loading ? (
-                <></>
-            ) : (
-                <>
-                    <Main collections={mainCollections}/>
-                    <CuratedCollections collections={curatedCollections}/>
-                    <LatestCollections collections={latestCollections}/>
-                    <RandomCollections collections={randomCollections}/>
-                    {/* <OpenCollections /> */}
-                </>
-            )
+    return loading ? (
+        <></>
+    ) : (
+        <>
+            <Main collections={mainCollections} />
+            <CuratedCollections collections={curatedCollections} />
+            <LatestCollections collections={latestCollections} />
+            <RandomCollections collections={randomCollections} />
+            {/* <OpenCollections /> */}
+        </>
     );
 };
 
