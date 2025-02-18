@@ -164,7 +164,7 @@ const Distribution = ({cid}: DistributionProps) => {
                 Primary Sale Address
             </div>
             <Field
-                placeholder="Enter primary sale address"
+                placeholder="Enter primary sale address (e.g. mammoth.id, 0x0000000000000000000000000000000000000000)"
                 value={collectionData.primarySaleAddress}
                 onChange={(e:any) => setPrimarySaleAddress(e.target.value)}
                 required
