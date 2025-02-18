@@ -21,23 +21,37 @@ const HomePage = () => {
     } = useCollectionStore();
 
     useEffect(() => {
-        let isMounted = true; // Flag to track if component is still mounted
-
         const fetchData = async () => {
             try {
                 setLoading(true);
-                await Promise.all([fetchAllGenerativeCollections(), fetchAllCollections()]);
+                const [cleanupGen, cleanupColl] : [any, any]  = await Promise.all([
+                    fetchAllGenerativeCollections(),
+                    fetchAllCollections()
+                ]);
+                if (isMounted) setLoading(false);
+
+                // Return a single cleanup function that handles both
+                return () => {
+                    if (typeof cleanupGen === 'function') cleanupGen();
+                    if (typeof cleanupColl === 'function') cleanupColl();
+                };
             } catch (error) {
                 console.error("Error fetching collections:", error);
-            } finally {
                 if (isMounted) setLoading(false);
+                // Return a no-op function if there's an error
+                return () => {};
             }
         };
 
-        fetchData();
+        let isMounted = true;
+        const cleanupPromise = fetchData();
 
         return () => {
-            isMounted = false; // Cleanup to avoid setting state on unmounted component
+            isMounted = false;
+            // Handle the promise resolution
+            cleanupPromise.then((cleanup: (() => void) | undefined) => {
+                if (typeof cleanup === 'function') cleanup();
+            });
         };
     }, []);
 
