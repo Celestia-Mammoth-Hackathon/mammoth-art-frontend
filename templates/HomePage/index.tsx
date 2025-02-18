@@ -29,8 +29,6 @@ const HomePage = () => {
                 console.log("Collections after fetch:", collections);
             } catch (error) {
                 console.error("Error fetching collections:", error);
-            } finally {
-                setLoading(false);
             }
         };
     
@@ -50,6 +48,13 @@ const HomePage = () => {
         setCuratedCollections(allCuratedCollections);
     }, [allGenerativeCollections, allCuratedCollections]);
 
+    useEffect(() => {
+        if(!mainCollections.length || !latestCollections.length || !randomCollections.length || !curatedCollections.length) {
+            setLoading(true);
+        } else {
+            setLoading(false);
+        }
+    }, [mainCollections, latestCollections, randomCollections, curatedCollections]);
     return loading ? (
         <></>
     ) : (
