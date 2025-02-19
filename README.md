@@ -7,7 +7,7 @@
 ## 🌟 Experience MammothArt
 
 ### 🔥 Live Demo
-Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/){:target="_blank" rel="noopener"}
+Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/)
 
 ### 🧬 NFT-Weighted Rarity System
 Your existing MammothArt NFTs influence the probability of minting rare pieces:
@@ -80,7 +80,7 @@ Once you're ready to test or deploy your project on MammothArt:
 - Create a .zip of your project files, ensuring that you select the group of files to zip, not the folder itself:
 ![MammothArt Platform Preview](public/zip.png)
 - Your .zip should not be larger than 2GB. All project assets are stored on Arweave by default, a decentralized and permanent storage network.
-- Go to [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/){:target="_blank" rel="noopener"} and connect your wallet.
+- Go to [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/) and connect your wallet.
 - Click Create and upload the .zip file of your code-based generative project and continue with testing.
 
 ### Example Collections
@@ -90,17 +90,17 @@ Download our example collections to get started:
 - [Advanced Example](/zip/ADVANCED-P5-EXAMPLE.zip)
 
 ## 🔗 Quick Links
-- [P5.js Documentation](https://p5js.org/reference/){:target="_blank" rel="noopener"}
-- [Forma Documentation](https://docs.forma.art/){:target="_blank" rel="noopener"}
-- [Modularium API](https://modularium-api.sketchpad-1.forma.art/){:target="_blank" rel="noopener"}
-- [Platform Overview (coming soon)]{:target="_blank" rel="noopener"}
-- [Artist Guidelines (coming soon)]{:target="_blank" rel="noopener"}
-- [Collector Guide (coming soon)]{:target="_blank" rel="noopener"}
-- [FAQ (coming soon)]{:target="_blank" rel="noopener"}
+- [P5.js Documentation](https://p5js.org/reference/)
+- [Forma Documentation](https://docs.forma.art/)
+- [Modularium API](https://modularium-api.sketchpad-1.forma.art/)
+- [Platform Overview (coming soon)]()
+- [Artist Guidelines (coming soon)]()
+- [Collector Guide (coming soon)]()
+- [FAQ (coming soon)]()
 
 ## 📬 Contact & Support
 
-- Twitter: [@MammothBros](https://twitter.com/MammothBros){:target="_blank" rel="noopener"}
+- Twitter: [@MammothBros](https://twitter.com/MammothBros){target="_blank"}
 
 
 ## 🎨 Featured Collections
