@@ -86,7 +86,7 @@ Once you're ready to test or deploy your project on MammothArt:
 ### Example Collections
 Download our example collections to get started:
 - [Basic Example](/zip/BASIC-P5-EXAMPLE-UPLOAD-ME.zip)
-- [Basic Studio Example](/zip/BASIC-STUDIO-EXAMPLE.zip)
+- [Basic Studio Example](/zip/basic-p5-studio-example.zip)
 - [Advanced Example](/zip/ADVANCED-P5-EXAMPLE-UPLOAD-ME.zip)
 
 ## 🔗 Quick Links
