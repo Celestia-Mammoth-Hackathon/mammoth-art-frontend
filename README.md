@@ -100,7 +100,7 @@ Download our example collections to get started:
 
 ## 📬 Contact & Support
 
-- Twitter: [@MammothBros](https://twitter.com/MammothBros){target="_blank"}
+- Twitter: [@MammothBros](https://twitter.com/MammothBros)
 
 
 ## 🎨 Featured Collections
