@@ -52,24 +52,7 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces:
 3. **Start Minting**
    - Mint new pieces
 
-## 🔗 Quick Links
-- [Platform Overview (coming soon)]()
-- [Artist Guidelines (coming soon)]()
-- [Collector Guide (coming soon)]()
-- [FAQ (coming soon)]()
-
-## 📬 Contact & Support
-
-- Twitter: [@MammothBros](https://twitter.com/MammothBros)
-
-
-## 🎨 Featured Collections
-*Coming soon - showcase of top collections and artists*
-
-## 📊 Platform Statistics
-*Coming soon - live platform metrics and analytics*
-
-## 📦 Example Collections
+## 📦 Set up your own generative art collection
 
 ### Project Structure
 Generative art collections on MammothArt are simply packaged web pages that use data inputs to render visual outputs. Projects should contain the following:
