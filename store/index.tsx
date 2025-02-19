@@ -239,6 +239,7 @@ const useCollectionStore = create<State>((set , get) => ({
                     setCollections.add(collectionId);
                 }
             }
+            console.log(newCollections);
             return newCollections;
         } catch (error) {
             console.error("Error fetching collections:", error);

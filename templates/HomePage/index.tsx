@@ -25,8 +25,9 @@ const HomePage = () => {
             try {
                 setLoading(true);
                 await fetchAllGenerativeCollections();
-                await fetchAllCollections();
-                console.log("Collections after fetch:", collections);
+                const allCuratedCollections = await fetchAllCollections();
+                setCuratedCollections(Object.values(allCuratedCollections));
+                console.log("Collections after fetch:", curatedCollections);
             } catch (error) {
                 console.error("Error fetching collections:", error);
             }
