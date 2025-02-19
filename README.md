@@ -7,7 +7,7 @@
 ## 🌟 Experience MammothArt
 
 ### 🔥 Live Demo
-Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/)
+Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/){target="_blank"}
 
 ### 🧬 NFT-Weighted Rarity System
 Your existing MammothArt NFTs influence the probability of minting rare pieces:
@@ -19,13 +19,10 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces:
 - Submit generative art collections
 - Define trait inheritance rules
 - Set rarity tiers and probabilities
-- Track real-time minting analytics
 
 ### 👾 For Collectors
 - Use existing NFTs as "trait boosters"
 - View rarity chances before minting
-- Track collection statistics
-- Trade on integrated marketplace
 
 ## 💎 Revenue Structure
 | Party | Fee | Purpose |
@@ -33,7 +30,7 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces:
 | Artists | 5 TIA | Collection submission |
 | Collectors | 2% | Per mint |
 
-### Preview Screenshots
+### 📸 Preview Screenshots
 | Home Page | Minting Interface | Collection View |
 |-----------|------------------|-----------------|
 | ![Home](path/to/home.png) | ![Mint](path/to/mint.png) | ![Collection](path/to/collection.png) |
@@ -57,8 +54,8 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces:
 ### Project Structure
 Generative art collections on MammothArt are simply packaged web pages that use data inputs to render visual outputs. Projects should contain the following:
 
-- index.html (required): This file displays your tokens
-- hl-gen.js (required): This file gives you access to data from the blockchain, helps you generate deterministic randomness in your tokens, and provides methods to set metadata and capture preview images
+- **index.html** (required): This file displays your tokens
+- **hl-gen.js** (required): This file gives you access to data from the blockchain, helps you generate deterministic randomness in your tokens, and provides methods to set metadata and capture preview images
 - Any libraries required to render your tokens, like p5.js, three.js, tone.js, etc.
 - Any other files required to render your tokens, including images, fonts, video files, etc.
 Note that, in general, you should not reference external libraries or files, as these references may break in the future. Any resource your project needs to display properly should be included locally.
@@ -77,30 +74,33 @@ textures/
   ↳ texture-2.png
 ```
 
-3. **Submit Collection**
-   - Zip your collection folder
-   - Upload through create collection dashboard
-   - Set minting parameters
-   - Define trait boost mechanics
+### Submit your collection
+Once you're ready to test or deploy your project on MammothArt:
+
+- Create a .zip of your project files, ensuring that you select the group of files to zip, not the folder itself:
+![MammothArt Platform Preview](public/zip.png)
+- Your .zip should not be larger than 2GB. All project assets are stored on Arweave by default, a decentralized and permanent storage network.
+- Go to [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/){target="_blank"} and connect your wallet.
+- Click Create and upload the .zip file of your code-based generative project and continue with testing.
 
 ### Example Collections
 Download our example collections to get started:
-- [Basic Example](/zip/BASIC-P5-EXAMPLE.zip) - Simple geometric art
-- [Basic Studio Example](/zip/BASIC-STUDIO-EXAMPLE.zip) - Dynamic color compositions
-- [Advanced Example](/zip/ADVANCED-P5-EXAMPLE.zip) - Recursive pattern system
+- [Basic Example](/zip/BASIC-P5-EXAMPLE.zip)
+- [Basic Studio Example](/zip/BASIC-STUDIO-EXAMPLE.zip)
+- [Advanced Example](/zip/ADVANCED-P5-EXAMPLE.zip)
 
 ## 🔗 Quick Links
-- [P5.js Documentation](https://p5js.org/reference/)
-- [Forma Documentation](https://docs.forma.art/)
-- [Modularium API](https://modularium-api.sketchpad-1.forma.art/)
-- [Platform Overview (coming soon)]()
-- [Artist Guidelines (coming soon)]()
-- [Collector Guide (coming soon)]()
-- [FAQ (coming soon)]()
+- [P5.js Documentation](https://p5js.org/reference/){target="_blank"}
+- [Forma Documentation](https://docs.forma.art/){target="_blank"}
+- [Modularium API](https://modularium-api.sketchpad-1.forma.art/){target="_blank"}
+- [Platform Overview (coming soon)]{target="_blank"}
+- [Artist Guidelines (coming soon)]{target="_blank"}
+- [Collector Guide (coming soon)]{target="_blank"}
+- [FAQ (coming soon)]{target="_blank"}
 
 ## 📬 Contact & Support
 
-- Twitter: [@MammothBros](https://twitter.com/MammothBros)
+- Twitter: [@MammothBros](https://twitter.com/MammothBros){target="_blank"}
 
 
 ## 🎨 Featured Collections
