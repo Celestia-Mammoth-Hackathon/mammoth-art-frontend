@@ -40,9 +40,14 @@ export const getAllTokenStaticMetadata = (tokenAddress: string, tokenIds: string
 };
 
 export const getTokenStaticMetadata = async (contractAddress: string, tokenId: string) => {
+  console.log("contractAddress", contractAddress);
+  console.log("tokenId", tokenId);
   const nft = nfts.find((nftItem) => {
     if (nftItem.tokens && nftItem.tokens.length > 0) {
       return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokens.find(t => t.id === tokenId);
+    }
+    if(nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase()) {
+      console.log("nftItem", nftItem);
     }
     return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokenId === tokenId;
   });
