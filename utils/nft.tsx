@@ -46,7 +46,8 @@ export const getTokenStaticMetadata = async (contractAddress: string, tokenId: s
     }
     return nftItem.tokenAddress.toLowerCase() === contractAddress.toLowerCase() && nftItem.tokenId === tokenId;
   });
-
+  console.log("nfts", nfts.length);
+  console.log("nft", nft);
   if (nft?.tokens && nft?.tokens.length > 0) {
     const tokenMeta = nft.tokens.find(t => t.id === tokenId);
     if (tokenMeta) {
