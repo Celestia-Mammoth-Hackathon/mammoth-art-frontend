@@ -123,6 +123,7 @@ const useCollectionStore = create<State>((set , get) => ({
                 indexer.getMerkleDrops(),
                 indexer.getAllTokens(),
             ]);
+            console.log("drops, allMerkleDrops, tokens", drops, allMerkleDrops, tokens);
             const newCollections: any = {};
             const indexedExternalDrops = externalDrops.filter(drop => drop.indexed === true).map(d => d.drop);
 
@@ -131,7 +132,7 @@ const useCollectionStore = create<State>((set , get) => ({
 
             for (const item of [...drops, ...allMerkleDrops]) {
                 const token: any = await getTokenStaticMetadata(item.tokenAddress, item.tokenId);
-
+                console.log("token 1", token);
                 if (!token) {
                     continue;
                 }
@@ -146,15 +147,16 @@ const useCollectionStore = create<State>((set , get) => ({
 
             for (const item of [...drops, ...indexedExternalDrops]) {
                 const collectionId = `${item.tokenAddress.toLowerCase()}_${item.tokenId}`;
+                console.log("collectionId", collectionId);
                 if (!mapTokens.has(collectionId)) {
                     continue;
                 }
                 const token = mapTokens.get(collectionId);
-
+                console.log("token 2", token);
                 const foundToken = tokens.find((token:any) =>
                     token.tokenAddress.toLowerCase() === item.tokenAddress.toLowerCase()
                         && token.tokenId === item.tokenId);
-
+                console.log("foundToken", foundToken);
                 token.drop = item;
                 token.mintedSupply = Number(token.drop.minted || 0);
                 token.isMarketplaceAllowed = foundToken?.isMarketplaceAllowed || false;
@@ -166,7 +168,7 @@ const useCollectionStore = create<State>((set , get) => ({
                 token.merkleDrops = merkleDrops.filter((d: any) => getDropState(d, token) === DropState.InProgress);
                 token.mintedSupply += merkleDrops.reduce((sum: number, drop: any) => sum + Number(drop.minted), 0);
                 token.isMerkleDrop = false;
-
+    
                 set((state) => ({
                     collections: {
                         ...state.collections,
