@@ -41,8 +41,8 @@ export const uploadZipFileToIPFS = async (file: File, collectionSize: number, co
     formData.append('collectionName', "test");
 
     const response = await axios.post(
-      // `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/upload`,
-      `http://localhost:3001/upload`,
+      `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/upload`,
+      // `http://localhost:3001/upload`,
       formData,
       {
         headers: {
