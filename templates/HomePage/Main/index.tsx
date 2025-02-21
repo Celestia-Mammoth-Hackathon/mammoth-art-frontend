@@ -46,7 +46,7 @@ const Main = ({collections}: MainProps) => {
         setVisibleMintMenu: () => {},
         setResponse: setMintingResponse,
     });
-    console.log(mintingResponse, mintingStatus, isMintingLoading, isMintingError);
+
     const updateBackgroundColor = (imageSrc: string) => {
         const colorThief = new (require("colorthief")).default();
         const img = document.createElement("img") as HTMLImageElement;
