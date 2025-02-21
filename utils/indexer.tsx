@@ -8,7 +8,7 @@ const BASE_RAILWAY_URL = process.env.NEXT_PUBLIC_RAILWAY_INDEXER_API_URL!.replac
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, "");
 
-const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || ["1", "2", "3", "4", "5"]));
+const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || ["1", "2", "3", "4", "5", "6", "7"]));
 
 const DEFAULT_MAX_PAGES = 40;
 
@@ -478,6 +478,35 @@ export async function getContractMetadata(contractAddress: string) {
       console.error("Error fetching contractURI:", error);
       throw error;
   }
+}
+
+export async function getInfluencingNfts(contractAddress: string) {
+    try {
+        if (!window.ethereum) {
+            throw new Error("MetaMask is not installed");
+        }
+
+        const provider = new ethers.providers.JsonRpcProvider(process.env.NEXT_PUBLIC_CHAIN_RPC);    
+        const contract = new ethers.Contract(contractAddress, generativeERC721Upgradeable.abi, provider);
+
+        const influencingNfts = await contract.influencingNFTs();
+        
+        // Transform the data structure
+        const transformedNfts = await Promise.all(influencingNfts.map(async ([tokenAddress, tokenIds]: any) => {
+            const collectionMetadata = await getContractMetadata(tokenAddress);
+            
+            return {
+                tokenAddress,
+                tokenIds: tokenIds.map((id: any) => ethers.BigNumber.from(id).toString()),
+                metadata: collectionMetadata
+            };
+        }));
+
+        return transformedNfts;
+    } catch (error) {
+        console.error("Error fetching influencing NFTs:", error);
+        throw error;
+    }
 }
 
 const getPlaceHolderMetadata = async ( tokenAddress : string) => {

@@ -5,23 +5,28 @@ import LatestCollections from "./LatestCollections";
 import RandomCollections from "./RandomCollections";
 import { useState, useEffect } from "react";
 import useCollectionStore from '@/store/index';
+import { useUserContext } from "context/user";
 
 const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [latestCollections, setLatestCollections] = useState([]);
     const [randomCollections, setRandomCollections] = useState([]);
     const [mainCollections, setMainCollections] = useState([]);
-
+    const { address } = useUserContext();
     const {
         generativeCollections,
-        fetchAllGenerativeCollections
+        fetchAllGenerativeCollections,
+        fetchUserBalance
     } = useCollectionStore();
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                await fetchAllGenerativeCollections();
+                await Promise.all([
+                    fetchAllGenerativeCollections(),
+                    fetchUserBalance(address)
+                ]);
             } catch (error) {
                 console.error("Error fetching drops:", error);
             } finally {

@@ -228,6 +228,7 @@ const useClaimNFT = ({
     }, [canMerkleMint, writeContract, merkleWriteContract, simData, merkleSimData, setResponse, status, merkleStatus]);
 
     return {
+        mintingStatus: status,
         isMintingLoading : isTransactionLoading || isPrepareLoading || isMerklePrepareLoading || isMerkleTransactionLoading,
         isMintingError: isTransactionError || isMerkleTransactionError,
         claimNFT,
