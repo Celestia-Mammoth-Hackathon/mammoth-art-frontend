@@ -16,6 +16,22 @@ export const uploadFolderToNFTStorage = async (formData:any) => {
   return resData.IpfsHash;
 };
 
+export const uploadImageToIPFS = async (file: File) => {
+  const res = await fetch(
+    "https://api.pinata.cloud/pinning/pinFileToIPFS",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+      },
+      body: file,
+    }
+  );
+  const resData = await res.json();
+
+  return resData.IpfsHash;
+};  
+
 export const uploadZipFileToIPFS = async (file: File, collectionSize: number, collectionName: string) => {
   try {
     // Create FormData to send the file

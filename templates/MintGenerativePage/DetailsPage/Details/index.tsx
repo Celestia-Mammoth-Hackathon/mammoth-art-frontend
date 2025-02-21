@@ -5,6 +5,7 @@ import Field from "@/components/Field";
 import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
 import { useRouter } from "next/router";
+import { uploadImageToIPFS } from "@/utils/ipfs";
 
 type DetailsProps = {
   cid: any;
@@ -43,6 +44,11 @@ const Details = ({cid}: DetailsProps) => {
   }
 
   const handleNextStep = async () => {
+    const collectionImageCid = await uploadImageToIPFS(collectionData.collectionImage);
+    setCollectionData((prevData: any) => ({
+      ...prevData,
+      collectionImageCid: collectionImageCid,
+    }));
     // Save to localStorage
     saveDataToLocalStorage({
       collectionName: collectionData.collectionName,

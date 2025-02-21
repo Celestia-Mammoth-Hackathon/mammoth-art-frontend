@@ -5,7 +5,7 @@ import Field from "@/components/Field";
 import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
 import { useRouter } from "next/router";
-
+import { uploadImageToIPFS } from "@/utils/ipfs";
 type PlaceholderProps = {
   cid: any;
 };
@@ -35,6 +35,14 @@ const Placeholder = ({cid}: PlaceholderProps) => {
   }
 
   const handleNextStep = async () => {
+    const imageCid = await uploadImageToIPFS(collectionData.placeholderMetadata.image);
+    setCollectionData((prevData: any) => ({
+      ...prevData,
+      placeholderMetadata: {
+        ...prevData.placeholderMetadata,
+        imageCid: imageCid,
+      },
+    }));
     // Save to localStorage
     saveDataToLocalStorage({
       placeholderMetadata: collectionData.placeholderMetadata
