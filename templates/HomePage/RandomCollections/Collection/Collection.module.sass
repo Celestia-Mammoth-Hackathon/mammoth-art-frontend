@@ -31,12 +31,16 @@
         display: block
         padding-bottom: 100%
     img
-        transition: transform 1s
+        transition: transform .3s ease
     &:hover
         border: 1px solid $n0
+        .mintOverlay
+            opacity: 1
+            visibility: visible
         img
             transform: scale(1.05)
-            
+            filter: blur(2px) brightness(0.7)
+
 .counter
     display: flex
     justify-content: center
@@ -142,3 +146,171 @@
     letter-spacing: -0.01em
     text-align: left
     color: $n10
+
+.mintOverlay
+    position: absolute
+    top: 0
+    left: 0
+    right: 0
+    bottom: 0
+    display: flex
+    align-items: center
+    justify-content: center
+    opacity: 0
+    visibility: hidden
+    transition: all .3s ease
+    z-index: 2
+    background: rgba(0, 0, 0, 0.4)
+
+.mintButton
+    padding: 12px 24px
+    background: $n0
+    border: none
+    border-radius: 8px
+    color: black
+    font-weight: 600
+    font-size: 16px
+    text-transform: uppercase
+    cursor: pointer
+    transition: all .2s ease
+    transform: translateY(10px)
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3)
+    
+    &:hover
+        background: $n11
+        transform: translateY(8px)
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4)
+    
+    &.loading
+        opacity: 0.8
+        cursor: not-allowed
+    
+    .spinner
+        width: 20px
+        height: 20px
+
+.modalContent
+    display: flex
+    flex-direction: column
+    gap: 24px
+    padding: 24px
+    max-width: 800px
+    width: 100%
+    margin: 0 auto
+    height: max-content
+    margin-top: 4rem
+    @media (min-width: 768px)
+        flex-direction: row
+        flex-wrap: wrap
+
+.leftSection
+    flex: 1
+    min-width: 300px
+
+    .tokenPreview
+        position: relative
+        width: 100%
+        height: 300px
+        border-radius: 12px
+        overflow: hidden
+        margin-bottom: 16px
+
+    .tokenInfo
+        h3
+            margin-bottom: 8px
+            font-size: 24px
+        
+        p
+            margin-bottom: 16px
+            color: rgba(255, 255, 255, 0.7)
+
+.tokenName,
+.influencingTitle
+    font-size: 24px
+    font-weight: 700
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+
+.tokenName,
+.tokenOwner
+    &:hover
+        cursor: pointer
+        color: $n11
+
+.tokenDescription
+    font-size: 16px
+    color: $n0
+    margin-bottom: 16px
+
+.tokenDetails
+    display: flex
+    flex-direction: column
+    gap: 8px
+    color: $n0
+
+.rightSection
+    flex: 1
+    min-width: 300px
+
+    h4
+        margin-bottom: 16px
+
+    .influencingNfts
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+
+.buttonContainer
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-top: 16px
+    
+    @media (min-width: 768px)
+        flex: 0 0 100%
+
+.button
+    padding: 20px 32px 20px 32px
+    border: 1px solid $n9
+    background: $n0
+    color: $n9
+    height: 64px
+    cursor: pointer
+    &:hover
+        background: $n11
+        
+.nftInfo
+    display: flex
+    align-items: center
+    gap: 4px
+    margin-top: 8px
+    
+    .icon
+        width: 24px
+        height: 24px
+    
+    span
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        font-size: 16px
+        font-weight: 400    
+        color: $n0
+        margin-left: 8px
+        margin-top: 4px
+
+.disabled
+    opacity: 0.5
+    cursor: not-allowed
+    pointer-events: none
+
+.mintingButton
+    background: $n11
+    cursor: not-allowed
+    pointer-events: none
+    
+.spinner
+    margin: 0 !important

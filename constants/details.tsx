@@ -4,6 +4,7 @@ const tokenType: string = process.env.NEXT_PUBLIC_TOKEN_TYPE!;
 export const appName: string = process.env.NEXT_PUBLIC_APP_NAME!;
 export const walletConnectProjectId: string = process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!;
 export const dropAddress: `0x${string}` = process.env.NEXT_PUBLIC_DROP_ADDRESS!;
+// export const dropAddress: `0xd09504c5E298647eC408D9eaD83F7C5730E61C72` = `0xd09504c5E298647eC408D9eaD83F7C5730E61C72`;
 export const marketplaceAddress: `0x${string}` = process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS!;
 export const chainName: string = process.env.NEXT_PUBLIC_CHAIN_NAME!;
 export const chainMoniker: string = process.env.NEXT_PUBLIC_CHAIN_MONIKER!;
