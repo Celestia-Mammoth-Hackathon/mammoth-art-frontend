@@ -161,8 +161,13 @@ const Collection = ({ item }: CollectionProps) => {
                             <div className={styles.tokenName}>{item.token.name}</div>
                             <div className={styles.tokenDescription}>{item.token.description}</div>
                             <div className={styles.tokenDetails}>
-                                <div>Owner: {formatUserAddress(item.token.drop.creator)}</div>
-                                <div>Price: {convertBigNumberToString(item.token.drop.price, nativeCurrency.decimals)} TIA</div>
+                            <div className={styles.tokenOwnerWrapper}>
+                                <span className={styles.by}>By</span>
+                                <Link href={`/profile/${item?.token?.drop?.creator}`} passHref>
+                                    <div className={styles.tokenOwner}>{formatUserAddress(item?.token?.drop?.creator)}</div>
+                                </Link>
+                            </div>
+                            <div>Price: {convertBigNumberToString(item?.token?.drop?.price, nativeCurrency.decimals)} TIA</div>
                             </div>
                         </div>
                     </div>

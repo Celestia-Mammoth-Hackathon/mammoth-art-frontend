@@ -148,7 +148,7 @@ const Main = ({collections}: MainProps) => {
                         <a className={cn("h1", styles.title)}>{item?.token?.name}</a>
                     </Link>
                     <div className={styles.author}>
-                        By 
+                        <span className={styles.by}>By</span>
                         <Link href={`/profile/${item?.token?.drop?.creator}`} passHref>
                             <a className={cn("h1", styles.subtitle)}>{formatUserAddress(item?.token?.drop?.creator)}</a>
                         </Link>
@@ -194,9 +194,12 @@ const Main = ({collections}: MainProps) => {
                         </Link>
                         <div className={styles.tokenDescription}>{item?.token?.description}</div>
                         <div className={styles.tokenDetails}>
-                            <Link href={`/profile/${item?.token?.drop?.creator}`} passHref>
-                                <div className={styles.tokenOwner}>Owner: {formatUserAddress(item?.token?.drop?.creator)}</div>
-                            </Link>
+                            <div className={styles.tokenOwnerWrapper}>
+                                <span className={styles.by}>By</span>
+                                <Link href={`/profile/${item?.token?.drop?.creator}`} passHref>
+                                    <div className={styles.tokenOwner}>{formatUserAddress(item?.token?.drop?.creator)}</div>
+                                </Link>
+                            </div>
                             <div>Price: {convertBigNumberToString(item?.token?.drop?.price, nativeCurrency.decimals)} TIA</div>
                         </div>
                     </div>

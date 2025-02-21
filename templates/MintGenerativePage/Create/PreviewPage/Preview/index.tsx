@@ -143,11 +143,6 @@ const Preview = ({ cid }: PreviewProps) => {
           Now, double-check your Generative Token to see if it behaves properly.
           On the next step, you will configure how previews will be generated
           each time your token is collected.
-          <br />
-          <b>
-            Use this step to find a hash you want to use for the thumbnail of
-            the project on the platform.
-          </b>
         </span>
       </div>
       <div className={styles.preview}>
