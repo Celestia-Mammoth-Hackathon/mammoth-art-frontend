@@ -79,14 +79,7 @@ const useClaimNFT = ({
 
     const value:any = pricePerNftBigNumber.mul(mintAmountBigNumber);
     const valueBigInt = BigInt(value.toString());
-    console.log({
-        address: dropAddress,
-        abi: simpleDropUpgradeableABI,
-        functionName: 'mint',
-        args: args,
-        value: valueBigInt,
-        gas: item?.overrideGas ? item?.overrideGas(mintAmount) : undefined,
-    })
+
     const { data: simData, error: simError } = useSimulateContract({
         address: dropAddress,
         abi: simpleDropUpgradeableABI,
