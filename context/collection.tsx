@@ -84,6 +84,7 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
         name: '',
         description: '',
         image: null,
+        imageCid: '',
         attributes: [],
       },
       revealMetadata: {
@@ -95,6 +96,7 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
       collectionName: '',
       collectionDescription: '',
       collectionImage: null,
+      collectionImageCid: '',
       collectionAttributes: [],
       size: 0,
       price: '',
