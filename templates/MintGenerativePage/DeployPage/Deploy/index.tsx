@@ -177,7 +177,7 @@ const Deploy = ({ cid }: DeployProps) => {
     }
 
   };
-
+  console.log(collectionData?.placeholderMetadata)
   return (
     <div className={styles.detailsWrapper}>
       <div className={styles.info}>
@@ -293,12 +293,12 @@ const Deploy = ({ cid }: DeployProps) => {
           <div>
             <div className={styles.previewTitle}>Collection Preview</div>
             <div className={styles.previewImage}>
-              {collectionData?.collectionImage ? (
+              {collectionData?.placeholderMetadata?.image ? (
                 <Image
                   src={
-                    typeof collectionData?.collectionImage === "string"
-                      ? collectionData?.collectionImage // Base64 string or URL
-                      : URL.createObjectURL(collectionData?.collectionImage) // Convert File to URL
+                    typeof collectionData?.placeholderMetadata?.image === "string"
+                      ? collectionData?.placeholderMetadata?.image // Base64 string or URL
+                      : URL.createObjectURL(collectionData?.placeholderMetadata?.image) // Convert File to URL
                   }
                   alt="preview"
                   width={400} // Set appropriate width
