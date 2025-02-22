@@ -80,8 +80,8 @@ const Collection = ({ item }: CollectionProps) => {
     return (
         <>
             <div className={styles.collection}>
-                <Link href={'/collection/' + item.token.drop.tokenAddress} passHref>
-                    <a target="_blank" rel="noopener noreferrer">
+                <Link href={'/collection/' + item.token.drop.tokenAddress} >
+                    <a  rel="noopener noreferrer">
                         <div className={styles.image}>
                             <Image
                                 className={styles.photo}
@@ -109,8 +109,8 @@ const Collection = ({ item }: CollectionProps) => {
                 </Link>
                 <div className={styles.details}>
                     <div className={styles.box}>
-                        <Link href={'/collection/' + item.token.tokenAddress} passHref>
-                            <a target="_blank" rel="noopener noreferrer">
+                        <Link href={'/collection/' + item.token.drop.tokenAddress} >
+                            <a  rel="noopener noreferrer">
                                 <div className={`${styles.subtitle} ${isAuthorHovered ? styles.subtitleHover : ''}`}>
                                     {item.token.name}
                                 </div>
@@ -129,8 +129,8 @@ const Collection = ({ item }: CollectionProps) => {
                             <Link href={{
                                     pathname: '/profile/[slug]',
                                     query: { slug: formatUserAddress(item.token.drop.creator) },
-                                }} passHref>
-                                    <a target="_blank" rel="noopener noreferrer">
+                                }} >
+                                    <a  rel="noopener noreferrer">
                                         <span 
                                             className={styles.author}
                                             onMouseEnter={() => setIsAuthorHovered(true)}
@@ -174,7 +174,7 @@ const Collection = ({ item }: CollectionProps) => {
                             <div className={styles.tokenDetails}>
                             <div className={styles.tokenOwnerWrapper}>
                                 <span className={styles.by}>By</span>
-                                <Link href={`/profile/${item?.token?.drop?.creator}`} passHref>
+                                <Link href={`/profile/${item?.token?.drop?.creator}`} >
                                     <div className={styles.tokenOwner}>{formatUserAddress(item?.token?.drop?.creator)}</div>
                                 </Link>
                             </div>
@@ -184,7 +184,7 @@ const Collection = ({ item }: CollectionProps) => {
                     </div>
                     
                     <div className={styles.rightSection}>
-                        <h4 className={styles.influencingTitle}>Influencing NFTs</h4>
+                        <h4 className={styles.influencingTitle}>You own following Influencing NFTs</h4>
                         <div className={styles.influencingNfts}>
                             {influencingNftsLoading ? (
                                 <Spinner className={styles.spinner} />

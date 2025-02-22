@@ -206,7 +206,7 @@ const Main = ({collections}: MainProps) => {
                 </div>
                 
                 <div className={styles.rightSection}>
-                    <h4 className={styles.influencingTitle}>Influencing NFTs</h4>
+                    <h4 className={styles.influencingTitle}>You own following Influencing NFTs</h4>
                     <div className={styles.influencingNfts}>
                         {influencingNfts?.map((nft: any, index: number) => (
                             <div key={index} className={styles.nftItem}>
