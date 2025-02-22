@@ -131,12 +131,12 @@ const Preview = ({ cid }: PreviewProps) => {
       
       setCollectionData((prevData: any) => ({
         ...prevData,
-        influcingNFTs: matchingTokens,
+        influencingNFTs: matchingTokens,
       }));
       // Save to localStorage
       saveDataToLocalStorage({
         influences: collectionData.influences,
-        influcingNFTs: matchingTokens,
+        influencingNFTs: matchingTokens,
       });
     } catch (error) {
       console.error("Error fetching influencing NFTs:", error);

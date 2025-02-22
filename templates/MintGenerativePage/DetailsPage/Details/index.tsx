@@ -54,11 +54,15 @@ const Details = ({cid}: DetailsProps) => {
     try {
       setLoading(true);
       const collectionImageCid = await uploadImageToIPFS(collectionData.collectionImage);
-      
+
       setCollectionData((prevData: any) => ({
         ...prevData,
         collectionImageCid: collectionImageCid,
       }));
+
+      const savedData:any = localStorage.getItem(cid);
+      const parsedData = JSON.parse(savedData);
+
       // Save to localStorage
       saveDataToLocalStorage({
         collectionName: collectionData.collectionName,
@@ -66,6 +70,7 @@ const Details = ({cid}: DetailsProps) => {
         collectionImage: collectionData.collectionImage,
         contractName: collectionData.contractName,
         contractSymbol: collectionData.contractSymbol,
+        collectionImageCid: collectionImageCid,
       }, cid);
       router.push(`/mint-generative/deploy?cid=${cid}`);
     } catch (error) {

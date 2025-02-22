@@ -79,7 +79,7 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
 
     // Return default data if no CID or no data found
     return {
-      influcingNFTs: [],
+      influencingNFTs: [],
       placeholderMetadata: {
         name: '',
         description: '',
@@ -123,14 +123,32 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
       // Get existing data from localStorage
       const existingDataStr = localStorage.getItem(passedCid);
       const existingData = existingDataStr ? JSON.parse(existingDataStr) : {};
-      
+
       // Prepare the fields that need to be updated
       const updates: any = {};
       
       // Process each field in the new data
       for (const [key, value] of Object.entries(newData)) {
-        if (value instanceof File) {
-          // Handle File objects
+        
+        if (typeof value === 'object' && value !== null && !(value instanceof File)) {
+          // Handle nested objects
+          updates[key] = {};
+          for (const [nestedKey, nestedValue] of Object.entries(value)) {
+            if (nestedValue instanceof File) {
+              // Handle File objects in nested objects
+              const base64 = await fileToBase64(nestedValue as File);
+              updates[key][nestedKey] = {
+                data: base64,
+                name: (nestedValue as File).name,
+                type: (nestedValue as File).type,
+              };
+            } else {
+              // Handle other types of nested data
+              updates[key][nestedKey] = nestedValue;
+            }
+          }
+        } else if (value instanceof File) {
+          // Handle File objects at root level
           const base64 = await fileToBase64(value as File);
           updates[key] = {
             data: base64,
@@ -138,7 +156,7 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
             type: (value as File).type,
           };
         } else {
-          // Handle other types of data
+          // Handle other types of data at root level
           updates[key] = value;
         }
       }

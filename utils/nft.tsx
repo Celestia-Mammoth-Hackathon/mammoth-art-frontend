@@ -106,10 +106,7 @@ export const getMatchingTokens = async (formaCollection: any) => {
     if (!response.data.success) {
       throw new Error('Failed to get matching tokens');
     }
-
-    return {
-      matchingTokens: response.data.matchingTokens,
-    };
+    return response.data.matchingTokens;
   } catch (error) {
     console.error("Error getting matching tokens:", error);
     return [];

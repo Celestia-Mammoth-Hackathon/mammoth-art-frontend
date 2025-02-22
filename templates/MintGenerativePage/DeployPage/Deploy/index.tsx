@@ -27,16 +27,6 @@ const Deploy = ({ cid }: DeployProps) => {
 
   const router = useRouter();
 
-  const placeholderMetadata = {
-    name: collectionData.placeholderMetadata?.name,
-    description: collectionData.placeholderMetadata?.description,
-    image: collectionData.placeholderMetadata?.image,
-    tags: [
-      "generative",
-      "mammothArt",
-    ]
-  };
-
   const { 
     deployCollection,
     contractAddress: proxyContractAddress,
@@ -44,7 +34,8 @@ const Deploy = ({ cid }: DeployProps) => {
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus,
-    setRevealMetadataStatus
+    setRevealMetadataStatus,
+    setInfluencingNFTsStatus
   } = useDeployGenerativeCollection({
     collectionName: collectionData.collectionName,
     symbol: collectionData.symbol,
@@ -53,6 +44,7 @@ const Deploy = ({ cid }: DeployProps) => {
     royaltyFee: collectionData.royaltyFee,
     placeholderMetadata: collectionData.placeholderMetadata,
     revealMetadata: collectionData.revealMetadata,
+    influencingNFTs: collectionData.influencingNFTs,
   });
 
   const { 
@@ -78,6 +70,103 @@ const Deploy = ({ cid }: DeployProps) => {
     price: collectionData.price,
   });
 
+  const statusItems = [
+    // Always show zip content deployment (required)
+    {
+      status: dropZipContentStatus,
+      label: "Deploy zip content to IPFS",
+      required: true
+    },
+    // Always show contract deployment (required)
+    {
+      status: proxyDeployStatus,
+      label: "Deploy generative art contract",
+      required: true
+    },
+    // Show placeholder metadata if exists
+    {
+      status: setPlaceHolderMetadataStatus,
+      label: "Set up placeholder metadata",
+      required: true,
+      show: Boolean(collectionData?.placeholderMetadata?.name && 
+                    collectionData?.placeholderMetadata?.description && 
+                    collectionData?.placeholderMetadata?.image)
+    },
+    // Show reveal metadata if exists
+    {
+      status: setRevealMetadataStatus,
+      label: "Set up reveal metadata",
+      required: true,
+    },
+    // Show influencing NFTs only if they exist
+    {
+      status: setInfluencingNFTsStatus,
+      label: "Set up influencing NFTs",
+      required: false,
+      show: Boolean(collectionData?.influencingNFTs)
+    },
+    // Always show drop creation (required)
+    {
+      status: createDropStatus,
+      label: "Create drop",
+      required: true
+    },
+    // Always show minter role grant (required)
+    {
+      status: grantMinterStatus,
+      label: "Grant minter role for drop",
+      required: true
+    }
+  ];
+
+  const formItems = [
+    {
+      label: "Contract name",
+      value: collectionData.contractName,
+      placeholder: "Add contract name"
+    },
+    {
+      label: "Collection name",
+      value: collectionData?.collectionName,
+      placeholder: "Add collection name"
+    },
+    {
+      label: "Collection logo image",
+      value: collectionData?.collectionImage?.name,
+      placeholder: "Add collection logo image"
+    },
+    {
+      label: "Description",
+      value: collectionData?.collectionDescription,
+      placeholder: "Add description"
+    },
+    {
+      label: "Collection size",
+      value: collectionData.size,
+      placeholder: "Add collection size"
+    },
+    {
+      label: "Price",
+      value: collectionData.price,
+      placeholder: "Add collection price"
+    },
+    {
+      label: "Mint start date",
+      value: collectionData.startDate,
+      placeholder: "Add collection mint start date"
+    },
+    {
+      label: "Mint end date",
+      value: collectionData.endDate,
+      placeholder: "Add collection mint end date"
+    },
+    {
+      label: "Primary sale address",
+      value: collectionData.primarySaleAddress,
+      placeholder: "Add primary sale address"
+    }
+  ];
+
   const onCloseModal = (setVisibleModal: any) => {
     return () => {
       setVisibleModal(false);
@@ -102,16 +191,15 @@ const Deploy = ({ cid }: DeployProps) => {
   }, [isProxyDeployed]);
 
   useEffect(() => {
-    console.log(proxyDeployStatus, setPlaceHolderMetadataStatus, grantMinterStatus, createDropStatus);
-    if(dropZipContentStatus === 'error' || proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
+    if(dropZipContentStatus === 'error' || setInfluencingNFTsStatus === 'error' || proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
       setLoading(false);
     }
-  }, [dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus]);
+  }, [dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setInfluencingNFTsStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus]);
 
   const deployZipContentToIPFS = async () => {
     try {
       setDropZipContentStatus('pending');
-      console.log(collectionData.zipFile, collectionData.size, collectionData.collectionName);
+
       const ipfsResult = await uploadZipFileToIPFS(
         collectionData.zipFile, 
         collectionData.size, 
@@ -175,9 +263,8 @@ const Deploy = ({ cid }: DeployProps) => {
       default:
         return null;
     }
-
   };
-  console.log(collectionData?.placeholderMetadata)
+
   return (
     <div className={styles.detailsWrapper}>
       <div className={styles.info}>
@@ -189,104 +276,27 @@ const Deploy = ({ cid }: DeployProps) => {
       </div>
       <div className={styles.previewGroup}>
         <div className={styles.form}>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Contract name</span>
-            {collectionData.contractName ? (
-              <span className={styles.value}>{collectionData.contractName}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add contract name</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Collection name</span>
-            {collectionData?.collectionName ? (
-              <span className={styles.value}>{collectionData?.collectionName}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add collection name</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Collection logo image</span>
-            {collectionData?.collectionImage ? (
-              <span className={styles.value}>{collectionData?.collectionImage.name}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add collection logo image</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Description</span>
-            {collectionData?.collectionDescription ? (
-              <span className={styles.value}>{collectionData?.collectionDescription}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add description</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Collection size</span>
-            {collectionData.size ? (
-              <span className={styles.value}>{collectionData.size}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add collection size</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Price</span>
-            {collectionData.price ? (
-              <span className={styles.value}>{collectionData.price}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add collection price</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Mint start date</span>
-            {collectionData.startDate ? (
-              <span className={styles.value}>{collectionData.startDate}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add collection mint start date</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Mint end date</span>
-            {collectionData.endDate ? (
-              <span className={styles.value}>{collectionData.endDate}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add collection mint end date</span>
-            )}
-          </div>
-          <div className={styles.formGroup}>
-            <span className={styles.label}>Primary sale address</span>
-            {collectionData.primarySaleAddress ? (
-              <span className={styles.value}>{collectionData.primarySaleAddress}</span>
-            ) : (
-              <span className={styles.notUploadedValue}>Add primary sale address</span>
-            )}
-          </div>
+          {formItems.map((item, index) => (
+            <div key={index} className={styles.formGroup}>
+              <span className={styles.label}>{item.label}</span>
+              {item.value ? (
+                <span className={styles.value}>{item.value}</span>
+              ) : (
+                <span className={styles.notUploadedValue}>{item.placeholder}</span>
+              )}
+            </div>
+          ))}
+          
           <div className={styles.deploymentStatus}>
             <h3>Deployment Status</h3>
-            <div className={styles.statusItem}>
-              {getStatusIcon(dropZipContentStatus)}
-              <span>Deploy zip content to IPFS</span>
-            </div>
-            <div className={styles.statusItem}>
-              {getStatusIcon(proxyDeployStatus)}
-              <span>Deploy generative art contract</span>
-            </div>
-            <div className={styles.statusItem}>
-              {getStatusIcon(setPlaceHolderMetadataStatus)}
-              <span>Set up placeholder metadata</span>
-            </div>
-            <div className={styles.statusItem}>
-              {getStatusIcon(setRevealMetadataStatus)}
-              <span>Set up reveal metadata</span>
-            </div>
-            <div className={styles.statusItem}>
-              {getStatusIcon(createDropStatus)}
-              <span>Create drop</span>
-            </div>
-            <div className={styles.statusItem}>
-              {getStatusIcon(grantMinterStatus)}
-              <span>Grant minter role for drop</span>
-            </div>
+            {statusItems
+              .filter(item => item.required || item.show)
+              .map((item, index) => (
+                <div key={index} className={styles.statusItem}>
+                  {getStatusIcon(item.status)}
+                  <span>{item.label}</span>
+                </div>
+              ))}
           </div>
         </div>
         <div className={styles.preview}>
