@@ -7,7 +7,8 @@ import SelectCollectionModal from "./SelectCollectionModal";
 import useCollectionStore from "@/store/index";
 import { useCollectionContext } from "context/collection";
 import SelectMultiple from "@/components/SelectMultiple";
-
+import { getMatchingTokens } from "@/utils/nft";
+import Spinner from "@/components/Spinner";
 type PreviewProps = {
   cid: any;
 };
@@ -22,7 +23,7 @@ const Preview = ({ cid }: PreviewProps) => {
   const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const [options, setOptions] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
-
+  const [loadingInfluencingNFTs, setLoadingInfluencingNFTs] = useState<boolean>(false);
   // Sync selectedOptions with collectionData.influences
   useEffect(() => {
     if (collectionData.influences) {
@@ -31,7 +32,7 @@ const Preview = ({ cid }: PreviewProps) => {
   }, [collectionData.influences]);
 
   // Update collectionData.influences when selectedOptions changes
-  const handleSelectedOptionsChange = (newSelectedOptions: any) => {
+  const handleSelectedOptionsChange = async(newSelectedOptions: any) => {
     setSelectedOptions(newSelectedOptions);
     setCollectionData((prevData: any) => ({
       ...prevData,
@@ -124,10 +125,26 @@ const Preview = ({ cid }: PreviewProps) => {
   };
 
   const handleNextStep = async () => {
-    // Save to localStorage
-    saveDataToLocalStorage({
-      influences: collectionData.influences
-    });
+    setLoadingInfluencingNFTs(true);
+    try {
+      const matchingTokens = await getMatchingTokens(collectionData.formaCollection);
+      
+      setCollectionData((prevData: any) => ({
+        ...prevData,
+        influcingNFTs: matchingTokens,
+      }));
+      // Save to localStorage
+      saveDataToLocalStorage({
+        influences: collectionData.influences,
+        influcingNFTs: matchingTokens,
+      });
+    } catch (error) {
+      console.error("Error fetching influencing NFTs:", error);
+      setLoadingInfluencingNFTs(false);
+    } finally {
+      setLoadingInfluencingNFTs(false);
+    }
+    
     router.push(`/mint-generative/preview?cid=${cid}`);
   };
 
@@ -245,8 +262,12 @@ const Preview = ({ cid }: PreviewProps) => {
           className={cn("button-medium button-wide", styles.button, styles.nextBtn)}
           onClick={handleNextStep}
         >
+          {loadingInfluencingNFTs ? <Spinner className={styles.spinner} /> :  
+          <>
           NEXT STEP
           <Icon name={"arrow-right"} fill="#ffffff" />
+          </>
+          }
         </div>
       </div>
     </div>
