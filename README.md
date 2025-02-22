@@ -27,8 +27,7 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces:
 ## 💎 Revenue Structure
 | Party | Fee | Purpose |
 |-------|-----|---------|
-| Artists | 5 TIA | Collection submission |
-| Collectors | 2% | Per mint |
+| Collectors | 10% | Per mint |
 
 ### 📸 Preview Screenshots
 | Home Page | Minting Interface | Collection View |
@@ -38,16 +37,36 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces:
 
 ## 🚀 Getting Started
 
-1. **Connect Your Wallet**
-   - Support for MetaMask, WalletConnect, and more
-   - Automatic NFT detection
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/mammoth-art.git
+   cd mammoth-art
+   ```
 
-2. **Browse Collections**
-   - Filter by artist, style, or rarity
-   - View detailed collection stats
+2. **Install Dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
 
-3. **Start Minting**
-   - Mint new pieces
+3. **Set Up Environment Variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Fill in your environment variables in `.env.local`:
+   - `NEXT_PUBLIC_ALCHEMY_API_KEY`: Your Alchemy API key
+   - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`: Your WalletConnect Project ID
+
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. **Open Browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
 
 ## 📦 Set up your own generative art collection
 
