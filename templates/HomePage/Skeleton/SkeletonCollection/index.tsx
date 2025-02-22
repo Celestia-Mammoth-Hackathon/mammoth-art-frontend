@@ -9,7 +9,7 @@ const SkeletonCollection = ({}: SkeletonCollectionProps) => {
             <a className={styles.collection}>
                 <div className={styles.images}>
                     <div className={styles.image}>
-                        <Skeleton sx={{ bgcolor: '#141414' }} variant="rectangular" width={400} height={400}/>
+                        <Skeleton sx={{ bgcolor: '#141414' }} variant="rectangular" width="100%" height={400}/>
                     </div>
                 </div>
                 <div className={styles.details}>

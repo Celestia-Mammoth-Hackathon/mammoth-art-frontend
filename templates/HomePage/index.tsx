@@ -6,6 +6,8 @@ import RandomCollections from "./RandomCollections";
 import { useState, useEffect } from "react";
 import useCollectionStore from '@/store/index';
 import { useUserContext } from "context/user";
+import SkeletonMain from "./Skeleton/SkeletonMain";
+import SkeletonCollections from "./Skeleton/SkeletonCollections";
 
 const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -46,7 +48,12 @@ const HomePage = () => {
 
     return (
             loading ? (
-                <></>
+                <>
+                    <SkeletonMain />
+                    <CuratedCollections />
+                    <SkeletonCollections sectionName="LATEST MINTS" />
+                    <SkeletonCollections sectionName="RANDOMIZER" />
+                </>
             ) : (
                 <>
                     <Main collections={mainCollections}/>
