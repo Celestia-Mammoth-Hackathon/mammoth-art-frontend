@@ -52,7 +52,7 @@ const Details = ({cid}: DetailsProps) => {
     // Save to localStorage
     saveDataToLocalStorage({
       collectionName: collectionData.collectionName,
-      description: collectionData.description,
+      collectionDescription: collectionData.description,
       contractName: collectionData.contractName,
       contractSymbol: collectionData.contractSymbol,
     }, cid);
@@ -89,7 +89,7 @@ const Details = ({cid}: DetailsProps) => {
             </div>
             <Field
                 placeholder="Enter description"
-                value={collectionData.description}
+                value={collectionData.collectionDescription}
                 onChange={(e:any) => setDescription(e.target.value)}
                 required
                 textarea
