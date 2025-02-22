@@ -6,13 +6,24 @@ import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
 import { useRouter } from "next/router";
 import { uploadImageToIPFS } from "@/utils/ipfs";
+import { collectionsCreators } from "@/mocks/collections";
+import Spinner from "@/components/Spinner";
 type PlaceholderProps = {
   cid: any;
 };
 
 const Placeholder = ({cid}: PlaceholderProps) => {
   const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
+  const [ canNextStep, setCanNextStep] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+
+  useEffect(() => {
+    if(collectionData.placeholderMetadata?.name && collectionData.placeholderMetadata?.description && collectionData.placeholderMetadata?.image) {
+      setCanNextStep(true);
+    }
+    
+  }, [collectionData.placeholderMetadata]);
 
   const setPlaceholderName = (name: string) => {
     setCollectionData((prevData: any) => ({
@@ -35,19 +46,27 @@ const Placeholder = ({cid}: PlaceholderProps) => {
   }
 
   const handleNextStep = async () => {
-    const imageCid = await uploadImageToIPFS(collectionData.placeholderMetadata.image);
-    setCollectionData((prevData: any) => ({
-      ...prevData,
-      placeholderMetadata: {
-        ...prevData.placeholderMetadata,
-        imageCid: imageCid,
-      },
-    }));
-    // Save to localStorage
-    saveDataToLocalStorage({
-      placeholderMetadata: collectionData.placeholderMetadata
-    });
-    router.push(`/mint-generative/details?cid=${cid}`);
+    try {
+      setLoading(true);
+      const imageCid = await uploadImageToIPFS(collectionData.placeholderMetadata.image);
+
+      setCollectionData((prevData: any) => ({
+        ...prevData,
+        placeholderMetadata: {
+          ...prevData.placeholderMetadata,
+          imageCid: imageCid,
+        },
+      }));
+      // Save to localStorage
+      saveDataToLocalStorage({
+        placeholderMetadata: collectionData.placeholderMetadata
+      });
+      router.push(`/mint-generative/details?cid=${cid}`);
+    } catch (error) {
+      console.error("Error uploading image to IPFS:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePrevStep = async () => {
@@ -119,12 +138,17 @@ const Placeholder = ({cid}: PlaceholderProps) => {
           className={cn(
             "button-medium button-wide",
             styles.button,
-            styles.nextBtn
+            styles.nextBtn,
+            { [styles.nextDisabled]: !canNextStep }
           )}
           onClick={handleNextStep}
         >
-          NEXT STEP
-          <Icon name={"arrow-right"} fill="#ffffff" />
+          { loading ? <Spinner className={styles.spinner}/> : 
+            <>
+              NEXT STEP
+              <Icon name={"arrow-right"} fill="#ffffff" />
+            </>
+          }
         </div>
       </div>
       </form>

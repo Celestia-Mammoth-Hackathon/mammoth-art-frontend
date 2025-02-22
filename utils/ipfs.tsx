@@ -17,20 +17,30 @@ export const uploadFolderToNFTStorage = async (formData:any) => {
 };
 
 export const uploadImageToIPFS = async (file: File) => {
-  const res = await fetch(
-    "https://api.pinata.cloud/pinning/pinFileToIPFS",
-    {
+  try {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await fetch("https://api.pinata.cloud/pinning/pinFileToIPFS", {
       method: "POST",
       headers: {
         Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
       },
-      body: file,
-    }
-  );
-  const resData = await res.json();
+      body: formData,
+    });
 
-  return resData.IpfsHash;
-};  
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Failed to upload file: ${errorText}`);
+    }
+
+    const resData = await res.json();
+    return resData.IpfsHash;
+  } catch (error) {
+    console.error("Error uploading to IPFS:", error);
+    throw error;
+  }
+};
 
 export const uploadZipFileToIPFS = async (file: File, collectionSize: number, collectionName: string) => {
   try {
