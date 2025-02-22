@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { nfts } from "@/constants/nfts";
 import Error404Page from "@/templates/Error404Page";
 import NFTCollectionPage from "@/templates/NFT/NFTCollectionPage";
+import ComingSoonPage from "@/templates/ComingSoonPage";
 
 const CollectionPage: NextPage = () => {
   const router = useRouter();
@@ -31,7 +32,7 @@ const CollectionPage: NextPage = () => {
 
   const collection = nfts.find(nft => nft.showCollection === true && nft.slug === slug?.toLowerCase());
   if (!collection) {
-    return <Error404Page />
+    return <ComingSoonPage />
   }
 
   return <NFTCollectionPage collection={collection} attributes={attributes} />;
