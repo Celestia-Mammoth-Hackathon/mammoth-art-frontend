@@ -10,19 +10,23 @@
 Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/)
 
 ### 🧬 NFT-Weighted Rarity System
-Your existing MammothArt NFTs influence the probability of minting rare pieces:
-- Stack multiple NFTs for higher chances
-- Unlock special trait combinations
-- Build strategic collections
+Your existing MammothArt NFTs influence the probability of minting rare pieces through **Forma blockchain's on-chain metadata**:
+- Stack multiple NFTs for higher chances by leveraging their on-chain traits
+- Smart contracts read existing NFT metadata directly from Forma blockchain
+- Dynamic rarity calculations based on your NFT collection's traits
+- Unlock special trait combinations through trait inheritance
 
 ### 🎨 For Artists
 - Submit generative art collections
-- Define trait inheritance rules
-- Set rarity tiers and probabilities
+- Define trait inheritance rules based on **Forma's on-chain metadata**
+- Set rarity tiers and probabilities that interact with existing NFTs
+- Create dynamic collections that evolve with the community's NFTs
 
 ### 👾 For Collectors
-- Use existing NFTs as "trait boosters"
-- View rarity chances before minting
+- Use existing NFTs as "trait boosters" through their **on-chain metadata**
+- View rarity chances before minting based on your NFT portfolio
+- Strategic minting based on trait compatibility
+- Transparent rarity system powered by blockchain data
 
 ## 💎 Revenue Structure
 | Party | Fee | Purpose |
