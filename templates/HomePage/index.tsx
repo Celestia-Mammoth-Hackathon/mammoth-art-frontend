@@ -25,10 +25,7 @@ const HomePage = () => {
         const fetchData = async () => {
             try {
                 setLoading(true);
-                await Promise.all([
-                    fetchAllGenerativeCollections(),
-                    fetchUserBalance(address)
-                ]);
+                await fetchAllGenerativeCollections();
             } catch (error) {
                 console.error("Error fetching drops:", error);
             } finally {
@@ -38,6 +35,20 @@ const HomePage = () => {
 
         fetchData();
     }, []);
+
+    useEffect(() => {
+        const fetchUserCollections = async () => {
+            try {
+                await fetchUserBalance(address);
+            } catch (error) {
+                console.error("Error fetching user collections:", error);
+            } 
+        };
+
+        if(address) {
+            fetchUserCollections();
+        }
+    }, [address]);
 
     useEffect(() => {
         const collections:any = Object.values(generativeCollections);

@@ -14,7 +14,7 @@ import MintModal from "@/components/ActionModal/MintModal";
 import Icon from "@/components/Icon";
 import { getInfluencingNfts } from "@/utils/indexer";
 import { useUserContext } from "context/user";
-import { useCollectionContext } from "context/collection";
+import useCollectionStore from '@/store/index';
 
 type CollectionProps = {
     item: any;
@@ -25,8 +25,9 @@ const Collection = ({ item }: CollectionProps) => {
     const [visibleModal, setVisibleModal] = useState<boolean>(false);
     const [mintingResponse, setMintingResponse] = useState<any>(null);
     const [influencingNfts, setInfluencingNfts] = useState<any>([]);
-    const { users } = useCollectionContext();
+    const { users } = useCollectionStore();
     const { address } = useUserContext();
+    const [influencingNftsLoading, setInfluencingNftsLoading] = useState<boolean>(false);
 
     const { claimNFT, isMintingLoading, mintingStatus, mintedTokens, isMintingError } = useClaimNFT({
         item: item.token,
@@ -38,6 +39,7 @@ const Collection = ({ item }: CollectionProps) => {
 
     useEffect(() => {
         const fetchInfluencingNfts = async () => {
+            setInfluencingNftsLoading(true);
             const nfts = await getInfluencingNfts(item.token.drop.tokenAddress);
             setInfluencingNfts(nfts);
         };
@@ -46,12 +48,21 @@ const Collection = ({ item }: CollectionProps) => {
         }
     }, [item]);
 
+    useEffect(() => {
+        if(influencingNfts.length > 0) {
+            setInfluencingNftsLoading(false);
+        }
+    }, [influencingNfts]);
+
     const checkUserOwnership = (nft: any) => {
         if(users) {
-            return users[address]?.collections[nft.tokenAddress]?.tokenIds?.some((userNft: any) => 
-                userNft.tokenAddress.toLowerCase() === nft.tokenAddress.toLowerCase() &&
-                nft.tokenIds.includes(userNft.tokenId)
-            );
+            return users[address]?.tokens.some((token: any) => {
+                if(token.tokenAddress === nft.tokenAddress) {
+                    const tokenIdString = String(token.tokenId);
+                    return nft.tokenIds.includes(tokenIdString);
+                }
+                return false;
+            });
         }
         return false;
     };
@@ -175,9 +186,12 @@ const Collection = ({ item }: CollectionProps) => {
                     <div className={styles.rightSection}>
                         <h4 className={styles.influencingTitle}>Influencing NFTs</h4>
                         <div className={styles.influencingNfts}>
-                            {influencingNfts?.map((nft: any, index: number) => (
-                                <div key={index} className={styles.nftItem}>
-                                    <div className={styles.nftInfo}>
+                            {influencingNftsLoading ? (
+                                <Spinner className={styles.spinner} />
+                            ) : (
+                                influencingNfts?.map((nft: any, index: number) => (
+                                    <div key={index} className={styles.nftItem}>
+                                        <div className={styles.nftInfo}>
                                         <Icon 
                                             name={checkUserOwnership(nft) ? "check" : "close"} 
                                             className={cn(
@@ -186,10 +200,11 @@ const Collection = ({ item }: CollectionProps) => {
                                             )}
                                             fill={checkUserOwnership(nft) ? "#00ff00" : "#ff0000"}
                                         />
-                                        <span>{nft.metadata.name}</span>
+                                        <span>{nft.metadata.name} </span>
                                     </div>
                                 </div>
-                            ))}
+                            ))
+                            )}
                         </div>
                     </div>
 
