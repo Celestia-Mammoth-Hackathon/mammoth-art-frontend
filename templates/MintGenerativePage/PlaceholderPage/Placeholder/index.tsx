@@ -59,7 +59,12 @@ const Placeholder = ({cid}: PlaceholderProps) => {
       }));
       // Save to localStorage
       saveDataToLocalStorage({
-        placeholderMetadata: collectionData.placeholderMetadata
+        placeholderMetadata: {
+          name: collectionData.placeholderMetadata.name,
+          description: collectionData.placeholderMetadata.description,
+          image: collectionData.placeholderMetadata.image,
+          imageCid: imageCid,
+        }
       });
       router.push(`/mint-generative/details?cid=${cid}`);
     } catch (error) {

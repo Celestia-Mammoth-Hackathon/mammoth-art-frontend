@@ -6,12 +6,15 @@ import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
 import { useRouter } from "next/router";
 import dayjs from "dayjs";
+import Spinner from "@/components/Spinner";
 type DistributionProps = {
   cid: any;
 };
 
 const Distribution = ({cid}: DistributionProps) => {
   const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
+  const [ canNextStep, setCanNextStep] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
   const setCollectionSize = (size: string) => { 
@@ -59,18 +62,31 @@ const Distribution = ({cid}: DistributionProps) => {
       royaltyAddress: royaltyAddress,
     }));
   }
+  useEffect(() => {
+    if(collectionData.size && collectionData.price && collectionData.startDate && collectionData.endDate && collectionData.primarySaleAddress && collectionData.royalty && collectionData.royaltyAddress) {
+      setCanNextStep(true);
+    }
+  }, [collectionData]);
+
   const handleNextStep = async () => {
-    // Save to localStorage
-    saveDataToLocalStorage({
-      size: collectionData.size,
-      price: collectionData.price,
-      startDate: collectionData.startDate,
-      endDate: collectionData.endDate,
-      primarySaleAddress: collectionData.primarySaleAddress,
-      royalty: collectionData.royalty,
-      royaltyAddress: collectionData.royaltyAddress,
-    });
-    router.push(`/mint-generative/placeholder?cid=${cid}`);
+    try {
+      setLoading(true);
+      // Save to localStorage
+      saveDataToLocalStorage({
+        size: collectionData.size,
+        price: collectionData.price,
+        startDate: collectionData.startDate,
+        endDate: collectionData.endDate,
+        primarySaleAddress: collectionData.primarySaleAddress,
+        royalty: collectionData.royalty,
+        royaltyAddress: collectionData.royaltyAddress,
+      });
+      router.push(`/mint-generative/placeholder?cid=${cid}`);
+    } catch (error) {
+      console.error("Error saving data to localStorage:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePrevStep = async () => {
@@ -165,7 +181,7 @@ const Distribution = ({cid}: DistributionProps) => {
                 Primary Sale Address
             </div>
             <Field
-                placeholder="Enter primary sale address (e.g. mammoth.id, 0x0000000000000000000000000000000000000000)"
+                placeholder="Enter primary sale address (e.g. mammoth.id, 0x75B128c7AE715Ffe273433DbfF63097FDC10804d)"
                 value={collectionData.primarySaleAddress}
                 onChange={(e:any) => setPrimarySaleAddress(e.target.value)}
                 required
@@ -189,7 +205,7 @@ const Distribution = ({cid}: DistributionProps) => {
               Royalty payout address/ Celestials ID
             </div>
             <Field
-                placeholder="e.g. codecrafting.id, 0x0000000000000000000000000000000000000000"
+                placeholder="e.g. codecrafting.id, 0x75B128c7AE715Ffe273433DbfF63097FDC10804d"
                 value={collectionData.royaltyAddress}
                 onChange={(e:any) => setRoyaltyAddress(e.target.value)}
                 required
@@ -214,12 +230,17 @@ const Distribution = ({cid}: DistributionProps) => {
             className={cn(
               "button-medium button-wide",
               styles.button,
-              styles.nextBtn
+              styles.nextBtn,
+              { [styles.nextDisabled]: !canNextStep }
             )}
             onClick={handleNextStep}
           >
-            NEXT STEP
-            <Icon name={"arrow-right"} fill="#ffffff" />
+            { loading ? <Spinner className={styles.spinner}/> : 
+              <>
+                NEXT STEP
+                <Icon name={"arrow-right"} fill="#ffffff" />
+              </>
+            }
           </div>
         </div>
       </form>
