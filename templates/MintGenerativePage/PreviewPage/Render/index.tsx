@@ -20,7 +20,8 @@ const Render = ({cid}: RenderProps) => {
   const [target, setTarget] = useState<string>("Viewport");  
   const [trigger, setTrigger] = useState<number>(3);
   const [resolution, setResolution] = useState<string[]>(["256", "256"]);
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
+  const [canNextStep, setCanNextStep] = useState(false);
 
   useEffect(() => {
     // Force re-render when cid changes
@@ -35,7 +36,7 @@ const Render = ({cid}: RenderProps) => {
   }, [cid]);
 
   const handlePrevStep = async () => {
-    router.push(`/mint-generative/checking?cid=${cid}`);
+    router.push(`/mint-generative/create?cid=${cid}`);
   };
 
   const handleNextStep = async () => {
@@ -45,7 +46,19 @@ const Render = ({cid}: RenderProps) => {
         trigger: trigger,
         resolution: resolution
     }));
+
+    saveDataToLocalStorage({
+      target: target,
+      trigger: trigger,
+      resolution: resolution
+    }, cid);
+
+    router.push(`/mint-generative/distribution?cid=${cid}`);
   };
+
+  useEffect(() => {
+    setCanNextStep(collectionData.target && collectionData.resolution && collectionData.trigger);
+  }, [collectionData]);
 
   const onChangeFirstResolution = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value || "256";
