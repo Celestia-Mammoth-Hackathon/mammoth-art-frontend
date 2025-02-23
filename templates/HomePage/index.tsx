@@ -5,16 +5,20 @@ import LatestCollections from "./LatestCollections";
 import RandomCollections from "./RandomCollections";
 import { useState, useEffect } from "react";
 import useCollectionStore from '@/store/index';
+import { useUserContext } from "context/user";
+import SkeletonMain from "./Skeleton/SkeletonMain";
+import SkeletonCollections from "./Skeleton/SkeletonCollections";
 
 const HomePage = () => {
     const [loading, setLoading] = useState<boolean>(false);
     const [latestCollections, setLatestCollections] = useState([]);
     const [randomCollections, setRandomCollections] = useState([]);
     const [mainCollections, setMainCollections] = useState([]);
-
+    const { address } = useUserContext();
     const {
         generativeCollections,
-        fetchAllGenerativeCollections
+        fetchAllGenerativeCollections,
+        fetchUserBalance
     } = useCollectionStore();
 
     useEffect(() => {
@@ -33,6 +37,20 @@ const HomePage = () => {
     }, []);
 
     useEffect(() => {
+        const fetchUserCollections = async () => {
+            try {
+                await fetchUserBalance(address);
+            } catch (error) {
+                console.error("Error fetching user collections:", error);
+            } 
+        };
+
+        if(address) {
+            fetchUserCollections();
+        }
+    }, [address]);
+
+    useEffect(() => {
         const collections:any = Object.values(generativeCollections);
         setLatestCollections(collections);
         setMainCollections(collections);
@@ -41,14 +59,19 @@ const HomePage = () => {
 
     return (
             loading ? (
-                <></>
+                <>
+                    <SkeletonMain />
+                    <CuratedCollections />
+                    <SkeletonCollections sectionName="LATEST MINTS" />
+                    <SkeletonCollections sectionName="RANDOMIZER" />
+                </>
             ) : (
                 <>
                     <Main collections={mainCollections}/>
                     <CuratedCollections />
-                    <OpenCollections />
                     <LatestCollections collections={latestCollections}/>
                     <RandomCollections collections={randomCollections}/>
+                    {/* <OpenCollections /> */}
                 </>
             )
     );

@@ -1,34 +1,133 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 🦣 MammothArt: NFT-Powered Generative Art Platform
 
-## Getting Started
+> Where your existing NFTs shape the art you mint
 
-First, run the development server:
+![MammothArt Platform Preview](path/to/preview.gif)
 
-```bash
-npm run dev
-# or
-yarn dev
+## 🌟 Experience MammothArt
+
+### 🔥 Live Demo
+Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/)
+
+### 🧬 NFT-Weighted Rarity System
+Your existing MammothArt NFTs influence the probability of minting rare pieces through **Forma blockchain's on-chain metadata**:
+- Stack multiple NFTs for higher chances by leveraging their on-chain traits
+- Smart contracts read existing NFT metadata directly from Forma blockchain
+- Dynamic rarity calculations based on your NFT collection's traits
+- Unlock special trait combinations through trait inheritance
+
+### 🎨 For Artists
+- Submit generative art collections
+- Define trait inheritance rules based on **Forma's on-chain metadata**
+- Set rarity tiers and probabilities that interact with existing NFTs
+- Create dynamic collections that evolve with the community's NFTs
+
+### 👾 For Collectors
+- Use existing NFTs as "trait boosters" through their **on-chain metadata**
+- View rarity chances before minting based on your NFT portfolio
+- Strategic minting based on trait compatibility
+- Transparent rarity system powered by blockchain data
+
+## 💎 Revenue Structure
+| Party | Fee | Purpose |
+|-------|-----|---------|
+| Collectors | 10% | Per mint |
+
+### 📸 Preview Screenshots
+| Home Page | Minting Interface | Collection View |
+|-----------|------------------|-----------------|
+| ![Home](path/to/home.png) | ![Mint](path/to/mint.png) | ![Collection](path/to/collection.png) |
+
+
+## 🚀 Getting Started
+
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/your-username/mammoth-art.git
+   cd mammoth-art
+   ```
+
+2. **Install Dependencies**
+   ```bash
+   npm install
+   # or
+   yarn install
+   ```
+
+3. **Set Up Environment Variables**
+   ```bash
+   cp .env.example .env.local
+   ```
+   Fill in your environment variables in `.env.local`:
+   - `NEXT_PUBLIC_ALCHEMY_API_KEY`: Your Alchemy API key
+   - `NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID`: Your WalletConnect Project ID
+
+4. **Run Development Server**
+   ```bash
+   npm run dev
+   # or
+   yarn dev
+   ```
+
+5. **Open Browser**
+   Navigate to [http://localhost:3000](http://localhost:3000)
+
+## 📦 Set up your own generative art collection
+
+### Project Structure
+Generative art collections on MammothArt are simply packaged web pages that use data inputs to render visual outputs. Projects should contain the following:
+
+- **index.html** (required): This file displays your tokens
+- **hl-gen.js** (required): This file gives you access to data from the blockchain, helps you generate deterministic randomness in your tokens, and provides methods to set metadata and capture preview images
+- Any libraries required to render your tokens, like p5.js, three.js, tone.js, etc.
+- Any other files required to render your tokens, including images, fonts, video files, etc.
+Note that, in general, you should not reference external libraries or files, as these references may break in the future. Any resource your project needs to display properly should be included locally.
+
+For example, a simple project using p5.js might look like this:
+```
+index.html
+sketch.js
+lib/
+  ↳ p5.min.js
+  ↳ hl-gen.js
+fonts/
+  ↳ IBMPlexMono-Regular.ttf
+textures/
+  ↳ texture-1.png
+  ↳ texture-2.png
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Submit your collection
+Once you're ready to test or deploy your project on MammothArt:
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- Create a .zip of your project files, ensuring that you select the group of files to zip, not the folder itself:
+![MammothArt Platform Preview](public/zip.png)
+- Your .zip should not be larger than 2GB. All project assets are stored on Arweave by default, a decentralized and permanent storage network.
+- Go to [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/) and connect your wallet.
+- Click Create and upload the .zip file of your code-based generative project and continue with testing.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+### Example Collections
+Download our example collections to get started:
+- [Basic Example](/zip/BASIC-P5-EXAMPLE-UPLOAD-ME.zip)
+- [Basic Studio Example](/zip/basic-p5-studio-example.zip)
+- [Advanced Example](/zip/ADVANCED-P5-EXAMPLE-UPLOAD-ME.zip)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## 🔗 Quick Links
+- [P5.js Documentation](https://p5js.org/reference/)
+- [Forma Documentation](https://docs.forma.art/)
+- [Modularium API](https://modularium-api.sketchpad-1.forma.art/)
+- [Platform Overview (coming soon)]()
+- [Artist Guidelines (coming soon)]()
+- [Collector Guide (coming soon)]()
+- [FAQ (coming soon)]()
 
-## Learn More
+## 📬 Contact & Support
 
-To learn more about Next.js, take a look at the following resources:
+- Twitter: [@MammothBros](https://twitter.com/MammothBros)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## 🎨 Featured Collections
+*Coming soon - showcase of top collections and artists*
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## 📊 Platform Statistics
+*Coming soon - live platform metrics and analytics*

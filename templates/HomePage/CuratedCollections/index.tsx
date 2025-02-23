@@ -6,7 +6,7 @@ import React from 'react';
 import { useState, useEffect } from "react";
 import { Navigation, Scrollbar, Pagination } from "swiper";
 import useCollectionStore from '@/store/index';
-import SkeletonCollection from "../SkeletonCollection";
+import SkeletonCollection from "../Skeleton/SkeletonCollection";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 

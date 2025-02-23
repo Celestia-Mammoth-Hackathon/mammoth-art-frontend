@@ -5,13 +5,17 @@ import Field from "@/components/Field";
 import Icon from "@/components/Icon";
 import { useCollectionContext } from "context/collection";
 import { useRouter } from "next/router";
+import { uploadImageToIPFS } from "@/utils/ipfs";
+import Spinner from "@/components/Spinner";
 
 type DetailsProps = {
   cid: any;
 };
 
 const Details = ({cid}: DetailsProps) => {
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
+  const [canNextStep, setCanNextStep] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const setCollectionName = (name: string) => {
@@ -42,8 +46,38 @@ const Details = ({cid}: DetailsProps) => {
     }));
   }
 
+  useEffect(() => {
+    setCanNextStep(collectionData.collectionName && collectionData.collectionDescription && collectionData.contractName && collectionData.contractSymbol && collectionData.collectionImage);
+  }, [collectionData]);
+
   const handleNextStep = async () => {
-    router.push(`/mint-generative/deploy?cid=${cid}`);
+    try {
+      setLoading(true);
+      const collectionImageCid = await uploadImageToIPFS(collectionData.collectionImage);
+
+      setCollectionData((prevData: any) => ({
+        ...prevData,
+        collectionImageCid: collectionImageCid,
+      }));
+
+      const savedData:any = localStorage.getItem(cid);
+      const parsedData = JSON.parse(savedData);
+
+      // Save to localStorage
+      saveDataToLocalStorage({
+        collectionName: collectionData.collectionName,
+        collectionDescription: collectionData.collectionDescription,
+        collectionImage: collectionData.collectionImage,
+        contractName: collectionData.contractName,
+        contractSymbol: collectionData.contractSymbol,
+        collectionImageCid: collectionImageCid,
+      }, cid);
+      router.push(`/mint-generative/deploy?cid=${cid}`);
+    } catch (error) {
+      console.error("Error uploading image to IPFS:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handlePrevStep = async () => {
@@ -76,7 +110,7 @@ const Details = ({cid}: DetailsProps) => {
             </div>
             <Field
                 placeholder="Enter description"
-                value={collectionData.description}
+                value={collectionData.collectionDescription}
                 onChange={(e:any) => setDescription(e.target.value)}
                 required
                 textarea
@@ -138,12 +172,17 @@ const Details = ({cid}: DetailsProps) => {
           className={cn(
             "button-medium button-wide",
             styles.button,
-            styles.nextBtn
+            styles.nextBtn,
+            { [styles.nextDisabled]: !canNextStep }
           )}
           onClick={handleNextStep}
         >
-          NEXT STEP
-          <Icon name={"arrow-right"} fill="#ffffff" />
+          { loading ? <Spinner className={styles.spinner}/> : 
+            <>
+              NEXT STEP
+              <Icon name={"arrow-right"} fill="#ffffff" />
+            </>
+          }
         </div>
       </div>
       </form>

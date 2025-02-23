@@ -7,6 +7,8 @@ import Icon from "@/components/Icon";
 import { useState, useEffect } from "react";
 import CollectionAttribute from "./CollectionAttribute";
 import { useCollectionContext } from "context/collection";
+import HabitatTokens from "@/constants/tokens/habitats.json";
+import MammothTokens from "@/constants/tokens/mammoths.json";
 
 type SelectCollectionModalProps = {
     visible: boolean;
@@ -22,7 +24,7 @@ const SelectCollectionModal: React.FC<SelectCollectionModalProps> = ({
     const [selectedRows, setSelectedRows] = useState<number[]>([]);
     const [validCollections, setValidCollections] = useState<boolean>(false);
     const [step, setStep] = useState<number>(1);
-    const { setCollectionData } = useCollectionContext();
+    const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
     
     const handleRowClick = (index: number) => {
         setSelectedRows((prevSelected) =>
@@ -40,6 +42,13 @@ const SelectCollectionModal: React.FC<SelectCollectionModalProps> = ({
         if (step === 2) {
             const updatedFormaCollection = curatedCollections.reduce(
                 (acc: any, collection: any, index: number) => {
+                    if (collectionData?.formaCollection && 
+                        collection?.token?.collectionName && 
+                        collectionData.formaCollection[collection.token.collectionName]) 
+                    {
+                        acc[collection.token.collectionName] = collectionData.formaCollection[collection.token.collectionName];
+                        return acc;
+                    }
                     if (selectedRows.includes(index)) {
                         const token = collection?.token;
                         acc[token.collectionName] = !token?.attributes ? {} : null;
@@ -48,13 +57,20 @@ const SelectCollectionModal: React.FC<SelectCollectionModalProps> = ({
                 },
                 {}
             );
-    
             setCollectionData((prevData: any) => ({
                 ...prevData,
                 formaCollection: updatedFormaCollection,
             }));
+            // Save to localStorage
+            saveDataToLocalStorage({
+                formaCollection: updatedFormaCollection
+            });
         }
-    }, [step, selectedRows, curatedCollections, setCollectionData]);
+    }, [step, selectedRows, curatedCollections]);
+
+    const handleSelectedCollections = () => {
+        onClose();
+    }
 
     const handleNextStep = () => {
         if (step === 1) {
@@ -187,7 +203,7 @@ const SelectCollectionModal: React.FC<SelectCollectionModalProps> = ({
                         "button-medium button-wide",
                         styles.button
                     )}
-                    onClick={onClose} 
+                    onClick={handleSelectedCollections} 
                 >
                     <div className={styles.next}>
                         FINISH

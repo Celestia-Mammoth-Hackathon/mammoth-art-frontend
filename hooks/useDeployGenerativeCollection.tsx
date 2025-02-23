@@ -19,6 +19,13 @@ type UseDeployGenerativeCollectionProps = {
     image: string;
     tags?: string[];
   };
+  revealMetadata: {
+    _metadata: string;
+  };
+  influencingNFTs: {
+    tokenAddresses: string[];
+    tokenIds: string[];
+  }[];
 };
 
 const useDeployGenerativeCollection = ({ 
@@ -27,9 +34,13 @@ const useDeployGenerativeCollection = ({
   collectionSize,
   royaltyRecipient,
   royaltyFee,
-  placeholderMetadata
+  placeholderMetadata,
+  revealMetadata,
+  influencingNFTs
 }: UseDeployGenerativeCollectionProps) => {
   const { data: setPlaceHolderMetadataDataTxHash, status: setPlaceHolderMetadataStatus, writeContract } = useWriteContract();
+  const { data: setRevealMetadataDataTxHash, status: setRevealMetadataStatus, writeContract: writeRevealMetadataContract } = useWriteContract();
+  const { data: setInfluencingNFTsDataTxHash, status: setInfluencingNFTsStatus, writeContract: writeInfluencingNFTsContract } = useWriteContract();
   const { address } = useUserContext();
 
   // Hook for deploying the proxy contract
@@ -50,6 +61,26 @@ const useDeployGenerativeCollection = ({
           abi: generativeERC721Upgradeable.abi,
           functionName: 'setPlaceholderMetadata',
           args: [JSON.stringify(placeholderMetadata)],
+        });
+      }
+      if (revealMetadata) {
+        writeRevealMetadataContract({
+          address: proxyDeployReceipt.contractAddress as `0x${string}`,
+          abi: generativeERC721Upgradeable.abi,
+          functionName: 'setRevealPlaceholderMetadata',
+          args: [revealMetadata._metadata],
+        });
+      }
+      if (influencingNFTs) {
+        // Split the arrays into separate tokenAddresses and tokenIds arrays
+        const tokenAddresses = influencingNFTs.map((nft: any) => nft[0]);
+        const tokenIds = influencingNFTs.map((nft: any) => nft[1]);
+
+        writeRevealMetadataContract({
+          address: proxyDeployReceipt.contractAddress as `0x${string}`,
+          abi: generativeERC721Upgradeable.abi,
+          functionName: 'setInfluencingNFTs',
+          args: [tokenAddresses, tokenIds],
         });
       }
     }
@@ -95,10 +126,12 @@ const useDeployGenerativeCollection = ({
 
   return {
     contractAddress: proxyDeployReceipt?.contractAddress,
-    isDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success',
+    isDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success',
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,
+    setRevealMetadataStatus: setRevealMetadataStatus,
+    setInfluencingNFTsStatus: setInfluencingNFTsStatus,
     deployCollection,
   };
 };

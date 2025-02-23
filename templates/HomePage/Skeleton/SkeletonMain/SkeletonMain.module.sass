@@ -1,0 +1,334 @@
+@import @/styles/helpers
+
+.collection
+    display: block
+    color: $n7
+    transition: color .2s
+    &:hover
+        .subtitle
+            color: $n11
+    
+
+@import @/styles/helpers
+
+.slide
+    position: relative
+    display: flex
+    align-items: flex-end
+    min-height: calc(100vh - rem(96))
+    background: $n1
+    box-sizing: border-box
+    +t
+        min-height: rem(600)
+    +m
+        min-height: calc(100vh - rem(88))
+    &:after
+        content: ""
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: 100%
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0) 23.41%, rgba(0, 0, 0, 0.54) 100%)
+
+.row
+    position: relative
+    z-index: 2
+    display: flex
+    align-items: flex-end
+    width: 100%
+    padding: rem(80)
+    +xl
+        padding: rem(64)
+    +w
+        padding: rem(40)
+    +t
+        padding: rem(40) rem(24)
+    +m
+        padding: rem(24)
+    +a
+        padding: rem(24)
+        flex-direction: column-reverse
+.details
+    width: 100%
+    max-width: rem(664)
+    margin-right: auto
+    +d
+        flex-grow: 1
+        max-width: rem(600)
+        padding-right: rem(40)
+    +t
+        max-width: 100%
+        padding-right: 0
+
+.head
+    display: flex
+    align-items: flex-end
+    margin-bottom: rem(40)
+    +d
+        align-items: flex-start
+    +m
+        display: block
+
+.titleWrap
+    display: flex
+    flex-direction: column
+    gap: 2rem 
+    
+.title
+    margin-right: auto
+    color: $n0
+    font-size: 32px
+    font-weight: 700
+    letter-spacing: -0.02em
+    text-align: left
+    cursor: pointer
+    +d
+        padding-top: rem(8)
+    +m
+        padding-top: 0
+    &:hover
+        color: $n11
+
+.author
+    display: flex
+    align-items: center
+    gap: 1rem
+    color:$n10
+
+.by
+    color: $n10
+    font-size: 16px
+
+.author,
+.subtitle
+    font-size: 24px
+    color: $n0
+    font-weight: 500
+    letter-spacing: -0.02em
+    text-align: left
+    cursor: pointer
+
+.subtitle
+    &:hover
+        color: $n11
+.price
+    font-size: 24px
+    color: $n0
+    font-weight: 500
+    letter-spacing: -0.02em
+    text-align: left
+
+.avatar
+    position: relative
+    width: rem(40)
+    height: rem(40)
+    margin-right: rem(16)
+    img
+        border-radius: rem(8)
+
+.btns
+    display: flex
+    margin: 0 rem(-12)
+
+.viewButton
+    background: $n9
+    border: 2px solid #F7FBFA
+    box-shadow: 4px 6px 0px 0px $n0
+    flex: 1 1 auto
+    margin: 0 rem(12)
+    +m
+        padding: 0 rem(8)
+    &:hover
+        background: $n13
+        color: $n0
+        .arrow
+            fill: $n0
+
+.generateButton
+    color: $n0
+    background: $n11
+    border: 2px solid $n0
+    box-shadow: 4px 6px 0px 0px $n0
+    flex: 1 1 auto
+    margin: 0 rem(12)
+    +m
+        padding: 0 rem(8)
+    &:hover
+        color: $n0
+        background: $n12
+.authorBox 
+    display: flex
+    flex-direction: column
+.box
+    flex-shrink: 0
+    padding: rem(28) rem(40)
+    border: 2px solid $n0
+    box-shadow: 0px 16px 40px -8px #0000001F
+    background: $n9
+    +w
+        width: rem(360)
+        padding: rem(20) rem(24)
+    +d
+        width: rem(320)
+    +t
+        display: none
+
+.info
+    margin-bottom: rem(12)
+    +base
+    color: $n10
+.timer
+    color: $n0
+    .timerItem
+        flex: 1 1 auto
+    .timerValue
+        +w
+            font-size: rem(48)
+            line-height: rem(48)
+    .timerText
+        color: $n10
+
+.wrap
+    padding: 1rem 4rem 2rem 4rem
+    display: flex
+    justify-content: space-between
+    align-items: center
+
+.button
+    padding: 20px 32px 20px 32px
+    border: 1px solid $n9
+    background: $n0
+    color: $n9
+    height: 64px
+    cursor: pointer
+    &:hover
+        background: $n11
+
+.featuredSwiper
+    margin-left: 14rem
+    margin-right: 14rem
+
+.spinner
+    margin: 0 !important
+
+.modalContent
+    display: flex
+    flex-direction: column
+    gap: 24px
+    padding: 24px
+    max-width: 800px
+    width: 100%
+    margin: 0 auto
+    height: max-content
+    margin-top: 4rem
+    @media (min-width: 768px)
+        flex-direction: row
+        flex-wrap: wrap
+
+.leftSection
+    flex: 1
+    min-width: 300px
+
+    .tokenPreview
+        position: relative
+        width: 100%
+        height: 300px
+        border-radius: 12px
+        overflow: hidden
+        margin-bottom: 16px
+
+    .tokenInfo
+        h3
+            margin-bottom: 8px
+            font-size: 24px
+        
+        p
+            margin-bottom: 16px
+            color: rgba(255, 255, 255, 0.7)
+
+.tokenName,
+.influencingTitle
+    font-size: 24px
+    font-weight: 700
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+
+.tokenName,
+.tokenOwner
+    &:hover
+        cursor: pointer
+        color: $n11
+
+.tokenDescription
+    font-size: 16px
+    color: $n0
+    margin-bottom: 16px
+
+.tokenOwnerWrapper
+    display: flex
+    align-items: center
+    gap: 8px
+
+.tokenDetails
+    display: flex
+    flex-direction: column
+    gap: 8px
+    color: $n0
+
+.rightSection
+    flex: 1
+    min-width: 300px
+
+    h4
+        margin-bottom: 16px
+
+    .influencingNfts
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+
+.buttonContainer
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-top: 16px
+    
+    @media (min-width: 768px)
+        flex: 0 0 100%
+
+.nftInfo
+    display: flex
+    align-items: center
+    gap: 4px
+    margin-top: 8px
+    
+    .icon
+        width: 24px
+        height: 24px
+    
+    span
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        font-size: 16px
+        font-weight: 400    
+        color: $n0
+        margin-left: 8px
+        margin-top: 4px
+
+.disabled
+    opacity: 0.5
+    cursor: not-allowed
+    pointer-events: none
+
+.mintingButton
+    background: $n11
+    cursor: not-allowed
+    pointer-events: none
+    
+.spinner
+    margin: 0 !important

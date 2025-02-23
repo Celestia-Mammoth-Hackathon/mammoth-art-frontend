@@ -7,7 +7,8 @@ import SelectCollectionModal from "./SelectCollectionModal";
 import useCollectionStore from "@/store/index";
 import { useCollectionContext } from "context/collection";
 import SelectMultiple from "@/components/SelectMultiple";
-
+import { getMatchingTokens } from "@/utils/nft";
+import Spinner from "@/components/Spinner";
 type PreviewProps = {
   cid: any;
 };
@@ -19,10 +20,10 @@ const Preview = ({ cid }: PreviewProps) => {
   const [curatedCollections, setCuratedCollections] = useState([]);
   const { collections, fetchAllCollections } = useCollectionStore();
   const router = useRouter();
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const [options, setOptions] = useState<any>();
   const [selectedOptions, setSelectedOptions] = useState<any>(null);
-
+  const [loadingInfluencingNFTs, setLoadingInfluencingNFTs] = useState<boolean>(false);
   // Sync selectedOptions with collectionData.influences
   useEffect(() => {
     if (collectionData.influences) {
@@ -31,7 +32,7 @@ const Preview = ({ cid }: PreviewProps) => {
   }, [collectionData.influences]);
 
   // Update collectionData.influences when selectedOptions changes
-  const handleSelectedOptionsChange = (newSelectedOptions: any) => {
+  const handleSelectedOptionsChange = async(newSelectedOptions: any) => {
     setSelectedOptions(newSelectedOptions);
     setCollectionData((prevData: any) => ({
       ...prevData,
@@ -58,18 +59,21 @@ const Preview = ({ cid }: PreviewProps) => {
       if (match) {
         let variableName = match[1];
 
-        // Use the variable name to extract the traits object definition
-        let traitsRegex = new RegExp(`let\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, "m");
+        // Modified regex to match both 'let' and 'const' declarations
+        let traitsRegex = new RegExp(`(?:let|const)\\s+${variableName}\\s*=\\s*(\\{[\\s\\S]*?\\});`, "m");
         let traitsMatch: any = scriptContent.match(traitsRegex);
         let traitsWithoutNewLines = traitsMatch[1].replace(/\n/g, "");
 
-        // Regex to match all keys
-        let keyRegex = /"([^"]+)":/g;
+        // Regex to match keys with either single or double quotes
+        let keyRegex = /'([^']+)':|"([^"]+)":/g;
 
         let keys = [];
         let keyMatch;
+
         while ((keyMatch = keyRegex.exec(traitsWithoutNewLines)) !== null) {
-          keys.push(keyMatch[1]);
+          // Since we have two capture groups now, we need to take the non-null one
+          const key = keyMatch[1] || keyMatch[2];
+          keys.push(key);
         }
 
         // Map traits to options
@@ -121,6 +125,26 @@ const Preview = ({ cid }: PreviewProps) => {
   };
 
   const handleNextStep = async () => {
+    setLoadingInfluencingNFTs(true);
+    try {
+      const matchingTokens = await getMatchingTokens(collectionData.formaCollection);
+      
+      setCollectionData((prevData: any) => ({
+        ...prevData,
+        influencingNFTs: matchingTokens,
+      }));
+      // Save to localStorage
+      saveDataToLocalStorage({
+        influences: collectionData.influences,
+        influencingNFTs: matchingTokens,
+      });
+    } catch (error) {
+      console.error("Error fetching influencing NFTs:", error);
+      setLoadingInfluencingNFTs(false);
+    } finally {
+      setLoadingInfluencingNFTs(false);
+    }
+    
     router.push(`/mint-generative/preview?cid=${cid}`);
   };
 
@@ -136,11 +160,6 @@ const Preview = ({ cid }: PreviewProps) => {
           Now, double-check your Generative Token to see if it behaves properly.
           On the next step, you will configure how previews will be generated
           each time your token is collected.
-          <br />
-          <b>
-            Use this step to find a hash you want to use for the thumbnail of
-            the project on the platform.
-          </b>
         </span>
       </div>
       <div className={styles.preview}>
@@ -153,6 +172,7 @@ const Preview = ({ cid }: PreviewProps) => {
             </button>
           </div>
           <iframe
+            className={styles.iframe}
             src={`https://ipfs.io/ipfs/${cid}/index.html?random=${randomKey}`}
             width="664"
             height="662"
@@ -242,8 +262,12 @@ const Preview = ({ cid }: PreviewProps) => {
           className={cn("button-medium button-wide", styles.button, styles.nextBtn)}
           onClick={handleNextStep}
         >
+          {loadingInfluencingNFTs ? <Spinner className={styles.spinner} /> :  
+          <>
           NEXT STEP
           <Icon name={"arrow-right"} fill="#ffffff" />
+          </>
+          }
         </div>
       </div>
     </div>

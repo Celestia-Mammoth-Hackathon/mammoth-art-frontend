@@ -85,6 +85,10 @@
     gap: 1rem
     color:$n10
 
+.by
+    color: $n10
+    font-size: 16px
+
 .author,
 .subtitle
     font-size: 24px
@@ -185,7 +189,6 @@
     border: 1px solid $n9
     background: $n0
     color: $n9
-    width: 214px
     height: 64px
     cursor: pointer
     &:hover
@@ -194,3 +197,127 @@
 .featuredSwiper
     margin-left: 14rem
     margin-right: 14rem
+
+.spinner
+    margin: 0 !important
+
+.modalContent
+    display: flex
+    flex-direction: column
+    gap: 24px
+    padding: 24px
+    max-width: 800px
+    width: 100%
+    margin: 0 auto
+    height: max-content
+    margin-top: 4rem
+    @media (min-width: 768px)
+        flex-direction: row
+        flex-wrap: wrap
+
+.leftSection
+    flex: 1
+    min-width: 300px
+
+    .tokenPreview
+        position: relative
+        width: 100%
+        height: 300px
+        border-radius: 12px
+        overflow: hidden
+        margin-bottom: 16px
+
+    .tokenInfo
+        h3
+            margin-bottom: 8px
+            font-size: 24px
+        
+        p
+            margin-bottom: 16px
+            color: rgba(255, 255, 255, 0.7)
+
+.tokenName,
+.influencingTitle
+    font-size: 24px
+    font-weight: 700
+    letter-spacing: -0.02em
+    text-align: left
+    color: $n0
+
+.tokenName,
+.tokenOwner
+    &:hover
+        cursor: pointer
+        color: $n11
+
+.tokenDescription
+    font-size: 16px
+    color: $n0
+    margin-bottom: 16px
+
+.tokenOwnerWrapper
+    display: flex
+    align-items: center
+    gap: 8px
+
+.tokenDetails
+    display: flex
+    flex-direction: column
+    gap: 8px
+    color: $n0
+
+.rightSection
+    flex: 1
+    min-width: 300px
+
+    h4
+        margin-bottom: 16px
+
+    .influencingNfts
+        display: flex
+        flex-direction: column
+        justify-content: flex-start
+        align-items: flex-start
+
+.buttonContainer
+    width: 100%
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-top: 16px
+    
+    @media (min-width: 768px)
+        flex: 0 0 100%
+
+.nftInfo
+    display: flex
+    align-items: center
+    gap: 4px
+    margin-top: 8px
+    
+    .icon
+        width: 24px
+        height: 24px
+    
+    span
+        overflow: hidden
+        text-overflow: ellipsis
+        white-space: nowrap
+        font-size: 16px
+        font-weight: 400    
+        color: $n0
+        margin-left: 8px
+        margin-top: 4px
+
+.disabled
+    opacity: 0.5
+    cursor: not-allowed
+    pointer-events: none
+
+.mintingButton
+    background: $n11
+    cursor: not-allowed
+    pointer-events: none
+    
+.spinner
+    margin: 0 !important

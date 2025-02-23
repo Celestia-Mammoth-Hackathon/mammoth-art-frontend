@@ -13,7 +13,7 @@ import { useCollectionContext } from "context/collection";
 type UploadProps = {};
 
 const Upload = ({}: UploadProps) => {
-  const { collectionData, setCollectionData } = useCollectionContext();
+  const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const [zipFile, setZipFile] = useState<any>(null);
   const [isValidZip, setIsValidZip] = useState<boolean>(false);
   const { uploadedFile, setUploadedFile } = useFileContext();
@@ -29,8 +29,9 @@ const Upload = ({}: UploadProps) => {
 
   useEffect(() => {
       if (uploadedFile) {
-      setZipFile(uploadedFile);
-      setIsValidZip(true);
+
+        setZipFile(uploadedFile);
+        setIsValidZip(true);
     }
   }, [uploadedFile]);
 
@@ -73,11 +74,16 @@ const Upload = ({}: UploadProps) => {
           return;
         }
 
+        // Update collectionData
         setCollectionData((prevData: any) => ({
           ...prevData,
           zipFile: uploadedFile,
         }));
 
+        // Save to localStorage
+        saveDataToLocalStorage({
+          zipFile: uploadedFile
+        }, cid);
         router.push(`/mint-generative/create?cid=${cid}`);
       };
       fileReader.readAsArrayBuffer(zipFile);

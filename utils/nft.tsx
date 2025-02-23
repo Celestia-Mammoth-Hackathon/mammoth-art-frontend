@@ -3,6 +3,7 @@ import { DropState } from "../store";
 import { StandardMerkleTree } from "@openzeppelin/merkle-tree";
 import { ethers } from "ethers";
 import indexer from "@/utils/indexer";
+import axios from "axios";
 
 export const getPrice = (nft: any) => {
   let price = nft.drop?.price ? Number(ethers.utils.formatEther(ethers.BigNumber.from(nft.drop.price))) : (nft.price || 0);
@@ -87,6 +88,30 @@ export const getStaticMetadata = (contractAddress: string, contractType: string)
   return nft ? nft : null;
 };
 
+export const getMatchingTokens = async (formaCollection: any) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/get-matching-tokens`,
+      // `http://localhost:3001/get-matching-tokens`,
+    JSON.stringify({ formaCollection: formaCollection }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+      },
+      
+    }
+    );
+
+    if (!response.data.success) {
+      throw new Error('Failed to get matching tokens');
+    }
+    return response.data.matchingTokens;
+  } catch (error) {
+    console.error("Error getting matching tokens:", error);
+    return [];
+  }
+}
 export const isPrimarySaleActive = (startTime: number, endTime: number) => {
   const currentTime = Math.floor(Date.now()); // Get current time in seconds
 

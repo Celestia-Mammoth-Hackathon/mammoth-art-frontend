@@ -61,46 +61,11 @@ const useClaimNFT = ({
     const tokenId = item?.metadata?.id;
 
     const claimConfig = {
-        _dropId: item.drop.id,
+        _dropId: item?.drop?.id,
         _qty: mintAmount,
         _recipient: address || `0x0000000000000000000000000000000000000000`,
         _merkleProof: [] as string[],
     };
-
-    // check for merkle mint
-    const [ proof, merkleDrop ] = useMemo(() => {
-        let proof = [] as string[];
-        let merkleDrop: any;
-        if (address && item.merkleDrops && item.merkleDrops.length > 0) {
-            if (item.merkleRoot && item.merkleTree) {
-                merkleDrop = item.merkleDrops.find((d: any) => d.merkleRoot.toLowerCase() === item.merkleRoot.toLowerCase());
-                if (merkleDrop) {
-                    const tree = StandardMerkleTree.load(item.merkleTree);
-                    for (const [i, v] of tree.entries()) {
-                        if (v[0].toLocaleLowerCase() === address.toLocaleLowerCase()) {
-                            proof = tree.getProof(i);
-                            break;
-                        }
-                    }
-                }
-            } else if (item.merkleRoots && item.merkleRoots.length > 0) {
-                for (const m of item.merkleDrops) {
-                    const m2 = item.merkleRoots.find((r: any) => r.root.toLowerCase() === m.merkleRoot.toLowerCase());
-                    if (m2) {
-                        merkleDrop = m;
-                        const tree = StandardMerkleTree.load(m2.tree);
-                        for (const [i, v] of tree.entries()) {
-                            if (v[0].toLocaleLowerCase() === address.toLocaleLowerCase()) {
-                                proof = tree.getProof(i);
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return [ proof, merkleDrop ];
-    }, [item, address]);
 
     const args = [
         claimConfig._dropId,
@@ -121,7 +86,7 @@ const useClaimNFT = ({
         functionName: 'mint',
         args: args,
         value: valueBigInt,
-        gas: item.overrideGas ? item.overrideGas(mintAmount) : undefined,
+        gas: item?.overrideGas ? item?.overrideGas(mintAmount) : undefined,
     });
 
     const { data, status, writeContract, isPending: isPrepareLoading } = useWriteContract();
@@ -129,27 +94,6 @@ const useClaimNFT = ({
         hash: data,
     });
 
-
-    let merkleValue = BigInt(0);
-    if (merkleDrop) {
-        merkleValue = BigInt(merkleDrop.price) * BigInt(mintAmount);
-    }
-
-    const { data: merkleSimData, error: merkleSimError } = useSimulateContract({
-        address: dropAddress,
-        abi: simpleDropUpgradeableABI,
-        functionName: 'mint',
-        args: [ merkleDrop?.id || 0, mintAmount, address, proof ],
-        value: merkleValue,
-        gas: item.overrideGas ? item.overrideGas(mintAmount) : undefined,
-        maxFeePerGas: parseGwei('20'),
-        maxPriorityFeePerGas: parseGwei('1'),
-    });
-
-    const { data: merkleData, status: merkleStatus, writeContract: merkleWriteContract, isPending: isMerklePrepareLoading } = useWriteContract();
-    const { error: merkleTxError, isLoading: isMerkleTransactionLoading, isError: isMerkleTransactionError, isSuccess: isMerkleTransactionSuccess } = useWaitForTransactionReceipt({
-        hash: merkleData,
-    });
 
     const handleResponse = useCallback((response:any) => {
         try {
@@ -170,18 +114,15 @@ const useClaimNFT = ({
         } catch (error) {
             console.error("Error handling response:", error);
         } finally {
-            setResponse(canMerkleMint ? merkleStatus : status);
+            setResponse(status);
             setVisibleMintMenu(true);
             setClaimNftTrigger && setClaimNftTrigger(!claimNftTrigger)
         }
-    }, [canMerkleMint, status, merkleStatus, claimNftTrigger, setClaimNftTrigger, setResponse, setVisibleMintMenu]);
+    }, [canMerkleMint, status, claimNftTrigger, setClaimNftTrigger, setResponse, setVisibleMintMenu]);
 
     useEffect(() => {
         if (simError) {
             console.error("useSimulateContract", simError.message);
-            if (item.drop.id !== merkleDrop?.id) {
-                setError(canMerkleMint ? "" : handleError(simError.message));
-            }
         } else {
             setError("");
         }
@@ -195,44 +136,21 @@ const useClaimNFT = ({
         }
     }, [isTransactionError, isTransactionSuccess, txError, data]);
 
-    useEffect(() => {
-        if (merkleSimError) {
-            console.log("merkle mint error", merkleSimError.message);
-            setCanMerkleMint(false);
-            if (item.drop.id === merkleDrop?.id) {
-                setError(handleError(merkleSimError.message));
-            }
-        } else if (merkleDrop && proof.length > 0) {
-            setCanMerkleMint(true);
-            if (item.drop.id === merkleDrop?.id) {
-                setError("");
-            }
-        }
-    }, [item, merkleSimError, merkleDrop, proof]);
-
-    useEffect(() => {
-        if (isMerkleTransactionError) {
-            handleResponse(merkleTxError);
-        } else if (isMerkleTransactionSuccess) {
-            handleResponse(merkleData);
-        }
-    }, [isMerkleTransactionError, isMerkleTransactionSuccess, merkleTxError, merkleData]);
-
     const claimNFT = useCallback(async () => {
         try {
-            canMerkleMint ? merkleWriteContract(merkleSimData!.request) : writeContract(simData!.request);
+            writeContract(simData!.request);
         } catch (error) {
             console.error("Error initiating transaction:", error);
-            setResponse(canMerkleMint ? merkleStatus : status);
+            setResponse(status);
         }
-    }, [canMerkleMint, writeContract, merkleWriteContract, simData, merkleSimData, setResponse, status, merkleStatus]);
+    }, [canMerkleMint, writeContract, simData, setResponse, status]);
 
     return {
-        isMintingLoading : isTransactionLoading || isPrepareLoading || isMerklePrepareLoading || isMerkleTransactionLoading,
-        isMintingError: isTransactionError || isMerkleTransactionError,
+        mintingStatus: status,
+        isMintingLoading : isTransactionLoading || isPrepareLoading  ,
+        isMintingError: isTransactionError,
         claimNFT,
         mintingError: error,
-        canMerkleMint,
         mintedTokens,
     };
 };
