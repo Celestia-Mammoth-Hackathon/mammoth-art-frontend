@@ -38,6 +38,7 @@ type FieldProps = {
   setIsValidZip?: any;
   setUploadedFile?: any;
   type?: any;
+  suffix?: string;
 };
 
 const Field = ({
@@ -69,7 +70,8 @@ const Field = ({
   zipFile,
   setZipFile,
   setIsValidZip,
-  setUploadedFile
+  setUploadedFile,
+  suffix,
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
@@ -388,6 +390,7 @@ const Field = ({
             autoFocus={autoFocus}
           />
         )}
+        {suffix && <span className={styles.suffix}>{suffix}</span>}
       </div>
       {/* {label && !isValid && required && <div className={styles.label}>{label}</div>} */}
     </div>
