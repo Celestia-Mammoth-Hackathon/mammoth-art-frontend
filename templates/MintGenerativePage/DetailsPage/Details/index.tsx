@@ -109,11 +109,11 @@ const Details = ({cid}: DetailsProps) => {
                 Collection Description
             </div>
             <Field
+                type="textarea"
                 placeholder="Enter description"
                 value={collectionData.collectionDescription}
                 onChange={(e:any) => setDescription(e.target.value)}
                 required
-                textarea
             />
         </div>
         <div className={styles.formGroup}>
@@ -146,11 +146,11 @@ const Details = ({cid}: DetailsProps) => {
             <div className={styles.labelInfo}>Choose an image to represent this series. This may or may not be the same as one of your token images and will appear on third-party platforms like OpenSea.</div>
           </label>
           <Field
+                type="uploadCollectionImage"
                 placeholder="Enter collection image"
                 value={collectionData.collectionImage}
                 onChange={setCollectionData}
                 collectionImage={collectionData.collectionImage}
-                uploadCollectionImage={true}
                 required
                 upload
             />

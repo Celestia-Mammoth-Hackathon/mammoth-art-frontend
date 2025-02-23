@@ -92,6 +92,7 @@
     cursor: not-allowed
 
 .delayInput
+    width: 30%
     display: flex
     align-items: center
     gap: 8px
@@ -108,15 +109,58 @@
     font-size: 14px
     pointer-events: none
 
-.numberInput
-    padding-right: 70px
-
 .unit
     color: #666
     font-size: 14px
 
 .iframe
+    margin-top: 4rem
     display: block
     max-width: 100%
     margin-left: auto
     margin-right: auto
+
+.input
+    width: 100%
+    padding: 16px
+    border: 1.5px solid $n14
+    background: transparent
+    border-radius: 0
+    +body2Bold
+    color: $n0
+    transition: border-color .2s
+    font-size: 16px
+    font-weight: 500
+    line-height: 19px
+    letter-spacing: 0em
+    text-align: left
+    &::placeholder
+        font-size: 16px
+        font-weight: 500
+        line-height: 19px
+        letter-spacing: 0em
+        text-align: left
+        color: $n10
+    &:hover
+        border-color: $n0
+    &:focus
+        border-color: $n0
+
+.disabled
+    background: $n13
+    cursor: not-allowed
+    &:hover
+        border-color: $n14
+    &:focus
+        border-color: $n14
+
+.nextBtn
+    background: $n11
+    &:hover
+        background: $n12
+        border: 1px solid $n0
+
+.nextDisabled
+    pointer-events: none
+    background: $n12
+    border: 1px solid $n0

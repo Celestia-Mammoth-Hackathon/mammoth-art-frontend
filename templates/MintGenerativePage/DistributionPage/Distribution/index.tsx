@@ -119,8 +119,11 @@ const Distribution = ({cid}: DistributionProps) => {
                 <div className={styles.labelInfo}>Note: You can only decrease this number once the project is live.</div>
             </div>
             <Field
+                type="number"
                 placeholder="Enter number of editions"
                 value={collectionData.size}
+                label="Royalty value is not valid"
+                min={1}
                 onChange={(e:any) => setCollectionSize(e.target.value)}
                 required
             />
@@ -141,10 +144,13 @@ const Distribution = ({cid}: DistributionProps) => {
                 Price
             </div>
             <Field
+                type="number"
                 placeholder="Enter price (TIA)"
                 value={collectionData.price}
                 onChange={(e:any) => setCollectionPrice(e.target.value)}
                 required
+                min={0}
+                label="Price value is not valid"
                 rightIcon="TIA"
             />
         </div>
@@ -154,12 +160,12 @@ const Distribution = ({cid}: DistributionProps) => {
                 <div className={styles.labelInfo}>In your local timezone.</div>
             </div>
             <Field
+                type="date"
                 placeholder="Enter opening time"
                 value={collectionData.startDate}
                 onChange={setCollectionStartDate}
                 min={dayjs().format('YYYY-MM-DDTHH:mm')}
                 required
-                date
             />
         </div>
         <div className={styles.formGroup}>
@@ -168,17 +174,18 @@ const Distribution = ({cid}: DistributionProps) => {
                 <div className={styles.labelInfo}>In your local timezone.</div>
             </div>
             <Field
+                type="date"
                 placeholder="Enter closing time"
                 value={collectionData.endDate}
                 onChange={setCollectionEndDate}
                 min={dayjs().format('YYYY-MM-DDTHH:mm')}
                 required
-                date
             />
         </div>
         <div className={styles.formGroup}>
             <div className={styles.label}>
                 Primary Sale Address
+                <div className={styles.labelInfo}>The address receving primary sale (Celestial IDs support coming soon)</div>
             </div>
             <Field
                 placeholder="Enter primary sale address (e.g. mammoth.id, 0x75B128c7AE715Ffe273433DbfF63097FDC10804d)"
@@ -191,18 +198,24 @@ const Distribution = ({cid}: DistributionProps) => {
           <div className={styles.royaltyWrapper}>
             <div className={styles.label}>
                 Royalty Amount
+                <div className={styles.labelInfo}>Min:0, Max:20</div>
             </div>
             <Field
+                type="number"
                 placeholder="Enter royalty amount (%)"
                 value={collectionData.royalty}
                 onChange={(e:any) => setRoyalty(e.target.value)}
                 required
                 rightIcon="%"
+                label="Royalty value is not valid"
+                min={0}
+                max={20}
             />
           </div>
           <div className={styles.royaltyAddressWrapper}>
             <div className={styles.label}>
-              Royalty payout address/ Celestials ID
+              Royalty payout address
+              <div className={styles.labelInfo}>The address receving royalty (Celestials IDs supprt coming soon)</div>
             </div>
             <Field
                 placeholder="e.g. codecrafting.id, 0x75B128c7AE715Ffe273433DbfF63097FDC10804d"

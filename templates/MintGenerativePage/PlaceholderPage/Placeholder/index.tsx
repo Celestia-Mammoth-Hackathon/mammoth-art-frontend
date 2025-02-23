@@ -107,7 +107,7 @@ const Placeholder = ({cid}: PlaceholderProps) => {
                 value={collectionData.placeholderMetadata?.description}
                 onChange={(e:any) => setPlaceholderDescription(e.target.value)}
                 required
-                textarea
+                type="textarea"
             />
         </div>
         
@@ -117,11 +117,11 @@ const Placeholder = ({cid}: PlaceholderProps) => {
             <div className={styles.labelInfo}>Choose an image to represent the token. Image will be used as placeholder for tokens before revealed.</div>
           </label>
           <Field
+                type="uploadTokenImage"
                 placeholder="Enter token image"
                 value={collectionData.placeholderMetadata?.image}
                 onChange={setCollectionData}
                 tokenImage={collectionData.placeholderMetadata?.image}
-                uploadTokenImage={true}
                 required
                 upload
             />

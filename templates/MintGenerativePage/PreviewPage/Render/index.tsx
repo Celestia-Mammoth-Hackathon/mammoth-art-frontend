@@ -17,11 +17,12 @@ type RenderProps = {
 const Render = ({cid}: RenderProps) => {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
-  const [target, setTarget] = useState<string>("Viewport");  
-  const [trigger, setTrigger] = useState<number>(3);
-  const [resolution, setResolution] = useState<string[]>(["256", "256"]);
+  
   const { collectionData, setCollectionData, saveDataToLocalStorage } = useCollectionContext();
   const [canNextStep, setCanNextStep] = useState(false);
+
+  const MIN_RESOLUTION = 256
+  const MAX_RESOLUTION = 2048
 
   useEffect(() => {
     // Force re-render when cid changes
@@ -32,7 +33,6 @@ const Render = ({cid}: RenderProps) => {
         setLoading(false);
       }, 500);
     }
-    console.log(cid);
   }, [cid]);
 
   const handlePrevStep = async () => {
@@ -40,17 +40,10 @@ const Render = ({cid}: RenderProps) => {
   };
 
   const handleNextStep = async () => {
-    setCollectionData((prevData: any) => ({
-        ...prevData,
-        target: target,
-        trigger: trigger,
-        resolution: resolution
-    }));
-
     saveDataToLocalStorage({
-      target: target,
-      trigger: trigger,
-      resolution: resolution
+      target: collectionData.target,
+      trigger: collectionData.trigger,
+      resolution: collectionData.resolution
     }, cid);
 
     router.push(`/mint-generative/distribution?cid=${cid}`);
@@ -60,15 +53,20 @@ const Render = ({cid}: RenderProps) => {
     setCanNextStep(collectionData.target && collectionData.resolution && collectionData.trigger);
   }, [collectionData]);
 
-  const onChangeFirstResolution = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value || "256";
-    setResolution([value, resolution[1]]);
+  const onChangeFirstResolution = (e: any) => {
+    const value = e.target.value;
+    setCollectionData((prevData: any) => ({
+      ...prevData,
+      resolution: [value, prevData.resolution[1]]
+    }));
   };
 
-  const onChangeSecondResolution = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value || "256";
-    setResolution([resolution[0], value]);
-    console.log(resolution);
+  const onChangeSecondResolution = (e: any) => {
+    const value = e.target.value;
+    setCollectionData((prevData: any) => ({
+      ...prevData,
+      resolution: [prevData.resolution[0], value]
+    }));
   };
   
   return (
@@ -84,21 +82,28 @@ const Render = ({cid}: RenderProps) => {
         <br/>
         <span className={styles.sublabel}>When will the capture module trigger?</span>
         <div className={styles.inputs}>
-          <Field
-            value="Capture preview image after a time delay"
-            className={styles.fixedField}
-            onChange={() => {}}
+          <input 
+            className={cn(styles.input, {[styles.disabled]: true})}
+            placeholder="Capture preview image after a time delay"
+            disabled
           />
           <div className={styles.delayInput}>
             <Field
               type="number"
-              value={trigger.toString()}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTrigger(parseInt(e.target.value) || 0)}
-              min="1"
+              value={collectionData.trigger}
+              onChange={(e:any) => {
+                const value = e.target.value;
+                setCollectionData((prevData: any) => ({
+                ...prevData,
+                trigger: value
+              }))}}
+              min={1}
+              max={100}
+              label="Trigger value is not valid"
               required
               className={styles.numberInput}
               inputClassName={styles.inputWithSuffix}
-              suffix="seconds"
+              rightIcon="seconds"
             />
           </div>
         </div>
@@ -109,10 +114,10 @@ const Render = ({cid}: RenderProps) => {
         <br/>
         <span className={styles.sublabel}>What will be the target of the capture module ?</span>
         <div className={styles.inputs}>
-          <Field
-            value="Viewport capture"
-            className={styles.fixedField}
-            onChange={() => {}}
+        <input 
+            className={cn(styles.input, {[styles.disabled]: true})}
+            placeholder="Viewport capture"
+            disabled
           />
         </div>
       </div>
@@ -123,17 +128,27 @@ const Render = ({cid}: RenderProps) => {
         <span className={styles.sublabel}>A browser with this resolution will be spawn to take a full screen capture. min: 256; max: 2048</span>
         <div className={styles.inputs}>
           <Field
+            type="number"
             placeholder="Enter first resolution"
-            value={resolution[0]}
+            value={collectionData.resolution ? collectionData?.resolution[0] : "0"}
             onChange={(e:any) => onChangeFirstResolution(e)}
             required
+            label={`Resolution value is not valid (should be greater than or equal to ${MIN_RESOLUTION})`}
+            min={MIN_RESOLUTION}
+            max={MAX_RESOLUTION}
+            rightIcon="W"
           />
           <span>*</span>
           <Field
+            type="number"
             placeholder="Enter second resolution"
-            value={resolution[1]}
+            value={collectionData.resolution ? collectionData?.resolution[1] : "0"}
+            label={`Resolution value is not valid (should be less than or equal to ${MAX_RESOLUTION})`}
             onChange={(e:any) => onChangeSecondResolution(e)}
             required
+            min={MIN_RESOLUTION}
+            max={MAX_RESOLUTION}
+            rightIcon="H"
           />
         </div>
         {loading ? (
@@ -142,8 +157,8 @@ const Render = ({cid}: RenderProps) => {
           <iframe
             className={styles.iframe}
             src={`https://ipfs.io/ipfs/${cid}/index.html`}
-            width={`${resolution[0]}px || 256px`}
-            height={`${resolution[1]}px || 256px`}
+            width={`${collectionData.resolution ? collectionData?.resolution[0] : "256"}px`}
+            height={`${collectionData.resolution ? collectionData?.resolution[1] : "256"}px`}
             style={{
               border: "1px solid #ddd",
               borderRadius: "4px",
@@ -170,6 +185,8 @@ const Render = ({cid}: RenderProps) => {
           className={cn(
             "button-medium button-wide",
             styles.button,
+            styles.nextBtn,
+            { [styles.nextDisabled]: !canNextStep }
           )}
           onClick={handleNextStep}
         >

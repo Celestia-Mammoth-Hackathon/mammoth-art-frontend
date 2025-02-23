@@ -2,6 +2,7 @@
 
 .field
     width: 100%
+    position: relative
     &.fieldIcon
         .input,
         .textarea
@@ -94,6 +95,7 @@
     fill: $n5
 
 .label
+    position: absolute
     margin-top: rem(4)
     +captionBold
     color: $n11
@@ -183,9 +185,6 @@
         box-shadow: none
     +t
         padding-left: 45px !important
-
-.number
-    width: 50%
 
 .suffix
     position: absolute

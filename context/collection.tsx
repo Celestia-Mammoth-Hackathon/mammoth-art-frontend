@@ -49,6 +49,42 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
   const router = useRouter();
   const { cid } = router.query;
 
+  const defaultCollectionData = {
+    influencingNFTs: [],
+    placeholderMetadata: {
+      name: '',
+      description: '',
+      image: null,
+      imageCid: '',
+      attributes: [],
+    },
+    revealMetadata: {
+      _metadata: '',
+    },
+    contractAddress: '',
+    contractName: '',
+    contractSymbol: '',
+    collectionName: '',
+    collectionDescription: '',
+    collectionImage: null,
+    collectionImageCid: '',
+    collectionAttributes: [],
+    size: 0,
+    price: '',
+    startDate: '',
+    endDate: '',
+    primarySaleAddress: '',
+    royalty: '',
+    royaltyAddress: '',
+    target: 'Viewport',
+    trigger: 3,
+    resolution: ['256', '256'],
+    influences: [],
+    formaCollection: null,
+    dropContractAddress: '',
+    zipFile: null,
+  };
+
   // Load collection data from localStorage based on CID
   const loadCollectionData = async (cid: string | undefined) => {
     if (cid) {
@@ -73,46 +109,25 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
           parsedData.zipFile = base64ToFile(data, name, type);
         }
 
-        return parsedData;
+        // Merge parsed data with default data to ensure all fields exist
+      return {
+        ...defaultCollectionData,
+        ...parsedData,
+        // Ensure nested objects are also merged properly
+        placeholderMetadata: {
+          ...defaultCollectionData.placeholderMetadata,
+          ...parsedData.placeholderMetadata,
+        },
+        revealMetadata: {
+          ...defaultCollectionData.revealMetadata,
+          ...parsedData.revealMetadata,
+        },
+      };
       }
     }
 
     // Return default data if no CID or no data found
-    return {
-      influencingNFTs: [],
-      placeholderMetadata: {
-        name: '',
-        description: '',
-        image: null,
-        imageCid: '',
-        attributes: [],
-      },
-      revealMetadata: {
-        _metadata: '',
-      },
-      contractAddress: '',
-      contractName: '',
-      contractSymbol: '',
-      collectionName: '',
-      collectionDescription: '',
-      collectionImage: null,
-      collectionImageCid: '',
-      collectionAttributes: [],
-      size: 0,
-      price: '',
-      startDate: '',
-      endDate: '',
-      primarySaleAddress: '',
-      royalty: '',
-      royaltyAddress: '',
-      target: 'Viewport',
-      trigger: 0,
-      resolution: [],
-      influences: [],
-      formaCollection: null,
-      dropContractAddress: '',
-      zipFile: null,
-    };
+    return defaultCollectionData;
   };
 
   // Function to save to localStorage

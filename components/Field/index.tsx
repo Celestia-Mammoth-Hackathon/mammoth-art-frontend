@@ -19,7 +19,6 @@ type FieldProps = {
   placeholder?: string;
   required?: boolean;
   children?: any;
-  
   icon?: string;
   autoFocus?: any;
   light?: boolean;
@@ -27,25 +26,22 @@ type FieldProps = {
   options?: any;
   setImage?: any;
   collectionImage?:any;
-  uploadCollectionImage?: boolean;
   tokenImage?:any;
-  uploadTokenImage?: boolean;
   setUploadError?: any
   uploadZipFile?: boolean;
   search?: boolean;
   number?: boolean;
   select?: boolean;
-  min?: string;
-  max?: string;
+  min?: any;
+  max?: any;
   isSubmitted?: boolean;
   zipFile?:any;
   setZipFile?:any;
   setIsValidZip?: any;
   setUploadedFile?: any;
   type?: any;
-  suffix?: string;
-  date?: boolean;
   rightIcon?: string;
+  label?: string;
 };
 
 const Field = ({
@@ -63,11 +59,8 @@ const Field = ({
   upload,
   options,
   setImage,
-  uploadZipFile,
-  collectionImage,
-  uploadCollectionImage,  
+  collectionImage, 
   tokenImage,
-  uploadTokenImage,
   number,
   select,
   min,
@@ -78,9 +71,9 @@ const Field = ({
   setZipFile,
   setIsValidZip,
   setUploadedFile,
-  suffix,
-  date,
+  type,
   rightIcon,
+  label,
 }: FieldProps) => {
   let fileName = null;
   let fileType = null;
@@ -89,17 +82,17 @@ const Field = ({
 
   const [isValid, setIsValid] = useState(true);
   const [uploadError, setUploadError] = useState<any>(null);
-  
-  if (uploadZipFile) {
+
+  if (type === "uploadZipFile") {
     fileName = "Zip File";
     fileType = "zip";
     fileSize = "2GB";
-  } else if (uploadCollectionImage) {
+  } else if (type === "uploadCollectionImage") {
     fileName = "Collection Image";
     fileType = "gif, jpeg, png, or svg ";
     fileSize = "24MB";
     fileDimension = "400px by 400px";
-  } else if (uploadTokenImage) {
+  } else if (type === "uploadTokenImage") {
     fileName = "Token Image";
     fileType = "gif, jpeg, png, or svg ";
     fileSize = "24MB";
@@ -210,19 +203,32 @@ const Field = ({
   }, []);
   
   const validateField = () => {
-    if (upload) {
+    if (type === "upload") {
       setIsValid(!!value);
-    } else if (number) {
-      if (min !== undefined && max !== undefined) {
-        if (value <= min || value >= max) {
-          setIsValid(false);
-          return;
-        }
+    } else if (type === "number") {
+      const numValue = Number(value);
+      
+      // Check if it's a valid number first
+      if (isNaN(numValue)) {
+        setIsValid(false);
+        return;
       }
-      // Add validation logic for number field if needed
+
+      // Check min if it exists
+      if (min !== undefined && numValue < Number(min)) {
+        setIsValid(false);
+        return;
+      }
+
+      // Check max if it exists
+      if (max !== undefined && numValue > Number(max)) {
+        setIsValid(false);
+        return;
+      }
+
+      // If we get here, the number is valid
       setIsValid(!!value);
-    } else if(textarea) {
-      // For other fields, consider them valid if the trimmed value is not empty
+    } else if(type === "textarea") {
       setIsValid(!!value.trim());
     } else {
       setIsValid(!!value);
@@ -230,7 +236,7 @@ const Field = ({
   };
 
   useEffect(() => {
-    if(isSubmitted) {
+    if(isSubmitted || type === "number") {
       validateField();
     }
   }, [value, upload, number, isSubmitted, zipFile, collectionImage]);
@@ -251,7 +257,7 @@ const Field = ({
       )}
     >
       <div className={styles.wrap}>
-        {textarea ? (
+        {type === "textarea" ? (
           <textarea
             className={styles.textarea}
             value={value}
@@ -260,7 +266,7 @@ const Field = ({
             required={required}
             autoFocus={autoFocus}
           ></textarea>
-        ) : uploadZipFile ? (
+        ) : type === "uploadZipFile" ? (
           <div className={styles.upload}
             onDrop={handleDrop}
             onDragOver={preventDefaultHandler}
@@ -297,7 +303,7 @@ const Field = ({
                   )}
                 </div>
           </div>
-        ) : uploadCollectionImage ? (
+        ) : type === "uploadCollectionImage" ? (
           <div className={styles.upload}
             onDrop={handleDrop}
             onDragOver={preventDefaultHandler}
@@ -334,7 +340,7 @@ const Field = ({
                   )}
                 </div>
           </div>
-        ) : uploadTokenImage ? (
+        ) : type === "uploadTokenImage" ? (
           <div className={styles.upload}
             onDrop={handleDrop}
             onDragOver={preventDefaultHandler}
@@ -371,7 +377,7 @@ const Field = ({
                   )}
                 </div>
           </div>
-        ) : date ? (
+        ) : type === "date" ? (
           <LocalizationProvider dateAdapter={AdapterDayjs}>
             <DateTimePicker
               className={cn(styles.input, styles.date, inputClassName)}
@@ -391,38 +397,29 @@ const Field = ({
               }}
             />
           </LocalizationProvider>
-        ) : number ? (
-          <input 
-            className={cn(styles.input, styles.number, {[styles.search] : search}, inputClassName)}
-            value={value}
-            type="number"
-            onChange={onChange}
-            placeholder={placeholder}
-            required={required}
-            autoFocus={autoFocus}
-            min={min}
-            max={max}
-          />
+        ) : type === "number" ? (
+          <>
+            <input 
+              className={cn(styles.input, styles.number, {[styles.search] : search}, inputClassName)}
+              value={value}
+              type="number"
+              onChange={onChange}
+              placeholder={placeholder}
+              required={required}
+              autoFocus={autoFocus}
+              min={min}
+              max={max}
+            />
+            {rightIcon ? <span className={styles.rightIcon}>{rightIcon}</span> : <></>}
+          </>
+          
         ) : select ? (
             <Dropdown
               value={value}
               setValue={onChange}
               options={options}
             />
-          ) : rightIcon ? (
-            <>
-              <input 
-                className={cn(styles.input, {[styles.search] : search}, inputClassName)}
-                value={value}
-                onChange={onChange}
-                placeholder={placeholder}
-                required={required}
-                autoFocus={autoFocus}
-              />
-              <span className={styles.rightIcon}>{rightIcon}</span>
-            </>
-            
-          ) :  (
+          ) : (
           <input 
             className={cn(styles.input, {[styles.search] : search}, inputClassName)}
             value={value}
@@ -432,9 +429,8 @@ const Field = ({
             autoFocus={autoFocus}
           />
         )}
-        {suffix && <span className={styles.suffix}>{suffix}</span>}
       </div>
-      {/* {label && !isValid && required && <div className={styles.label}>{label}</div>} */}
+      {label && !isValid && required && <div className={styles.label}>{label}</div>}
     </div>
   );
 };
