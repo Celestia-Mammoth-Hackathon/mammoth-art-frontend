@@ -85,7 +85,7 @@ const useCreateDrop = ({
 
   // Create a drop after contract is deployed
   const createDrop = async () => {
-    if (!address || !grantMinterReceipt?.contractAddress) return;
+    if (!address) return;
     
     try {
       // const dropConfig = {
@@ -122,9 +122,9 @@ const useCreateDrop = ({
         // merkleRoot: ethers.encodeBytes32String(""), // no merkle root mints yet
         merkleRoot: "", // no merkle root mints yet,
       }
-
+      console.log(dropConfig)
       writeContract({
-        address: grantMinterReceipt.contractAddress as `0x${string}`,
+        address: grantMinterReceipt?.contractAddress as `0x${string}`,
         abi: simpleDropUpgradeable.abi,
         functionName: 'createDrop',
         args: [dropConfig],

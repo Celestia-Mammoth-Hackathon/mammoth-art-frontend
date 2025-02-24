@@ -128,6 +128,7 @@ const useDeployGenerativeCollection = ({
     isSetUpPlaceHolderMetadata:  setPlaceHolderMetadataStatus === 'success',
     isSetUpRevealMetadata: setRevealMetadataStatus === 'success',
     isSetUpInfluencingNFTs: setInfluencingNFTsStatus === 'success',
+    isSetUpAll: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success',
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,

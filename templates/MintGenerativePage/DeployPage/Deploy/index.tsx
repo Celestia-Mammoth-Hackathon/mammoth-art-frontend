@@ -35,6 +35,7 @@ const Deploy = ({ cid }: DeployProps) => {
     isSetUpRevealMetadata: isSetUpRevealMetadata,
     isSetUpInfluencingNFTs: isSetUpInfluencingNFTs,
     deployTxHash: proxyDeployTxHash,
+    isSetUpAll: isSetUpAll,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus,
     setRevealMetadataStatus,
@@ -47,7 +48,7 @@ const Deploy = ({ cid }: DeployProps) => {
     royaltyFee: collectionData.royalty,
     placeholderMetadata: collectionData.placeholderMetadata,
     revealMetadata: collectionData.revealMetadata,
-    influencingNFTs: collectionData.influencingNFTs.length > 0 ? collectionData.influencingNFTs : [],
+    influencingNFTs: collectionData?.influencingNFTs?.length > 0 ? collectionData.influencingNFTs : [],
   });
 
   const { 
@@ -104,6 +105,7 @@ const Deploy = ({ cid }: DeployProps) => {
       status: setRevealMetadataStatus,
       label: "Set up reveal metadata",
       required: true,
+      // show: Boolean(collectionData?.revealMetadata?._metadata)
     },
     // Show influencing NFTs only if they exist
     {
@@ -187,18 +189,33 @@ const Deploy = ({ cid }: DeployProps) => {
   };
   
   useEffect(() => {
-    if (isProxyDeployed) {
-      console.log(proxyContractAddress)
+    if (isSetUpAll) {
       setCollectionData({
         ...collectionData,
         contractAddress: proxyContractAddress,
+        placeholderMetadataStatus: true,
+        revealMetadataStatus: true,
       });
       saveDataToLocalStorage({
         contractAddress: proxyContractAddress,
+        placeholderMetadataStatus: true,
+        revealMetadataStatus: true,
       });
       createDrop();
     }
-  }, [isProxyDeployed]);
+  }, [isSetUpAll]);
+  
+  useEffect(() => {
+    if(isSetUpInfluencingNFTs) {
+      setCollectionData({
+        ...collectionData,
+        influencingNFTsStatus: true,
+      });
+      saveDataToLocalStorage({
+        influencingNFTsStatus: true,
+      });
+    }
+  }, [isSetUpInfluencingNFTs]);
 
   useEffect(() => {
     if(isDropCreated) {
@@ -268,15 +285,17 @@ const Deploy = ({ cid }: DeployProps) => {
           return;
         }
       }
-      console.log(collectionData)
+
       // Step 2: Deploy contract if not already deployed
       if (!collectionData?.contractAddress) {
         deployCollection();
       } 
+
       // Step 3: Create drop if contract is deployed but drop isn't
       else if (!collectionData?.dropContractAddress) {
         createDrop();
       }
+      
       // All steps completed
       else {
         console.log('All deployment steps are already completed');
@@ -346,8 +365,10 @@ const Deploy = ({ cid }: DeployProps) => {
                 <Image
                   src={
                     typeof collectionData?.placeholderMetadata?.image === "string"
-                      ? collectionData?.placeholderMetadata?.image // Base64 string or URL
-                      : URL.createObjectURL(collectionData?.placeholderMetadata?.image) // Convert File to URL
+                      ? collectionData?.placeholderMetadata?.image
+                      : collectionData?.placeholderMetadata?.image instanceof File
+                        ? URL.createObjectURL(collectionData?.placeholderMetadata?.image)
+                        : ""
                   }
                   alt="preview"
                   width={400} // Set appropriate width
@@ -372,8 +393,10 @@ const Deploy = ({ cid }: DeployProps) => {
                   <Image
                     src={
                       typeof collectionData?.placeholderMetadata?.image === "string"
-                        ? collectionData?.placeholderMetadata?.image // Base64 string or URL
-                        : URL.createObjectURL(collectionData?.placeholderMetadata?.image) // Convert File to URL
+                        ? collectionData?.placeholderMetadata?.image
+                        : collectionData?.placeholderMetadata?.image instanceof File
+                          ? URL.createObjectURL(collectionData?.placeholderMetadata?.image)
+                          : "/images/placeholder.png"
                     }
                     alt="preview"
                     width={400} // Set appropriate width
