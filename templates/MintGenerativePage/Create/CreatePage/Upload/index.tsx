@@ -105,6 +105,7 @@ const Upload = ({}: UploadProps) => {
       </div>
       <div className={styles.upload}>
         <Field
+          type="uploadZipFile"
           className={styles.field}
           value={zipFile}
           onChange={(e: any) => {
@@ -117,7 +118,6 @@ const Upload = ({}: UploadProps) => {
           setZipFile={setZipFile}
           setIsValidZip={setIsValidZip}
           setUploadedFile={setUploadedFile}
-          uploadZipFile={true}
         />
       </div>
       <div className={styles.buttonWrapper}>

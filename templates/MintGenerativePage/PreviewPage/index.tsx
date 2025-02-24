@@ -1,10 +1,10 @@
 import LayoutCreate from "@/components/LayoutCreate";
 import Render from "./Render";
 
-const PreviewPage = () => {
+const PreviewPage = ({cid}: {cid: any}) => {
     return (
         <>
-            <LayoutCreate step="3" rightElement={<Render/>}/>
+            <LayoutCreate step="3" rightElement={<Render cid={cid}/>}/>
         </>
     );
 };
