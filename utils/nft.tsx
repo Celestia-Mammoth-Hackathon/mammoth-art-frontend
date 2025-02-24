@@ -91,8 +91,8 @@ export const getStaticMetadata = (contractAddress: string, contractType: string)
 export const getMatchingTokens = async (formaCollection: any) => {
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/get-matching-tokens`,
-      // `http://localhost:3001/get-matching-tokens`,
+      `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/matching_tokens`,
+      // `http://localhost:3001/matching_tokens`,
     JSON.stringify({ formaCollection: formaCollection }),
     {
       headers: {
@@ -112,6 +112,36 @@ export const getMatchingTokens = async (formaCollection: any) => {
     return [];
   }
 }
+
+export const getRevealMetadata = async (collectionAddress: string, collectionSize: string) => {
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/revealed_metadata`,
+      // `http://localhost:3001/revealed_metadata`,
+    JSON.stringify({ collectionAddress: collectionAddress, collectionSize: collectionSize }),
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        // Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_JWT}`,
+      },
+      
+    }
+    );
+
+    if (!response.data.success) {
+      throw new Error('Failed to get revealed metadata');
+    }
+    console.log(response.data);
+    return {
+      tokenIds: response.data.tokenIds,
+      metadata: response.data.metadata
+    };  
+  } catch (error) {
+    console.error("Error getting matching tokens:", error);
+    return [];
+  }
+}
+
 export const isPrimarySaleActive = (startTime: number, endTime: number) => {
   const currentTime = Math.floor(Date.now()); // Get current time in seconds
 

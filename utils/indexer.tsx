@@ -8,7 +8,9 @@ const BASE_RAILWAY_URL = process.env.NEXT_PUBLIC_RAILWAY_INDEXER_API_URL!.replac
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, "");
 
-const EXCLUDE_DROP_IDS = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || ["1", "2", "3", "4", "5", "6", "7"]));
+const EXCLUDE_DROP_IDS_GENERATIVE = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || ["1", "2", "3", "4", "5", "6", "7"]));
+
+const EXCLUDE_DROP_IDS_MODULARIUM = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || []));
 
 const DEFAULT_MAX_PAGES = 40;
 
@@ -74,7 +76,7 @@ const cachedAxiosGet = async (url: string) => {
 const getAllDrops = async () => {
     const query = `query AllDrops {
       drops(
-        where: {id_not_in: ${EXCLUDE_DROP_IDS}, merkleRoot: "0x0000000000000000000000000000000000000000000000000000000000000000"}
+        where: {id_not_in: ${EXCLUDE_DROP_IDS_MODULARIUM}, merkleRoot: "0x0000000000000000000000000000000000000000000000000000000000000000"}
         orderBy: "id",
         orderDirection: "desc"
       ) {
@@ -107,7 +109,7 @@ const getAllDrops = async () => {
 const getAllGenerativeDrops = async () => {
   const query = `query AllDrops {
     drops(
-      where: {id_not_in: ${EXCLUDE_DROP_IDS}}
+      where: {id_not_in: ${EXCLUDE_DROP_IDS_GENERATIVE}}
       orderBy: "id",
       orderDirection: "desc"
     ) {
@@ -141,7 +143,7 @@ const getAllGenerativeDrops = async () => {
 const getDropsByUser = async (userAddress: string) => {
   const query = `query DropsByUser {
     drops(
-      where: {id_not_in: ${EXCLUDE_DROP_IDS}, creator: "${userAddress}"}
+      where: {id_not_in: ${EXCLUDE_DROP_IDS_MODULARIUM}, creator: "${userAddress}"}
       orderBy: "id",
       orderDirection: "desc",
     ) {
@@ -172,7 +174,7 @@ const getDropsByUser = async (userAddress: string) => {
 const getMerkleDrops = async () => {
   const query = `query MerkleDrops {
     drops(
-      where: {id_not_in: ${EXCLUDE_DROP_IDS}, merkleRoot_not_in: "0x0000000000000000000000000000000000000000000000000000000000000000"}
+      where: {id_not_in: ${EXCLUDE_DROP_IDS_MODULARIUM}, merkleRoot_not_in: "0x0000000000000000000000000000000000000000000000000000000000000000"}
       orderBy: "id",
       orderDirection: "desc"
     ) {
@@ -205,7 +207,7 @@ const getMerkleDrops = async () => {
 const getGenerativeMerkleDrops = async () => {
   const query = `query MerkleDrops {
     drops(
-      where: {id_not_in: ${EXCLUDE_DROP_IDS}}
+      where: {id_not_in: ${EXCLUDE_DROP_IDS_GENERATIVE}}
       orderBy: "id",
       orderDirection: "desc"
     ) {

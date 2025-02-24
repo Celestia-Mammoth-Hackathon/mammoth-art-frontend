@@ -30,27 +30,30 @@ const Deploy = ({ cid }: DeployProps) => {
   const { 
     deployCollection,
     contractAddress: proxyContractAddress,
-    isDeployed : isProxyDeployed,
+    isProxyDeployed : isProxyDeployed,
+    isSetUpPlaceHolderMetadata: isSetUpPlaceHolderMetadata,
+    isSetUpRevealMetadata: isSetUpRevealMetadata,
+    isSetUpInfluencingNFTs: isSetUpInfluencingNFTs,
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus,
     setRevealMetadataStatus,
     setInfluencingNFTsStatus
   } = useDeployGenerativeCollection({
-    collectionName: collectionData.collectionName,
-    symbol: collectionData.symbol,
+    collectionName: collectionData.contractName,
+    symbol: collectionData.contractSymbol,
     collectionSize: collectionData.size,
-    royaltyRecipient: collectionData.royaltyRecipient,
-    royaltyFee: collectionData.royaltyFee,
+    royaltyRecipient: collectionData.royaltyAddress,
+    royaltyFee: collectionData.royalty,
     placeholderMetadata: collectionData.placeholderMetadata,
     revealMetadata: collectionData.revealMetadata,
-    influencingNFTs: collectionData.influencingNFTs,
+    influencingNFTs: collectionData.influencingNFTs.length > 0 ? collectionData.influencingNFTs : [],
   });
 
   const { 
     createDrop,
     grantMinterStatus,
-    grantMinterTxHash,
+    dropContractAddress,
     isDropCreated,
     createDropStatus
   } = useCreateDrop({
@@ -71,15 +74,19 @@ const Deploy = ({ cid }: DeployProps) => {
   });
 
   const statusItems = [
-    // Always show zip content deployment (required)
+    // Check if zip content is already deployed
     {
-      status: dropZipContentStatus,
+      status: collectionData?.revealMetadata?._metadata 
+        ? 'success'
+        : dropZipContentStatus,
       label: "Deploy zip content to IPFS",
       required: true
     },
-    // Always show contract deployment (required)
+    // Check if contract is already deployed
     {
-      status: proxyDeployStatus,
+      status: collectionData?.contractAddress 
+        ? 'success'
+        : proxyDeployStatus,
       label: "Deploy generative art contract",
       required: true
     },
@@ -103,15 +110,17 @@ const Deploy = ({ cid }: DeployProps) => {
       status: setInfluencingNFTsStatus,
       label: "Set up influencing NFTs",
       required: false,
-      show: Boolean(collectionData?.influencingNFTs)
+      show: Boolean(collectionData?.influencingNFTs?.length)
     },
-    // Always show drop creation (required)
+    // Check if drop is already created
     {
-      status: createDropStatus,
+      status: collectionData?.dropContractAddress 
+        ? 'success'
+        : createDropStatus,
       label: "Create drop",
       required: true
     },
-    // Always show minter role grant (required)
+    // Always show minter role grant
     {
       status: grantMinterStatus,
       label: "Grant minter role for drop",
@@ -176,9 +185,10 @@ const Deploy = ({ cid }: DeployProps) => {
   const handlePrevStep = () => {
     router.push(`/mint-generative/details?cid=${cid}`);
   };
-
+  
   useEffect(() => {
     if (isProxyDeployed) {
+      console.log(proxyContractAddress)
       setCollectionData({
         ...collectionData,
         contractAddress: proxyContractAddress,
@@ -191,6 +201,19 @@ const Deploy = ({ cid }: DeployProps) => {
   }, [isProxyDeployed]);
 
   useEffect(() => {
+    if(isDropCreated) {
+      setCollectionData({
+        ...collectionData,
+        dropContractAddress: dropContractAddress,
+      });
+      saveDataToLocalStorage({
+        dropContractAddress: dropContractAddress,
+      });
+    }
+  }, [isDropCreated]);
+
+  useEffect(() => {
+    console.log(dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setInfluencingNFTsStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus)
     if(dropZipContentStatus === 'error' || setInfluencingNFTsStatus === 'error' || proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
       setLoading(false);
     }
@@ -235,15 +258,31 @@ const Deploy = ({ cid }: DeployProps) => {
   const handleDeployCollection = async () => {
     try {
       setLoading(true);
-      const ipfsSuccess = await deployZipContentToIPFS();
-      
-      if (ipfsSuccess) {
-        // Only proceed with deployment if IPFS upload was successful
+
+      // Step 1: Deploy zip content to IPFS if not already deployed
+      if (!collectionData?.revealMetadata?._metadata) {
+        const ipfsSuccess = await deployZipContentToIPFS();
+        if (!ipfsSuccess) {
+          console.error('IPFS upload failed, stopping deployment');
+          setLoading(false);
+          return;
+        }
+      }
+      console.log(collectionData)
+      // Step 2: Deploy contract if not already deployed
+      if (!collectionData?.contractAddress) {
         deployCollection();
-      } else {
-        console.error('IPFS upload failed, stopping deployment');
+      } 
+      // Step 3: Create drop if contract is deployed but drop isn't
+      else if (!collectionData?.dropContractAddress) {
+        createDrop();
+      }
+      // All steps completed
+      else {
+        console.log('All deployment steps are already completed');
         setLoading(false);
       }
+
     } catch (error) {
       console.error('Deployment error:', error);
       setLoading(false);

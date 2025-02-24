@@ -22,10 +22,7 @@ type UseDeployGenerativeCollectionProps = {
   revealMetadata: {
     _metadata: string;
   };
-  influencingNFTs: {
-    tokenAddresses: string[];
-    tokenIds: string[];
-  }[];
+  influencingNFTs: [];
 };
 
 const useDeployGenerativeCollection = ({ 
@@ -54,6 +51,7 @@ const useDeployGenerativeCollection = ({
 
   // After the proxy is deployed, call setPlaceholderMetadata if placeholderMetadata is provided
   useEffect(() => {
+    console.log(proxyDeployReceipt)
     if (proxyDeployStatus === 'success' && proxyDeployReceipt?.contractAddress && !setPlaceHolderMetadataDataTxHash) {
       if (placeholderMetadata) {
         writeContract({
@@ -71,12 +69,12 @@ const useDeployGenerativeCollection = ({
           args: [revealMetadata._metadata],
         });
       }
-      if (influencingNFTs) {
+      if (influencingNFTs.length > 0) {
         // Split the arrays into separate tokenAddresses and tokenIds arrays
         const tokenAddresses = influencingNFTs.map((nft: any) => nft[0]);
         const tokenIds = influencingNFTs.map((nft: any) => nft[1]);
 
-        writeRevealMetadataContract({
+        writeInfluencingNFTsContract({
           address: proxyDeployReceipt.contractAddress as `0x${string}`,
           abi: generativeERC721Upgradeable.abi,
           functionName: 'setInfluencingNFTs',
@@ -93,25 +91,25 @@ const useDeployGenerativeCollection = ({
     try {
       // Prepare the initializer call data
       const iface = new ethers.utils.Interface(generativeERC721Upgradeable.abi);
-      // const initData = iface.encodeFunctionData("initialize", [
-      //   collectionName,
-      //   symbol,
-      //   ethers.BigNumber.from(collectionSize),
-      //   address,
-      //   royaltyRecipient,
-      //   ethers.BigNumber.from(royaltyFee)
-      // ]);
 
       const initData = iface.encodeFunctionData("initialize", [
-        "MAMMOTH",
-        "MAMMOTH",
-        ethers.BigNumber.from(100),
+        collectionName,
+        symbol,
+        ethers.BigNumber.from(Number(collectionSize)),
         address,
-        address,
-        ethers.BigNumber.from(100)
+        royaltyRecipient,
+        ethers.BigNumber.from(Number(royaltyFee))
       ]);
 
-      console.log(initData);
+      // const initData = iface.encodeFunctionData("initialize", [
+      //   "MAMMOTH",
+      //   "MAMMOTH",
+      //   ethers.BigNumber.from(100),
+      //   address,
+      //   address,
+      //   ethers.BigNumber.from(100)
+      // ]);
+
       // Deploy the proxy contract
       deployProxyContract({
         abi: ERC1967Proxy.abi,
@@ -126,7 +124,10 @@ const useDeployGenerativeCollection = ({
 
   return {
     contractAddress: proxyDeployReceipt?.contractAddress,
-    isDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success',
+    isProxyDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success',
+    isSetUpPlaceHolderMetadata:  setPlaceHolderMetadataStatus === 'success',
+    isSetUpRevealMetadata: setRevealMetadataStatus === 'success',
+    isSetUpInfluencingNFTs: setInfluencingNFTsStatus === 'success',
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,

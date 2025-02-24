@@ -21,7 +21,13 @@ const Logo = ({ className, light, onClick }: LogoProps) => (
                 height={64}
                 alt="Logo"
             />
-            MammothArt
+            <Image
+                src="/text.png"
+                width={175}
+                height={18}
+                alt="Logo"
+            />
+
 
 
 

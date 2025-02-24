@@ -35,7 +35,7 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
         parsedMintedTime instanceof Date
             ? `${formatMintedTime}`
             : "Invalid Date";
-    const { reveal, revealStatus, isRevealLoading, isRevealError} = useRevealGenerative({
+    const { reveal, revealStatus, revealLoading, isRevealError} = useRevealGenerative({
         contractAddress: item.tokenAddress,
         tokenId: item.tokenId
     });  
@@ -116,12 +116,12 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
                                             className={cn(styles.button, {
                                                 [styles.revealed]: revealStatus === 'success'
                                             })} 
-                                            onClick={() => reveal(item.tokenId, item.tokenAddress)}
+                                            onClick={() => reveal(item.tokenAddress, item.maxAllowed)}
                                             style={{ 
                                                 pointerEvents: revealStatus === 'success' ? 'none' : 'auto' 
                                             }}
                                         >
-                                            {revealStatus === 'pending' ? (
+                                            {revealLoading ? (
                                                 <Spinner className={styles.spinner}/>
                                             ) : revealStatus === 'success' ? (
                                                 'REVEALED'
