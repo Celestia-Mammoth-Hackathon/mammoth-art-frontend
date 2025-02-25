@@ -74,7 +74,7 @@ const Render = ({cid}: RenderProps) => {
       <div className={styles.info}>
         <Icon name={"info"} fill="#ffffff" />
         <span className={styles.infoText}>
-          Next, ensure that preview images are being generated correctly. Token preview images are static images used on platforms like OpenSea to represent a token when the full token live view can&apos;t be shown. You can choose both when to capture a preview image and what to capture. Test different token previews by clicking test another token. The image on the right will be used as the preview image.
+          Next, ensure that preview images are being generated correctly. Token preview images are static images used on platforms like OpenSea to represent a token when the full token live view can&apos;t be shown. You can choose both when to capture a preview image and what to capture. The image will be used as the preview image.
         </span>
       </div>
       <div className={styles.section}>
