@@ -492,7 +492,7 @@ export async function getInfluencingNfts(contractAddress: string) {
         const contract = new ethers.Contract(contractAddress, generativeERC721Upgradeable.abi, provider);
 
         const influencingNfts = await contract.influencingNFTs();
-        
+
         // Transform the data structure
         const transformedNfts = await Promise.all(influencingNfts.map(async ([tokenAddress, tokenIds]: any) => {
             const collectionMetadata = await getContractMetadata(tokenAddress);

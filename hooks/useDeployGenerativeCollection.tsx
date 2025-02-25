@@ -7,7 +7,7 @@ import { ethers } from "ethers";
 import { writeContract } from 'viem/actions';
 import { useCollectionContext } from 'context/collection';
 
-const IMPLEMENTATION_ADDRESS = process.env.NEXT_PUBLIC_GENERATIVE_ERC721_IMPLEMENTATION_ADDRESS || "0xB7bF8FcBd1afFD5D28C9B3Cd365b355da5E549B6";
+const IMPLEMENTATION_ADDRESS = process.env.NEXT_PUBLIC_GENERATIVE_ERC721_IMPLEMENTATION_ADDRESS || "0x1bC6f9Fe9989aFa191Ff344168df403E2558738D";
 
 type UseDeployGenerativeCollectionProps = {
   collectionName: string;
