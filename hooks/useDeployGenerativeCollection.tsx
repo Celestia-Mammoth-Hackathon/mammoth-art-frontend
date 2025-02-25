@@ -306,7 +306,7 @@ const useDeployGenerativeCollection = ({
     isSetUpContractMetadataSuccess: setContractMetadataStatus === 'success',
     isSetUpRevealMetadataSuccess: setRevealMetadataStatus === 'success',
     isSetUpInfluencingNFTsSuccess: setInfluencingNFTsStatus === 'success',
-    isSetUpAllSuccess: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success' && setInfluencingNFTsStatus === 'success',
+    isSetUpAllSuccess: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success' && (influencingNFTs.length > 0 ? setInfluencingNFTsStatus === 'success' : true),
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,

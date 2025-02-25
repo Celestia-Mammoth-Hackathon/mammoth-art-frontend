@@ -105,6 +105,7 @@ const useCreateDrop = ({
         price: new BigNumber(price).times(new BigNumber(10).pow(18)).toFixed(),
         merkleRoot,
       };
+      console.log(dropConfig)
       // const dropConfig = {
       //   recipient: "0x45BE33bFD6fC8D4448B7FA603Db753A5f69a29f3", // recipient of drop mint revenue
       //   token: {
