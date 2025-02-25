@@ -37,12 +37,10 @@ const useCreateDrop = ({
   startDate,
   endDate,
   price,
-
-
   merkleRoot = "0x0000000000000000000000000000000000000000000000000000000000000000"
 }: useCreateDropProps) => {
   const { address } = useUserContext();
-  
+  const DROP_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_DROP_ADDRESS;
   // Hook for creating the drop
   const { 
     data: createDropTxHash, 
@@ -88,43 +86,43 @@ const useCreateDrop = ({
     if (!address) return;
     
     try {
+      const dropConfig = {
+        recipient: recipient,
+        token: {
+          tokenAddress: token.tokenAddress,
+          tokenId: token.tokenId,
+        },
+        maxAllowed: maxAllowed,
+        maxPerWallet: maxPerWallet,
+        maxPerBlock: maxPerBlock,
+        maxPerToken: maxPerToken,
+        reserves: reserves,
+        startDate: Math.floor(startDate.getTime() / 1000),
+        endDate: Math.floor(endDate.getTime() / 1000),
+        price: new BigNumber(price).times(new BigNumber(10).pow(18)).toFixed(),
+        merkleRoot,
+      };
+
       // const dropConfig = {
-      //   recipient: recipient,
+      //   recipient: "0x45BE33bFD6fC8D4448B7FA603Db753A5f69a29f3", // recipient of drop mint revenue
       //   token: {
       //     tokenAddress: token.tokenAddress,
       //     tokenId: token.tokenId,
       //   },
-      //   maxAllowed: maxAllowed,
-      //   maxPerWallet: maxPerWallet,
-      //   maxPerBlock: maxPerBlock,
-      //   maxPerToken: maxPerToken,
-      //   reserves: reserves,
-      //   startDate: Math.floor(startDate.getTime() / 1000),
-      //   endDate: Math.floor(endDate.getTime() / 1000),
-      //   price: new BigNumber(price).times(new BigNumber(10).pow(18)).toFixed(),
-      //   merkleRoot,
-      // };
-      
-      const dropConfig = {
-        recipient: "0x45BE33bFD6fC8D4448B7FA603Db753A5f69a29f3", // recipient of drop mint revenue
-        token: {
-          tokenAddress: "0x063eA336c397d8112bcd7707164148cCCBEfB218",
-          tokenId: 0,
-        },
-        maxAllowed: 0,    // 0 mean unlimited
-        maxPerWallet: 0,  // 0 mean unlimited
-        maxPerToken: 0, // 0 mean unlimited
-        maxPerBlock: 0, // 0 mean unlimited,
-        reserves: 0, // 0 mean unlimited,
-        startDate: Math.floor(new Date('2025-06-18T00:00:00Z').getTime() / 1000),
-        endDate: Math.floor(new Date('2025-06-22T00:00:00Z').getTime() / 1000),
-        price: new BigNumber(0.1).times(new BigNumber(10).pow(18)).toFixed(),
-        // merkleRoot: ethers.encodeBytes32String(""), // no merkle root mints yet
-        merkleRoot: "", // no merkle root mints yet,
-      }
-      console.log(dropConfig)
+      //   maxAllowed: maxAllowed,    // 0 mean unlimited
+      //   maxPerWallet: maxPerWallet,  // 0 mean unlimited
+      //   maxPerToken: maxPerToken, // 0 mean unlimited
+      //   maxPerBlock: maxPerBlock, // 0 mean unlimited,
+      //   reserves: 0, // 0 mean unlimited,
+      //   startDate: Math.floor(new Date('2025-06-18T00:00:00Z').getTime() / 1000),
+      //   endDate: Math.floor(new Date('2025-06-22T00:00:00Z').getTime() / 1000),
+      //   price: new BigNumber(0.1).times(new BigNumber(10).pow(18)).toFixed(),
+      //   merkleRoot: merkleRoot, // no merkle root mints yet
+      //   // merkleRoot: ethers.encodeBytes32String(""), // no merkle root mints yet,
+      // }
+
       writeContract({
-        address: grantMinterReceipt?.contractAddress as `0x${string}`,
+        address: DROP_CONTRACT_ADDRESS as `0x${string}`,
         abi: simpleDropUpgradeable.abi,
         functionName: 'createDrop',
         args: [dropConfig],
@@ -145,7 +143,7 @@ const useCreateDrop = ({
         address: proxyContractAddress,
         abi: generativeERC721Upgradeable.abi,
         functionName: 'grantMinter',
-        args: [process.env.NEXT_PUBLIC_SIMPLE_DROP_IMPLEMENTATION_ADDRESS as `0x${string}`],
+        args: [DROP_CONTRACT_ADDRESS as `0x${string}`],
       });
     } catch (error) {
       console.error('Grant minter role error:', error);

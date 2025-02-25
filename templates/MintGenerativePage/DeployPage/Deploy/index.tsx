@@ -56,15 +56,16 @@ const Deploy = ({ cid }: DeployProps) => {
     grantMinterStatus,
     dropContractAddress,
     isDropCreated,
-    createDropStatus
+    createDropStatus,
+    isGrantMinterSuccess
   } = useCreateDrop({
-    proxyContractAddress: proxyContractAddress as `0x${string}`,
+    proxyContractAddress: collectionData.contractAddress as `0x${string}`,
     recipient: collectionData.primarySaleAddress,
     token: {
-      tokenAddress: proxyContractAddress as `0x${string}`,
+      tokenAddress: collectionData.contractAddress as `0x${string}`,
       tokenId: 0,
     },
-    maxAllowed: 0,
+    maxAllowed: collectionData.size,
     maxPerWallet: 0,
     maxPerToken: 0,
     maxPerBlock: 0,
@@ -93,7 +94,9 @@ const Deploy = ({ cid }: DeployProps) => {
     },
     // Show placeholder metadata if exists
     {
-      status: setPlaceHolderMetadataStatus,
+      status: collectionData?.placeholderMetadataStatus
+        ? 'success'
+        : setPlaceHolderMetadataStatus,
       label: "Set up placeholder metadata",
       required: true,
       show: Boolean(collectionData?.placeholderMetadata?.name && 
@@ -102,14 +105,18 @@ const Deploy = ({ cid }: DeployProps) => {
     },
     // Show reveal metadata if exists
     {
-      status: setRevealMetadataStatus,
+      status: collectionData?.revealMetadataStatus
+        ? 'success'
+        : setRevealMetadataStatus,
       label: "Set up reveal metadata",
       required: true,
       // show: Boolean(collectionData?.revealMetadata?._metadata)
     },
     // Show influencing NFTs only if they exist
     {
-      status: setInfluencingNFTsStatus,
+      status: collectionData?.influencingNFTsStatus
+        ? 'success'
+        : setInfluencingNFTsStatus,
       label: "Set up influencing NFTs",
       required: false,
       show: Boolean(collectionData?.influencingNFTs?.length)
@@ -124,7 +131,9 @@ const Deploy = ({ cid }: DeployProps) => {
     },
     // Always show minter role grant
     {
-      status: grantMinterStatus,
+      status: collectionData?.grantMinterStatus
+        ? 'success'
+        : grantMinterStatus,
       label: "Grant minter role for drop",
       required: true
     }
@@ -230,6 +239,18 @@ const Deploy = ({ cid }: DeployProps) => {
   }, [isDropCreated]);
 
   useEffect(() => {
+    if(isGrantMinterSuccess) {
+      setCollectionData({
+        ...collectionData,
+        grantMinterStatus: true,
+      });
+      saveDataToLocalStorage({
+        grantMinterStatus: true,
+      });
+    }
+  }, [isGrantMinterSuccess]);
+
+  useEffect(() => {
     console.log(dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setInfluencingNFTsStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus)
     if(dropZipContentStatus === 'error' || setInfluencingNFTsStatus === 'error' || proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
       setLoading(false);
@@ -240,7 +261,7 @@ const Deploy = ({ cid }: DeployProps) => {
     try {
       setDropZipContentStatus('pending');
 
-      const ipfsResult = await uploadZipFileToIPFS(
+      const ipfsResult : any = await uploadZipFileToIPFS(
         collectionData.zipFile, 
         collectionData.size, 
         collectionData.collectionName
@@ -295,7 +316,7 @@ const Deploy = ({ cid }: DeployProps) => {
       else if (!collectionData?.dropContractAddress) {
         createDrop();
       }
-      
+
       // All steps completed
       else {
         console.log('All deployment steps are already completed');
