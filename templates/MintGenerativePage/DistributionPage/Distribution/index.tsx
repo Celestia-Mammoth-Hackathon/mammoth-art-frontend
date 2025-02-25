@@ -122,7 +122,7 @@ const Distribution = ({cid}: DistributionProps) => {
                 type="number"
                 placeholder="Enter number of editions"
                 value={collectionData.size}
-                label="Royalty value is not valid"
+                label="Number of editions value is not valid"
                 min={1}
                 onChange={(e:any) => setCollectionSize(e.target.value)}
                 required
