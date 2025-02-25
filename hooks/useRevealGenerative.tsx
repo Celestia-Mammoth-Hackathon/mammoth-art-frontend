@@ -35,18 +35,33 @@ const useRevealGenerative = ({
 
     });
 
-    const reveal = async (collectionAddress: string, collectionSize: string) => {
+    const reveal = async (collectionAddress: string, collectionSize: number) => {
         if (!contractAddress) return;
         try {
             setIsFetchingRevealMetadata(true);
-            const result = await getRevealMetadata(collectionAddress, "1");
+            const result = await getRevealMetadata(collectionAddress, collectionSize);
             if (!Array.isArray(result)) {
                 const { tokenIds, metadata } = result;
+
+                // Convert metadata objects to strings
+                const metadataStrings = metadata.map((metadataObj: any) => {
+                    // Ensure the metadata object has the required structure
+                    const formattedMetadata = {
+                        name: metadataObj.name || '',
+                        description: metadataObj.description || '',
+                        attributes: metadataObj.traits || {},
+                        image: metadataObj.image || ''
+                    };
+
+                    // Convert to JSON string
+                    return JSON.stringify(formattedMetadata);
+                });
+
                 writeContract({
                     address: contractAddress,
                     abi: generativeERC721Upgradeable.abi,
                     functionName: 'reveal',
-                    args: [tokenIds, metadata],
+                    args: [tokenIds, metadataStrings], // Pass array of JSON strings
                 });
             }
         } catch (error) {

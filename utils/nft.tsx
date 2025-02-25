@@ -113,12 +113,12 @@ export const getMatchingTokens = async (formaCollection: any) => {
   }
 }
 
-export const getRevealMetadata = async (collectionAddress: string, collectionSize: string) => {
+export const getRevealMetadata = async (collectionAddress: string, collectionSize: number) => {
   try {
     const response = await axios.post(
       `${process.env.NEXT_PUBLIC_ZIP_SERVER_URL}/revealed_metadata`,
       // `http://localhost:3001/revealed_metadata`,
-    JSON.stringify({ collectionAddress: collectionAddress, collectionSize: collectionSize }),
+    JSON.stringify({ collectionAddress: collectionAddress, collectionSize: String(collectionSize) }),
     {
       headers: {
         'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ export const getRevealMetadata = async (collectionAddress: string, collectionSiz
       metadata: response.data.metadata
     };  
   } catch (error) {
-    console.error("Error getting matching tokens:", error);
+    console.error("Error getting revealed metadata:", error);
     return [];
   }
 }
