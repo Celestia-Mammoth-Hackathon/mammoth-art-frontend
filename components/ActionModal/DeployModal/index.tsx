@@ -8,60 +8,34 @@ import { useUserContext } from "context/user";
 type DeployModalProps = {
     visible: boolean;
     onClose: () => void;
-    proxyContractAddress: any;   
 };
 
 const DeployModal: React.FC<DeployModalProps> = ({
     visible,
     onClose,
-    proxyContractAddress,
 }) => {
     const { address } = useUserContext();
     const renderContent = () => {
-        if (!proxyContractAddress) {
+        return (
+            <>
+                <div className={styles.label}>DEPLOYED!</div>
+                <div className={styles.desc}>
+                    Your collection is deployed successfully!
+                </div>
+                <Link href={`/profile/${address}`}>
+                        <a
+                            className={cn(
+                                "button-medium button-wide",
+                                styles.button,
+                                styles.setBtn
+                            )}
 
-            return (
-                <>
-                </>
-            );
-        } else if (proxyContractAddress) {
-            return (
-                <>
-                    <div className={styles.label}>DEPLOYED!</div>
-                    <div className={styles.desc}>
-                        Your collection is deployed successfully!
-                    </div>
-
-
-                    <Link href={`/profile/${address}`}>
-
-                                <a
-                                    className={cn(
-                                        "button-medium button-wide",
-                                        styles.button,
-                                        styles.setBtn
-                                    )}
-
-                                >
-                                    VIEW MY COLLECTION
-                                </a>
-                        
-                    </Link>
-                    
-                </>
-            );
-        } else {
-            return (
-                <>
-                    <div className={styles.label}>DEPLOYMENT FAILED!</div>
-                    <div className={styles.desc}>
-                        Your contract has not been deployed. Please check error message and try again!
-                    </div>
-                    {/* <div>{response.receipt.transactionHash}</div> */}
-                </>
-
-            );
-        }
+                        >
+                            VIEW MY COLLECTION
+                        </a>
+                </Link>
+            </>
+        );
     };
 
     return (

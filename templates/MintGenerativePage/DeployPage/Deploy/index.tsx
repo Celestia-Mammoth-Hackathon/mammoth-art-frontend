@@ -485,7 +485,6 @@ const Deploy = ({ cid }: DeployProps) => {
         <DeployModal
           visible={visibleDeployModal}
           onClose={onCloseModal(setVisibleDeployModal)}
-          proxyContractAddress={proxyContractAddress}
         />
 
       )}
