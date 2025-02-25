@@ -7,6 +7,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import dayjs from 'dayjs';
+import { ethers } from 'ethers';
 
 
 type FieldProps = {
@@ -202,6 +203,15 @@ const Field = ({
     setIsValid(droppedFiles.length > 0);
   }, []);
   
+  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const address = e.target.value;
+    if (ethers.utils.isAddress(address)) {
+      onChange(address);
+    } else {
+      setIsValid(false);
+    }
+  }
+
   const validateField = () => {
     if (type === "upload") {
       setIsValid(!!value);
@@ -418,6 +428,15 @@ const Field = ({
               value={value}
               setValue={onChange}
               options={options}
+            />
+          ) : type === "address" ? (
+            <input 
+              className={cn(styles.input, {[styles.search] : search}, inputClassName)}
+              value={value}
+              onChange={handleAddressChange}
+              placeholder={placeholder}
+              required={required}
+              autoFocus={autoFocus}
             />
           ) : (
           <input 
