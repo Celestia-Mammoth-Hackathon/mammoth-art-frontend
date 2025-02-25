@@ -62,7 +62,7 @@ const Deploy = ({ cid }: DeployProps) => {
   const { 
     createDrop,
     grantMinterStatus,
-    dropContractAddress,
+    dropTransactionHash,
     isDropCreated,
     createDropStatus,
     isGrantMinterSuccess
@@ -139,7 +139,7 @@ const Deploy = ({ cid }: DeployProps) => {
     },
     // Check if drop is already created
     {
-      status: collectionData?.dropContractAddress 
+      status: collectionData?.dropTransactionHash 
         ? 'success'
         : createDropStatus,
       label: "Create drop",
@@ -314,7 +314,7 @@ const Deploy = ({ cid }: DeployProps) => {
         }
 
         // Step 7: Create drop if contract is deployed but drop isn't
-        if (!collectionData?.dropContractAddress) {
+        if (!collectionData?.dropTransactionHash) {
           createDrop();
         }
       }

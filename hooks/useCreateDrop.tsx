@@ -190,7 +190,7 @@ const useCreateDrop = ({
     isGrantMinterPending,
 
     // Drop creation status
-    dropContractAddress: createDropReceipt?.contractAddress,
+    dropTransactionHash: createDropReceipt?.transactionHash,
     isDropCreated: createDropStatus === 'success' && isCreateDropSuccess,
     createDropTxHash,
     createDropStatus,
