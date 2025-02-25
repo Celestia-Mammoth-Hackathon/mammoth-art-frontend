@@ -226,7 +226,7 @@ const Deploy = ({ cid }: DeployProps) => {
       setLoading(false);
     }
 
-    if(collectionData?.contractAddress && collectionData?.dropContractAddress && grantMinterStatus === 'success') {
+    if(collectionData?.contractAddress && collectionData?.dropTransactionHash && grantMinterStatus === 'success') {
       setLoading(false);
       console.log("Setting visible deploy modal")
       setVisibleDeployModal(true);

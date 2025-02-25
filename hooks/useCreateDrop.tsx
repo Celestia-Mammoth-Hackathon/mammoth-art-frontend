@@ -140,14 +140,13 @@ const useCreateDrop = ({
   };
 
   useEffect(() => {
-    console.log(createDropReceipt)
-    if (createDropReceipt?.contractAddress) {
+    if (createDropReceipt?.status === 'success') {
       setCollectionData({
         ...collectionData,
-        dropContractAddress: createDropReceipt?.contractAddress,
+        dropTransactionHash: createDropReceipt?.transactionHash,
       });
       saveDataToLocalStorage({
-        dropContractAddress: createDropReceipt?.contractAddress,
+        dropTransactionHash: createDropReceipt?.transactionHash,
       });
       grantMinterRoleToDrop();
     }

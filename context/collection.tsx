@@ -85,7 +85,7 @@ export const CollectionProvider = ({ children }: CollectionProviderProps) => {
     resolution: ['256', '256'],
     influences: [],
     formaCollection: null,
-    dropContractAddress: '',
+    dropTransactionHash: '',
     zipFile: null,
   };
 
