@@ -202,15 +202,6 @@ const Field = ({
 
     setIsValid(droppedFiles.length > 0);
   }, []);
-  
-  const handleAddressChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const address = e.target.value;
-    if (ethers.utils.isAddress(address)) {
-      onChange(address);
-    } else {
-      setIsValid(false);
-    }
-  }
 
   const validateField = () => {
     if (type === "upload") {
@@ -240,13 +231,15 @@ const Field = ({
       setIsValid(!!value);
     } else if(type === "textarea") {
       setIsValid(!!value.trim());
+    } else if (type === "address") {
+        setIsValid(ethers.utils.isAddress(value));
     } else {
       setIsValid(!!value);
     }
   };
 
   useEffect(() => {
-    if(isSubmitted || type === "number") {
+    if(isSubmitted || type === "number" || type === "address") {
       validateField();
     }
   }, [value, upload, number, isSubmitted, zipFile, collectionImage]);
@@ -433,7 +426,7 @@ const Field = ({
             <input 
               className={cn(styles.input, {[styles.search] : search}, inputClassName)}
               value={value}
-              onChange={handleAddressChange}
+              onChange={onChange}
               placeholder={placeholder}
               required={required}
               autoFocus={autoFocus}
