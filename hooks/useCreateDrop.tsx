@@ -94,7 +94,7 @@ const useCreateDrop = ({
         recipient: recipient,
         token: {
           tokenAddress: token.tokenAddress,
-          tokenId: token.tokenId,
+          tokenId: Number(token.tokenId),
         },
         maxAllowed: Number(maxAllowed),
         maxPerWallet: Number(maxPerWallet),
@@ -140,7 +140,8 @@ const useCreateDrop = ({
   };
 
   useEffect(() => {
-    if (createDropStatus === 'success' && isCreateDropSuccess) {
+    console.log(createDropReceipt)
+    if (createDropReceipt?.contractAddress) {
       setCollectionData({
         ...collectionData,
         dropContractAddress: createDropReceipt?.contractAddress,

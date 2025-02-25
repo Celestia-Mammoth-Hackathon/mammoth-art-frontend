@@ -50,11 +50,21 @@ const HomePage = () => {
         }
     }, [address]);
 
+    const getRandomCollections = (collections: any[], count: number) => {
+        const shuffled = [...collections];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled.slice(0, count);
+      };
+
     useEffect(() => {
         const collections:any = Object.values(generativeCollections);
+        const randomCollections:any = getRandomCollections(collections, 10);
         setLatestCollections(collections);
         setMainCollections(collections);
-        setRandomCollections(collections);
+        setRandomCollections(randomCollections);
     }, [generativeCollections]);
 
     return (
