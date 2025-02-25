@@ -188,10 +188,12 @@ const Distribution = ({cid}: DistributionProps) => {
                 <div className={styles.labelInfo}>The address receving primary sale (Celestial IDs support coming soon)</div>
             </div>
             <Field
+                type="address"
                 placeholder="Enter primary sale address (e.g. mammoth.id, 0x75B128c7AE715Ffe273433DbfF63097FDC10804d)"
                 value={collectionData.primarySaleAddress}
                 onChange={(e:any) => setPrimarySaleAddress(e.target.value)}
                 required
+                label="Invalid address (e.g. 0x75B128c7AE715Ffe273433DbfF63097FDC10804d)"
             />
         </div>
         <div className={styles.royaltyGroup}>
@@ -218,10 +220,12 @@ const Distribution = ({cid}: DistributionProps) => {
               <div className={styles.labelInfo}>The address receving royalty (Celestials IDs supprt coming soon)</div>
             </div>
             <Field
+                type="address"
                 placeholder="e.g. codecrafting.id, 0x75B128c7AE715Ffe273433DbfF63097FDC10804d"
                 value={collectionData.royaltyAddress}
                 onChange={(e:any) => setRoyaltyAddress(e.target.value)}
                 required
+                label="Invalid address (e.g. 0x75B128c7AE715Ffe273433DbfF63097FDC10804d)"
             />
           </div>
         </div>
