@@ -29,7 +29,7 @@ const DeployModal: React.FC<DeployModalProps> = ({
                 <>
                     <div className={styles.label}>DEPLOYED!</div>
                     <div className={styles.desc}>
-                    Your contract is deployed on address: {proxyContractAddress}
+                        Your collection is deployed successfully!
                     </div>
 
 

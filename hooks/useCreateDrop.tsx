@@ -5,6 +5,8 @@ import { BigNumber } from 'bignumber.js';
 import ERC1967Proxy from '@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts-v5/proxy/ERC1967/ERC1967Proxy.sol/ERC1967Proxy.json';
 import { ethers } from 'ethers';
 import generativeERC721Upgradeable from '@/abi/GenerativeERC721Upgradeable.abi.json';
+import { useEffect } from 'react';
+import { useCollectionContext } from 'context/collection';
 
 type useCreateDropProps = {
   proxyContractAddress: `0x${string}`;
@@ -41,6 +43,7 @@ const useCreateDrop = ({
 }: useCreateDropProps) => {
   const { address } = useUserContext();
   const DROP_CONTRACT_ADDRESS = process.env.NEXT_PUBLIC_DROP_ADDRESS;
+  const { setCollectionData, collectionData, saveDataToLocalStorage } = useCollectionContext();
   // Hook for creating the drop
   const { 
     data: createDropTxHash, 
@@ -102,7 +105,6 @@ const useCreateDrop = ({
         price: new BigNumber(price).times(new BigNumber(10).pow(18)).toFixed(),
         merkleRoot,
       };
-
       // const dropConfig = {
       //   recipient: "0x45BE33bFD6fC8D4448B7FA603Db753A5f69a29f3", // recipient of drop mint revenue
       //   token: {
@@ -127,15 +129,40 @@ const useCreateDrop = ({
         functionName: 'createDrop',
         args: [dropConfig],
       });
-
+      
     } catch (error) {
       console.error('Drop creation error:', error);
       throw error;
     }
   };
 
+  useEffect(() => {
+    if (createDropStatus === 'success' && isCreateDropSuccess) {
+      setCollectionData({
+        ...collectionData,
+        dropContractAddress: createDropReceipt?.contractAddress,
+      });
+      saveDataToLocalStorage({
+        dropContractAddress: createDropReceipt?.contractAddress,
+      });
+      grantMinterRoleToDrop();
+    }
+  }, [createDropStatus, isCreateDropSuccess]);
+  
+  useEffect(() => {
+    if (grantMinterStatus === 'success' && isGrantMinterSuccess) {
+      setCollectionData({
+        ...collectionData,
+        grantMinterStatus: true,
+      });
+      saveDataToLocalStorage({
+        grantMinterStatus: true,
+      });
+    }
+  }, [grantMinterStatus, isGrantMinterSuccess]);
+
   // Add function to grant minter role
-  const grantMinterRoleToImplementation = async () => {
+  const grantMinterRoleToDrop = async () => {
     if (!address) return;
     
     try {
@@ -169,7 +196,7 @@ const useCreateDrop = ({
 
     // Functions
     createDrop,
-    grantMinterRoleToImplementation,
+    grantMinterRoleToDrop,
   };
 };
 

@@ -31,17 +31,25 @@ const Deploy = ({ cid }: DeployProps) => {
     deployCollection,
     contractAddress: proxyContractAddress,
     isProxyDeployed : isProxyDeployed,
-    isSetUpPlaceHolderMetadata: isSetUpPlaceHolderMetadata,
-    isSetUpRevealMetadata: isSetUpRevealMetadata,
-    isSetUpInfluencingNFTs: isSetUpInfluencingNFTs,
+    isSetUpPlaceHolderMetadataSuccess: isSetUpPlaceHolderMetadataSuccess,
+    isSetUpRevealMetadataSuccess: isSetUpRevealMetadataSuccess,
+    isSetUpInfluencingNFTsSuccess: isSetUpInfluencingNFTsSuccess,
+    isSetUpContractMetadataSuccess: isSetUpContractMetadataSuccess,
     deployTxHash: proxyDeployTxHash,
-    isSetUpAll: isSetUpAll,
+    isSetUpAllSuccess: isSetUpAllSuccess,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus,
     setRevealMetadataStatus,
-    setInfluencingNFTsStatus
+    setInfluencingNFTsStatus,
+    setContractMetadataStatus,
+    setPlaceHolderMetadata,
+    setRevealMetadata,
+    setInfluencingNFTs,
+    setContractMetadata
   } = useDeployGenerativeCollection({
     collectionName: collectionData.contractName,
+    collectionDescription: collectionData.collectionDescription,
+    collectionImageCid: collectionData.collectionImageCid,
     symbol: collectionData.contractSymbol,
     collectionSize: collectionData.size,
     royaltyRecipient: collectionData.royaltyAddress,
@@ -90,6 +98,14 @@ const Deploy = ({ cid }: DeployProps) => {
         ? 'success'
         : proxyDeployStatus,
       label: "Deploy generative art contract",
+      required: true
+    },
+    // Check if contract metadata is already set up
+    {
+      status: collectionData?.contractMetadataStatus
+        ? 'success'
+        : setContractMetadataStatus,
+      label: "Set up contract metadata",
       required: true
     },
     // Show placeholder metadata if exists
@@ -196,67 +212,26 @@ const Deploy = ({ cid }: DeployProps) => {
   const handlePrevStep = () => {
     router.push(`/mint-generative/details?cid=${cid}`);
   };
-  
+
   useEffect(() => {
-    if (isSetUpAll) {
-      setCollectionData({
-        ...collectionData,
-        contractAddress: proxyContractAddress,
-        placeholderMetadataStatus: true,
-        revealMetadataStatus: true,
-      });
-      saveDataToLocalStorage({
-        contractAddress: proxyContractAddress,
-        placeholderMetadataStatus: true,
-        revealMetadataStatus: true,
-      });
+    if (isSetUpAllSuccess) {
+      console.log("Creating drop")
       createDrop();
     }
-  }, [isSetUpAll]);
-  
-  useEffect(() => {
-    if(isSetUpInfluencingNFTs) {
-      setCollectionData({
-        ...collectionData,
-        influencingNFTsStatus: true,
-      });
-      saveDataToLocalStorage({
-        influencingNFTsStatus: true,
-      });
-    }
-  }, [isSetUpInfluencingNFTs]);
+  }, [isSetUpAllSuccess]);
+
 
   useEffect(() => {
-    if(isDropCreated) {
-      setCollectionData({
-        ...collectionData,
-        dropContractAddress: dropContractAddress,
-      });
-      saveDataToLocalStorage({
-        dropContractAddress: dropContractAddress,
-      });
-    }
-  }, [isDropCreated]);
-
-  useEffect(() => {
-    if(isGrantMinterSuccess) {
-      setCollectionData({
-        ...collectionData,
-        grantMinterStatus: true,
-      });
-      saveDataToLocalStorage({
-        grantMinterStatus: true,
-      });
-    }
-  }, [isGrantMinterSuccess]);
-
-  useEffect(() => {
-    console.log(dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setInfluencingNFTsStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus)
-    if(dropZipContentStatus === 'error' || setInfluencingNFTsStatus === 'error' || proxyDeployStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
+    if(dropZipContentStatus === 'error' || setInfluencingNFTsStatus === 'error' || proxyDeployStatus === 'error' || setContractMetadataStatus === 'error' || setPlaceHolderMetadataStatus === 'error' || setRevealMetadataStatus === 'error' || grantMinterStatus === 'error' || createDropStatus === 'error') {
       setLoading(false);
     }
-  }, [dropZipContentStatus, proxyDeployStatus, setPlaceHolderMetadataStatus, setInfluencingNFTsStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus]);
 
+    if(proxyDeployStatus === 'success'&& createDropStatus === 'success') {
+      setLoading(false);
+      setVisibleDeployModal(true);
+    }
+  }, [dropZipContentStatus, proxyDeployStatus, setContractMetadataStatus, setPlaceHolderMetadataStatus, setInfluencingNFTsStatus, setRevealMetadataStatus, grantMinterStatus, createDropStatus]);
+  
   const deployZipContentToIPFS = async () => {
     try {
       setDropZipContentStatus('pending');
@@ -309,14 +284,39 @@ const Deploy = ({ cid }: DeployProps) => {
 
       // Step 2: Deploy contract if not already deployed
       if (!collectionData?.contractAddress) {
-        deployCollection();
+        await deployCollection();
       } 
 
-      // Step 3: Create drop if contract is deployed but drop isn't
-      else if (!collectionData?.dropContractAddress) {
-        createDrop();
-      }
+      else if (collectionData?.contractAddress) {
 
+        // Step 3: Set up contract metadata if not already set up
+        if (!collectionData?.contractMetadataStatus) {
+          setContractMetadata(collectionData?.contractAddress);
+        }
+
+        // Step 4: Set up placeholder metadata if not already set up
+        if (!collectionData?.placeholderMetadataStatus) {
+          console.log("Setting up placeholder metadata")
+          setPlaceHolderMetadata(collectionData?.contractAddress);
+        }
+
+        // Step 5: Set up reveal metadata if not already set up
+        if (!collectionData?.revealMetadataStatus) {
+          setRevealMetadata(collectionData?.contractAddress);
+        }
+
+        // Step 6: Set up influencing NFTs if not already set up
+        if (collectionData?.influencingNFTs?.length > 0) {
+          if (!collectionData?.influencingNFTsStatus) {
+            setInfluencingNFTs(collectionData?.contractAddress);
+          }
+        }
+
+        // Step 7: Create drop if contract is deployed but drop isn't
+        if (!collectionData?.dropContractAddress) {
+          createDrop();
+        }
+      }
       // All steps completed
       else {
         console.log('All deployment steps are already completed');

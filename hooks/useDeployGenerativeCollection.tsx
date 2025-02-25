@@ -4,11 +4,15 @@ import generativeERC721Upgradeable from '@/abi/GenerativeERC721Upgradeable.abi.j
 import ERC1967Proxy from '@openzeppelin/upgrades-core/artifacts/@openzeppelin/contracts-v5/proxy/ERC1967/ERC1967Proxy.sol/ERC1967Proxy.json';
 import { useEffect } from 'react';
 import { ethers } from "ethers";
+import { writeContract } from 'viem/actions';
+import { useCollectionContext } from 'context/collection';
 
 const IMPLEMENTATION_ADDRESS = process.env.NEXT_PUBLIC_GENERATIVE_ERC721_IMPLEMENTATION_ADDRESS || "0xB7bF8FcBd1afFD5D28C9B3Cd365b355da5E549B6";
 
 type UseDeployGenerativeCollectionProps = {
   collectionName: string;
+  collectionDescription: string;
+  collectionImageCid: string;
   symbol: string;
   collectionSize: number;
   royaltyRecipient: string;
@@ -27,6 +31,8 @@ type UseDeployGenerativeCollectionProps = {
 
 const useDeployGenerativeCollection = ({ 
   collectionName,
+  collectionDescription,
+  collectionImageCid,
   symbol,
   collectionSize,
   royaltyRecipient,
@@ -35,11 +41,12 @@ const useDeployGenerativeCollection = ({
   revealMetadata,
   influencingNFTs
 }: UseDeployGenerativeCollectionProps) => {
-  const { data: setPlaceHolderMetadataDataTxHash, status: setPlaceHolderMetadataStatus, writeContract } = useWriteContract();
+  const { data: setPlaceHolderMetadataDataTxHash, status: setPlaceHolderMetadataStatus, writeContract: writePlaceHolderMetadataContract } = useWriteContract();
   const { data: setRevealMetadataDataTxHash, status: setRevealMetadataStatus, writeContract: writeRevealMetadataContract } = useWriteContract();
   const { data: setInfluencingNFTsDataTxHash, status: setInfluencingNFTsStatus, writeContract: writeInfluencingNFTsContract } = useWriteContract();
+  const { data: setContractMetadataDataTxHash, status: setContractMetadataStatus, error: setContractMetadataError, writeContract: writeContractMetadataContract } = useWriteContract();
   const { address } = useUserContext();
-
+  const { setCollectionData, collectionData, saveDataToLocalStorage } = useCollectionContext();
   // Hook for deploying the proxy contract
   const { data: proxyDeployTxHash, deployContract: deployProxyContract, status: proxyDeployStatus } = useDeployContract();
   const { data: proxyDeployReceipt, status: proxyReceiptStatus } = useTransactionReceipt({
@@ -51,10 +58,44 @@ const useDeployGenerativeCollection = ({
 
   // After the proxy is deployed, call setPlaceholderMetadata if placeholderMetadata is provided
   useEffect(() => {
-    console.log(proxyDeployReceipt)
     if (proxyDeployStatus === 'success' && proxyDeployReceipt?.contractAddress && !setPlaceHolderMetadataDataTxHash) {
+      if (collectionName && collectionDescription && collectionImageCid) {
+        writeContractMetadataContract({
+          address: proxyDeployReceipt?.contractAddress as `0x${string}`,
+          abi: [
+            {
+              "name": "setContractMetadata",
+              "type": "function",
+              "stateMutability": "nonpayable",
+              "inputs": [
+                {
+                  "components": [
+                    { "internalType": "string", "name": "name", "type": "string" },
+                    { "internalType": "string", "name": "description", "type": "string" },
+                    { "internalType": "string", "name": "image", "type": "string" },
+                    { "internalType": "string", "name": "externalLink", "type": "string" },
+                    { "internalType": "string[]", "name": "collaborators", "type": "string[]" }
+                  ],
+                  "internalType": "struct StdContractMetadata",
+                  "name": "_data",
+                  "type": "tuple"
+                }
+              ],
+              "outputs": [],
+            }
+            ],
+            functionName: 'setContractMetadata',
+            args: [{
+              name: collectionName,
+              description: collectionDescription, 
+              image: `ipfs://${collectionImageCid}`,
+              externalLink: "",
+              collaborators: []
+            }]
+        });
+      }
       if (placeholderMetadata) {
-        writeContract({
+        writePlaceHolderMetadataContract({
           address: proxyDeployReceipt.contractAddress as `0x${string}`,
           abi: generativeERC721Upgradeable.abi,
           functionName: 'setPlaceholderMetadata',
@@ -83,6 +124,141 @@ const useDeployGenerativeCollection = ({
       }
     }
   }, [proxyDeployStatus, proxyDeployReceipt]);
+
+  useEffect(() => {
+    if (proxyDeployStatus === 'success' && proxyDeployReceipt?.contractAddress) {
+      setCollectionData({
+        ...collectionData,
+        contractAddress: proxyDeployReceipt?.contractAddress,
+      });
+      saveDataToLocalStorage({
+        contractAddress: proxyDeployReceipt?.contractAddress,
+      });
+    }
+  }, [proxyDeployStatus, proxyDeployReceipt]);
+
+  useEffect(() => {
+    if (setPlaceHolderMetadataStatus === 'success') {
+      setCollectionData({
+        ...collectionData,
+        placeholderMetadataStatus: true,
+      });
+      saveDataToLocalStorage({
+        placeholderMetadataStatus: true,
+      });
+    }
+  }, [setPlaceHolderMetadataStatus]);
+
+  useEffect(() => {
+    if (setRevealMetadataStatus === 'success') {
+      setCollectionData({
+        ...collectionData,
+        revealMetadataStatus: true,
+      });
+      saveDataToLocalStorage({
+        revealMetadataStatus: true,
+      });
+    }
+  }, [setRevealMetadataStatus]);
+
+  useEffect(() => {
+    if (setInfluencingNFTsStatus === 'success') {
+      setCollectionData({
+        ...collectionData,
+        influencingNFTsStatus: true,
+      });
+      saveDataToLocalStorage({
+        influencingNFTsStatus: true,
+      });
+    }
+  }, [setInfluencingNFTsStatus]);
+
+  useEffect(() => {
+    if (setContractMetadataStatus === 'success') {
+      setCollectionData({
+        ...collectionData,
+        contractMetadataStatus: true,
+      }); 
+      saveDataToLocalStorage({
+        contractMetadataStatus: true,
+      });
+    }
+  }, [setContractMetadataStatus]);
+
+  const setPlaceHolderMetadata = (contractAddress: string) => {  
+    if (placeholderMetadata) {
+      writePlaceHolderMetadataContract({
+        address: contractAddress as `0x${string}`,
+        abi: generativeERC721Upgradeable.abi,
+        functionName: 'setPlaceholderMetadata',
+        args: [JSON.stringify(placeholderMetadata)],
+      });
+    }
+  }
+
+  const setRevealMetadata = (contractAddress: string) => {
+    if (revealMetadata) {
+      writeRevealMetadataContract({
+        address: contractAddress as `0x${string}`,
+        abi: generativeERC721Upgradeable.abi,
+        functionName: 'setRevealPlaceholderMetadata',
+        args: [revealMetadata._metadata],
+      });
+    }
+  }
+  
+  const setInfluencingNFTs = (contractAddress: string) => {
+    if (influencingNFTs.length > 0) {
+      const tokenAddresses = influencingNFTs.map((nft: any) => nft[0]);
+      const tokenIds = influencingNFTs.map((nft: any) => nft[1]);
+
+      writeInfluencingNFTsContract({
+        address: contractAddress as `0x${string}`,
+        abi: generativeERC721Upgradeable.abi,
+        functionName: 'setInfluencingNFTs',
+        args: [tokenAddresses, tokenIds],
+      });
+    }
+  }
+
+  const setContractMetadata = (contractAddress: string) => {
+    if (collectionName && collectionDescription && collectionImageCid) {
+
+      writeContractMetadataContract({
+        address: contractAddress as `0x${string}`,
+        abi: [
+          {
+            "name": "setContractMetadata",
+            "type": "function",
+            "stateMutability": "nonpayable",
+            "inputs": [
+              {
+                "components": [
+                  { "internalType": "string", "name": "name", "type": "string" },
+                  { "internalType": "string", "name": "description", "type": "string" },
+                  { "internalType": "string", "name": "image", "type": "string" },
+                  { "internalType": "string", "name": "externalLink", "type": "string" },
+                  { "internalType": "string[]", "name": "collaborators", "type": "string[]" }
+                ],
+                "internalType": "struct StdContractMetadata",
+                "name": "_data",
+                "type": "tuple"
+              }
+            ],
+            "outputs": [],
+          }
+          ],
+          functionName: 'setContractMetadata',
+          args: [{
+            name: collectionName,
+            description: collectionDescription, 
+            image: `ipfs://${collectionImageCid}`,
+            externalLink: "",
+            collaborators: []
+          }]
+      });
+    }
+  }
 
   // Deploy only the proxy contract using the existing implementation
   const deployCollection = async () => {
@@ -116,6 +292,7 @@ const useDeployGenerativeCollection = ({
         bytecode: ERC1967Proxy.bytecode as `0x${string}`,
         args: [IMPLEMENTATION_ADDRESS, initData],
       });
+      return proxyDeployReceipt?.contractAddress;
     } catch (error) {
       console.error('Deployment error:', error);
       throw error;
@@ -125,16 +302,22 @@ const useDeployGenerativeCollection = ({
   return {
     contractAddress: proxyDeployReceipt?.contractAddress,
     isProxyDeployed: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success',
-    isSetUpPlaceHolderMetadata:  setPlaceHolderMetadataStatus === 'success',
-    isSetUpRevealMetadata: setRevealMetadataStatus === 'success',
-    isSetUpInfluencingNFTs: setInfluencingNFTsStatus === 'success',
-    isSetUpAll: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success',
+    isSetUpPlaceHolderMetadataSuccess:  setPlaceHolderMetadataStatus === 'success',
+    isSetUpContractMetadataSuccess: setContractMetadataStatus === 'success',
+    isSetUpRevealMetadataSuccess: setRevealMetadataStatus === 'success',
+    isSetUpInfluencingNFTsSuccess: setInfluencingNFTsStatus === 'success',
+    isSetUpAllSuccess: proxyDeployStatus === 'success' && proxyReceiptStatus === 'success' && setPlaceHolderMetadataStatus === 'success' && setRevealMetadataStatus === 'success' && setInfluencingNFTsStatus === 'success',
     deployTxHash: proxyDeployTxHash,
     deployStatus: proxyDeployStatus,
     setPlaceHolderMetadataStatus: setPlaceHolderMetadataStatus,
     setRevealMetadataStatus: setRevealMetadataStatus,
     setInfluencingNFTsStatus: setInfluencingNFTsStatus,
-    deployCollection,
+    setContractMetadataStatus: setContractMetadataStatus,
+    deployCollection: deployCollection,
+    setPlaceHolderMetadata: setPlaceHolderMetadata,
+    setRevealMetadata: setRevealMetadata,
+    setInfluencingNFTs: setInfluencingNFTs,
+    setContractMetadata: setContractMetadata,
   };
 };
 
