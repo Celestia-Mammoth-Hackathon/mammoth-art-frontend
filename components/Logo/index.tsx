@@ -23,8 +23,8 @@ const Logo = ({ className, light, onClick }: LogoProps) => (
             />
             <Image
                 src="/text.png"
-                width={175}
-                height={18}
+                width={245}
+                height={65}
                 alt="Logo"
             />
 
