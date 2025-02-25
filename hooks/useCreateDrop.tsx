@@ -148,7 +148,7 @@ const useCreateDrop = ({
       saveDataToLocalStorage({
         dropTransactionHash: createDropReceipt?.transactionHash,
       });
-      grantMinterRoleToDrop();
+      grantMinterRoleToDrop(proxyContractAddress);
     }
   }, [createDropStatus, isCreateDropSuccess]);
   
@@ -165,12 +165,12 @@ const useCreateDrop = ({
   }, [grantMinterStatus, isGrantMinterSuccess]);
 
   // Add function to grant minter role
-  const grantMinterRoleToDrop = async () => {
+  const grantMinterRoleToDrop = async (contractAddress: string) => {
     if (!address) return;
     
     try {
       grantMinterRole({
-        address: proxyContractAddress,
+        address: contractAddress as `0x${string}`,
         abi: generativeERC721Upgradeable.abi,
         functionName: 'grantMinter',
         args: [DROP_CONTRACT_ADDRESS as `0x${string}`],

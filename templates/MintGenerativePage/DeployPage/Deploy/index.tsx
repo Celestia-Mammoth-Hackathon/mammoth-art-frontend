@@ -61,6 +61,7 @@ const Deploy = ({ cid }: DeployProps) => {
 
   const { 
     createDrop,
+    grantMinterRoleToDrop,
     grantMinterStatus,
     dropTransactionHash,
     isDropCreated,
@@ -317,6 +318,12 @@ const Deploy = ({ cid }: DeployProps) => {
         if (!collectionData?.dropTransactionHash) {
           createDrop();
         }
+
+        // Step 8: Grant minter role to drop if contract is deployed but drop isn't
+        if (!collectionData?.grantMinterStatus) {
+          grantMinterRoleToDrop(collectionData?.contractAddress);
+        }
+
       }
       // All steps completed
       else {
