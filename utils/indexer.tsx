@@ -8,7 +8,7 @@ const BASE_RAILWAY_URL = process.env.NEXT_PUBLIC_RAILWAY_INDEXER_API_URL!.replac
 
 const BASE_API_URL = process.env.NEXT_PUBLIC_API_URL!.replace(/\/$/, "");
 
-const EXCLUDE_DROP_IDS_GENERATIVE = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || ["1", "2", "3", "4", "5", "6", "7"]));
+const EXCLUDE_DROP_IDS_GENERATIVE = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || []));
 
 const EXCLUDE_DROP_IDS_MODULARIUM = JSON.stringify((process.env.NEXT_PUBLIC_EXLUDE_DROP_IDS! || []));
 
