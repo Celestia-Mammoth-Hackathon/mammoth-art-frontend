@@ -48,6 +48,7 @@ const useCreateDrop = ({
   const { 
     data: createDropTxHash, 
     writeContract,
+    error: createDropError,
     status: createDropStatus,
     isError: isCreateDropError,
     isPending: isCreateDropPending
@@ -106,6 +107,7 @@ const useCreateDrop = ({
         merkleRoot,
       };
       console.log(dropConfig)
+      console.log(createDropError)
       // const dropConfig = {
       //   recipient: "0x45BE33bFD6fC8D4448B7FA603Db753A5f69a29f3", // recipient of drop mint revenue
       //   token: {
