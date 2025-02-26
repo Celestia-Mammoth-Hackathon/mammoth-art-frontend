@@ -20,11 +20,11 @@ const RandomCollections = ({collections}: RandomCollectionsProps) => {
                 RANDOMIZER
                 <span style={{ color: '#FF6B6B' }}>.</span>
             </div>
-            <Link href="/discover">
+            {/* <Link href="/discover">
                 <a className={cn("h1", styles.view)}>
                     VIEW ALL
                 </a>
-            </Link>
+            </Link> */}
             
         </div>
         
