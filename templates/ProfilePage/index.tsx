@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
+import styles from "./ProfilePage.module.sass";
 import Background from "@/components/Background";
 import Profile from "./Profile";
 import useCollectionStore from '@/store/index';
 import { TokenState } from '@/store/index';
+import Skeleton from '@mui/material/Skeleton';
+import SkeletonProfile from "./SkeletonProfile";
 type PrfilePageProps = {
     userAddress: any;
 };
@@ -42,7 +45,17 @@ const PrfilePage = ({ userAddress }: PrfilePageProps) => {
 
     return (
         <>
-            {!loading && (
+            {true ? 
+            (
+                <>
+                    <div className={styles.background}>
+                        <Skeleton variant="rectangular" height="100%" width="100%" sx={{ bgcolor: '#141414' }}/>
+                    </div>
+                    <SkeletonProfile />
+                </>
+            )
+            : (
+                
                 <>
                     <Background image={users[userAddress]?.bannerPic || "/images/artists/sloths.png"} />
                     <Profile ownedNFTs={ownedNFTs} userInfor={users[userAddress]} address={userAddress} />

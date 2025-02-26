@@ -1,0 +1,64 @@
+@import @/styles/helpers
+
+.row
+    display: flex
+    min-height: calc(100vh - rem(400))
+    +xl
+        min-height: calc(100vh - rem(304))
+    +t
+        display: block
+
+.col
+    flex: 0 0 50%
+    width: 50%
+    background: $n9
+    padding: rem(24)
+    +t
+        width: 100%
+    &:nth-child(1)
+        position: relative
+
+.avatar
+    position: absolute !important
+    top: rem(-144)
+    left: rem(68)
+    +xl
+        left: rem(52)
+    +w
+        left: rem(28)
+    +t
+        top: rem(-108)
+        left: rem(12)
+        width: rem(184) !important
+        height: rem(184) !important
+
+.details
+    margin-top: rem(100)
+    padding: rem(24)
+    +t
+        margin-top: rem(120)
+
+.stats
+    display: flex
+    gap: rem(24)
+    margin-top: rem(24)
+
+.tabs
+    display: flex
+    gap: rem(16)
+    margin-bottom: rem(32)
+
+.grid
+    display: grid
+    grid-template-columns: repeat(2, 1fr)
+    gap: rem(24)
+    +m
+        grid-template-columns: 1fr
+
+.gridItem
+    background: $n8
+    border-radius: rem(16)
+    overflow: hidden
+
+.itemContent
+    padding: rem(16)
