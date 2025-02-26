@@ -94,6 +94,7 @@ const Main = ({collections}: MainProps) => {
                 nft.tokenIds.includes(userNft.tokenId)
             );
         }
+        console.log(users);
         return false;
     };
 
