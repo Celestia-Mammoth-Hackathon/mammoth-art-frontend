@@ -39,7 +39,7 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
         contractAddress: item.tokenAddress,
         tokenId: item.tokenId
     });  
-    console.log(item)  
+
     return (
         // <Link href={{
         //     pathname: '/drop/[slug]',
