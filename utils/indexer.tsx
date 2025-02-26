@@ -448,16 +448,36 @@ const getUserBalance = async ({ userAddress }: GetUserBalanceParams) => {
   if (!res || !res.data) {
     return [];
   }
+  res.data.forEach(async (item: any) => {
+    item.tokenMetadata = await getTokenMetadata({ tokenAddress: item.tokenAddress, tokenId: item.tokenId });
+  });
   return res.data;
 }
 
 const getTokenMetadata = async ({ tokenAddress, tokenId = "1" }: GetTokenMetadataParams) => {
-  const res = await cachedAxiosGet(`${BASE_API_URL}/collection/${tokenAddress}/${tokenId}`);
-  if (!res || !res.data) {
-    return [];
+  try {
+    // Create contract instance
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const contract = new ethers.Contract(
+      tokenAddress,
+      generativeERC721Upgradeable.abi,
+      provider
+    );
+
+    // Call the contract's getTokenMetadata method
+    const metadataBase64 = await contract.tokenURI(tokenId);
+    
+    // Step 1: Remove Base64 prefix
+    const base64Data = metadataBase64.replace("data:application/json;base64,", "");
+
+    // Return in the same format as before
+    return JSON.parse(atob(base64Data));
+  } catch (error) {
+    console.error('Error fetching token metadata:', error);
+    return null;
   }
-  return res.data;
-}
+};
+
 
 export async function getContractMetadata(contractAddress: string) {
   try {

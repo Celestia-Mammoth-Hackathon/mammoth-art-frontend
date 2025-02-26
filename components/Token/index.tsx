@@ -95,7 +95,7 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
                             <div>
                                 <div className={styles.titleWrapper}>
                                     <span className={styles.title}>
-                                        {item?.metadata?.name || item.tokenMetadata.name}
+                                        {item?.metadata?.name || item?.tokenMetadata?.name}
                                     </span>
                                 </div>
                                 <div className={styles.detailBox}>
