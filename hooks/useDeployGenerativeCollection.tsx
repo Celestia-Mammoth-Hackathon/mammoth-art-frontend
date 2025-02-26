@@ -20,8 +20,10 @@ type UseDeployGenerativeCollectionProps = {
   placeholderMetadata: {
     name: string;
     description: string;
-    image: string;
+    image: any;
+    imageCid: string;
     tags?: string[];
+    attributes?: any[];
   };
   revealMetadata: {
     _metadata: string;
@@ -95,11 +97,17 @@ const useDeployGenerativeCollection = ({
         });
       }
       if (placeholderMetadata) {
+        const placeholderMetadataJson = JSON.stringify({
+          name: placeholderMetadata.name,
+          description: placeholderMetadata.description,
+          image: `ipfs://${placeholderMetadata.imageCid}`,
+          attributes: placeholderMetadata.attributes,
+        });
         writePlaceHolderMetadataContract({
           address: proxyDeployReceipt.contractAddress as `0x${string}`,
           abi: generativeERC721Upgradeable.abi,
           functionName: 'setPlaceholderMetadata',
-          args: [JSON.stringify(placeholderMetadata)],
+          args: [placeholderMetadataJson],
         });
       }
       if (revealMetadata) {

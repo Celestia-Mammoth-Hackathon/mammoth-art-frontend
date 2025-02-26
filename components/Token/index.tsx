@@ -39,7 +39,7 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
         contractAddress: item.tokenAddress,
         tokenId: item.tokenId
     });  
-
+    console.log(item)  
     return (
         // <Link href={{
         //     pathname: '/drop/[slug]',
@@ -55,7 +55,13 @@ const Token = ({ className, item, large, dark, owned = false }: TokenProps) => {
             >
                 <div className={styles.preview}>
                     <Image
-                        src={transformUri((item?.metadata?.image || item.tokenMetadata.image), false)}
+                        src={transformUri(
+                            (item?.metadata?.image || 
+                             (typeof item?.tokenMetadata?.image === 'string' ? item?.tokenMetadata?.image : 
+                              item?.tokenMetadata?.imageCid ? `ipfs://${item?.tokenMetadata?.imageCid}` : 
+                              null)), 
+                            false
+                        )}
                         layout="fill"
                         objectFit="contain"
                         alt="Token"
