@@ -7,7 +7,7 @@
 ## 🌟 Experience MammothArt
 
 ### 🔥 Live Demo
-Check out our platform in action: [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/)
+Check out our platform in action: [https://mammoth-art.up.railway.app/](https://mammoth-art.up.railway.app/)
 
 ### 🧬 NFT-Weighted Rarity System
 Your existing MammothArt NFTs influence the probability of minting rare pieces through **Forma blockchain's on-chain metadata**:
@@ -103,7 +103,7 @@ Once you're ready to test or deploy your project on MammothArt:
 - Create a .zip of your project files, ensuring that you select the group of files to zip, not the folder itself:
 ![MammothArt Platform Preview](public/zip.png)
 - Your .zip should not be larger than 2GB. All project assets are stored on Arweave by default, a decentralized and permanent storage network.
-- Go to [https://mammoth-bros-frontend-production.up.railway.app/](https://mammoth-bros-frontend-production.up.railway.app/) and connect your wallet.
+- Go to [https://mammoth-art.up.railway.app/](https://mammoth-art.up.railway.app/) and connect your wallet.
 - Click Create and upload the .zip file of your code-based generative project and continue with testing.
 
 ### Example Collections
