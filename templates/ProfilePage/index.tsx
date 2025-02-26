@@ -45,7 +45,7 @@ const PrfilePage = ({ userAddress }: PrfilePageProps) => {
 
     return (
         <>
-            {true ? 
+            {loading ? 
             (
                 <>
                     <div className={styles.background}>
