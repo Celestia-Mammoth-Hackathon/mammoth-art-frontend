@@ -89,12 +89,14 @@ const Main = ({collections}: MainProps) => {
 
     const checkUserOwnership = (nft: any) => {
         if(users) {
-            return users[address]?.collections[nft.tokenAddress]?.tokenIds?.some((userNft: any) => 
-                userNft.tokenAddress.toLowerCase() === nft.tokenAddress.toLowerCase() &&
-                nft.tokenIds.includes(userNft.tokenId)
-            );
+            return users[address]?.tokens.some((token: any) => {
+                if(token.tokenAddress === nft.tokenAddress) {
+                    const tokenIdString = String(token.tokenId);
+                    return nft.tokenIds.includes(tokenIdString);
+                }
+                return false;
+            });
         }
-        console.log(users);
         return false;
     };
 
