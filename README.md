@@ -131,3 +131,9 @@ Download our example collections to get started:
 
 ## 📊 Platform Statistics
 *Coming soon - live platform metrics and analytics*
+
+---
+
+<p align="center">
+  Built with ❤️ for the Mammoth Hackathon 2024
+</p>
