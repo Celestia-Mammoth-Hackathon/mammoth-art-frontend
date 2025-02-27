@@ -20,8 +20,9 @@ import MintModal from "@/components/ActionModal/MintModal";
 import Image from "next/image";
 import { getInfluencingNfts } from "@/utils/indexer";
 import Icon from "@/components/Icon";
-import { useCollectionContext } from "context/collection";
 import { useUserContext } from "context/user";
+import useCollectionStore from "@/store/index"
+
 SwiperCore.use([Autoplay]);
 type MainProps = {
     collections: any;
@@ -35,8 +36,9 @@ const Main = ({collections}: MainProps) => {
     const [influencingNfts, setInfluencingNfts] = useState<any>([]);
     const [mintClicked, setMintClicked] = useState<boolean>(false);
     const [response, setResponse] = useState<any>(null);
+    const [influencingNftsLoading, setInfluencingNftsLoading] = useState<boolean>(false);
 
-    const { users } = useCollectionContext();
+    const { users } = useCollectionStore();
     const { address } = useUserContext();
 
     const { claimNFT, mintingStatus, isMintingLoading, isMintingError, mintingError, mintedTokens } = useClaimNFT({
@@ -64,13 +66,20 @@ const Main = ({collections}: MainProps) => {
 
     useEffect(() => {
         const fetchInfluencingNfts = async () => {
-            const nfts = await getInfluencingNfts(item?.token?.drop?.tokenAddress);
+            setInfluencingNftsLoading(true);
+            const nfts = await getInfluencingNfts(item.token.drop.tokenAddress);
             setInfluencingNfts(nfts);
         };
         if(item?.token?.drop) {
             fetchInfluencingNfts();
         }
     }, [item]);
+
+    useEffect(() => {
+        if(influencingNfts.length > 0) {
+            setInfluencingNftsLoading(false);
+        }
+    }, [influencingNfts]);
 
     const handleMintClick = (item: any) => {
         setMintClicked(true);
@@ -211,9 +220,12 @@ const Main = ({collections}: MainProps) => {
                 <div className={styles.rightSection}>
                     <h4 className={styles.influencingTitle}>You own following Influencing NFTs</h4>
                     <div className={styles.influencingNfts}>
-                        {influencingNfts?.map((nft: any, index: number) => (
-                            <div key={index} className={styles.nftItem}>
-                                <div className={styles.nftInfo}>
+                    {influencingNftsLoading ? (
+                            <Spinner className={styles.spinner} />
+                        ) : (
+                            influencingNfts?.map((nft: any, index: number) => (
+                                <div key={index} className={styles.nftItem}>
+                                    <div className={styles.nftInfo}>
                                     <Icon 
                                         name={checkUserOwnership(nft) ? "check" : "close"} 
                                         className={cn(
@@ -225,7 +237,8 @@ const Main = ({collections}: MainProps) => {
                                         <span>{nft.metadata.name}</span>
                                 </div>
                             </div>
-                        ))}
+                        ))
+                        )} 
                     </div>
                 </div>
                 <div className={styles.buttonContainer}>
