@@ -2,7 +2,7 @@
 
 > Where your existing NFTs shape the art you mint
 
-![MammothArt Platform Preview](path/to/preview.gif)
+![MammothArt Platform Preview](/public/videos/MainPage.gif)
 
 ## 🌟 Experience MammothArt
 
@@ -33,11 +33,16 @@ Your existing MammothArt NFTs influence the probability of minting rare pieces t
 |-------|-----|---------|
 | Collectors | 10% | Per mint |
 
-### 📸 Preview Screenshots
-| Home Page | Minting Interface | Collection View |
-|-----------|------------------|-----------------|
-| ![Home](path/to/home.png) | ![Mint](path/to/mint.png) | ![Collection](path/to/collection.png) |
+### 📸 Platform Preview
 
+#### 🏠 Home Page
+![Home](/public/videos/MainPage.gif)
+
+#### 🎨 Creating Collection Interface
+![Create](/public/videos/CreatePage.gif)
+
+#### 👤 Collection View
+![Collection](/public/videos/ProfilePage.gif)
 
 ## 🚀 Getting Started
 
