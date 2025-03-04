@@ -135,9 +135,13 @@ const Main = ({collections}: MainProps) => {
                 breakpoints={{
                     320: {
                         direction: "horizontal",
+                        slidesPerView: 1,
+                        spaceBetween: 0,
                     },
                     1024: {
                         direction: "horizontal",
+                        slidesPerView: 1,
+                        spaceBetween: 0,
                     },
                 }}
                 onSlideChange={(swiper) => {

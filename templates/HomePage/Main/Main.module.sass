@@ -76,6 +76,8 @@
         padding-top: rem(8)
     +m
         padding-top: 0
+    +t
+        font-size: 18px
     &:hover
         color: $n11
 
@@ -88,7 +90,8 @@
 .by
     color: $n10
     font-size: 16px
-
+    +t
+        font-size: 14px
 .author,
 .subtitle
     font-size: 24px
@@ -97,7 +100,8 @@
     letter-spacing: -0.02em
     text-align: left
     cursor: pointer
-
+    +t
+        font-size: 14px
 .subtitle
     &:hover
         color: $n11
@@ -107,7 +111,8 @@
     font-weight: 500
     letter-spacing: -0.02em
     text-align: left
-
+    +t
+        font-size: 14px
 .avatar
     position: relative
     width: rem(40)
@@ -183,6 +188,9 @@
     display: flex
     justify-content: space-between
     align-items: center
+    +t
+        padding: 1rem
+        
 
 .button
     padding: 20px 32px 20px 32px
@@ -193,10 +201,20 @@
     cursor: pointer
     &:hover
         background: $n11
-
+    +t
+        padding: 1rem
+        
 .featuredSwiper
     margin-left: 14rem
     margin-right: 14rem
+    +t
+        margin: 0
+    :global(.swiper-wrapper)
+        +t
+            display: flex
+            flex-direction: row !important
+            gap: 1rem
+            max-height: 400px
 
 .spinner
     margin: 0 !important

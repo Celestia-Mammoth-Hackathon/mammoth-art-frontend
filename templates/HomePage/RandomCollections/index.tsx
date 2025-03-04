@@ -2,7 +2,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import cn from "classnames";
 import styles from "./RandomCollections.module.sass";
 import Collection from "./Collection";
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Navigation, Scrollbar, Pagination } from "swiper";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
@@ -13,6 +13,24 @@ type RandomCollectionsProps = {
 };
 
 const RandomCollections = ({collections}: RandomCollectionsProps) => {
+    const [isMobile, setIsMobile] = useState<boolean>(false);
+
+    useEffect(() => {
+        const checkIsMobile = () => {
+            if (typeof window !== "undefined") {
+                setIsMobile(window.innerWidth <= 1023);
+            }
+        };
+
+        checkIsMobile();
+
+        window.addEventListener('resize', checkIsMobile);
+        
+        return () => {
+            window.removeEventListener('resize', checkIsMobile);
+        };
+    }, []);
+    
     return (
     <div className={styles.collections}>
         <div className={styles.header}>
@@ -30,7 +48,7 @@ const RandomCollections = ({collections}: RandomCollectionsProps) => {
         
         <div className={styles.wrapper}>
             <Swiper
-                navigation={true}
+                navigation={isMobile ? false : true}
                 slidesPerView={3}
                 slidesPerGroup={3}
                 loop={false}
