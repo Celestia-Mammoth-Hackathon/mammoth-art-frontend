@@ -88,7 +88,7 @@ const Header = ({ className, noRegistration, light, empty }: HeaderProps) => {
                                         <span className={cn(styles.link)} style={{ color: router.pathname === "/discover" ? '#FFFFFF' : '#8C8D8F' }}>DISCOVER</span>
                                     </div>
                             </Link> */}
-                            <Link href="/create">
+                            <Link href="/mint-generative/create">
                                 <a
                                     className={cn(
                                         "button-stroke button-medium",
