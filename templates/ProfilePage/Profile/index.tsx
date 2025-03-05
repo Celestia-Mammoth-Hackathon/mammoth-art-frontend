@@ -3,7 +3,7 @@ import Image from "@/components/Image";
 import List from "@/components/List";
 import Tokens from "@/components/Tokens";
 import Details from "./Details";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Collections from "@/components/Collections";
 
 type ProfileProps = {
@@ -14,7 +14,26 @@ type ProfileProps = {
 
 const Profile = ({ ownedNFTs, userInfor, address }: ProfileProps) => {
     const [tab, setTab] = useState("owned");
-    
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        const checkIsMobile = () => {
+            if (typeof window !== "undefined") {
+                setIsMobile(window.innerWidth <= 1023);
+            }
+        };
+
+        checkIsMobile();
+
+        // Add event listener to check for mobile resizing
+        window.addEventListener('resize', checkIsMobile);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', checkIsMobile);
+        };
+    }, []);
+
     const tabsTokens = [{
         title: "Owned",
         value: "owned",
@@ -52,7 +71,7 @@ const Profile = ({ ownedNFTs, userInfor, address }: ProfileProps) => {
                     tabsValue={tab}
                     setTabsValue={setTab}
                     light={false}
-                    wrapperStyle={{ paddingLeft: "0", paddingTop: "0" }}
+                    wrapperStyle={isMobile ? {} : { paddingLeft: "0", paddingTop: "0" }}
                 >
                     {tab === "owned" && <Tokens items={Object.values(userInfor?.tokens || [])} theme={false} owned={true}/>}
                     {tab === "collections" && <Collections items={Object.values(userInfor?.collections || [])} theme={false} />}
