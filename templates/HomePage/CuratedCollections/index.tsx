@@ -15,12 +15,31 @@ type CuratedCollectionsProps = {};
 const CuratedCollections = ({}: CuratedCollectionsProps) => {
     const [loading, setLoading] = useState<boolean>(false);
     const [curatedCollections, setCuratedCollections] = useState([]);
+    const [isMobile, setIsMobile] = useState<boolean>(false);
 
     const {
         collections,
         fetchAllCollections
     } = useCollectionStore();
 
+    useEffect(() => {
+        const checkIsMobile = () => {
+            if (typeof window !== "undefined") {
+                setIsMobile(window.innerWidth <= 1023);
+            }
+        };
+
+        checkIsMobile();
+
+        // Add event listener to check for mobile resizing
+        window.addEventListener('resize', checkIsMobile);
+
+        // Cleanup the event listener on component unmount
+        return () => {
+            window.removeEventListener('resize', checkIsMobile);
+        };
+    }, []);
+    
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -48,7 +67,7 @@ const CuratedCollections = ({}: CuratedCollectionsProps) => {
         </div>
         <div className={styles.wrapper}>
             <Swiper
-                navigation={true}
+                navigation={isMobile ? false : true}
                 slidesPerView={3}
                 slidesPerGroup={3}
                 loop={false}
@@ -58,6 +77,23 @@ const CuratedCollections = ({}: CuratedCollectionsProps) => {
                 }}
                 modules={[Navigation, Pagination, Scrollbar]}
                 className="collections-swiper"
+                breakpoints={{
+                    320: {
+                        slidesPerView: 3,
+                        slidesPerGroup: 3,
+                        spaceBetween: 8,
+                    },
+                    768: {
+                        slidesPerView: 2,
+                        slidesPerGroup: 2,
+                        spaceBetween: 12,
+                    },
+                    1024: {
+                        slidesPerView: 3,
+                        slidesPerGroup: 3,
+                        spaceBetween: 16,
+                    }
+                }}
             >
                 {
                     loading 

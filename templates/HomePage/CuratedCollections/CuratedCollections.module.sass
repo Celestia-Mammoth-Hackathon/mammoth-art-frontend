@@ -14,7 +14,7 @@
     +t
         padding: rem(48) rem(24) rem(96)
     +m
-        padding-bottom: 0
+        padding: rem(32) rem(16) rem(64)
 
 .title
     color: $n0
@@ -26,13 +26,26 @@
     +d
         margin-bottom: rem(64)
     +t
-        padding-right: rem(176)
-    +m
-        margin-bottom: rem(32)
         padding-right: 0
+        margin-bottom: 0
+        font-size: 14px
+        
 
 .wrapper
     margin: 0 rem(-16)
     +m
         position: relative
-        padding: rem(100) 0 rem(96)
+        padding: rem(40) 0 rem(32)
+        margin: 0
+
+    :global(.collections-swiper)
+        +m
+            padding: 0 rem(16)
+            
+        :global(.swiper-slide)
+            +m
+                width: calc(100% - 6px) !important
+                margin-right: 8px !important
+                
+                &:last-child
+                    margin-right: 0 !important

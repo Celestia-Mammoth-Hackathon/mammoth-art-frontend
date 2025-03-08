@@ -46,6 +46,25 @@ export const ConnectBtn = ({
 
   const [reqSwitchNetwork, setReqSwitchNetwork] = useState<boolean>(false);
   const { address, setAddress, setBalance, ensName, setEnsName } = useUserContext();
+  const [isMobile, setIsMobile] = useState<boolean>(false); 
+
+  useEffect(() => {
+      const checkIsMobile = () => {
+          if (typeof window !== "undefined") {
+              setIsMobile(window.innerWidth <= 1023);
+          }
+      };
+
+      checkIsMobile();
+
+      // Add event listener to check for mobile resizing
+      window.addEventListener('resize', checkIsMobile);
+
+      // Cleanup the event listener on component unmount
+      return () => {
+          window.removeEventListener('resize', checkIsMobile);
+      };
+  }, []);
 
   useEffect(() => {
     const fetchEnsName = async () => {
@@ -90,7 +109,7 @@ export const ConnectBtn = ({
           type="button"
           style={btnStyle}
         >
-          <span className={styles.connect}>{children || "CONNECT WALLET"}</span>
+          <span className={styles.connect}>{isMobile ? "CONNECT" : children || "CONNECT WALLET"}</span>
         </button>
       </div>
     )
@@ -105,7 +124,7 @@ export const ConnectBtn = ({
           type="button"
           style={btnStyle}
         >
-          <span className={styles.connect}>SWITCH NETWORK</span>
+          <span className={styles.connect}>{isMobile ? "SWITCH" : "SWITCH NETWORK"}</span>
         </button>
       </div>
     )
