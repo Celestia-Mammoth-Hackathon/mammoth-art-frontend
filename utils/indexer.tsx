@@ -244,7 +244,6 @@ const getAllTokens = async () => {
                     tokenAddress
                     tokenId
                     totalSupply
-                    isMarketplaceAllowed
                 }
             }
         }`;
